@@ -1,0 +1,128 @@
+<div class="absolute width height">
+
+
+	<div class="absolute width height">
+
+		<div class="absolute width-300 height-200 bottom0 right0">
+			<div class="absolute width height bottom-20 right-20">
+				<div class="absolute width height-100 bottom0 hcenter">
+					<div class="absolute width height80 center rounded10 black-back white pointer font-30 shadow opacity0" id="runtoggle" on-tap="run()">
+						<div class="absolute center">
+							evolve
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<evolvedata></evolvedata>
+
+	</div>
+
+	<div class="absolute width height opacity0" id="evolvetoggle">
+
+		<div class="absolute width height black-back opacity99"></div>
+		
+		<div class="absolute width height30 golden white">
+			
+			<div class="absolute width50 height30 hcenter font-70">
+				<div class="absolute width70 vcenter">
+					<div class="absolute center text-center">evolving</div>
+				</div>
+				<div class="absolute width30 vcenter right0">
+					<div class="absolute center text-center">{{stepdata.gen}}</div>
+				</div>
+			</div>
+			
+			<div class="absolute width80 height30 hcenter center">
+				
+				<div class="absolute width25 height">
+					
+					<div class="absolute width height50 hcenter font-25">
+						<div class="absolute center">
+							total generations
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-20">
+						<div class="absolute center">
+							{{input.gens}}
+						</div>
+					</div>
+
+				</div>
+
+				<div class="absolute width25 height left25">
+
+					<div class="absolute width height50 hcenter font-25">
+						<div class="absolute center">
+							run for individual
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-20">
+						<div class="absolute center">
+							{{stepdata.run}} out of {{input.runs}}
+						</div>
+					</div>
+
+				</div>
+
+				<div class="absolute width25 height left50">
+
+					<div class="absolute width height50 hcenter font-25">
+						<div class="absolute center">
+							individual
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-20">
+						<div class="absolute center">
+							{{stepdata.org}}
+						</div>
+					</div>
+
+				</div>
+
+				<div class="absolute width25 height right0">
+
+					<div class="absolute width height50 hcenter font-25">
+						<div class="absolute center">
+							population
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-20">
+						<div class="absolute center">
+							{{input.pop}}
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="absolute width80 height30 hcenter bottom0">
+
+				<div class="absolute width height30 border-white center">
+					<div class="absolute height white-back" id="rundata"></div>
+				</div>
+
+			</div>
+
+			<div class="absolute width height-50 bottom-minus-50">
+				<div class="absolute width-50 height left50 white-back rounded5 font-30 black pointer" on-tap="breakRun()">
+					<div class="absolute center">
+						<i class="fa fa-times"></i>
+					</div>
+
+					<div class="absolute left100 width-200 height" id="breakfeedback">
+						<div class="absolute width vcenter text-right font-20 white">
+							finishing up....
+						</div>
+					</div>
+				</div>
+
+				
+			</div>
+
+
+		</div>
+	</div>
+</div>
