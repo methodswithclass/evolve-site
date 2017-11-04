@@ -103,12 +103,14 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     }
 
+    var displayDelay = 100;
+
     var phases = [
     {
         message:"processing", 
         delay:0,
         duration:0,
-        phase:function () {
+        phase:function (duration) {
             $scope.resetInput();
 
             $scope.resetInput({
@@ -119,6 +121,21 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                 evdelay:0
             });
 
+            u.toggle("disable", "run", {delay:displayDelay});
+            u.toggle("disable", "hud", {delay:displayDelay});
+            u.toggle("disable", "settings", {delay:displayDelay});
+
+            u.toggle("hide", "evolve", {delay:displayDelay});
+            u.toggle("hide", "run", {delay:displayDelay});
+            u.toggle("hide", "hud", {delay:displayDelay});
+            u.toggle("hide", "play", {delay:displayDelay});
+            u.toggle("hide", "refresh", {delay:displayDelay});
+            u.toggle("hide", "restart", {delay:displayDelay});
+            u.toggle("hide", "step", {delay:displayDelay});
+            u.toggle("hide", "stop", {delay:displayDelay});
+            u.toggle("hide", "break", {delay:displayDelay});
+            u.toggle("hide", "settings", {delay:displayDelay});
+
             setInputBackend();
         }
     },
@@ -126,16 +143,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         message:"initialize genetic algoirthm", 
         delay:600,
         duration:0,
-        phase:function () {
-            u.toggle("disable", "hud");
-            u.toggle("disable", "run");
-            u.toggle("hide", "evolve");
-            u.toggle("show", "refresh");
-            u.toggle("hide", "restart");
-            u.toggle("hide", "step");
-            u.toggle("show", "play");
-            u.toggle("hide", "stop");
-            u.toggle("hide", "break");
+        phase:function (duration) {
 
             initializeAlgorithmBackend();
         }
@@ -144,7 +152,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         message:"load data", 
         delay:600,
         duration:0, 
-        phase:function () {
+        phase:function (duration) {
 
 
             
@@ -174,8 +182,17 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
 
+
+                    u.toggle("show", "hud", {fade:duration});
+                    u.toggle("show", "run", {fade:duration});
+                    u.toggle("show", "refresh", {fade:duration});
+                    u.toggle("show", "play", {fade:duration});
+                    u.toggle("show", "settings", {fade:duration});
+                    u.toggle("show", "hud", {delay:displayDelay});
+
                     u.toggle("enable", "hud");
                     u.toggle("enable", "run");
+
                 }
             });
 

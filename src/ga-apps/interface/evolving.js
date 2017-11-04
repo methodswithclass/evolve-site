@@ -462,11 +462,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        simulator.refresh();
 		        $scope.evolving(true);
 
-		        u.toggle("hide", "refresh", {fade:300});
-		        u.toggle("hide", "restart", {fade:300});
-		        u.toggle("hide", "step", {fade:300});
-		        u.toggle("hide", "play", {fade:300});
-		        u.toggle("hide", "stop", {fade:300});
+		        // u.toggle("hide", "refresh", {fade:300});
+		        // u.toggle("hide", "restart", {fade:300});
+		        // u.toggle("hide", "step", {fade:300});
+		        // u.toggle("hide", "play", {fade:300});
+		        // u.toggle("hide", "stop", {fade:300});
+		        u.toggle("hide", "settings", {fade:300});
+		        u.toggle("hide", "run", {fade:300});
+		        u.toggle("hide", "hud", {fade:300});
 		        u.toggle("show", "evolve", {
 		            fade:600,
 		            delay:600,

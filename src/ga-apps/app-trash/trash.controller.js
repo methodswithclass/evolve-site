@@ -68,6 +68,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
     
+    var displayDelay = 100;
 
     var displayfade = 800;
     var loadfadeout = 800;
@@ -77,9 +78,24 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         message:"processing", 
         delay:0,
         duration:0,
-        phase:function () {
+        phase:function (duration) {
 
             $scope.resetInput();
+
+            u.toggle("disable", "run", {delay:displayDelay});
+            u.toggle("disable", "hud", {delay:displayDelay});
+            u.toggle("disable", "settings", {delay:displayDelay});
+
+            u.toggle("hide", "evolve", {delay:displayDelay});
+            u.toggle("hide", "run", {delay:displayDelay});
+            u.toggle("hide", "hud", {delay:displayDelay});
+            u.toggle("hide", "play", {delay:displayDelay});
+            u.toggle("hide", "refresh", {delay:displayDelay});
+            u.toggle("hide", "restart", {delay:displayDelay});
+            u.toggle("hide", "step", {delay:displayDelay});
+            u.toggle("hide", "stop", {delay:displayDelay});
+            u.toggle("hide", "break", {delay:displayDelay});
+            u.toggle("hide", "settings", {delay:displayDelay});
 
             setInputBackend();
         }
@@ -88,17 +104,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         message:"initialize genetic algoirthm", 
         delay:600,
         duration:0,
-        phase:function () {
+        phase:function (duration) {
 
-            u.toggle("disable", "hud");
-            u.toggle("disable", "run");
-            u.toggle("hide", "evolve");
-            u.toggle("hide", "refresh");
-            u.toggle("hide", "restart");
-            u.toggle("hide", "step");
-            u.toggle("hide", "play");
-            u.toggle("hide", "stop");
-            u.toggle("hide", "break");
+            
 
             initializeAlgorithmBackend();
         }
@@ -107,7 +115,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         message:"load environment", 
         delay:600,
         duration:0, 
-        phase:function () {
+        phase:function (duration) {
 
             initializeEnvironmentBackend();
 
@@ -120,8 +128,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:displayfade,
         phase:function (duration) {
 
-            u.toggle("show", "hud", {fade:duration});
-            u.toggle("show", "run", {fade:duration});
+
         }
     },
     {
@@ -138,6 +145,14 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
                     u.toggle("enable", "hud");
                     u.toggle("enable", "run");
+                    u.toggle("enable", "settings");
+
+
+                    u.toggle("show", "play", {fade:duration});
+                    u.toggle("show", "refresh", {fade:duration});
+                    u.toggle("show", "settings", {fade:duration});
+                    u.toggle("show", "hud", {fade:duration});
+                    u.toggle("show", "run", {fade:duration});
                 }
             });
         }

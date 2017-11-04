@@ -212,6 +212,11 @@ var obj = {};
 
 		}
 
+		self.setActive = function () {
+
+			active = true;
+		}
+
 		self.reproduce = function (mates) {
 
 			//console.log(mates)
@@ -280,7 +285,10 @@ var obj = {};
 
 			active = false;
 			self.runs = [];
-			program.hardStop();
+			program.hardStop({
+				gen:self.generation,
+				org:self.index
+			});
 		}
 
 	}
@@ -393,7 +401,7 @@ var obj = {};
 			var running = true;
 			active = true;
 
-			console.log("run population");
+			// console.log("run population");
 
 			runtimer = setInterval(function () {
 
@@ -401,11 +409,13 @@ var obj = {};
 
 					running = false;
 
-					// console.log("self.pop", self.pop, org);
+					// console.log("self.pop", self.pop, indi);
 
 					if (active) {
 
 						// console.log("run individual", indi);
+
+						self.pop[indi].setActive();
 
 						self.pop[indi].run(function () {
 
@@ -622,6 +632,8 @@ var obj = {};
 
 					previous = x.generation;
 					era[index(now)] = x.next;
+
+					// console.log("running evolve", self.input);
 
 					if (self.input && self.input.setEvdata) {
 						self.input.setEvdata({

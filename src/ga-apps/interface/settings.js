@@ -9,12 +9,12 @@ app.directive("settings", function () {
 
 			var toggle = true;
 			var status = {opened:false, right:{opened:-20, closed:-400}};
-			$("#gensettings").css({right:status.right.closed});
+			$("#settingstoggle").css({right:status.right.closed});
 
 			var controls = [
 			{
 				name:"open",
-				input:$("#opentoggle"),
+				input:$("#opensettings"),
 				tool:$("#opentool")
 			}
 			]
@@ -65,7 +65,7 @@ app.directive("settings", function () {
 			var animateToggle = function () {
 
 				controls[0].tool.animate({opacity:0}, 200);
-				$("#gensettings").animate({right:status.opened ? status.right.closed : status.right.opened}, 300, function () {
+				$("#settingstoggle").animate({right:status.opened ? status.right.closed : status.right.opened}, 300, function () {
 					status.opened = !status.opened;
 				})
 			}
@@ -74,7 +74,7 @@ app.directive("settings", function () {
 
 				$("#main-back").click(function () {
 					controls[0].tool.animate({opacity:0}, 200);
-					$("#gensettings").animate({right:status.right.closed}, 300, function () {
+					$("#settingstoggle").animate({right:status.right.closed}, 300, function () {
 						status.opened = false;
 					})
 				});
@@ -105,7 +105,7 @@ app.directive("settings", function () {
 
 				console.log("open settings ", status.opened);
 				var maxHeight = $(window).height()*0.8;
-				$("#gensettings").css({height:maxHeight < 800 ? maxHeight : 800});
+				$("#settingstoggle").css({height:maxHeight < 800 ? maxHeight : 800});
 				if (!isFocus() && toggle) {
 					animateToggle();
 				}
