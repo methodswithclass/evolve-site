@@ -53,26 +53,70 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     	reset();
     }
 
-    var start = function () {
+    // var start = function () {
 
-    	events.dispatch("neuralNet");
+    // 	events.dispatch("neuralNet");
+    // }
+
+    var instruct = function (best, complete) {
+
+    	var chunks = 4;
+    	var lens = Math.floor(best.dna.length / chunks);
+
+    	var sendChunk = function (i) {
+
+			var end = (i+2)*lens;
+
+			if (i == chunks - 1) {
+				end = best.dna.length-1;
+			}
+
+    		$http({
+	    		method:"POST",
+	    		url:"/instruct/", 
+    			data:{name:"recognize", chunk:best.dna.slice(i*lens, end)}
+	    	})
+	    	.then(function (res) {
+
+	    		if (i < chunks) {
+	    			sendChuck(i+1);
+	    		}
+	    		else {
+	    			complete();
+	    		}
+
+	    	}, function (err) {
+
+	    		console.log("Server error while running best individual", err);
+
+	    	})
+
+	    }
+
+	    sendChunk(0);
+
     }
 
-    var runBest = function (best) {
+    var simulate = function (best) {
 
 
-    	$http({
-    		method:"POST",
-    		url:"/simulate/", 
-    		data:{name:"recognize", bestDNA:best.dna}
-    	})
-    	.then(function (res) {
+    	instruct(best, function () {
 
-    		makeImage(res.data.image, res.data.output, res.data.label);
 
-    	}, function (err) {
+    		$http({
+	    		method:"POST",
+	    		url:"/simulate/", 
+				data:{name:"recognize"}
+	    	})
+	    	.then(function (res) {
 
-    		console.log("Server error while running best individual", err);
+	    		makeImage(res.data.image, res.data.output, res.data.label);
+
+	    	}, function (err) {
+
+	    		console.log("Server error while running best individual", err);
+
+	    	})
 
     	})
 
@@ -84,8 +128,7 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 		create:create,
 		reset:reset,
 		refresh:refresh,
-		start:start,
-		runBest:runBest
+		simulate:simulate
 	}
 
 }])

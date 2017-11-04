@@ -4,12 +4,19 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     self.name = "trash";
     $scope.name = self.name;
-
+    self.sdata;
 
     events.on("completeSim", function () {
 
         $scope.running(false);
     });
+
+    react.subscribe({
+        name:"sim." + self.name,
+        callback:function (x) {
+            self.sdata = x;
+        }
+    })
 
     var setInputBackend = function () {
 
@@ -101,7 +108,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         }
     },
     {
-        message:"initialize genetic algoirthm", 
+        message:"initializing evolutionary algoirthm", 
         delay:600,
         duration:0,
         phase:function (duration) {
@@ -112,7 +119,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         }
     },
     {
-        message:"load environment", 
+        message:"loading environment", 
         delay:600,
         duration:0, 
         phase:function (duration) {
@@ -123,7 +130,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         }
     },
     {
-        message:"load display", 
+        message:"loading display", 
         delay:600,
         duration:displayfade,
         phase:function (duration) {
@@ -132,7 +139,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         }
     },
     {
-        message:"complete", 
+        message:"getting things ready", 
         delay:600,
         duration:loadfadeout, 
         phase:function (duration) {
@@ -148,10 +155,10 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     u.toggle("enable", "settings");
 
 
+                    u.toggle("show", "hud", {fade:duration});
                     u.toggle("show", "play", {fade:duration});
                     u.toggle("show", "refresh", {fade:duration});
                     u.toggle("show", "settings", {fade:duration});
-                    u.toggle("show", "hud", {fade:duration});
                     u.toggle("show", "run", {fade:duration});
                 }
             });

@@ -140,7 +140,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         }
     },
     {
-        message:"initialize genetic algoirthm", 
+        message:"initializing evolutionary algoirthm", 
         delay:600,
         duration:0,
         phase:function (duration) {
@@ -149,7 +149,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         }
     },
     {
-        message:"load data", 
+        message:"loading data", 
         delay:600,
         duration:0, 
         phase:function (duration) {
@@ -161,17 +161,17 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         }
     },
     {
-        message:"load display", 
+        message:"loading display", 
         delay:600,
         duration:displayfade,
         phase:function (duration) {
 
-            u.toggle("show", "hud", {fade:duration});
-            u.toggle("show", "run", {fade:duration});
+            // u.toggle("show", "hud", {fade:duration});
+            // u.toggle("show", "run", {fade:duration});
         }
     },
     {
-        message:"complete", 
+        message:"getting things ready", 
         delay:600,
         duration:loadfadeout, 
         phase:function (duration) {
@@ -182,16 +182,15 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
 
-
-                    u.toggle("show", "hud", {fade:duration});
-                    u.toggle("show", "run", {fade:duration});
-                    u.toggle("show", "refresh", {fade:duration});
-                    u.toggle("show", "play", {fade:duration});
-                    u.toggle("show", "settings", {fade:duration});
-                    u.toggle("show", "hud", {delay:displayDelay});
-
                     u.toggle("enable", "hud");
                     u.toggle("enable", "run");
+                    
+
+                    u.toggle("show", "hud", {fade:duration});
+                    u.toggle("show", "refresh", {fade:duration});
+                    u.toggle("show", "play", {fade:duration});
+                    u.toggle("show", "run", {fade:duration});
+                    u.toggle("show", "settings", {fade:duration});
 
                 }
             });
@@ -236,7 +235,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     self.play = function () {
 
-        simulator.runBest($scope.evdata.best);
+        simulator.simulate($scope.evdata.best);
     }
 
 

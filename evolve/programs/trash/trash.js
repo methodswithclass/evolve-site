@@ -23,7 +23,7 @@ var gene = function () {
 
 var instruct = function (genome) {
 	
-	//console.log("instruct robot");
+	// console.log("instruct robot");
 	robot.instruct(genome);
 	robot.reset();
 }
@@ -175,14 +175,18 @@ var run = function (params, complete) {
 var simulate = function (i) {
 
 	console.log(" ");
-	after = robot.update({ui:true, input:input});
-	points = getPoints(after);
+	var after = robot.update();
+	var points = getPoints(after);
 
-	return {
+	var result = {
 		i:i,
 		after:after,
 		points:points
 	}
+
+	// console.log("simulate result", result);
+
+	return result;
 }
 
 module.exports = {

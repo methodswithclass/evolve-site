@@ -49,6 +49,7 @@ var reset = function () {
 
 var instruct = function (_plan) {
 
+	// console.log("receive instructions", _plan);
 	plan = _plan;
 }
 

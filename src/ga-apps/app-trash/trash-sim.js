@@ -2,7 +2,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var i = 1;
     var _score = 0;
-    var evdata;
+    var evdata = {};
     var genome;
 
     var pieces;
@@ -84,7 +84,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var instruct = function (genome) {
+    var instruct = function (genome, complete) {
 
 
         $http({
@@ -96,6 +96,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
             console.log(res.data.success);
 
+            if (complete) complete();
+
         }, function (err) {
 
             console.log("Server error while initializing algorithm", err.message);
@@ -104,22 +106,19 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     }
 
 
-    var setup = function () {
+    var setup = function (complete) {
 
-        //console.log("sim setup", evdata);
+        console.log("sim setup instruct", evdata);
 
         genome = evdata.best ? evdata.best.dna : [];
-        instruct(genome);
-
-        // console.log("instruct:", evdata.best ? evdata.best.generation : 0, "fitness:", evdata.best ? evdata.best.fitness : 0);
+        instruct(genome, complete);
     }
 
     react.subscribe({
         name:"ev.trash",
         callback:function (x) {
-            console.log("set evdata trash", x);
+            // console.log("set evdata trash", x);
             evdata = x;
-            //setup();
         }
 
     });
@@ -223,9 +222,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             }
         });
 
-        // environment.refresh();
-        // robot.reset();
-
+        setup();
 
         resetEnvironmentBackend();
         man.outer.css({left:0, top:0});
@@ -257,7 +254,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
                 console.log("run simulation", res.data);
 
-                var result = res.data;
+                var result = res.data.result;
 
                 animate(result.i, result.after, result.points);
 
@@ -308,15 +305,21 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         stepper = {};
         stepper = null;
 
-        start();
-        running = true;
+        setup(function () {
 
-        u.toggle("show", "stop", {fade:300});
-        u.toggle("hide", "refresh", {fade:300});
-        u.toggle("hide", "restart", {fade:300});
-        u.toggle("hide", "step", {fade:300});
-        u.toggle("hide", "play", {fade:300});
-        u.toggle("hide", "run", {fade:300});
+            start();
+            running = true;
+
+            u.toggle("show", "stop", {fade:300});
+            u.toggle("hide", "refresh", {fade:300});
+            u.toggle("hide", "restart", {fade:300});
+            u.toggle("hide", "step", {fade:300});
+            u.toggle("hide", "play", {fade:300});
+            u.toggle("hide", "run", {fade:300});
+            u.toggle("hide", "settings", {fade:300});
+        })
+
+        
     }
 
     var stop = function () {
@@ -333,6 +336,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         u.toggle("show", "play", {fade:300, delay:300});
         u.toggle("show", "step", {fade:300, delay:300});
         u.toggle("show", "run", {fade:300, delay:300});
+        u.toggle("show", "settings", {fade:300, delay:300});
     }
 
     // var print = function () {

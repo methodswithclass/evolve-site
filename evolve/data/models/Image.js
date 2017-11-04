@@ -1,7 +1,7 @@
 
 
 var mongoose = require("mongoose");
-var db = require("../../api/db.js");
+// var db = require("../../api/db.js");
 
 
 var imageSchema = mongoose.Schema({
@@ -11,7 +11,7 @@ var imageSchema = mongoose.Schema({
 })
 
 
-var Image = db.model("Image", imageSchema);
+var Image = mongoose.model("Image", imageSchema);
 
 
 module.exports = Image;

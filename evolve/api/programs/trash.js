@@ -67,7 +67,7 @@ trashRouter.get("/environment/gettrash", function (req, res, next) {
 trashRouter.post("/instruct", function (req, res, next) {
 
 
-	console.log("instruct individual", req.body);
+	console.log("instruct individual");
 
 	get.programs("trash").instruct(req.body.genome);
 

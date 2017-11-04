@@ -10,10 +10,11 @@ app.directive("trashsimdata", function () {
 			setTimeout(function () {
 
 				var total = $("#simdatainner").children().length;
+				var totalHeight = $(window).height()*0.5;
 
 				$("#simdatainner").children().each(function (index) {
 
-					$(this).css({height:$("#simdatainner").height()/total});
+					$(this).css({height:totalHeight/total});
 
 				})
 

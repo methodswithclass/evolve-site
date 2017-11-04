@@ -76,22 +76,6 @@ writeRouter.put("/clear", function (req, res, next) {
 })
 
 
-// router.get("/image", function (req, res, next) {
-
-
-// 	console.log("get image", req.body);
-
-// 	Image.findOne({"index": req.body.index}, "index label pixels", function (err, image) {
-
-
-// 		if (err) console.log("Get /image", err);
-
-// 		res.json(image)
-
-// 	})
-// })
-
-
 
 module.exports = writeRouter;
 

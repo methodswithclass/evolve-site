@@ -1,10 +1,10 @@
 
 
 var mongoose = require("mongoose");
-var db = require("../../api/db.js");
+// var db = require("../../api/db.js");
 var Individual = require("./individual.js");
 
-var individualSchema = db.model("Individual").schema;
+var individualSchema = mongoose.model("Individual").schema;
 
 var generationSchema = mongoose.Schema({
 	index:Number,
@@ -13,7 +13,7 @@ var generationSchema = mongoose.Schema({
 	individuals:[individualSchema]
 })
 
-var Generation = db.model("Generation", generationSchema);
+var Generation = mongoose.model("Generation", generationSchema);
 
 
 module.exports = Generation;

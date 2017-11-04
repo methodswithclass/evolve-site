@@ -1,7 +1,7 @@
 
 
 var mongoose = require("mongoose");
-var db = require("../../api/db.js");
+// var db = require("../../api/db.js");
 
 var individualSchema = mongoose.Schema({
 	index:Number,
@@ -11,7 +11,7 @@ var individualSchema = mongoose.Schema({
 })
 
 
-var Individual = db.model("Individual", individualSchema);
+var Individual = mongoose.model("Individual", individualSchema);
 
 
 module.exports = Individual;

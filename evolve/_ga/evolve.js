@@ -684,18 +684,20 @@ var obj = {};
 			return era[index(now)];
 		}
 
-		self.getBest = function (gen) {
+		self.getBest = function () {
 
-			console.log("get best", gen);
+			// console.log("get best");
 
 			// return era[gen].getRank();
 			return {
 				index:self.index,
 				best:{
+					dna:previous.best.dna,
 					runs:previous.best.runs,
 					fitness:previous.best.fitness
 				},
 				worst:{
+					dna:previous.best.dna,
 					runs:previous.worst.runs,
 					fitness:previous.worst.fitness
 				}

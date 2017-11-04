@@ -180,47 +180,47 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	        }
 
 
-	        var uploadLatest = function (complete) {
+	     //    var uploadLatest = function (complete) {
 
-		    	$http({
-		    		method:"POST",
-		    		url:"/evolve/latest",
-		    		data:{latest:latest}
-		    	})
-		    	.then(function (res) {
+		    // 	$http({
+		    // 		method:"POST",
+		    // 		url:"/evolve/latest",
+		    // 		data:{latest:latest}
+		    // 	})
+		    // 	.then(function (res) {
 
-		    		// console.log("get latest generation", res.data);
+		    // 		// console.log("get latest generation", res.data);
 
-		    		complete();
+		    // 		complete();
 
-	            }, function (err) {
+	     //        }, function (err) {
 
-	                console.log("Server error while getting best individual", err);
+	     //            console.log("Server error while getting best individual", err);
 
-	            })
-		    }
+	     //        })
+		    // }
 
-		    var getLatest = function () {
-
-
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/latest/"
-		    	})
-		    	.then(function (res) {
-
-		    		// console.log("get latest generation", res.data);
-
-		    		latest = res.data.latest;
-
-	            }, function (err) {
-
-	                console.log("Server error while getting best individual", err);
-
-	            })
+		    // var getLatest = function () {
 
 
-		    }
+		    // 	$http({
+		    // 		method:"GET",
+		    // 		url:"/evolve/latest/"
+		    // 	})
+		    // 	.then(function (res) {
+
+		    // 		// console.log("get latest generation", res.data);
+
+		    // 		latest = res.data.latest;
+
+	     //        }, function (err) {
+
+	     //            console.log("Server error while getting best individual", err);
+
+	     //        })
+
+
+		    // }
 
 
 	        var getBest = function () {
@@ -228,9 +228,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	        	// console.log("get best");
 
 		    	$http({
-		    		method:"POST",
-		    		url:"/evolve/best",
-		    		data:{gen:update ? $scope.stepdata.gen : $scope.input.gens}
+		    		method:"GET",
+		    		url:"/evolve/best"
 		    	})
 		    	.then(function (res) {
 
@@ -292,22 +291,22 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	console.log("complete evolve");
 		    	$scope.running(false);
 
-		    	//getLatest(function () {});
-
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 
 		        	delay:5000,
 		        	complete:function () {
 			        	$("#breakfeedback").hide();
+
+				        u.toggle("show", "run", {fade:600});
+				        u.toggle("show", "refresh", {fade:600});
+				        u.toggle("show", "play", {fade:600});
+				        u.toggle("show", "settings", {fade:600});
+				        u.toggle($scope.name == "trash" ? "show" : "hide", "restart", {fade:600});
+				        u.toggle($scope.name == "trash" ? "show" : "hide", "step", {fade:600});
+			        	u.toggle("show", "hud", {fade:600});
 				    }
 				});
 
-		        u.toggle("show", "refresh", {fade:600, delay:600});
-		        u.toggle($scope.name == "trash" ? "show" : "hide", "restart", {fade:600, delay:600});
-		        u.toggle("show", "play", {fade:600, delay:600});
-		        u.toggle($scope.name == "trash" ? "show" : "hide", "step", {fade:600, delay:600});
-		        
-		        // u.toggle(status == "finished" ? "show" : "hide" , "run", {fade:600, delay:600});
 
 		        setTimeout(function () {
 		            $("#evolvedata").animate({color:"#000"}, 600);
@@ -396,7 +395,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	    		$http({
 		    		method:"POST",
 		    		url:"/evolve/restart", 
-		    		data:{input:$scope.getInput()}
+		    		data:{input:$scope.getInput(), current:$scope.stepdata.gen}
 		    	})
 		    	.then(function (res) {
 
