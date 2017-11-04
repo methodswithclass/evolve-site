@@ -15,6 +15,8 @@ var dna;
 var net;
 var $dna;
 var runs;
+var bestDNA;
+
 var $stepdata;
 
 var getTrainImageIndex = function () {
@@ -26,6 +28,16 @@ var getTrainImageIndex = function () {
 var gene = function () {
 	
 	return Math.random()*40 - 20;
+}
+
+var instruct = function ($dna) {
+
+	bestDNA = $dna;
+}
+
+var reset = function () {
+
+
 }
 
 var makeGenome = function () {
@@ -220,7 +232,7 @@ var hardStop = function () {
 	runs = 0;
 }
 
-var runBest = function (bestDNA, complete) {
+var simulate = function (complete) {
 
 	var net = [];
 	var dna = [];
@@ -250,7 +262,7 @@ var runBest = function (bestDNA, complete) {
 		output[i].outputTrun = g.truncate(output[i].output, 4);
 	}
 
-	complete(image.image, output, label);
+	complete(image.pixels, output, label);
 	
 
 }
@@ -364,8 +376,12 @@ var run = function (params, complete) {
 
 module.exports = {
 	run:run,
+	instruct:instruct,
 	stepdata:stepdata,
 	gene:gene,
-	runBest:runBest,
-	hardStop:hardStop
+	simulate:simulate,
+	hardStop:hardStop,
+	reset:reset
 }
+
+

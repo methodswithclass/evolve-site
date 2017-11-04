@@ -22,7 +22,7 @@ recognizeRouter.post("/simulate", function (req, res, next) {
 
 	console.log("run best", req.body);
 
-	get.programs(req.body.name).runBest(bestDNA, function (image, output, label) {
+	get.programs("recognize").simulate(function (image, output, label) {
 
 		res.json({image:image, output:output, label:label});
 	});
@@ -30,14 +30,14 @@ recognizeRouter.post("/simulate", function (req, res, next) {
 })
 
 
-recognizeRouter.post("/instruct", function (req, res, next) {
+// recognizeRouter.post("/instruct", function (req, res, next) {
 
 
-	console.log("instruct", req.body);
+// 	console.log("instruct", req.body);
 
-	spliceChunk(req.body.chunk);
+// 	spliceChunk(req.body.chunk);
 
-})
+// })
 
 
 

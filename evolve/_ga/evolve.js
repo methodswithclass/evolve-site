@@ -709,6 +709,11 @@ var obj = {};
 			self.input = _input;
 		}
 
+		self.instruct = function () {
+
+			self.input.program.instruct(self.getBest().best.dna);
+		}
+
 		self.initialize = function (_input) {
 
 			console.log("initialize evolve");

@@ -201,6 +201,17 @@ evolveRouter.get("/best", function (req, res, next) {
 
 
 
+evolveRouter.get("/instruct", function (req, res, next) {
+
+	console.log("get best", req.body);
+
+	evolution.instruct();
+
+	res.json({success:"program successfully instructed"});
+})
+
+
+
 evolveRouter.get("/stepdata/:name", function (req, res, next) {
 
 	// console.log("get stepdata", req.body, evolution.getstepdata());

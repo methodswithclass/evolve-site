@@ -58,55 +58,78 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     // 	events.dispatch("neuralNet");
     // }
 
-    var instruct = function (best, complete) {
+   //  var instruct = function (best, complete) {
 
-    	var chunks = 4;
-    	var lens = Math.floor(best.dna.length / chunks);
+   //  	console.log("best dna length", best.dna.length);
 
-    	var sendChunk = function (i) {
+   //  	var chunks = 10;
+   //  	var lens = Math.floor(best.dna.length / chunks);
 
-			var end = (i+2)*lens;
+   //  	var sendChunk = function (i) {
 
-			if (i == chunks - 1) {
-				end = best.dna.length-1;
-			}
+			// var end = (i+2)*lens;
 
-    		$http({
-	    		method:"POST",
-	    		url:"/instruct/", 
-    			data:{name:"recognize", chunk:best.dna.slice(i*lens, end)}
-	    	})
-	    	.then(function (res) {
+			// if (i == chunks - 1) {
+			// 	end = best.dna.length-1;
+			// }
 
-	    		if (i < chunks) {
-	    			sendChuck(i+1);
-	    		}
-	    		else {
-	    			complete();
-	    		}
+   //  		$http({
+	  //   		method:"POST",
+	  //   		url:"/evolve/instruct/", 
+   //  			data:{name:"recognize", chunk:best.dna.slice(i*lens, end)}
+	  //   	})
+	  //   	.then(function (res) {
 
-	    	}, function (err) {
+	  //   		if (i < chunks) {
+	  //   			sendChuck(i+1);
+	  //   		}
+	  //   		else {
+	  //   			complete();
+	  //   		}
 
-	    		console.log("Server error while running best individual", err);
+	  //   	}, function (err) {
 
-	    	})
+	  //   		console.log("Server error while running best individual", err);
 
-	    }
+	  //   	})
 
-	    sendChunk(0);
+	  //   }
+
+	  //   sendChunk(0);
+
+   //  }
+
+
+    var instruct = function (complete) {
+
+
+    	$http({
+    		method:"GET",
+    		url:"/evolve/instruct/"
+    	})
+    	.then(function (res) {
+
+    		console.log("instruct successful", res.body);
+
+    		complete();
+
+    	}, function (err) {
+
+    		console.log("Server error while running best individual", err);
+
+    	})
 
     }
 
     var simulate = function (best) {
 
 
-    	instruct(best, function () {
+    	instruct(function () {
 
 
     		$http({
 	    		method:"POST",
-	    		url:"/simulate/", 
-				data:{name:"recognize"}
+	    		url:"/recognize/simulate/"
 	    	})
 	    	.then(function (res) {
 

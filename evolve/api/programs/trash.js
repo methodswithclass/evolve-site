@@ -19,7 +19,7 @@ trashRouter.post("/simulate", function (req, res, next) {
 
 	console.log("simulate step", req.body);
 
-	var result = get.programs(req.body.name).simulate(req.body.i);
+	var result = get.programs("trash").simulate(req.body.i);
 
 	res.json({result:result});
 
@@ -64,16 +64,16 @@ trashRouter.get("/environment/gettrash", function (req, res, next) {
 })
 
 
-trashRouter.post("/instruct", function (req, res, next) {
+// trashRouter.post("/instruct", function (req, res, next) {
 
 
-	console.log("instruct individual");
+// 	console.log("instruct individual");
 
-	get.programs("trash").instruct(req.body.genome);
+// 	get.programs("trash").instruct(req.body.genome);
 
-	res.json({success:"individual successfully instructed"});
+// 	res.json({success:"individual successfully instructed"});
 
-})
+// })
 
 
 trashRouter.get("/environment/reset", function (req, res, next) {

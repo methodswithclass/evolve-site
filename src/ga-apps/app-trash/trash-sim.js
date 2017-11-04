@@ -84,13 +84,12 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var instruct = function (genome, complete) {
+    var instruct = function (complete) {
 
 
         $http({
-            method:"POST",
-            url:"/trash/instruct",
-            data:{genome:genome}
+            method:"GET",
+            url:"/evolve/instruct"
         })
         .then(function (res) {
 
@@ -110,8 +109,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         console.log("sim setup instruct", evdata);
 
-        genome = evdata.best ? evdata.best.dna : [];
-        instruct(genome, complete);
+        // genome = evdata.best ? evdata.best.dna : [];
+        instruct(complete);
     }
 
     react.subscribe({

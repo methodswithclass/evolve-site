@@ -190,8 +190,8 @@ var simulate = function (i) {
 }
 
 module.exports = {
-	instruct:instruct,
 	run:run,
+	instruct:instruct,
 	stepdata:stepdata,
 	gene:gene,
 	simulate:simulate,
