@@ -173,54 +173,6 @@ evolveRouter.get("/running", function (req, res, next) {
 })
 
 
-// evolveRouter.post("/latest", function (req, res, next) {
-
-// 	console.log("get latest", req.body);
-
-// 	var latest = evolution.getLatest();
-
-// 	if (req.body.name == "trash") {
-
-// 		writeLatestTrashToDatabase(latest, function () {
-
-// 			res.json({success:"latest generation successfully saved"});
-// 		});
-// 	}
-// 	else if (req.body.name == "recognize") {
-		
-// 		writeLatestRecognizeToDatabase(latest, function () {
-
-// 			res.json({success:"latest generation successfully saved"});
-// 		});
-// 	}
-	
-// })
-
-
-// evolveRouter.get("/latest/:name/:index", function (req, res, next) {
-
-// 	console.log("get latest", req.body);
-
-// 	if (req.body.name == "trash") {
-
-// 		getLatestTrashFromDatabase(req, function (x) {
-
-// 			evolution.setLatest(x);
-
-// 			res.json({success:"successfully got latest generation"});
-// 		});
-// 	}
-// 	else if (req.body.name == "recognize") {
-		
-// 		getLatestRecognizeFromDatabase(req, function (x) {
-
-// 			res.json({latest:x});
-// 		});
-// 	}
-	
-// })
-
-
 evolveRouter.post("/latest", function (req, res, next) {
 
 	console.log("get latest", req.body);

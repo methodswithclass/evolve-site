@@ -263,7 +263,7 @@ var obj = {};
 					stepdata:stepdata
 				}, function (x) {
 
-					console.log("complete run", self.index);
+					// console.log("complete run", self.index);
 
 					self.runs = x.runs;
 					self.fitness = x.avg;
@@ -330,6 +330,8 @@ var obj = {};
 				//self.pop[i].print();
 				i++;
 			}
+
+			console.log("index", self.index, self.total);
 
 			self.best = {
 				index:self.index,
@@ -403,13 +405,13 @@ var obj = {};
 
 					if (active) {
 
-						console.log("run individual", indi);
+						// console.log("run individual", indi);
 
 						self.pop[indi].run(function () {
 
 							indi++;
 
-							console.log("run next individual", indi);
+							// console.log("run next individual", indi);
 
 							if (indi < self.total) {
 								running = true;
@@ -581,8 +583,8 @@ var obj = {};
 		var self = this;
 
 
-		var current;
-		var now = 0;
+		var era = [];
+		var now = 1;
 		var active = true;
 		
 		var stepdataobj = {
@@ -600,7 +602,12 @@ var obj = {};
 		}
 
 
-		var input = {};
+		self.input = {};
+
+		var index = function ($now) {
+
+			return $now - 1;
+		}
 		
 		var step = function () {
 
@@ -609,31 +616,30 @@ var obj = {};
 
 			if (active) {
 
-				current.turnover(function (x) {
+				era[index(now)].turnover(function (x) {
 
 					now++;
 
 					previous = x.generation;
-					current = null;
-					current = x.next;
+					era[index(now)] = x.next;
 
-					if (input && input.setEvdata) {
-						input.setEvdata({
+					if (self.input && self.input.setEvdata) {
+						self.input.setEvdata({
 							index:now,
 							best:previous.best,
 							worst:previous.worst
 						})
 					}
 
-					if (now < input.gens) {
+					if (now < self.input.gens) {
 						setTimeout(function () {
 							step();
-						}, input.evdelay);
+						}, self.input.evdelay);
 					}
 					else {
 
-						if (input && input.completeEvolve) {
-							input.completeEvolve();
+						if (self.input && self.input.completeEvolve) {
+							self.input.completeEvolve();
 						}
 					}
 
@@ -642,31 +648,31 @@ var obj = {};
 
 		}
 
-		this.getstepdata = function () {
+		self.getstepdata = function () {
 
-			stepdataobj.gen = now + 1;
+			stepdataobj.gen = now;
 
 			stepdataobj = current.getstepdata(stepdataobj);
 
 			return stepdataobj;
 		}
 
-		this.running = function () {
+		self.running = function () {
 
-			return active && (now < input.gens);
+			return active && (now < self.input.gens);
 		}
 
-		this.setLatest = function (x) {
+		self.setLatest = function (x) {
 
-			current = x;
+			era[index(now)] = x;
 		}
 
-		this.getLatest = function () {
+		self.getLatest = function () {
 
-			return previous;
+			return era[index(now)];
 		}
 
-		this.getBest = function (gen) {
+		self.getBest = function (gen) {
 
 			console.log("get best", gen);
 
@@ -684,33 +690,28 @@ var obj = {};
 			};
 		}
 
-		this.set = function (_input) {
+		self.set = function (_input) {
 
-			input = _input;
+			self.input = _input;
 		}
 
-		this.initialize = function (_input) {
+		self.initialize = function (_input) {
 
 			console.log("initialize evolve");
 
 			self.set(_input);
 
-			now = 0;
+			now = 1;
 			active = true;
 
-			current = null;
+		
+			era[index(now)] = new generation({index:now, input:self.input});
 			
-			// if (_input.pop) {
-			// 	current = new generation({index:_input.gen, pop:_input.pop, input:input});
-			// }
-			// else {
-				current = new generation({index:1, input:input});
-			// }
 		}
 
-		this.run = function (_input) {
+		self.run = function (_input) {
 
-			console.log("run evolve module", _input, input);
+			console.log("run evolve module", _input, self.input);
 
 			active = true;
 
@@ -719,32 +720,32 @@ var obj = {};
 
 		}
 
-		this.restart = function (_input) {
+		self.restart = function (current, _input) {
 
-			now = input.gens;
+			console.log("restart evolve", _input, self.input);
 
-			if (_input.goal != input.goal || _input.pop != input.pop) {
-				console.log("restart evolve");
+			if (_input.goal != self.input.goal || _input.pop != self.input.pop) {
 				self.initialize(_input);
-				self.run(_input);
-			}
+			}	
 			else {
-				self.set(_input);
-				step();
+				now = current;
 			}
+
+			self.run(_input);
+			
 
 		}
 
-		this.hardStop = function (_input) {
+		self.hardStop = function (_input) {
 
-			console.log("evolve hard stop", _input);
+			console.log("evolve hard stop", _input, self.input);
 
 			self.set(_input);
 			active = false;
-			current.hardStop();
+			era[index(now)].hardStop();
 
-			if (input && input.setEvdata) {
-				input.setEvdata({
+			if (self.input && self.input.setEvdata) {
+				self.input.setEvdata({
 					index:now,
 					best:previous.best,
 					worst:previous.worst

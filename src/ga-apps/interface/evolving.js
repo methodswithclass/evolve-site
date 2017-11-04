@@ -292,7 +292,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	console.log("complete evolve");
 		    	$scope.running(false);
 
-		    	getLatest(function () {});
+		    	//getLatest(function () {});
 
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 
@@ -474,7 +474,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		            	if ($scope.stepdata.gen > 0) {
 		            		
-		            		uploadLatest(function () {
+		            		//uploadLatest(function () {
 
 		            			setEvolveBackend(true, function () {
 
@@ -484,7 +484,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			            			});
 
 		            			});
-		            		});
+		            		//});
 		            	}
 		            	else {
 		            		
