@@ -4,19 +4,26 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     var _score = 0;
     var evdata = {};
     var genome;
+    var active = false;
+    var running = false;
 
     var pieces;
     var block;
     var man;
 
     var stepper;
-    var running = false;
     var colors = true;
 
     var name = "trash";
     var d;
     var totalActions;
 
+
+
+    var cleanBlock = function (x, y) {
+
+
+    }
 
     var setData = function ($d) {
 
@@ -56,9 +63,28 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         }
     })
 
+    react.subscribe({
+        name:"ev.trash",
+        callback:function (x) {
+            // console.log("set evdata trash", x);
+            evdata = x;
+        }
+
+    });
+
+
+    react.subscribe({
+        name:"arena.clean",
+        callback:function (x) {
+
+            cleanBlock = x;
+        }
+    })
+
+
     var output = function (_sout) {
 
-        console.log("output");
+        // console.log("output");
 
         react.push({
             name:"sim.trash",
@@ -113,15 +139,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         instruct(complete);
     }
 
-    react.subscribe({
-        name:"ev.trash",
-        callback:function (x) {
-            // console.log("set evdata trash", x);
-            evdata = x;
-        }
 
-    });
-    
 
     var pre = 100;
     var de = 300;
@@ -147,6 +165,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
             _score += points;
 
+            if (after.action.name == "clean" && after.success == "success") {
+
+                cleanBlock(after.move.post.x, after.move.post.y);
+            }
+
             output({
                 score:{
                     result:after.success,
@@ -163,47 +186,47 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         }
 
-        if (colors) {
-            setTimeout(function () {
-                man.inner.css({backgroundColor:after.action.color});
-            }, anime.pre);
-        }
+        // if (colors) {
+        //     setTimeout(function () {
+        //         man.inner.css({backgroundColor:after.action.color});
+        //     }, anime.pre);
+        // }
 
-        setTimeout(function () {
+        // setTimeout(function () {
 
-            console.log("name:", after.action.name);
+            // console.log("name:", after.action.name);
 
             man.outer.animate({
                 left:after.move.post.x*man.width, 
                 top:after.move.post.y*man.height
             }, anime.du, function () {
                 assessMove();
-                console.log("pos:", after.move.post, ":", after.success);
+                console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
             });
 
-        }, colors ? anime.de : 0);
+        // }, colors ? anime.de : 0);
 
-        if (colors) {
-            setTimeout(function () {
-                man.inner.css({backgroundColor:"#000000"});
-            }, anime.post);
+        // if (colors) {
+        //     setTimeout(function () {
+        //         man.inner.css({backgroundColor:"#000000"});
+        //     }, anime.post);
 
-            setTimeout(function () {
-                if (after.action.name != "stay put") {
-                    man.inner.css({backgroundColor:after.success == "success" ? "#00ff00" : "#ff0000"});
-                }
-            }, anime.feed)
+        //     setTimeout(function () {
+        //         if (after.action.name != "stay put") {
+        //             man.inner.css({backgroundColor:after.success == "success" ? "#00ff00" : "#ff0000"});
+        //         }
+        //     }, anime.feed)
 
-            setTimeout(function () {
-                man.inner.css({backgroundColor:"#000000"});
-            }, anime.loop);
-        }
+        //     setTimeout(function () {
+        //         man.inner.css({backgroundColor:"#000000"});
+        //     }, anime.loop);
+        // }
 
     }
 
     var reset = function () {
 
-        i = 0;
+        i = 1;
         _score = 0;
 
         console.log("reset sim");
@@ -240,9 +263,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
 
         u.toggle("hide", "step");
-        if (input.step) u.toggle("show", "step", {delay:colors ? anime.full : anime.part});
 
-        if (i <= totalActions) {
+        if (active && i <= totalActions) {
 
             $http({
                 method:"POST",
@@ -259,13 +281,17 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
                 if (!input.step) {
 
-                    i++;
-                    
                     setTimeout(function () {
 
                         performStep({step:false});
-                    }, anime.full);
+                    }, anime.post);
+
+
+                    i++;
                    
+                }
+                else {
+                    u.toggle("show", "step", {delay:colors ? anime.full : anime.part});
                 }
 
             }, function (err) {
@@ -282,12 +308,15 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var start = function () {
 
-        i = 1;
+        active = true;
+        running = true;
 
         performStep({step:false});
     }
 
     var step = function () {
+
+        active = true;
 
         if (!running) performStep({step:true});
 
@@ -307,7 +336,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         setup(function () {
 
             start();
-            running = true;
 
             u.toggle("show", "stop", {fade:300});
             u.toggle("hide", "refresh", {fade:300});
@@ -323,19 +351,24 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var stop = function () {
 
+        active = false;
         running = false;
-        i = 100;
+
+        complete();
+    }
+
+    var complete = function () {
 
         events.dispatch("completeSim");
 
 
-        u.toggle("hide", "stop", {fade:300, delay:300});
-        u.toggle("show", "refresh", {fade:300, delay:300});
-        u.toggle("show", "restart", {fade:300, delay:300});
-        u.toggle("show", "play", {fade:300, delay:300});
-        u.toggle("show", "step", {fade:300, delay:300});
-        u.toggle("show", "run", {fade:300, delay:300});
-        u.toggle("show", "settings", {fade:300, delay:300});
+        u.toggle("hide", "stop", {fade:300});
+        u.toggle("show", "refresh", {fade:300});
+        u.toggle("show", "restart", {fade:300});
+        u.toggle("show", "play", {fade:300});
+        u.toggle("show", "step", {fade:300});
+        u.toggle("show", "run", {fade:300});
+        u.toggle("show", "settings", {fade:300});
     }
 
     // var print = function () {

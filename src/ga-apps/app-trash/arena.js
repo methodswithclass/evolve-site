@@ -1,4 +1,4 @@
-app.directive("arena", ['$http', 'utility', 'events.service', function ($http, u, events) {
+app.directive("arena", ['$http', 'utility', 'events.service', "react.service", function ($http, u, events, react) {
 
 	return {
 		restrict:"E",
@@ -120,6 +120,12 @@ app.directive("arena", ['$http', 'utility', 'events.service', function ($http, u
 
 			}
 
+			var cleanBlock = function (i, j) {
+
+				arena[i][j].clean();
+
+			}
+
 			var makeBlocks = function (env) {
 
 				clear();
@@ -198,6 +204,11 @@ app.directive("arena", ['$http', 'utility', 'events.service', function ($http, u
 
 		        })
 		    }
+
+		    react.push({
+		    	name:"block.clean",
+		    	state:cleanBlock
+		    })
 
 			events.on("refreshenv", function () {
 

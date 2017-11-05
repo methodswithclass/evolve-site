@@ -180,49 +180,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	        }
 
 
-	     //    var uploadLatest = function (complete) {
-
-		    // 	$http({
-		    // 		method:"POST",
-		    // 		url:"/evolve/latest",
-		    // 		data:{latest:latest}
-		    // 	})
-		    // 	.then(function (res) {
-
-		    // 		// console.log("get latest generation", res.data);
-
-		    // 		complete();
-
-	     //        }, function (err) {
-
-	     //            console.log("Server error while getting best individual", err);
-
-	     //        })
-		    // }
-
-		    // var getLatest = function () {
-
-
-		    // 	$http({
-		    // 		method:"GET",
-		    // 		url:"/evolve/latest/"
-		    // 	})
-		    // 	.then(function (res) {
-
-		    // 		// console.log("get latest generation", res.data);
-
-		    // 		latest = res.data.latest;
-
-	     //        }, function (err) {
-
-	     //            console.log("Server error while getting best individual", err);
-
-	     //        })
-
-
-		    // }
-
-
 	        var getBest = function () {
 
 	        	// console.log("get best");
@@ -286,14 +243,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    }, 30);
 
-		    var completeEvolve = function () {
+		    var completeEvolve = function (simulate) {
 
 		    	console.log("complete evolve");
 		    	$scope.running(false);
 
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 
-		        	delay:5000,
+		        	delay:2000,
 		        	complete:function () {
 			        	$("#breakfeedback").hide();
 
@@ -301,8 +258,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 				        u.toggle("show", "refresh", {fade:600});
 				        u.toggle("show", "play", {fade:600});
 				        u.toggle("show", "settings", {fade:600});
-				        u.toggle($scope.name == "trash" ? "show" : "hide", "restart", {fade:600});
-				        u.toggle($scope.name == "trash" ? "show" : "hide", "step", {fade:600});
+				        if ($scope.name == "trash") u.toggle("show", "restart", {fade:600});
+				        if ($scope.name == "trash") u.toggle("show", "step", {fade:600});
 			        	u.toggle("show", "hud", {fade:600});
 				    }
 				});
@@ -416,8 +373,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    var breakEvolveBackend = function () {
 
 		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/hardStop"
+		    		method:"POST",
+		    		url:"/evolve/hardStop",
+		    		data:{name:$scope.name, input:$scope.getInput()}
 		    	})
 		    	.then(function (res) {
 

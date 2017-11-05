@@ -150,16 +150,16 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
 
-                    u.toggle("enable", "hud");
-                    u.toggle("enable", "run");
-                    u.toggle("enable", "settings");
-
 
                     u.toggle("show", "hud", {fade:duration});
                     u.toggle("show", "play", {fade:duration});
                     u.toggle("show", "refresh", {fade:duration});
                     u.toggle("show", "settings", {fade:duration});
                     u.toggle("show", "run", {fade:duration});
+
+                    u.toggle("enable", "hud");
+                    u.toggle("enable", "run");
+                    u.toggle("enable", "settings");
                 }
             });
         }

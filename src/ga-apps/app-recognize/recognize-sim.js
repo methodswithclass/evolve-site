@@ -31,7 +31,7 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 
 	var setup = function () {
 
-		
+
 	}
 
 	var create = function () {
@@ -52,52 +52,6 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 
     	reset();
     }
-
-    // var start = function () {
-
-    // 	events.dispatch("neuralNet");
-    // }
-
-   //  var instruct = function (best, complete) {
-
-   //  	console.log("best dna length", best.dna.length);
-
-   //  	var chunks = 10;
-   //  	var lens = Math.floor(best.dna.length / chunks);
-
-   //  	var sendChunk = function (i) {
-
-			// var end = (i+2)*lens;
-
-			// if (i == chunks - 1) {
-			// 	end = best.dna.length-1;
-			// }
-
-   //  		$http({
-	  //   		method:"POST",
-	  //   		url:"/evolve/instruct/", 
-   //  			data:{name:"recognize", chunk:best.dna.slice(i*lens, end)}
-	  //   	})
-	  //   	.then(function (res) {
-
-	  //   		if (i < chunks) {
-	  //   			sendChuck(i+1);
-	  //   		}
-	  //   		else {
-	  //   			complete();
-	  //   		}
-
-	  //   	}, function (err) {
-
-	  //   		console.log("Server error while running best individual", err);
-
-	  //   	})
-
-	  //   }
-
-	  //   sendChunk(0);
-
-   //  }
 
 
     var instruct = function (complete) {
@@ -121,7 +75,7 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 
     }
 
-    var simulate = function (best) {
+    var simulate = function () {
 
 
     	instruct(function () {

@@ -235,7 +235,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     self.play = function () {
 
-        simulator.simulate($scope.evdata.best);
+        simulator.simulate();
     }
 
 

@@ -17,86 +17,6 @@ var Individual = require("../data/models/individual.js");
 var Generation = require("../data/models/generation.js");
 
 
-// var writeLatestTrashToDatabase = function (latest, complete) {
-
-// 	var individual;
-
-// 	var indis = [];
-
-// 	for (var i in latest.pop) {
-
-// 		individual = new Individual({
-// 			index:latest.pop[i].index,
-// 			dna:latest.pop[i].dna,
-// 			fitness:latest.pop[i].fitness,
-// 			runs:latest.pop[i].runs
-// 		})
-
-// 		indis.push(individual);
-// 	}
-
-// 	var generation = new Generation({
-// 		index:latest.index,
-// 		best:latest.best,
-// 		worst:latest.worst,
-// 		individuals:indis
-// 	})
-
-
-// 	generation.save(function (err) {
-
-// 		if (err) {
-
-// 			console.log("Database error while saving generation", err)
-// 		}
-// 		else {
-
-// 			complete();
-// 		}
-// 	})
-
-// }
-
-
-// var writeLatestRecognizeToDatabase = function (latest, complete) {
-
-
-// 	complete();
-
-// }
-
-
-// var getLatestTrashFromDatabase = function (req, complete) {
-
-
-// 	Generation.findOne({"index":req.body.index}, "index best worst individuals", function (err, generation) {
-
-// 		if (err) {
-
-// 			console.log("Database error while getting generation", err);
-// 		}
-// 		else {
-
-// 			complete(generation);
-// 		}
-
-// 	})
-// }
-
-
-// var getLatestRecognizeFromDatabase = function (req, complete) {
-
-
-// 	complete({});
-
-// }
-
-
-
-
-
-
-
 var makeInput = function (req) {
 
 	var input = req.body.input;
@@ -173,25 +93,6 @@ evolveRouter.get("/running", function (req, res, next) {
 })
 
 
-// evolveRouter.post("/latest", function (req, res, next) {
-
-// 	console.log("get latest", req.body);
-
-// 	evolution.setLatest(req.body.latest);
-
-// 	res.json({success:"lastest successfully uploaded"});
-	
-// })
-
-
-// evolveRouter.get("/latest", function (req, res, next) {
-
-// 	console.log("get latest", req.body);
-
-// 	res.json({latest:evolution.getLatest()});
-	
-// })
-
 evolveRouter.get("/best", function (req, res, next) {
 
 	console.log("get best", req.body);
@@ -223,11 +124,13 @@ evolveRouter.get("/stepdata/:name", function (req, res, next) {
 
 
 
-evolveRouter.get("/hardStop", function (req, res, next) {
+evolveRouter.post("/hardStop", function (req, res, next) {
 
-	console.log("hard stop", req.body);
+	console.log("hard stop", req.body.input);
 
-	evolution.hardStop();
+	var input = makeInput(req);
+
+	evolution.hardStop(input);
 
 	res.json({success:"success"});
 });
