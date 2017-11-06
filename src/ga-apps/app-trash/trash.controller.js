@@ -67,6 +67,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("Initialize environment");
 
+            events.dispatch("refreshenv");
+
         }, function (err) {
 
             console.log("Server error while initializing algorithm", err.message);
@@ -126,7 +128,6 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             initializeEnvironmentBackend();
 
-            events.dispatch("refreshenv");
         }
     },
     {

@@ -394,7 +394,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 				setStepdata();
 
-    			getBest();
+				setInterval(function () {
+
+    				getBest();
+				}, 1000)
 		    }
 
 
