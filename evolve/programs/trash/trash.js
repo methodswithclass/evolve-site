@@ -189,6 +189,12 @@ var simulate = function (i) {
 	return result;
 }
 
+var createEnvironment = function () {
+
+
+	return environment.createEnv();
+}
+
 module.exports = {
 	run:run,
 	instruct:instruct,
@@ -196,7 +202,8 @@ module.exports = {
 	gene:gene,
 	simulate:simulate,
 	hardStop:hardStop,
-	reset:reset
+	reset:reset,
+	createEnvironment:createEnvironment
 }
 
 

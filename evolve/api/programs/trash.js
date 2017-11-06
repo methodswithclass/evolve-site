@@ -31,11 +31,7 @@ trashRouter.get("/environment/create", function (req, res, next) {
 
 	console.log("create environment", req.body);
 
-	environment.arena();
-
-	environment.trash();
-
-	var env = environment.get();
+	var env = get.programs("trash").createEnvironment();
 
 	res.json({env:env});
 

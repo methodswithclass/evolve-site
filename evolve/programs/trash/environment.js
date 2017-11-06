@@ -185,25 +185,16 @@ var clean = function (pos) {
 	return success;
 }
 
-// var cleanui = function (pos) {
+var createEnv = function () {
 
-// 	var ui = arenaui[pos.x][pos.y];
+	arena();
 
-// 	var success = "success";
+	trash();
 
-// 	if (ui.isdirty()) {
-// 		ui.clean();
-// 		if (ui.isdirty()) {
-// 			success = "fail";
-// 		}
-// 	}
-// 	else {
-// 		success = "no trash";
-// 	}
+	var env = get();
 
-// 	return success;
-
-// }
+	return env;
+}
 
 module.exports = {
 	arena:arena,
@@ -211,7 +202,8 @@ module.exports = {
 	trash:trash,
 	refresh:refresh,
 	assess:assess,
-	clean:clean
+	clean:clean,
+	createEnv:createEnv
 }
 
 
