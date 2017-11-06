@@ -191,9 +191,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	                setEvdata(res.data.ext);
 
+	                console.log("get best complete");
+
 	                if (update) {
 		                setTimeout(function () {
-
+		                	 console.log("evolve get best update", update);
 		                	 getBest();
 		                }, 1000);
 	            	}
