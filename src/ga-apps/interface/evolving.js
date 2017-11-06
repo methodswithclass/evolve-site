@@ -32,10 +32,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 			$("#breakfeedback").hide();
 
-			var saveToDatabase = function () {
 
-
-			}
 
 			var setData = function () {
 
@@ -252,6 +249,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	fade:600, 
 		        	delay:2000,
 		        	complete:function () {
+
+		        		$scope.running(false);
 			        	$("#breakfeedback").hide();
 
 				        u.toggle("show", "run", {fade:600});
@@ -293,6 +292,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		                }, 500)
             		}
             		else {
+            			update = false;
             			completeEvolve();
             		}
 
@@ -370,7 +370,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    var breakEvolveBackend = function () {
+		    var breakEvolveBackend = function (complete) {
 
 		    	$http({
 		    		method:"POST",
@@ -380,6 +380,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	.then(function (res) {
 
 	                console.log("Hard stop algorithm", res);
+
+	                complete();
 
 	            }, function (err) {
 
@@ -422,11 +424,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        simulator.refresh();
 		        $scope.evolving(true);
 
-		        // u.toggle("hide", "refresh", {fade:300});
-		        // u.toggle("hide", "restart", {fade:300});
-		        // u.toggle("hide", "step", {fade:300});
-		        // u.toggle("hide", "play", {fade:300});
-		        // u.toggle("hide", "stop", {fade:300});
+
 		        u.toggle("hide", "settings", {fade:300});
 		        u.toggle("hide", "run", {fade:300});
 		        u.toggle("hide", "hud", {fade:300});
@@ -437,17 +435,16 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		            	if ($scope.stepdata.gen > 0) {
 		            		
-		            		//uploadLatest(function () {
 
-		            			setEvolveBackend(true, function () {
+	            			setEvolveBackend(true, function () {
 
-			            			restartEvolveBackend(function () {
+		            			restartEvolveBackend(function () {
 
-			            				runEvolveComplete();
-			            			});
-
+		            				runEvolveComplete();
 		            			});
-		            		//});
+
+	            			});
+
 		            	}
 		            	else {
 		            		
@@ -484,9 +481,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $scope.input.gens = $scope.stepdata.gen;
 		        $("#gensinput").val($scope.input.gens);
 
-		        breakEvolveBackend();
+		        breakEvolveBackend(function () {
 
-		        completeEvolve();
+		        	completeEvolve();
+
+		        });
 		    }
 		}
 	}
