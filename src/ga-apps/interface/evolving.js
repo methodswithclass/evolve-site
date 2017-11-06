@@ -192,6 +192,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	console.log("complete evolve");
 		    	$scope.running(false);
 
+		    	getBest();
+
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 
 		        	delay:2000,
@@ -267,7 +269,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	                setTimeout(function () {
 
 	                	if (update) setStepdata();
-	                }, 2000);
+	                }, 0);
 
 	            }, function (err) {
 
@@ -300,7 +302,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	            })
 
-	            
+
 		    }
 
 		    var setEvolveBackend = function (resend, complete) {
