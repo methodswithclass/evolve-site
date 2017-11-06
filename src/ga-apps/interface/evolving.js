@@ -181,30 +181,32 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	        	// console.log("get best");
 
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/best"
-		    	})
-		    	.then(function (res) {
+	        	if (update) {
 
-		    		// console.log("get best individuals", res.data);
+			    	$http({
+			    		method:"GET",
+			    		url:"/evolve/best"
+			    	})
+			    	.then(function (res) {
 
-	                setEvdata(res.data.ext);
+			    		// console.log("get best individuals", res.data);
 
-	                console.log("get best complete");
+		                setEvdata(res.data.ext);
 
-	                if (update) {
+		                console.log("get best complete");
+
 		                setTimeout(function () {
 		                	 console.log("evolve get best update", update);
 		                	 getBest();
 		                }, 1000);
-	            	}
 
-	            }, function (err) {
+		            }, function (err) {
 
-	                console.log("Server error while getting best individual", err);
+		                console.log("Server error while getting best individual", err);
 
-	            })
+		            })
+
+		    	}
 		    }
 
 			var stepprogress = function () {
