@@ -243,7 +243,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        simulator.setup();
 
-		        events.dispatch("refreshenv");
+		        // events.dispatch("refreshenv");
 		        console.log("evolving", update);
 		    }
 
@@ -426,7 +426,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.run = function () {
 
-		        simulator.refresh();
+		        // simulator.refresh();
 		        $scope.evolving(true);
 
 

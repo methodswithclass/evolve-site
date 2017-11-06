@@ -13,14 +13,6 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 			var cols;
 			var rows;
 
-			react.subscribe({
-				name:"create.env",
-				callback:function (x) {
-
-					makeBlocks(x);
-				}
-			})
-
 			var setData = function ($d) {
 
 				d = $d;
@@ -157,12 +149,6 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 							square.placeTrash();
 						}
 
-						// for (k in env.trash) {
-						// 	if (env.trash[k].x == i && env.trash[k].y == j) {
-						// 		square.placeTrash();
-						// 	}
-						// }
-
 						col[j] = square;
 					}
 
@@ -191,7 +177,6 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 			}
 
 
-
 			var refreshEnvironmentBackend = function () {
 
 		        $http({
@@ -212,6 +197,15 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 		        })
 		    }
+
+
+		    react.subscribe({
+				name:"create.env",
+				callback:function (x) {
+
+					makeBlocks(x);
+				}
+			})
 
 		    react.push({
 		    	name:"block.clean",

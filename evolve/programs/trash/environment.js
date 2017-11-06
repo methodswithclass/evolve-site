@@ -52,11 +52,6 @@ var refresh = function () {
 		b = env.arena[t.x][t.y];
 		b.dirty();
 		
-		// if (arenaui) {
-		// 	ui = arenaui[t.x][t.y];
-		// 	ui.dirty();
-		// }
-		
 		if (!b.trash) {
 			console.log("flag **********************************************");
 		}
@@ -191,9 +186,7 @@ var createEnv = function () {
 
 	trash();
 
-	var env = get();
-
-	return env;
+	return get();
 }
 
 module.exports = {

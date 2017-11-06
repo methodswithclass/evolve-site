@@ -106,6 +106,8 @@ evolveRouter.get("/instruct", function (req, res, next) {
 
 	console.log("get best", req.body);
 
+	var input = makeInput(input);
+
 	evolution.instruct();
 
 	res.json({success:"program successfully instructed"});
