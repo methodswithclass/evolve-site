@@ -30,16 +30,5 @@ recognizeRouter.post("/simulate", function (req, res, next) {
 })
 
 
-// recognizeRouter.post("/instruct", function (req, res, next) {
-
-
-// 	console.log("instruct", req.body);
-
-// 	spliceChunk(req.body.chunk);
-
-// })
-
-
-
 
 module.exports = recognizeRouter;

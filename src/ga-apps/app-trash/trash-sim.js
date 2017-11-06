@@ -74,7 +74,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
 
     react.subscribe({
-        name:"arena.clean",
+        name:"block.clean",
         callback:function (x) {
 
             cleanBlock = x;
@@ -161,14 +161,19 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var animate = function (i, after, points) {
 
-        var assessMove = function () {
 
-            _score += points;
+        var clean = function () {
 
             if (after.action.name == "clean" && after.success == "success") {
 
                 cleanBlock(after.move.post.x, after.move.post.y);
             }
+        }
+
+
+        var assessMove = function () {
+
+            _score += points;
 
             output({
                 score:{
@@ -186,41 +191,17 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         }
 
-        // if (colors) {
-        //     setTimeout(function () {
-        //         man.inner.css({backgroundColor:after.action.color});
-        //     }, anime.pre);
-        // }
+        man.outer.animate({
+            left:after.move.post.x*man.width, 
+            top:after.move.post.y*man.height
+        }, anime.du, function () {
+            
+            assessMove();
 
-        // setTimeout(function () {
+            clean();
 
-            // console.log("name:", after.action.name);
-
-            man.outer.animate({
-                left:after.move.post.x*man.width, 
-                top:after.move.post.y*man.height
-            }, anime.du, function () {
-                assessMove();
-                console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
-            });
-
-        // }, colors ? anime.de : 0);
-
-        // if (colors) {
-        //     setTimeout(function () {
-        //         man.inner.css({backgroundColor:"#000000"});
-        //     }, anime.post);
-
-        //     setTimeout(function () {
-        //         if (after.action.name != "stay put") {
-        //             man.inner.css({backgroundColor:after.success == "success" ? "#00ff00" : "#ff0000"});
-        //         }
-        //     }, anime.feed)
-
-        //     setTimeout(function () {
-        //         man.inner.css({backgroundColor:"#000000"});
-        //     }, anime.loop);
-        // }
+            console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
+        });
 
     }
 
@@ -284,7 +265,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
                     setTimeout(function () {
 
                         performStep({step:false});
-                    }, anime.post);
+                    }, anime.de);
 
 
                     i++;
