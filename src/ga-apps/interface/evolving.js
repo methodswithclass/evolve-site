@@ -136,7 +136,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	                setTimeout(function () {
 
 	                	if (update) setStepdata();
-	                }, 100);
+	                }, 500);
 
 	            }, function (err) {
 
