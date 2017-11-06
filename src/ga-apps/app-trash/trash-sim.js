@@ -152,6 +152,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         pre:pre,
         de:pre + de,
         du:du,
+        predu:pre + du,
         post:pre + de + du + post,
         feed:pre + de + du + post + feed,
         loop:pre + de + du + post + feed + loop,
@@ -265,7 +266,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
                     setTimeout(function () {
 
                         performStep({step:false});
-                    }, anime.de);
+                    }, anime.predu);
 
 
                     i++;
