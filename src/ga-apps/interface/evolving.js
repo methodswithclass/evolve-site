@@ -176,39 +176,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	           	});
 	        }
 
-
-	        var getBest = function () {
-
-	        	// console.log("get best");
-
-	        	if (update) {
-
-			    	$http({
-			    		method:"GET",
-			    		url:"/evolve/best"
-			    	})
-			    	.then(function (res) {
-
-			    		// console.log("get best individuals", res.data);
-
-		                setEvdata(res.data.ext);
-
-		                console.log("get best complete");
-
-		                setTimeout(function () {
-		                	 console.log("evolve get best update", update);
-		                	 getBest();
-		                }, 1000);
-
-		            }, function (err) {
-
-		                console.log("Server error while getting best individual", err);
-
-		            })
-
-		    	}
-		    }
-
 			var stepprogress = function () {
 
 		        var genT = $scope.input.gens;
@@ -280,35 +247,67 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        console.log("evolving", update);
 		    }
 
+		    
 		    var isRunning = function  () {
 
+	         	if (update) {
 
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/running"
-		    	})
-		    	.then(function (res) {
+			    	$http({
+			    		method:"GET",
+			    		url:"/evolve/running"
+			    	})
+			    	.then(function (res) {
 
-		    		$scope.running(res.data.running);
+			    		$scope.running(res.data.running);
 
-            		if (update) {
-            			 setTimeout(function () {
+	        			setTimeout(function () {
 	                	
 		                	isRunning();
 		                }, 500)
-            		}
-            		else {
-            			update = false;
-            			completeEvolve();
-            		}
 
-            	}, function (err) {
+	            	}, function (err) {
 
-            		console.log("Server error while checking for evolve complete")
+	            		console.log("Server error while checking for evolve complete")
 
-            	})
+	            	})
+
+		    	}
+		    	else {
+		    		completeEvolve();
+		    	}
 		    }
 
+	        var getBest = function () {
+
+	        	// console.log("get best");
+
+	        	if (update) {
+
+			    	$http({
+			    		method:"GET",
+			    		url:"/evolve/best"
+			    	})
+			    	.then(function (res) {
+
+			    		// console.log("get best individuals", res.data);
+
+		                setEvdata(res.data.ext);
+
+		                console.log("get best complete");
+
+		                setTimeout(function () {
+		                	 console.log("evolve get best update", update);
+		                	 getBest();
+		                }, 1000);
+
+		            }, function (err) {
+
+		                console.log("Server error while getting best individual", err);
+
+		            })
+
+		    	}
+		    }
 
 		    var setEvolveBackend = function (resend, complete) {
 
