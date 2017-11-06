@@ -193,6 +193,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	$scope.running(false);
 
 		    	getBest();
+		    	simulator.refresh();
 
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 
@@ -217,9 +218,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            $("#evolvedata").animate({color:"#000"}, 600);
 		        }, 300);
 
-		        simulator.setup();
 
-		        // events.dispatch("refreshenv");
 		        console.log("evolving", update);
 		    }
 

@@ -225,7 +225,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             }
         });
 
-        setup();
+        // setup();
 
         resetEnvironmentBackend();
         man.outer.css({left:0, top:0});
