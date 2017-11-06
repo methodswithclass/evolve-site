@@ -33,7 +33,11 @@ trashRouter.get("/environment/create", function (req, res, next) {
 
 	environment.arena();
 
-	res.json({success:"environment created successfully"});
+	environment.trash();
+
+	var env = environment.get();
+
+	res.json({env:env});
 
 })
 

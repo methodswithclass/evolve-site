@@ -67,7 +67,12 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("Initialize environment");
 
-            events.dispatch("refreshenv");
+            react.push({
+                name:"create.env",
+                state:res.data.env
+            })
+
+            // events.dispatch("refreshenv");
 
         }, function (err) {
 

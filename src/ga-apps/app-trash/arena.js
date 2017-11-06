@@ -13,6 +13,14 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 			var cols;
 			var rows;
 
+			react.subscribe({
+				name:"create.env",
+				callack:function (x) {
+
+					makeBlocks(x);
+				}
+			})
+
 			var setData = function ($d) {
 
 				d = $d;
@@ -214,19 +222,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 				console.log("refresh ui");
 
-				// environment.trash();
-				// var env = environment.get();
-
 				refreshEnvironmentBackend();
-
-				// console.log("set state for arena");
-				
-				// react.push({
-				// 	name:"arena", 
-				// 	state:arena
-				// });
-
-				//environment.addUI(arena);
 			})
 
 			setTimeout(function () {
