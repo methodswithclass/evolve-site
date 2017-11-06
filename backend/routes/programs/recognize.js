@@ -5,16 +5,7 @@ var recognizeExpress = require("express");
 var recognizeRouter = recognizeExpress.Router();
 
 
-var get = require("../../data/get/get.js");
-
-
-var bestDNA = [];
-
-var spliceChunk = function (chunk) {
-
-	bestDNA = bestDNA.concat(chunk);
-
-}
+var get = require("../../evolve/data/get/get.js");
 
 
 recognizeRouter.post("/simulate", function (req, res, next) {

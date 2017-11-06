@@ -4,11 +4,11 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-const evolveRoutes = require("./evolve/api/evolving.js");
-const writingRoutes = require("./evolve/api/write-image.js");
+const evolveRoutes = require("./backend/routes/evolving.js");
+const writingRoutes = require("./backend/routes/write-image.js");
 
-const trashRoutes = require("./evolve/api/programs/trash.js");
-const recognizeRoutes = require("./evolve/api/programs/recognize.js");
+const trashRoutes = require("./backend/routes/programs/trash.js");
+const recognizeRoutes = require("./backend/routes/programs/recognize.js");
 
 
 var refreshPages = [

@@ -23,7 +23,7 @@ gulp.task("serve", ["watch"], shell.task("node server.js"));
 
 gulp.task('watch', ["build"], function() {
 
-    gulp.watch(["./src/**/*.*", "./evolve/**/*.*"], ["build"]);
+    gulp.watch(["./src/**/*.*", "./backend/evolve/**/*.*"], ["build"]);
 
 });
 

@@ -7,14 +7,14 @@ var evolveRouter = evolveExpress.Router();
 
 var evolve = require("mc-evolve");
 // var evolve = require("../_ga/evolve.js");
-var get = require("../data/get/get.js");
+var get = require("../evolve/data/get/get.js");
 
 
 var evolution = evolve.module;
 
 var db = require("./db.js");
-var Individual = require("../data/models/individual.js");
-var Generation = require("../data/models/generation.js");
+var Individual = require("../evolve/data/models/individual.js");
+var Generation = require("../evolve/data/models/generation.js");
 
 
 var makeInput = function (req) {
@@ -106,7 +106,7 @@ evolveRouter.get("/instruct", function (req, res, next) {
 
 	console.log("get best", req.body);
 
-	var input = makeInput(input);
+	// var input = makeInput(input);
 
 	evolution.instruct();
 
