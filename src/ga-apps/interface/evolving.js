@@ -279,7 +279,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	        var getBest = function () {
 
-	        	// console.log("get best");
+	        	console.log("get best");
 
 	        	if (update) {
 
@@ -401,7 +401,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 				setStepdata();
 
-				setInterval(function () {
+				setTimeout(function () {
 
     				getBest();
 				}, 1000)
