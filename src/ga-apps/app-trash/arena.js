@@ -15,7 +15,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 			react.subscribe({
 				name:"create.env",
-				callack:function (x) {
+				callback:function (x) {
 
 					makeBlocks(x);
 				}
