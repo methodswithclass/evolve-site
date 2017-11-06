@@ -19,7 +19,7 @@ merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files");
 
 
-gulp.task("serve", ["watch"], shell.task("nodemon server.js"));
+gulp.task("serve", ["watch"], shell.task("node server.js"));
 
 gulp.task('watch', ["build"], function() {
 
@@ -136,9 +136,7 @@ gulp.task('build', ['clean'], function() {
 	gulp.start("index");
 });
 
-gulp.task('build-serve', ['clean', 'index'], function() {
-	gulp.start('serve');
-});
+
 
 
 
