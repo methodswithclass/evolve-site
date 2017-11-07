@@ -92,11 +92,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         });
     }
 
-    var resetEnvironmentBackend = function () {
+    var resetEnvironmentBackend = function (session) {
 
         $http({
             method:"GET",
-            url:"/trash/environment/reset"
+            url:"/trash/environment/reset/" + session
         })
         .then(function (res) {
 
@@ -110,12 +110,12 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var instruct = function (complete) {
+    var instruct = function (session, complete) {
 
 
         $http({
             method:"GET",
-            url:"/evolve/instruct"
+            url:"/evolve/instruct/" + session
         })
         .then(function (res) {
 
@@ -131,12 +131,12 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     }
 
 
-    var setup = function (complete) {
+    var setup = function (session, complete) {
 
         console.log("sim setup instruct", evdata);
 
         // genome = evdata.best ? evdata.best.dna : [];
-        instruct(complete);
+        instruct(session, complete);
     }
 
 
@@ -206,7 +206,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var reset = function () {
+    var reset = function (session) {
 
         i = 1;
         _score = 0;
@@ -228,15 +228,15 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         // setup();
 
-        resetEnvironmentBackend();
+        resetEnvironmentBackend(session);
         man.outer.css({left:0, top:0});
 
     }
 
-    var refresh = function () {
+    var refresh = function (session) {
 
         events.dispatch("refreshenv");
-        reset();
+        reset(session);
     }
 
     var performStep = function (input) {
@@ -251,7 +251,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             $http({
                 method:"POST",
                 url:"/trash/simulate",
-                data:{name:name, i:i}
+                data:{name:name, i:i, session:input.session}
             })
             .then(function (res) {
 
@@ -288,24 +288,24 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         }
     }
 
-    var start = function () {
+    var start = function (session) {
 
         active = true;
         running = true;
 
-        performStep({step:false});
+        performStep({step:false, session:session});
     }
 
-    var step = function () {
+    var step = function (session) {
 
         active = true;
 
-        if (!running) performStep({step:true});
+        if (!running) performStep({step:true, session:session});
 
         i++;
     }
 
-    var play = function (_colors) {
+    var play = function (session, _colors) {
 
         console.log("play", evdata.index);
 
@@ -315,9 +315,9 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         stepper = {};
         stepper = null;
 
-        setup(function () {
+        setup(session, function () {
 
-            start();
+            start(session);
 
             u.toggle("show", "stop", {fade:300});
             u.toggle("hide", "refresh", {fade:300});

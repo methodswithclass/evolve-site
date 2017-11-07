@@ -4,18 +4,19 @@ var evolveExpress = require("express");
 var evolveRouter = evolveExpress.Router();
 
 var db = require("./db.js");
+const UIDGenerator = require('uid-generator');
 
 // var evolve = require("mc-evolve");
 // var evolve = require("../_ga/evolve.js");
 var get = require("../evolve/data/get/get.js");
 
-var evolution;
+const uidgen = new UIDGenerator();
 
-var makeInput = function (req) {
+// var evolution;
 
-	var input = req.body.input;
+var addProgram = function (req) {
 
-	var program = get.programs(input.name, input.name);
+	var program = get.addProgramToSession(req.body.input.session, req.body.name);
 
 	input.program = new program();
 
@@ -31,21 +32,25 @@ evolveRouter.get("/data/:name", function (req, res, next) {
 })
 
 
-evolveRouter.post("/instantiate", function (req, res, next) {
+evolveRouter.get("/instantiate", function (req, res, next) {
 
-	console.log("post initialize");
+	console.log("instantiate");
 
-	evolution = get.createSession(req.body.session);
+	var session = uidgen.generateSync();
 
-	res.json({success:"success"});
+	get.createSession(session);
+
+	res.json({session:session, success:"success"});
 });
 
 
 evolveRouter.post("/initialize", function (req, res, next) {
 
-	console.log("post initialize");
+	console.log("initialize");
 
-	var input = makeInput(req);
+	var input = addProgram(req);
+
+	var evolution = get.getSession(input.session);
 
 	evolution.initialize(input);
 
@@ -58,9 +63,11 @@ evolveRouter.post("/set", function (req, res, next) {
 
 	console.log("set input");
 
-	var input = makeInput(req);
+	// var input = addProgram(req);
 
-	evolution.set(input);
+	var evolution = get.getSession(req.body.input.session);
+
+	evolution.set(req.body.input);
 
 	res.json({success:"success"});
 });
@@ -71,9 +78,11 @@ evolveRouter.post("/run", function (req, res, next) {
 
 	console.log("run evolve");
 
-	var input = makeInput(req);
+	// var input = addProgram(req);
 
-	evolution.run(input);
+	var evolution = get.getSession(req.body.input.session)
+
+	evolution.run(req.body.input);
 
 	res.json({success:"success", running:true});
 });
@@ -83,36 +92,44 @@ evolveRouter.post("/restart", function (req, res, next) {
 
 	console.log("restart evolve");
 
-	var input = makeInput(req);
+	// var input = addProgram(req);
 
-	evolution.restart(req.body.current, input);
+	var evolution = get.getSession(req.body.input.session)
+
+	evolution.restart(req.body.current, req.body.input);
 
 	res.json({success:"success", running:true});
 });
 
 
-evolveRouter.get("/running", function (req, res, next) {
+evolveRouter.get("/running/:session", function (req, res, next) {
 
 	// console.log("check running", req.body, evolution.running());
+
+	var evolution = get.getSession(req.params.session)
 
 	res.json({running:evolution.running()})
 })
 
 
-evolveRouter.get("/best", function (req, res, next) {
+evolveRouter.get("/best/:session", function (req, res, next) {
 
 	console.log("get best");
+
+	var evolution = get.getSession(req.params.session)
 
 	res.json({ext:evolution.getBest()});
 })
 
 
 
-evolveRouter.get("/instruct", function (req, res, next) {
+evolveRouter.get("/instruct/:session", function (req, res, next) {
 
 	console.log("instruct");
 
-	// var input = makeInput(input);
+	// var input = addProgram(input);
+
+	var evolution = get.getSession(req.params.session)
 
 	evolution.instruct();
 
@@ -121,11 +138,13 @@ evolveRouter.get("/instruct", function (req, res, next) {
 
 
 
-evolveRouter.get("/stepdata/:name", function (req, res, next) {
+evolveRouter.get("/stepdata/:name/:session", function (req, res, next) {
 
 	// console.log("get stepdata", req.body, evolution.getstepdata());
 
-	var stepdata = get.programs(req.params.name, req.params.name).stepdata();
+	var program = get.getSessionProgram(req.params.session, req.params.name);
+
+	var stepdata = program.stepdata();
 
 	res.json({stepdata:stepdata});
 })
@@ -136,7 +155,9 @@ evolveRouter.post("/hardStop", function (req, res, next) {
 
 	console.log("hard stop");
 
-	var input = makeInput(req);
+	// var input = addProgram(req);
+
+	var evolution = get.getSession(req.body.input.session)
 
 	evolution.hardStop(input);
 

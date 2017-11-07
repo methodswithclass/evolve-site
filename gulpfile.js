@@ -19,11 +19,13 @@ merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files");
 
 
-gulp.task("serve", ["watch", "clean"], shell.task("node server.js"));
+gulp.task("serve", ["watch"], shell.task("node server.js"));
 
-gulp.task('watch', ["build"], function() {
+gulp.task('watch', ["clean"], function() {
 
     gulp.watch(["./src/**/*.*", "./backend/evolve/**/*.*"], ["build"]);
+
+    gulp.start("build");
 
 });
 
@@ -51,8 +53,6 @@ gulp.task('scripts', ['vendor'], function() {
 		            "src/ga-apps/app-trash/**/*.js",
 		            "src/**/*.js"
 		            ])
-	// .pipe(jshint('.jshintrc'))
-	// .pipe(jshint.reporter('default'))
 	.pipe(concat('main.js'))
 	// .pipe(rename({suffix: '.min'}))
 	// .pipe(uglify())
@@ -116,9 +116,9 @@ gulp.task("misc", function () {
 	// return merge(fav);
 })
 
-gulp.task('index', ["data", "misc", "html", "images", "styles", "scripts"], function () {
 
-	// It's not necessary to read the files (will speed up things), we're only after their paths: 
+gulp.task("js", ["scripts"], function () {
+
 	var important = gulp.src('dist/assets/js/vendor.js', {read: false});
 	var standard = gulp.src(["dist/assets/js/main.js", 'dist/assets/**/*.css'], {read:false});
 
@@ -126,15 +126,21 @@ gulp.task('index', ["data", "misc", "html", "images", "styles", "scripts"], func
 	.pipe(inject(important, {ignorePath:"dist", starttag: '<!-- inject:head:{{ext}} -->'}))
 	.pipe(inject(standard, {ignorePath:"dist"}))
 	.pipe(gulp.dest('dist'));
+
+})
+
+gulp.task('build', ["js", "styles", "data", "misc", "html", "images", "fonts"], function () {
+
+
 });
 
 gulp.task('clean', function() {
 	return del('dist');
 });
 
-gulp.task('build', ['clean'], function() {
-	gulp.start("index");
-});
+// gulp.task('build', ['clean'], function() {
+// 	gulp.start("index");
+// });
 
 
 

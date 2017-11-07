@@ -40,6 +40,8 @@ var makeProgram = function (program) {
 
 var createSession = function (session) {
 
+	console.log("create session", session);
+
 	evolve[session] = {};
 
 	evolve[session].evolve = makeEvolve();
@@ -49,6 +51,8 @@ var createSession = function (session) {
 
 var addProgramToSession = function (session, program) {
 
+	console.log("add program to session", session, program);
+
 	evolve[session].programs = {};
 	evolve[session].programs[program] = makeProgram(program);
 
@@ -57,7 +61,7 @@ var addProgramToSession = function (session, program) {
 
 var getSession = function (session) {
 
-	return evolve[session];
+	return evolve[session].evolve;
 }
 
 var getSessionProgram = function (session, name) {

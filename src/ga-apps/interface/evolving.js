@@ -85,7 +85,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            pop:100,
 		            evdelay:0,
 		            pdata:d.data,
-		            newenv:true
+		            newenv:true,
+		            session:$scope.session
 		        }
 
 		        $("#gensinput").val(default_input.gens),
@@ -107,7 +108,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            pop:parseInt($("#popinput").val()),
 		            evdelay:default_input.evdelay,
 		            pdata:d.data,
-		            newenv:true
+		            newenv:true,
+		            session:$scope.session
 		        }
 
 		        return $scope.input;
@@ -193,7 +195,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	$http({
 		    		method:"GET",
-		    		url:"/evolve/best"
+		    		url:"/evolve/best/" + $scope.session
 		    	})
 		    	.then(function (res) {
 
@@ -254,7 +256,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	$http({
 		    		method:"GET",
-		    		url:"/evolve/running"
+		    		url:"/evolve/running/" + $scope.session
 		    	})
 		    	.then(function (res) {
 
@@ -284,7 +286,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	$http({
 		    		method:"GET",
-		    		url:"/evolve/stepdata/" + $scope.name
+		    		url:"/evolve/stepdata/" + $scope.name + "/" + $scope.session
 		    	})
 		    	.then(function (res) {
 
@@ -397,10 +399,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 				setStepdata();
 
-				setTimeout(function () {
+				// setTimeout(function () {
 
-    				getBest();
-				}, 1000)
+    // 				getBest();
+				// }, 1000)
 		    }
 
 

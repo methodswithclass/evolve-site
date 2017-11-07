@@ -57,22 +57,20 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
-    var initializeEnvironmentBackend = function () {
+    var instantiateBackend = function (complete) {
+
 
         $http({
             method:"GET",
-            url:"/trash/environment/create"
+            url:"/evolve/instantiate"
         })
         .then(function (res) {
 
-            console.log("Initialize environment");
+            console.log("Instantiate", res);
 
-            react.push({
-                name:"create.env",
-                state:res.data.env
-            })
+            $scope.session = res.data.session;
 
-            // events.dispatch("refreshenv");
+            if (complete) complete();
 
         }, function (err) {
 
@@ -81,6 +79,31 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         })
 
     }
+
+    // var initializeEnvironmentBackend = function () {
+
+    //     $http({
+    //         method:"GET",
+    //         url:"/trash/environment/create"
+    //     })
+    //     .then(function (res) {
+
+    //         console.log("Initialize environment");
+
+    //         react.push({
+    //             name:"create.env",
+    //             state:res.data.env
+    //         })
+
+    //         // events.dispatch("refreshenv");
+
+    //     }, function (err) {
+
+    //         console.log("Server error while initializing algorithm", err.message);
+
+    //     })
+
+    // }
     
     var displayDelay = 100;
 
@@ -111,7 +134,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("hide", "break", {delay:displayDelay});
             u.toggle("hide", "settings", {delay:displayDelay});
 
-            setInputBackend();
+            
+            instantiateBackend(function () {
+
+                setInputBackend();
+            })
+
+
         }
     },
     {
@@ -194,26 +223,26 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     self.refresh = function () {
 
         $scope.running(false);
-        simulator.refresh();
+        simulator.refresh($scop.session);
     }
 
     self.restart = function () {
 
         
         $scope.running(false);
-        simulator.reset();
+        simulator.reset($scope.session);
     }
 
     self.step = function () {
 
         $scope.running(true);
-        simulator.step();
+        simulator.step($scope.session);
     }
 
     self.play = function () {
         
         $scope.running(true);
-        simulator.play(false);
+        simulator.play($scope.session, false);
     }
 
     self.stop = function () {

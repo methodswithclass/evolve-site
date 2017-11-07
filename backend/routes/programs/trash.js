@@ -8,13 +8,15 @@ var get = require("../../evolve/data/get/get.js");
 
 var db = require("../db.js");
 
-var trashFact = get.programs("trash", "trash");
+// var trashFact = get.programs("trash", "trash");
 
 
 trashRouter.post("/simulate", function (req, res, next) {
 
 
 	console.log("simulate step", req.body);
+
+	var trash = get.getSessionProgram(req.body.session, "trash");
 
 	var result = trash.simulate(req.body.i);
 
@@ -35,7 +37,7 @@ trashRouter.post("/simulate", function (req, res, next) {
 // })
 
 
-trashRouter.get("/environment/refresh", function (req, res, next) {
+trashRouter.get("/environment/refresh/:session", function (req, res, next) {
 
 
 	console.log("create environment");
@@ -43,6 +45,8 @@ trashRouter.get("/environment/refresh", function (req, res, next) {
 	// environment.trash();
 
 	// var env = environment.get();
+
+	var trash = get.getSessionProgram(req.params.session, "trash");
 
 	var env = trash.refresh();
 
@@ -63,12 +67,14 @@ trashRouter.get("/environment/refresh", function (req, res, next) {
 // })
 
 
-trashRouter.get("/environment/reset", function (req, res, next) {
+trashRouter.get("/environment/reset/:session", function (req, res, next) {
 
 
 	console.log("reset environment");
 
 	// get.programs("trash").reset();
+
+	var trash = get.getSessionProgram(req.params.session, "trash");
 
 	trash.reset();
 

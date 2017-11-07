@@ -50,6 +50,7 @@
     "mc-shared": "^4.0.31",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
-    "order": "^0.1.0"
+    "order": "^0.1.0",
+    "uid-generator": "^0.1.1"
   }
 }
