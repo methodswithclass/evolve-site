@@ -131,7 +131,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0, 
         phase:function (duration) {
 
-            initializeEnvironmentBackend();
+            // initializeEnvironmentBackend();
 
         }
     },

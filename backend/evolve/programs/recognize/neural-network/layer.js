@@ -1,7 +1,7 @@
 
 
 var d = require("../../../data/programs/recognize.js");
-var perceptronFact = require("./perceptron.js").perceptron;
+var perceptronFact = require("./perceptron.js");
 
 
 var layer = function () {
@@ -48,6 +48,4 @@ var layer = function () {
 }
 
 
-module.exports = {
-	layer:layer
-}
+module.exports = layer;

@@ -74,6 +74,4 @@ var perceptron = function (params) {
 }
 
 
-module.exports = {
-	perceptron:perceptron
-}
+module.exports = perceptron;

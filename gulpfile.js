@@ -19,7 +19,7 @@ merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files");
 
 
-gulp.task("serve", ["watch"], shell.task("node server.js"));
+gulp.task("serve", ["watch", "clean"], shell.task("node server.js"));
 
 gulp.task('watch', ["build"], function() {
 
@@ -116,7 +116,7 @@ gulp.task("misc", function () {
 	// return merge(fav);
 })
 
-gulp.task('index', ["styles", "scripts", 'html', "fonts", "images", "data", "misc"], function () {
+gulp.task('index', ["data", "misc", "html", "images", "styles", "scripts"], function () {
 
 	// It's not necessary to read the files (will speed up things), we're only after their paths: 
 	var important = gulp.src('dist/assets/js/vendor.js', {read: false});

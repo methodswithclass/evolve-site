@@ -187,6 +187,33 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    }, 30);
 
+
+		    var getBest = function () {
+
+
+		    	$http({
+		    		method:"GET",
+		    		url:"/evolve/best"
+		    	})
+		    	.then(function (res) {
+
+	                setEvdata(res.data.ext);
+
+	                // setTimeout(function () {
+
+	                // 	 if (update) getBest();
+
+	                // }, 1000);
+
+	            }, function (err) {
+
+	                console.log("Server error while getting best individual", err);
+
+	            })
+
+
+		    }
+
 		    var completeEvolve = function (simulate) {
 
 		    	console.log("complete evolve");
@@ -277,32 +304,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	            })
 
 		   	}
-
-	        var getBest = function () {
-
-
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/best"
-		    	})
-		    	.then(function (res) {
-
-	                setEvdata(res.data.ext);
-
-	                setTimeout(function () {
-
-	                	 if (update) getBest();
-
-	                }, 1000);
-
-	            }, function (err) {
-
-	                console.log("Server error while getting best individual", err);
-
-	            })
-
-
-		    }
 
 		    var setEvolveBackend = function (resend, complete) {
 

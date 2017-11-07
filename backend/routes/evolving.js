@@ -1,27 +1,23 @@
 
 
 var evolveExpress = require("express");
-
 var evolveRouter = evolveExpress.Router();
 
+var db = require("./db.js");
 
-var evolve = require("mc-evolve");
+// var evolve = require("mc-evolve");
 // var evolve = require("../_ga/evolve.js");
 var get = require("../evolve/data/get/get.js");
 
-
-var evolution = evolve.module;
-
-var db = require("./db.js");
-var Individual = require("../evolve/data/models/individual.js");
-var Generation = require("../evolve/data/models/generation.js");
-
+var evolution;
 
 var makeInput = function (req) {
 
 	var input = req.body.input;
 
-	input.program = get.programs(input.name);
+	var program = get.programs(input.name, input.name);
+
+	input.program = new program();
 
 	return input;
 }
@@ -29,15 +25,25 @@ var makeInput = function (req) {
 
 evolveRouter.get("/data/:name", function (req, res, next) {
 
-	console.log("get data req", req.params.name, __dirname);
+	console.log("get data req", req.params.name);
 
 	res.json({data:get.data(req.params.name)});
 })
 
 
+evolveRouter.post("/instantiate", function (req, res, next) {
+
+	console.log("post initialize");
+
+	evolution = get.createSession(req.body.session);
+
+	res.json({success:"success"});
+});
+
+
 evolveRouter.post("/initialize", function (req, res, next) {
 
-	console.log("post initialize", req.body);
+	console.log("post initialize");
 
 	var input = makeInput(req);
 
@@ -50,7 +56,7 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 evolveRouter.post("/set", function (req, res, next) {
 
-	console.log("set input", req.body);
+	console.log("set input");
 
 	var input = makeInput(req);
 
@@ -63,7 +69,7 @@ evolveRouter.post("/set", function (req, res, next) {
 
 evolveRouter.post("/run", function (req, res, next) {
 
-	console.log("run evolve post call", req.body);
+	console.log("run evolve");
 
 	var input = makeInput(req);
 
@@ -75,7 +81,7 @@ evolveRouter.post("/run", function (req, res, next) {
 
 evolveRouter.post("/restart", function (req, res, next) {
 
-	console.log("restart evolve post call", req.body);
+	console.log("restart evolve");
 
 	var input = makeInput(req);
 
@@ -95,7 +101,7 @@ evolveRouter.get("/running", function (req, res, next) {
 
 evolveRouter.get("/best", function (req, res, next) {
 
-	console.log("get best", req.body);
+	console.log("get best");
 
 	res.json({ext:evolution.getBest()});
 })
@@ -104,7 +110,7 @@ evolveRouter.get("/best", function (req, res, next) {
 
 evolveRouter.get("/instruct", function (req, res, next) {
 
-	console.log("get best", req.body);
+	console.log("instruct");
 
 	// var input = makeInput(input);
 
@@ -119,7 +125,7 @@ evolveRouter.get("/stepdata/:name", function (req, res, next) {
 
 	// console.log("get stepdata", req.body, evolution.getstepdata());
 
-	var stepdata = get.programs(req.params.name).stepdata();
+	var stepdata = get.programs(req.params.name, req.params.name).stepdata();
 
 	res.json({stepdata:stepdata});
 })
@@ -128,7 +134,7 @@ evolveRouter.get("/stepdata/:name", function (req, res, next) {
 
 evolveRouter.post("/hardStop", function (req, res, next) {
 
-	console.log("hard stop", req.body.input);
+	console.log("hard stop");
 
 	var input = makeInput(req);
 
