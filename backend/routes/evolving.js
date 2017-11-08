@@ -59,7 +59,7 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 evolveRouter.post("/set", function (req, res, next) {
 
-	console.log("set input");
+	console.log("set input", req.body.input);
 
 	// var input = addProgram(req);
 
@@ -121,15 +121,15 @@ evolveRouter.get("/best/:session", function (req, res, next) {
 
 
 
-evolveRouter.get("/instruct/:session", function (req, res, next) {
+evolveRouter.get("/instruct/:name/:session", function (req, res, next) {
 
 	console.log("instruct");
 
-	// var input = addProgram(input);
-
 	var evolution = get.getSessionEvolve(req.params.session)
+	var best = evolution.getBest();
+	var trash = get.getSessionProgram(req.params.session, req.params.name);
 
-	evolution.instruct();
+	trash.instruct(best.dna);
 
 	res.json({success:"program successfully instructed"});
 })

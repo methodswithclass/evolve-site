@@ -34,13 +34,18 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 
-			var setData = function () {
+			$scope.setData = function ($d) {
 
+				console.log("set data", $d);
+
+				d = $d
 				totalActions = d.data.actions ? d.data.actions.total : 1;
 				$scope.goals = d.data.goals;
 			}
 
-		    var getData = function () {
+		    $scope.getData = function (complete) {
+
+		    	console.log("get data");
 
 		        $http({
 		        	method:"GET",
@@ -48,10 +53,12 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        })
 		        .then(function (res) {
 
-		            console.log("getting data", res.data);
+		            var $d = res.data.data;
 
-		            d = res.data.data;
-		            setData();
+
+		            console.log("get data response", $d);
+
+		            complete($d);
 
 		        }, function (err) {
 
@@ -61,7 +68,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    }
 
-		    getData();
+		    $scope.getData(function ($d) {
+
+		    	$scope.setData($d);
+		    });
 
 		    $scope.evolving = function (_evolve) {
 		        ev = _evolve;
@@ -78,15 +88,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	// console.log("input", d.data);
 
 		        default_input = $input || {
-		            name:$scope.name,
 		            gens:100,
 		            runs:20,
 		            goal:"max",
 		            pop:100,
-		            evdelay:0,
-		            pdata:d.data,
-		            newenv:true,
-		            session:$scope.session
+		            evdelay:0
 		        }
 
 		        $("#gensinput").val(default_input.gens),
@@ -98,7 +104,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.getInput = function () {
 
-		    	// console.log("get input", d.data);
+		    	console.log("get input", d);
 
 		        $scope.input = {
 		            name:$scope.name,
@@ -222,7 +228,12 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	$scope.running(false);
 
 		    	getBest();
-		    	simulator.refresh($scope.session);
+		    	
+		    	simulator.setup($scope.session, function () {
+
+		    		simulator.refresh($scope.refresh) 
+		    	});
+
 
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 
@@ -399,10 +410,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 				setStepdata();
 
-				// setTimeout(function () {
-
-    // 				getBest();
-				// }, 1000)
 		    }
 
 

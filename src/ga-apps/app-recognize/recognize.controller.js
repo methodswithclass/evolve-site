@@ -21,7 +21,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     var displayfade = 800;
     var loadfadeout = 800;
 
-    var setInputBackend = function () {
+    var setInputBackend = function (complete) {
+
+        console.log("set input");
 
         $http({
             method:"POST",
@@ -30,7 +32,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         })
         .then(function (res) {
 
-            console.log("Set input", res);
+            console.log("set input response");
+
+            if (complete) complete();
 
         }, function (err) {
 
@@ -40,8 +44,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     }
 
-    var initializeAlgorithmBackend = function () {
+    var initializeAlgorithmBackend = function (complete) {
 
+        console.log("initialize evolutionary algorithm");
 
         $http({
             method:"POST",
@@ -51,6 +56,33 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         .then(function (res) {
 
             console.log("Initialize algorithm", res);
+
+            if (complete) complete()
+
+        }, function (err) {
+
+            console.log("Server error while initializing algorithm", err.message);
+
+        })
+
+    }
+
+
+    var instantiateBackend = function (complete) {
+
+        console.log("instantiate session");
+
+        $http({
+            method:"GET",
+            url:"/evolve/instantiate"
+        })
+        .then(function (res) {
+
+            console.log("Instantiate", res);
+
+            $scope.session = res.data.session;
+
+            if (complete) complete();
 
         }, function (err) {
 
@@ -110,7 +142,11 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         message:"processing", 
         delay:0,
         duration:0,
-        phase:function (duration) {
+        phase:function (complete) {
+
+            console.log("processing phase");
+
+
             $scope.resetInput();
 
             $scope.resetInput({
@@ -136,47 +172,75 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
             u.toggle("hide", "break", {delay:displayDelay});
             u.toggle("hide", "settings", {delay:displayDelay});
 
-            setInputBackend();
+            
+            $scope.getData(function ($d) {
+
+                console.log("get data complete", $d);
+
+                $scope.setData($d);
+            })
+
+
         }
     },
     {
         message:"initializing evolutionary algoirthm", 
         delay:600,
         duration:0,
-        phase:function (duration) {
+        phase:function (complete) {
 
-            initializeAlgorithmBackend();
+            console.log("initialize phase, processing phase complete (should not appear before set input response)");
+
+            instantiateBackend(function () {
+
+                initializeAlgorithmBackend(function () {
+
+                        setInputBackend(complete);
+                    })
+                });
+                    
+
+            
+
         }
     },
     {
         message:"loading data", 
         delay:600,
         duration:0, 
-        phase:function (duration) {
+        phase:function (complete) {
 
-
-            
+            console.log("loading phase");
 
             // writeImagesDatabase();
+
+            if (complete) complete();
         }
     },
     {
         message:"loading display", 
         delay:600,
         duration:displayfade,
-        phase:function (duration) {
+        phase:function (complete) {
+
+            console.log("loading display phase");
 
             // u.toggle("show", "hud", {fade:duration});
             // u.toggle("show", "run", {fade:duration});
+
+            if (complete) complete();
         }
     },
     {
         message:"getting things ready", 
         delay:600,
         duration:loadfadeout, 
-        phase:function (duration) {
+        phase:function (complete) {
+
+            console.log("getting things ready phase");
+
             $("#loadinginner").animate({opacity:0}, {
-                duration:duration, 
+                duration:loadfadeout, 
                 complete:function () {
                     console.log("hide loading"); 
                     $("#loadinginner").parent().hide();
@@ -186,12 +250,14 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                     u.toggle("enable", "run");
                     
 
-                    u.toggle("show", "hud", {fade:duration});
-                    u.toggle("show", "refresh", {fade:duration});
-                    u.toggle("show", "play", {fade:duration});
-                    u.toggle("show", "run", {fade:duration});
-                    u.toggle("show", "settings", {fade:duration});
+                    u.toggle("show", "hud", {fade:loadfadeout});
+                    u.toggle("show", "refresh", {fade:loadfadeout});
+                    u.toggle("show", "play", {fade:loadfadeout});
+                    u.toggle("show", "run", {fade:loadfadeout});
+                    u.toggle("show", "settings", {fade:loadfadeout});
 
+
+                    if (complete) complete();
                 }
             });
 
@@ -235,7 +301,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     self.play = function () {
 
-        simulator.simulate();
+        simulator.simulate($scope.session);
     }
 
 

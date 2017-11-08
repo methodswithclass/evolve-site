@@ -32,41 +32,71 @@ app.directive("loading", ['data', 'utility', 'events.service', 'send.service', '
 
 			var loadphases = function (phases) {
 
-		        var loadphase = function (index) {
+		        // var loadphase = function (index) {
 
 		        	// console.log("load phase", index);
 
-		        	loading = true;
+		        	// loading = true;
 
-		            if (index < phases.length) {
+		         //    if (index < phases.length) {
 
-		                setTimeout(function () {
+		         //        setTimeout(function () {
 
-		                    setMessage(phases[index].message);
+		                    
 
-		                    setTimeout(function () {
+		                    // setTimeout(function () {
 
 		                    	// console.log("run phase", index, phases[index].duration);
 
-		                        phases[index].phase(phases[index].duration);
+		                    	// var complete = function () {
+		                    	// 	console.log("loading done");
+		                    	// }
 
-		                        setTimeout(function () {
+		                    	// if (index + 1 < phases.length) {
+		                    	// 	complete = phases[index+1].phase;
+		                    	// }
+		                    	// else {
+		                    	// 	complete = undefined;
+		                    	// }
 
-		                            loadphase(index + 1);
 
-		                        }, phases[index].duration)
+		                    	var complete = function (index) {
 
-		                    }, 300);
+		                    		setTimeout(function () {
 
-		                }, phases[index].delay)
-		            }
-		            else {
-		            	loading = false;
-		            }
+			                        	if (index < phases.length) {
 
-		        }
+			                        		setMessage(phases[index].message);
 
-		        loadphase(0);
+			                        		phases[index].phase(function () {
+
+			                        			complete(index + 1);
+			                        		});
+			                        	}
+
+		                        	}, 500);
+
+		                        }
+
+		                        complete(0);
+
+		                        // setTimeout(function () {
+
+		                        //     loadphase(index + 1);
+
+		                        // }, phases[index].duration)
+
+		                    // }, 300);
+
+		                // }, phases[index].delay)
+		            // }
+		            // else {
+		            // 	loading = false;
+		            // }
+
+		        // }
+
+		        // loadphase(0);
 
 		    }
 

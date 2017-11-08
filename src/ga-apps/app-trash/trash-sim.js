@@ -115,7 +115,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         $http({
             method:"GET",
-            url:"/evolve/instruct/" + session
+            url:"/evolve/instruct/trash/" + session
         })
         .then(function (res) {
 

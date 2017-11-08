@@ -39,7 +39,10 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 
 		    }
 
-		    getData();
+		    getData(function ($d) {
+
+		    	setData($d)
+		    });
 
 			var makeMan = function () {
 

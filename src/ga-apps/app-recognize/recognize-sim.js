@@ -54,12 +54,12 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     }
 
 
-    var instruct = function (complete) {
+    var instruct = function (session, complete) {
 
 
     	$http({
     		method:"GET",
-    		url:"/evolve/instruct/"
+    		url:"/evolve/instruct/recognize/" + session
     	})
     	.then(function (res) {
 
@@ -75,15 +75,15 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 
     }
 
-    var simulate = function () {
+    var simulate = function (session) {
 
 
-    	instruct(function () {
+    	instruct(session, function () {
 
 
     		$http({
 	    		method:"POST",
-	    		url:"/recognize/simulate/"
+	    		url:"/recognize/simulate/" + session
 	    	})
 	    	.then(function (res) {
 

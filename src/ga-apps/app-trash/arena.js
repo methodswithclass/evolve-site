@@ -42,7 +42,10 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 		    }
 
-		    getData();
+		    getData(function ($d) {
+
+		    	setData($d)
+		    });
 
 
 			// var winW = $(window).width();

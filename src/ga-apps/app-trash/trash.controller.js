@@ -18,7 +18,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         }
     })
 
-    var setInputBackend = function () {
+    var setInputBackend = function (complete) {
 
         $http({
             method:"POST",
@@ -28,6 +28,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         .then(function (res) {
 
             console.log("Set input", res);
+
+            if (complete) complete();
 
         }, function (err) {
 
@@ -108,30 +110,6 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
-    // var initializeEnvironmentBackend = function () {
-
-    //     $http({
-    //         method:"GET",
-    //         url:"/trash/environment/create"
-    //     })
-    //     .then(function (res) {
-
-    //         console.log("Initialize environment");
-
-    //         react.push({
-    //             name:"create.env",
-    //             state:res.data.env
-    //         })
-
-    //         // events.dispatch("refreshenv");
-
-    //     }, function (err) {
-
-    //         console.log("Server error while initializing algorithm", err.message);
-
-    //     })
-
-    // }
     
     var displayDelay = 100;
 
@@ -143,7 +121,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         message:"processing", 
         delay:0,
         duration:0,
-        phase:function (duration) {
+        phase:function (complete) {
 
             $scope.resetInput();
 
@@ -163,9 +141,16 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("hide", "settings", {delay:displayDelay});
 
             
-            instantiateBackend(function () {
+            $scope.getData(function ($d) {
 
-                setInputBackend();
+                console.log("get data complete", $d);
+
+                $scope.setData($d);
+
+                instantiateBackend(function () {
+
+                    setInputBackend(complete);
+                })
             })
 
 
@@ -175,13 +160,14 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         message:"initializing evolutionary algoirthm", 
         delay:600,
         duration:0,
-        phase:function (duration) {
+        phase:function (complete) {
 
             
 
             initializeAlgorithmBackend(function () {
 
-                refreshEnvironment();
+                refreshEnvironment(complete);
+
             });
         }
     },
@@ -189,43 +175,46 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         message:"loading environment", 
         delay:600,
         duration:0, 
-        phase:function (duration) {
+        phase:function (complete) {
 
             // initializeEnvironmentBackend();
 
+            if (complete) complete();
         }
     },
     {
         message:"loading display", 
         delay:600,
         duration:displayfade,
-        phase:function (duration) {
+        phase:function (complete) {
 
-
+            if (complete) complete();
         }
     },
     {
         message:"getting things ready", 
         delay:600,
         duration:loadfadeout, 
-        phase:function (duration) {
+        phase:function (complete) {
             $("#loadinginner").animate({opacity:0}, {
-                duration:duration, 
+                duration:loadfadeout, 
                 complete:function () {
                     console.log("hide loading"); 
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
 
 
-                    u.toggle("show", "hud", {fade:duration});
-                    u.toggle("show", "play", {fade:duration});
-                    u.toggle("show", "refresh", {fade:duration});
-                    u.toggle("show", "settings", {fade:duration});
-                    u.toggle("show", "run", {fade:duration});
+                    u.toggle("show", "hud", {fade:loadfadeout});
+                    u.toggle("show", "play", {fade:loadfadeout});
+                    u.toggle("show", "refresh", {fade:loadfadeout});
+                    u.toggle("show", "settings", {fade:loadfadeout});
+                    u.toggle("show", "run", {fade:loadfadeout});
 
                     u.toggle("enable", "hud");
                     u.toggle("enable", "run");
                     u.toggle("enable", "settings");
+
+                    if (complete) complete();
                 }
             });
         }
