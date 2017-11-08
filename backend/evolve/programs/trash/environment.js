@@ -45,7 +45,7 @@ var environment = function () {
 		}
 	}
 
-	self.refresh = function () {
+	var refresh = function () {
 
 		var b;
 		var ui;
@@ -80,7 +80,7 @@ var environment = function () {
 			}
 		}
 
-		self.refresh();
+		refresh();
 	}
 
 	self.make = function () {

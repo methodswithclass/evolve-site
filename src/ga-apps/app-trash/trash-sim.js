@@ -206,39 +206,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var reset = function (session) {
-
-        i = 1;
-        _score = 0;
-
-        console.log("reset sim");
-
-        output({
-            score:{
-                result:"success",
-                change:0,
-                total:0,
-            },
-            move:{
-                num:0,
-                name:"wait",
-                total:totalActions
-            }
-        });
-
-        // setup();
-
-        resetEnvironmentBackend(session);
-        man.outer.css({left:0, top:0});
-
-    }
-
-    var refresh = function (session) {
-
-        events.dispatch("refreshenv");
-        reset(session);
-    }
-
     var performStep = function (input) {
 
         //console.log("simulate " + i);
@@ -286,6 +253,39 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         else {
             stop();
         }
+    }
+
+    var reset = function (session) {
+
+        i = 1;
+        _score = 0;
+
+        console.log("reset sim");
+
+        output({
+            score:{
+                result:"success",
+                change:0,
+                total:0,
+            },
+            move:{
+                num:0,
+                name:"wait",
+                total:totalActions
+            }
+        });
+
+        // setup();
+
+        resetEnvironmentBackend(session);
+        man.outer.css({left:0, top:0});
+
+    }
+
+    var refresh = function (session) {
+
+        events.dispatch("refreshenv");
+        reset(session);
     }
 
     var start = function (session) {

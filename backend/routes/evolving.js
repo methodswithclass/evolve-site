@@ -14,11 +14,9 @@ const uidgen = new UIDGenerator();
 
 // var evolution;
 
-var addProgram = function (req) {
+var addProgram = function (input) {
 
-	var program = get.addProgramToSession(req.body.input.session, req.body.name);
-
-	input.program = new program();
+	input.program = get.addProgramToSession(input.session, input.name);
 
 	return input;
 }
@@ -38,7 +36,7 @@ evolveRouter.get("/instantiate", function (req, res, next) {
 
 	var session = uidgen.generateSync();
 
-	get.createSession(session);
+	get.createSessionEvolve(session);
 
 	res.json({session:session, success:"success"});
 });
@@ -48,9 +46,9 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 	console.log("initialize");
 
-	var input = addProgram(req);
+	var input = addProgram(req.body.input);
 
-	var evolution = get.getSession(input.session);
+	var evolution = get.getSessionEvolve(input.session);
 
 	evolution.initialize(input);
 
@@ -65,7 +63,7 @@ evolveRouter.post("/set", function (req, res, next) {
 
 	// var input = addProgram(req);
 
-	var evolution = get.getSession(req.body.input.session);
+	var evolution = get.getSessionEvolve(req.body.input.session);
 
 	evolution.set(req.body.input);
 
@@ -80,7 +78,7 @@ evolveRouter.post("/run", function (req, res, next) {
 
 	// var input = addProgram(req);
 
-	var evolution = get.getSession(req.body.input.session)
+	var evolution = get.getSessionEvolve(req.body.input.session)
 
 	evolution.run(req.body.input);
 
@@ -94,7 +92,7 @@ evolveRouter.post("/restart", function (req, res, next) {
 
 	// var input = addProgram(req);
 
-	var evolution = get.getSession(req.body.input.session)
+	var evolution = get.getSessionEvolve(req.body.input.session)
 
 	evolution.restart(req.body.current, req.body.input);
 
@@ -106,7 +104,7 @@ evolveRouter.get("/running/:session", function (req, res, next) {
 
 	// console.log("check running", req.body, evolution.running());
 
-	var evolution = get.getSession(req.params.session)
+	var evolution = get.getSessionEvolve(req.params.session)
 
 	res.json({running:evolution.running()})
 })
@@ -116,7 +114,7 @@ evolveRouter.get("/best/:session", function (req, res, next) {
 
 	console.log("get best");
 
-	var evolution = get.getSession(req.params.session)
+	var evolution = get.getSessionEvolve(req.params.session)
 
 	res.json({ext:evolution.getBest()});
 })
@@ -129,7 +127,7 @@ evolveRouter.get("/instruct/:session", function (req, res, next) {
 
 	// var input = addProgram(input);
 
-	var evolution = get.getSession(req.params.session)
+	var evolution = get.getSessionEvolve(req.params.session)
 
 	evolution.instruct();
 
@@ -157,9 +155,9 @@ evolveRouter.post("/hardStop", function (req, res, next) {
 
 	// var input = addProgram(req);
 
-	var evolution = get.getSession(req.body.input.session)
+	var evolution = get.getSessionEvolve(req.body.input.session)
 
-	evolution.hardStop(input);
+	evolution.hardStop(req.body.input);
 
 	res.json({success:"success"});
 });

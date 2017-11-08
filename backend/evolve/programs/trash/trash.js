@@ -66,7 +66,7 @@ var trash = function () {
 
 	self.refresh = function () {
 
-		environment.refresh();
+		environment.trash();
 		self.reset();
 
 		return environment.get();

@@ -37,7 +37,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
-    var initializeAlgorithmBackend = function () {
+    var initializeAlgorithmBackend = function (complete) {
 
 
         $http({
@@ -48,6 +48,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         .then(function (res) {
 
             console.log("Initialize algorithm", res);
+
+            if (complete) complete();
 
         }, function (err) {
 
@@ -69,6 +71,32 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             console.log("Instantiate", res);
 
             $scope.session = res.data.session;
+
+            if (complete) complete();
+
+        }, function (err) {
+
+            console.log("Server error while initializing algorithm", err.message);
+
+        })
+
+    }
+
+    var refreshEnvironment = function (complete) {
+
+
+        $http({
+            method:"GET",
+            url:"/trash/environment/refresh/" + $scope.session
+        })
+        .then(function (res) {
+
+            console.log("Refresh environment", res);
+
+            react.push({
+                name:"create.env",
+                state:res.data.env
+            })
 
             if (complete) complete();
 
@@ -151,7 +179,10 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             
 
-            initializeAlgorithmBackend();
+            initializeAlgorithmBackend(function () {
+
+                refreshEnvironment();
+            });
         }
     },
     {
@@ -223,7 +254,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     self.refresh = function () {
 
         $scope.running(false);
-        simulator.refresh($scop.session);
+        simulator.refresh($scope.session);
     }
 
     self.restart = function () {

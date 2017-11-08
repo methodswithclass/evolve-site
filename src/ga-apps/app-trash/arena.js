@@ -181,7 +181,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 		        $http({
 		            method:"GET",
-		            url:"/trash/environment/refresh"
+		            url:"/trash/environment/refresh/" + $scope.session
 		        })
 		        .then(function (res) {
 

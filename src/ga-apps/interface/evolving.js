@@ -222,7 +222,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	$scope.running(false);
 
 		    	getBest();
-		    	simulator.refresh();
+		    	simulator.refresh($scope.session);
 
 		    	u.toggle("hide", "evolve", {
 		        	fade:600, 

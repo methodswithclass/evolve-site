@@ -30,7 +30,7 @@ var makeProgram = function (program) {
 
 	var module = program;
 	var progArray = program.split("/");
-	module = progArray.length > 0 ? progArray[1] : program;
+	module = progArray.length > 1 ? progArray[1] : program;
 
 	var prog = programs(program, module);
 
@@ -38,7 +38,7 @@ var makeProgram = function (program) {
 }
 
 
-var createSession = function (session) {
+var createSessionEvolve = function (session) {
 
 	console.log("create session", session);
 
@@ -46,7 +46,7 @@ var createSession = function (session) {
 
 	evolve[session].evolve = makeEvolve();
 
-	return evolve[session];
+	return evolve[session].evolve;
 }
 
 var addProgramToSession = function (session, program) {
@@ -56,10 +56,15 @@ var addProgramToSession = function (session, program) {
 	evolve[session].programs = {};
 	evolve[session].programs[program] = makeProgram(program);
 
-	return evolve[session];
+	return evolve[session].programs[program];
 }
 
 var getSession = function (session) {
+
+	return evolve[session];
+}
+
+var getSessionEvolve = function (session) {
 
 	return evolve[session].evolve;
 }
@@ -74,8 +79,9 @@ var getSessionProgram = function (session, name) {
 module.exports =  {
 	data:data,
 	programs:programs,
-	createSession:createSession,
+	createSessionEvolve:createSessionEvolve,
 	addProgramToSession:addProgramToSession,
 	getSession:getSession,
+	getSessionEvolve:getSessionEvolve,
 	getSessionProgram:getSessionProgram
 }
