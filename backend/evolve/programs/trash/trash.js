@@ -61,12 +61,13 @@ var trash = function () {
 
 	self.reset = function () {
 		
+		environment.reset();
 		robot.reset();
 	}
 
 	self.refresh = function () {
 
-		environment.trash();
+		environment.refresh();
 		self.reset();
 
 		return environment.get();
@@ -118,10 +119,10 @@ var trash = function () {
 			self.instruct(params.dna);
 
 			if (params.input.newenv) {
-				target = environment.trash();
+				target = environment.refresh();
 			}
 			else {
-				environment.refresh();
+				environment.trash();
 			}
 
 			performStep(0, 0, run, params, 

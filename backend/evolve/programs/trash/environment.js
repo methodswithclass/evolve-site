@@ -45,7 +45,7 @@ var environment = function () {
 		}
 	}
 
-	var refresh = function () {
+	self.trash = function () {
 
 		var b;
 		var ui;
@@ -80,7 +80,7 @@ var environment = function () {
 			}
 		}
 
-		refresh();
+		self.trash();
 	}
 
 	self.make = function () {
@@ -108,7 +108,12 @@ var environment = function () {
 		env.arena = _arena;
 	}
 
-	self.trash = function () {
+	self.reset = function () {
+
+		self.trash();
+	}
+
+	self.refresh = function () {
 
 		var _trash = [];
 		var k = 0;

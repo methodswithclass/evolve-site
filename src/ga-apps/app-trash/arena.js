@@ -12,6 +12,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 			var d;
 			var cols;
 			var rows;
+			var environment;
 
 			var setData = function ($d) {
 
@@ -190,9 +191,9 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 		            console.log("Refresh environment");
 
-		            var env = res.data.env;
+		            environment = res.data.env;
 
-		            makeBlocks(env);
+		            makeBlocks(environment);
 
 		        }, function (err) {
 
@@ -206,7 +207,9 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 				name:"create.env",
 				callback:function (x) {
 
-					makeBlocks(x);
+					environment = x
+
+					makeBlocks(environment);
 				}
 			})
 
@@ -214,6 +217,13 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 		    	name:"block.clean",
 		    	state:cleanBlock
 		    })
+
+		    events.on("resetenv", function () {
+
+				console.log("reset ui");
+
+				makeBlocks(environment)
+			})
 
 			events.on("refreshenv", function () {
 

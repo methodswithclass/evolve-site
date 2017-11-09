@@ -63,6 +63,7 @@ gulp.task('scripts', ['vendor'], function() {
 	    "src/ga-apps/app-recognize/app/image-processor/image.processor.js",
 	    "src/ga-apps/app-feedback/**/*.js",
 	    "src/ga-apps/app-trash/**/*.js",
+	    // "backend/evolve/_ga/evolve.js",
 	    "src/**/*.js"
     ])
 	.pipe(concat('main.js'))

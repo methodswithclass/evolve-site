@@ -1,6 +1,6 @@
 
 
-var evolveFact = require("mc-evolve");
+var evolveFact = require("../../_ga/evolve.js");
 
 
 var evolve = {};

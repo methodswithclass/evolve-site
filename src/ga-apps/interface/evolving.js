@@ -231,7 +231,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	
 		    	simulator.setup($scope.session, function () {
 
-		    		simulator.refresh($scope.refresh) 
+		    		simulator.refresh($scope.session); 
 		    	});
 
 
@@ -470,8 +470,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        setTimeout(function () {
 		            console.log("animate");
-		            $("#evolvedata").animate({color:"#fff"}, 600);
-		            $("#evolvedata").addClass("white-t");
+		            $("#evolvepage").animate({color:"#fff"}, 600);
+		            $("#evolvepage").addClass("white-t");
 		        }, 300);
 		    }
 

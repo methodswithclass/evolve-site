@@ -126,10 +126,12 @@ evolveRouter.get("/instruct/:name/:session", function (req, res, next) {
 	console.log("instruct");
 
 	var evolution = get.getSessionEvolve(req.params.session)
-	var best = evolution.getBest();
+	var ext = evolution.getBest();
 	var trash = get.getSessionProgram(req.params.session, req.params.name);
 
-	trash.instruct(best.dna);
+	// console.log("instruct best dna", best, best.dna);
+
+	trash.instruct(ext.best.dna);
 
 	res.json({success:"program successfully instructed"});
 })

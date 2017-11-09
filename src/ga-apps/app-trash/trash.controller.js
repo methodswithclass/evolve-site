@@ -205,8 +205,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
 
                     u.toggle("show", "hud", {fade:loadfadeout});
-                    u.toggle("show", "play", {fade:loadfadeout});
-                    u.toggle("show", "refresh", {fade:loadfadeout});
+                    // u.toggle("show", "play", {fade:loadfadeout});
+                    // u.toggle("show", "refresh", {fade:loadfadeout});
                     u.toggle("show", "settings", {fade:loadfadeout});
                     u.toggle("show", "run", {fade:loadfadeout});
 

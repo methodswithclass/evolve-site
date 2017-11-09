@@ -213,12 +213,12 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         u.toggle("hide", "step");
 
-        if (active && i <= totalActions) {
+        if (active && input.i <= totalActions) {
 
             $http({
                 method:"POST",
                 url:"/trash/simulate",
-                data:{name:name, i:i, session:input.session}
+                data:{name:name, i:input.i, session:input.session}
             })
             .then(function (res) {
 
@@ -232,11 +232,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
                     setTimeout(function () {
 
-                        performStep({step:false});
+                        performStep({i:input.i + 1, step:false, session:input.session});
                     }, anime.predu);
-
-
-                    i++;
                    
                 }
                 else {
@@ -277,6 +274,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         // setup();
 
+        events.dispatch("resetenv");
+
         resetEnvironmentBackend(session);
         man.outer.css({left:0, top:0});
 
@@ -293,16 +292,15 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         active = true;
         running = true;
 
-        performStep({step:false, session:session});
+        performStep({i:1, step:false, session:session});
     }
 
     var step = function (session) {
 
         active = true;
 
-        if (!running) performStep({step:true, session:session});
+        if (!running) performStep({i:i++, step:true, session:session});
 
-        i++;
     }
 
     var play = function (session, _colors) {

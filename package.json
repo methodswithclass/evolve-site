@@ -40,7 +40,6 @@
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
     "main-bower-files": "^2.13.1",
-    "mc-evolve": "^2.3.0",
     "mc-shared": "^4.0.31",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
