@@ -34,7 +34,7 @@ app.factory("utility", function () {
 
         var enable = function () {
 
-            $toggle.prop("enabled", false);
+            $toggle.prop("disabled", false);
         }
 
         if (toggle == "show") {
