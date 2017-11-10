@@ -12,7 +12,7 @@ app.factory("utility", function () {
 
         var hide = function () {
 
-            $toggle.stop().animate({opacity:0}, options.fade ? options.fade : 0, function () {
+            $toggle.animate({opacity:0}, options.fade ? options.fade : 0, function () {
                  $toggle.hide();
                  if (options.complete) options.complete();
             });
@@ -22,7 +22,7 @@ app.factory("utility", function () {
 
             // $toggle.css({opacity:0});
             $toggle.show();
-            $toggle.stop().animate({opacity:1}, options.fade ? options.fade : 0, function () {
+            $toggle.animate({opacity:1}, options.fade ? options.fade : 0, function () {
                 if (options.complete) options.complete();
             });
         }
