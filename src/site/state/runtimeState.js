@@ -48,20 +48,20 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         controller:'trash.controller',
         controllerAs:"main"
     },
-    {
-        name:"recognize",
-        url:"/p/recognize",
-        templateUrl:"assets/views/site/page.html",
-        controller:'main.controller',
-        controllerAs:"main"
-    },
-    {
-        name:"recognize#demo",
-        url:"/p/recognize/demo",
-        templateUrl:"assets/views/ga-apps/recognize/recognize_demo.html",
-        controller:'recognize.controller',
-        controllerAs:"main"
-    }
+    // {
+    //     name:"recognize",
+    //     url:"/p/recognize",
+    //     templateUrl:"assets/views/site/page.html",
+    //     controller:'main.controller',
+    //     controllerAs:"main"
+    // },
+    // {
+    //     name:"recognize#demo",
+    //     url:"/p/recognize/demo",
+    //     templateUrl:"assets/views/ga-apps/recognize/recognize_demo.html",
+    //     controller:'recognize.controller',
+    //     controllerAs:"main"
+    // }
     ];
 
     var addState = function(state) { 
