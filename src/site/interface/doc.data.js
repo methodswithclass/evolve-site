@@ -90,6 +90,7 @@ app.factory("doc.data", function () {
 	},
 	{
 		name:"feedback",
+		title:"feedback",
 		demo:true,
 		content:[
 		{
@@ -129,6 +130,7 @@ app.factory("doc.data", function () {
 	},
 	{
 		name:"trash",
+		title:"trash pickup",
 		demo:true,
 		content:[
 		{
@@ -201,6 +203,7 @@ app.factory("doc.data", function () {
 	},
 	{
 		name:"recognize",
+		title:"image recognition",
 		demo:true,
 		content:[
 		{
