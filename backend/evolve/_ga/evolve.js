@@ -93,7 +93,7 @@ var obj = {};
 		self.runs = [];
 		self.fitness = 0;
 		self.generation = params.gen;
-		self.index;
+		self.index = params.index;
 		self.parents = [];
 		var input = params.input;
 		var stepdataobj = {
@@ -322,19 +322,19 @@ var obj = {};
 				self.index = params.index;
 			}
 			else {
-				i = 0;
-				while (i < self.total) {
-					self.pop[i] = new individual({gen:self.index, input:input});
+				i = 1;
+				while (i <= self.total) {
+					self.pop[i-1] = new individual({gen:self.index, index:i, input:input});
 					i++;
 				}
 			}
 
-			i = 0;
-			while (i < self.total) {
-				self.pop[i].index = i+1;
-				//self.pop[i].print();
-				i++;
-			}
+			// i = 0;
+			// while (i < self.total) {
+			// 	self.pop[i].index = i+1;
+			// 	//self.pop[i].print();
+			// 	i++;
+			// }
 
 			console.log("index", self.index, self.total);
 
@@ -471,14 +471,14 @@ var obj = {};
 
 		}
 
-		var select = function (num_parents) {
+		var select = function (number, standard) {
 
-			var standard = self.total > 10 ? 0.2 : 0.5;
+			var num_i = number;
 
 			var pIndex = [];
 			var parents = [];
 
-			for (var i = 0; i < num_parents; i++) {
+			for (var i = 0; i < num_i; i++) {
 				pIndex = getPIndex(pIndex, standard);
 				parents.push(self.pop[last(pIndex)]);
 			}
@@ -486,55 +486,106 @@ var obj = {};
 			return parents
 		}
 
-		var reproduce = function (num_parents) {
+		// var select = function (num_parents) {
+
+		// 	var standard = self.total > 10 ? 0.2 : 0.5;
+
+		// 	var pIndex = [];
+		// 	var parents = [];
+
+		// 	for (var i = 0; i < num_parents; i++) {
+		// 		pIndex = getPIndex(pIndex, standard);
+		// 		parents.push(self.pop[last(pIndex)]);
+		// 	}
+
+		// 	return parents
+		// }
+
+
+
+
+		var reproduce = function (_parents, standard) {
 
 			var parents = [];
 			var mates = [];
 			var children = [];
 			var offspring = [];
-
+			var num_children = 0;
 			
-			// var num_parents = Math.min(_parents, Math.floor(self.total*standard/5));
+			var num_parents = Math.min(_parents, Math.floor(self.total*standard/5));
 
-			// var i = 0;
-			// var more = true;
-			while (children.length < self.total) {
+			var i = 0;
+			var more = true;
+			while (more) {
 
-				parents = select(num_parents);
+				//console.log("set", i, "size", num_parents);
 
-				offspring = parents[0].reproduce([parents[1]]);
+				if (i + num_parents >= self.total) {
+					num_parents = self.total - i;
+					more = false;
+				}
+
+				i = i + num_parents;
+
+				parents = select(num_parents, standard);
+
+				male = parents[0];
+				mates = parents.slice(1);
+
+				offspring = male.reproduce(mates);
+
+				offspring.forEach(function (value, index) {
+
+					value.index = num_children + index + 1;
+				})
+
 				children = children.concat(offspring);
+				
+				num_children = children.length;
 
 			}
-
-			children = children.slice(0, self.total);
 
 			console.log("total children", children.length);
 
 			return children;
 		}
 
+		// var reproduce = function (num_parents) {
+
+		// 	var parents = [];
+		// 	var mates = [];
+		// 	var children = [];
+		// 	var offspring = [];
+
+			
+		// 	// var num_parents = Math.min(_parents, Math.floor(self.total*standard/5));
+
+		// 	// var i = 0;
+		// 	// var more = true;
+		// 	while (children.length < self.total) {
+
+		// 		parents = select(num_parents);
+
+		// 		offspring = parents[0].reproduce([parents[1]]);
+		// 		children = children.concat(offspring);
+
+		// 	}
+
+		// 	children = children.slice(0, self.total);
+
+		// 	console.log("total children", children.length);
+
+		// 	return children;
+		// }
+
 		var getGeneration = function () {
 
 			var ext = rank();
 
 			var thisGen = {};
-			// thisGen.pop = [];
 			thisGen.index = self.index;
 			thisGen.best = ext.best;
 			thisGen.worst = ext.worst;
-
-			// thisGen.pop = [];
-
-			// for (var i in self.pop) {
-
-			// 	thisGen.pop.push({
-			// 		index:i,
-			// 		dna:self.pop[i].dna,
-			// 		fitness:self.pop[i].fitness,
-			// 		runs:self.pop[i].runs
-			// 	})
-			// }
 
 			return thisGen;
 		}
@@ -548,8 +599,13 @@ var obj = {};
 				var thisGen = getGeneration();
 
 
-				var num_parents = 2;
-				var children = reproduce(num_parents);
+				// var num_parents = 2;
+				// var children = reproduce(num_parents);
+
+				var _parents = 2;
+				var standard = self.total > 10 ? 0.2 : 0.5;
+
+				var children = reproduce(_parents, standard);
 
 				complete({
 					generation:thisGen,
@@ -673,9 +729,6 @@ var obj = {};
 
 		self.getBest = function () {
 
-			// console.log("get best");
-
-			// return era[gen].getRank();
 			return {
 				index:self.index,
 				best:{
@@ -696,17 +749,14 @@ var obj = {};
 			self.input = _input;
 		}
 
-		self.instruct = function (program) {
-
-			program.instruct(self.getBest().best.dna);
-		}
-
 		self.initialize = function (_input) {
 
 			console.log("initialize evolve");
 
 			self.set(_input);
 
+			era = null;
+			era = [];
 			now = 1;
 			active = true;
 

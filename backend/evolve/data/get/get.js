@@ -2,6 +2,7 @@
 
 var evolveFact = require("../../_ga/evolve.js");
 
+var SESSION_EXPIRY = 3600*24*1000;
 
 var evolve = {};
 
@@ -19,6 +20,19 @@ var programs = function (program, module) {
 	return require("../../programs/" + program + "/" + module + ".js")
 }
 
+
+var clearSessions = function () {
+
+	var now = (new Date()).getTime();
+
+	for (var i in evolve) {
+
+		if (!evolve[i].expires || now > evolve[i].expires) {
+			delete evolve[i]
+		}
+
+	}
+}
 
 
 var makeEvolve = function () {
@@ -42,10 +56,16 @@ var createSessionEvolve = function (session) {
 
 	console.log("create session", session);
 
+	clearSessions();
+
+	var now = new Date();
+	var nowMilli = now.getTime();
+	var expires = new Date(nowMilli + SESSION_EXPIRY);
+
 	evolve[session] = {};
-
 	evolve[session].evolve = makeEvolve();
-
+	evolve[session].expires = expires.getTime();
+	
 	return evolve[session].evolve;
 }
 

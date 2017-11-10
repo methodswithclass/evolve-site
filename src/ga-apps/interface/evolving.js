@@ -88,10 +88,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	// console.log("input", d.data);
 
 		        default_input = $input || {
-		            gens:100,
+		            gens:500,
 		            runs:20,
 		            goal:"max",
-		            pop:100,
+		            pop:50,
 		            evdelay:0
 		        }
 
@@ -410,6 +410,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 				setStepdata();
 
+				simulator.reset($scope.session);
+				simulator.refresh($scope.session);
 		    }
 
 
@@ -479,7 +481,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    $scope.stepevolve = function () {
 
 		        $scope.getInput();
-		        simulator.reset();
+		        simulator.reset($scope.session);
 		        $scope.evolving(true);
 		        events.dispatch("step");
 		    }

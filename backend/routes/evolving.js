@@ -93,8 +93,11 @@ evolveRouter.post("/restart", function (req, res, next) {
 	// var input = addProgram(req);
 
 	var evolution = get.getSessionEvolve(req.body.input.session)
+	var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
+	var input = req.body.input;
+	input.program = program;
 
-	evolution.restart(req.body.current, req.body.input);
+	evolution.restart(req.body.current, input);
 
 	res.json({success:"success", running:true});
 });
