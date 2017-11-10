@@ -30,93 +30,33 @@ app.directive("loading", ['data', 'utility', 'events.service', 'send.service', '
 		        $scope.$apply();
 		    }
 
-			var loadphases = function (phases) {
+		    
 
-		        // var loadphase = function (index) {
+		    var complete = function (index) {
 
-		        	// console.log("load phase", index);
+        		setTimeout(function () {
 
-		        	// loading = true;
+                	if (index < $phases.length) {
 
-		         //    if (index < phases.length) {
+                		setMessage($phases[index].message);
 
-		         //        setTimeout(function () {
+                		$phases[index].phase(function () {
 
-		                    
+                			complete(index + 1);
+                		});
+                	}
 
-		                    // setTimeout(function () {
+            	}, 500);
 
-		                    	// console.log("run phase", index, phases[index].duration);
-
-		                    	// var complete = function () {
-		                    	// 	console.log("loading done");
-		                    	// }
-
-		                    	// if (index + 1 < phases.length) {
-		                    	// 	complete = phases[index+1].phase;
-		                    	// }
-		                    	// else {
-		                    	// 	complete = undefined;
-		                    	// }
-
-
-		                    	var complete = function (index) {
-
-		                    		setTimeout(function () {
-
-			                        	if (index < phases.length) {
-
-			                        		setMessage(phases[index].message);
-
-			                        		phases[index].phase(function () {
-
-			                        			complete(index + 1);
-			                        		});
-			                        	}
-
-		                        	}, 500);
-
-		                        }
-
-		                        complete(0);
-
-		                        // setTimeout(function () {
-
-		                        //     loadphase(index + 1);
-
-		                        // }, phases[index].duration)
-
-		                    // }, 300);
-
-		                // }, phases[index].delay)
-		            // }
-		            // else {
-		            // 	loading = false;
-		            // }
-
-		        // }
-
-		        // loadphase(0);
-
-		    }
-
-		    var load = function () {
-
-		        // running(true);
-
-		        // console.log("inside load", $phases);
-
-		        loadphases($phases);
-
-
-    		}
+            }
 
 
     		events.on("load" + $scope.name, function () {
 
     			// console.log("load", $scope.name);
 
-    			load();
+    			complete(0);
+    			
     		})
 
     	}
