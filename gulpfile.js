@@ -13,11 +13,11 @@ merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files");
 
 
-var minify = process.env.NODE_ENV == "production";
-// var minify = false;
+// var minify = process.env.NODE_ENV == "production";
+var minify = false;
 
-var injectMin = process.env.NODE_ENV == "production";
-// var injectMin = false;
+// var injectMin = process.env.NODE_ENV == "production";
+var injectMin = false;
 
 
 gulp.task("serve", ["watch"], shell.task("node server.js"));
