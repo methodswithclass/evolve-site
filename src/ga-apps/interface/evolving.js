@@ -196,38 +196,38 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }, 30);
 
 
-		    var getBest = function () {
+		    // var getBest = function () {
 
 
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/best/" + $scope.session
-		    	})
-		    	.then(function (res) {
+		    // 	$http({
+		    // 		method:"GET",
+		    // 		url:"/evolve/best/" + $scope.session
+		    // 	})
+		    // 	.then(function (res) {
 
-	                setEvdata(res.data.ext);
+	     //            setEvdata(res.data.ext);
 
-	                // setTimeout(function () {
+	     //            // setTimeout(function () {
 
-	                // 	 if (update) getBest();
+	     //            // 	 if (update) getBest();
 
-	                // }, 1000);
+	     //            // }, 1000);
 
-	            }, function (err) {
+	     //        }, function (err) {
 
-	                console.log("Server error while getting best individual", err);
+	     //            console.log("Server error while getting best individual", err);
 
-	            })
+	     //        })
 
 
-		    }
+		    // }
 
 		    var completeEvolve = function (simulate) {
 
 		    	console.log("complete evolve");
 		    	$scope.running(false);
 
-		    	getBest();
+		    	// getBest();
 		    	
 		    	simulator.setup($scope.session, function () {
 
