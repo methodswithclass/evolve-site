@@ -211,7 +211,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         //console.log("simulate " + i);
 
 
-        u.toggle("hide", "step");
+        if (input.step) u.toggle("hide", "step");
 
         if (active && input.i <= totalActions) {
 
@@ -318,11 +318,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             start(session);
 
             u.toggle("show", "stop", {fade:300});
-            u.toggle("hide", "refresh", {fade:300});
-            u.toggle("hide", "restart", {fade:300});
-            u.toggle("hide", "step", {fade:300});
-            u.toggle("hide", "play", {fade:300});
-            u.toggle("hide", "run", {fade:300});
+            u.toggle("hide", "refresh", {fade:300, delay:1000});
+            u.toggle("hide", "restart", {fade:300, delay:800});
+            u.toggle("hide", "step", {fade:300, delay:600});
+            u.toggle("hide", "play", {fade:300, delay:400});
+            u.toggle("hide", "run", {fade:300, delay:200});
             u.toggle("hide", "settings", {fade:300});
         })
 
@@ -343,11 +343,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
 
         u.toggle("hide", "stop", {fade:300});
-        u.toggle("show", "refresh", {fade:300});
-        u.toggle("show", "restart", {fade:300});
-        u.toggle("show", "play", {fade:300});
-        u.toggle("show", "step", {fade:300});
-        u.toggle("show", "run", {fade:300});
+        u.toggle("show", "refresh", {fade:300, delay:200});
+        u.toggle("show", "restart", {fade:300, delay:400});
+        u.toggle("show", "step", {fade:300, delay:600});
+        u.toggle("show", "play", {fade:300, delay:800});
+        u.toggle("show", "run", {fade:300, delay:1000});
         u.toggle("show", "settings", {fade:300});
     }
 
