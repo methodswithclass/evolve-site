@@ -91,7 +91,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            gens:500,
 		            runs:20,
 		            goal:"max",
-		            pop:50,
+		            pop:100,
 		            evdelay:0
 		        }
 
