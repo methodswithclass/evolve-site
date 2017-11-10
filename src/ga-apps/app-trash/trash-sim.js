@@ -237,7 +237,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
                    
                 }
                 else {
-                    u.toggle("show", "step", {delay:colors ? anime.full : anime.part});
+                    u.toggle("show", "step", {delay:anime.predu});
                 }
 
             }, function (err) {
