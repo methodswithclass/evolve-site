@@ -131,16 +131,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     }
 
 
-    var setup = function (session, complete) {
-
-        console.log("sim setup instruct", evdata);
-
-        // genome = evdata.best ? evdata.best.dna : [];
-        instruct(session, complete);
-    }
-
-
-
     var pre = 100;
     var de = 300;
     var du = 100;
@@ -250,6 +240,15 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         else {
             stop();
         }
+    }
+
+
+    var setup = function (session, complete) {
+
+        console.log("sim setup instruct", evdata);
+
+        // genome = evdata.best ? evdata.best.dna : [];
+        instruct(session, complete);
     }
 
     var reset = function (session) {

@@ -196,70 +196,69 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }, 30);
 
 
-		    // var getBest = function () {
+		    var getBest = function (complete) {
 
 
-		    // 	$http({
-		    // 		method:"GET",
-		    // 		url:"/evolve/best/" + $scope.session
-		    // 	})
-		    // 	.then(function (res) {
+		    	$http({
+		    		method:"GET",
+		    		url:"/evolve/best/" + $scope.session
+		    	})
+		    	.then(function (res) {
 
-	     //            setEvdata(res.data.ext);
+	                setEvdata(res.data.ext);
 
-	     //            // setTimeout(function () {
+	                if (complete) complete();
 
-	     //            // 	 if (update) getBest();
+	            }, function (err) {
 
-	     //            // }, 1000);
+	                console.log("Server error while getting best individual", err);
 
-	     //        }, function (err) {
-
-	     //            console.log("Server error while getting best individual", err);
-
-	     //        })
+	            })
 
 
-		    // }
+		    }
 
 		    var completeEvolve = function (simulate) {
 
 		    	console.log("complete evolve");
+		    	console.log("evolving", update);
+
 		    	$scope.running(false);
 
-		    	// getBest();
-		    	
-		    	simulator.setup($scope.session, function () {
+		    	getBest(function () {
 
-		    		simulator.refresh($scope.session); 
+		    		u.toggle("hide", "evolve", {
+			        	fade:600, 
+			        	delay:2000,
+			        	complete:function () {
+
+			        		$scope.running(false);
+				        	$("#breakfeedback").hide();
+
+					        u.toggle("show", "run", {fade:600});
+					        u.toggle("show", "refresh", {fade:600});
+					        u.toggle("show", "play", {fade:600});
+					        u.toggle("show", "settings", {fade:600});
+					        if ($scope.name == "trash") u.toggle("show", "restart", {fade:600});
+					        if ($scope.name == "trash") u.toggle("show", "step", {fade:600});
+				        	u.toggle("show", "hud", {fade:600});
+
+
+				        	simulator.setup($scope.session, function () {
+
+					    		simulator.refresh($scope.session); 
+					    	});
+
+					    	setTimeout(function () {
+					            $("#evolvedata").animate({color:"#000"}, 600);
+					        }, 300);
+
+					    }
+					});
+
 		    	});
 
 
-		    	u.toggle("hide", "evolve", {
-		        	fade:600, 
-		        	delay:2000,
-		        	complete:function () {
-
-		        		$scope.running(false);
-			        	$("#breakfeedback").hide();
-
-				        u.toggle("show", "run", {fade:600});
-				        u.toggle("show", "refresh", {fade:600});
-				        u.toggle("show", "play", {fade:600});
-				        u.toggle("show", "settings", {fade:600});
-				        if ($scope.name == "trash") u.toggle("show", "restart", {fade:600});
-				        if ($scope.name == "trash") u.toggle("show", "step", {fade:600});
-			        	u.toggle("show", "hud", {fade:600});
-				    }
-				});
-
-
-		        setTimeout(function () {
-		            $("#evolvedata").animate({color:"#000"}, 600);
-		        }, 300);
-
-
-		        console.log("evolving", update);
 		    }
 
 		    
