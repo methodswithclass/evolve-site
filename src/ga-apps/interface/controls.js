@@ -1,4 +1,4 @@
-app.directive("controls", function () {
+app.directive("controls", ["events.service", function (events) {
 
 	return {
 		restrict:"E",
@@ -9,6 +9,11 @@ app.directive("controls", function () {
 
 
 			var toggle = true;
+
+
+			var winW;
+			var controlsW;
+			var toolW
 
 			var controls = [
 			{
@@ -38,6 +43,11 @@ app.directive("controls", function () {
 			}
 			]
 
+			var runToggle = {
+				name:"run",
+				input:$("#runtoggle")
+			}
+
 			var setHover = function (i) {
 
 				controls[i].input.hover(function () {
@@ -52,13 +62,56 @@ app.directive("controls", function () {
 				});
 			}
 
-			for (i in controls) {
 
-				setHover(i);
+			var controlsWidth = function () {
+
+				winW = $(window).width();
+
+				width = 0.3;
+				toolW = 0.75;
+
+				$("#controls").css({width:winW*width});
+
+				controls.forEach(function (value, index) {
+
+					value.input.css({width:winW*width/controls.length*toolW})
+				})
+
+				// runToggle.input.css({width:winW*width});
+
 			}
+
+
+			console.log("\nregister event controls display\n\n");
+			events.on("load-controls-display", function () {
+
+
+				console.log("\ncontrols load display\n\n");
+
+				controlsWidth();
+
+				// runToggle.input.addClass("width");
+
+				$(window).resize(function () {
+
+					controlsWidth();
+				})
+
+			})
+
+
+			// for (i in controls) {
+
+			// 	setHover(i);
+			// }
+
+			controls.forEach(function (value, index) {
+
+				setHover(index);
+			})
 
 		}
 
 	}
 
-});
+}]);

@@ -22,7 +22,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 				rows = $d.data.height;
 			}
 
-			var getData = function () {
+			var getData = function (complete) {
 
 		        $http({
 		        	method:"GET",
@@ -33,7 +33,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 		            console.log("getting data", res.data);
 
 		            var $d = res.data.data;
-		            setData($d);
+		            if (complete) complete($d);
 
 		        }, function (err) {
 

@@ -18,7 +18,7 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 				arena = {width:$d.data.width, height:$d.data.height};
 			}
 
-			var getData = function () {
+			var getData = function (complete) {
 
 		        $http({
 		        	method:"GET", 
@@ -29,7 +29,7 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 		            console.log("getting data", res.data);
 
 		            var $d = res.data.data;
-		            setData($d);
+		            if (complete) complete($d);
 
 		        }, function (err) {
 

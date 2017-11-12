@@ -163,11 +163,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         phase:function (complete) {
 
             
-
             initializeAlgorithmBackend(function () {
 
-                refreshEnvironment(complete);
-
+                if (complete) complete();
             });
         }
     },
@@ -177,9 +175,11 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0, 
         phase:function (complete) {
 
-            // initializeEnvironmentBackend();
+            refreshEnvironment(function () {
 
-            if (complete) complete();
+                if (complete) complete();
+            });
+
         }
     },
     {
@@ -205,14 +205,17 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
 
                     u.toggle("show", "hud", {fade:loadfadeout});
-                    // u.toggle("show", "play", {fade:loadfadeout});
-                    // u.toggle("show", "refresh", {fade:loadfadeout});
                     u.toggle("show", "settings", {fade:loadfadeout});
                     u.toggle("show", "run", {fade:loadfadeout});
 
                     u.toggle("enable", "hud");
                     u.toggle("enable", "run");
                     u.toggle("enable", "settings");
+
+                    events.dispatch("load-evolve-data-display");
+                    events.dispatch("load-trash-sim-display");
+                    events.dispatch("load-controls-display");
+
 
                     if (complete) complete();
                 }

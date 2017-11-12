@@ -1,4 +1,4 @@
-app.directive("trashsimdata", function () {
+app.directive("trashsimdata", ["events.service", function (events) {
 
 	return {
 		restrict:"E",
@@ -7,22 +7,56 @@ app.directive("trashsimdata", function () {
 		templateUrl:"assets/views/ga-apps/trash/trashsimdata.html",		
 		link:function ($scope, element, attr) {
 
-			setTimeout(function () {
+			var winW;
+			var winH;
 
-				var total = $("#simdatainner").children().length;
-				var totalHeight = $(window).height()*0.5;
+			var height;
+			var width;
 
-				$("#simdatainner").children().each(function (index) {
+			var $elem;
+			var items;
 
-					$(this).css({height:totalHeight/total});
 
-				})
+			var simDataResize = function () {
 
-			}, 800);
+				winH = $(window).height();
+				winW = $(window).width();
+
+				height = 0.5;
+				width = 0.25;
+
+				$elem = $("#simdata");
+				items = $("#simdatainner").children();
+
+				console.log("sim data inner width", winW*width);
+
+				$elem.css({width:winW*width, height:winH*height})
+
+				items.each(function (index) {
+
+					$(this).css({height:winH*height/items.length});
+				});
+			}
+
+			console.log("\nregister event trash-sim-data display\n\n");
+			events.on("load-trash-sim-display", function () {
+
+
+				console.log("\ntrash sim data load display\n\n");
+
+				simDataResize();
+
+				$(window).resize(function () {
+
+					simDataResize();
+				});
+
+
+			});
 			
 			
 		}
 
 	}
 
-});
+}]);
