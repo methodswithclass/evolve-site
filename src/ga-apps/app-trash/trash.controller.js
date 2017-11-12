@@ -1,10 +1,25 @@
-app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'react.service', 'events.service', function ($scope, $http, simulator, u, react, events) {
+app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', function ($scope, $http, simulator, u, g, react, events) {
 
     var self = this;
 
     self.name = "trash";
     $scope.name = self.name;
     self.sdata;
+
+    $scope.getContentUrl = function() {
+    
+        var view;
+
+        if (g.isMobile()) {
+
+            view = "assets/views/mobile/ga-apps/trash/trash_demo.html";
+        }
+        else {
+            view = "assets/views/desktop/ga-apps/trash/trash_demo.html";
+        }
+
+        return view;
+    }
 
     events.on("completeSim", function () {
 

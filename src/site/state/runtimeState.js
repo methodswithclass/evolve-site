@@ -7,14 +7,24 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"home",
         url:"/home",
-        templateUrl:"assets/views/site/home.html",
+        template:"<div ng-include='getContentUrl()'></div>",
+        resolve: {
+            page: function () {
+                return "home";
+            }
+        },
         controller:'main.controller',
         controllerAs:"main"
     },
     {
         name:"overview",
         url:"/p/overview",
-        templateUrl:"assets/views/site/page.html",
+        template:"<div ng-include='getContentUrl()'></div>",
+        resolve: {
+            page: function () {
+                return "page";
+            }
+        },
         controller:"main.controller",
         controllerAs:"main"
 
@@ -22,7 +32,12 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback",
         url:"/p/feedback",
-        templateUrl:"assets/views/site/page.html",
+        template:"<div ng-include='getContentUrl()'></div>",
+        resolve: {
+            page: function () {
+                return "page";
+            }
+        },
         controller:"main.controller",
         controllerAs:"main"
 
@@ -30,35 +45,45 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/p/feedback/demo",
-        templateUrl:"assets/views/ga-apps/feedback/feedback_demo.html",
+        template:"<div ng-include='getContentUrl()'></div>",
         controller:'feedback.controller',
         controllerAs:"main"
     },
     {
         name:"trash",
         url:"/p/trash",
-        templateUrl:"assets/views/site/page.html",
+        template:"<div ng-include='getContentUrl()'></div>",
+        resolve: {
+            page: function () {
+                return "page";
+            }
+        },
         controller:'main.controller',
         controllerAs:"main"
     },
     {
         name:"trash#demo",
         url:"/p/trash/demo",
-        templateUrl:"assets/views/ga-apps/trash/trash_demo.html",
+        template:"<div ng-include='getContentUrl()'></div>",
         controller:'trash.controller',
         controllerAs:"main"
     },
     // {
     //     name:"recognize",
     //     url:"/p/recognize",
-    //     templateUrl:"assets/views/site/page.html",
+    //     templateUrl:"<div ng-include='getContentUrl()'></div>",
+    //     resolve: {
+    //         page: function () {
+    //             return "page"
+    //         }
+    //     },
     //     controller:'main.controller',
     //     controllerAs:"main"
     // },
     // {
     //     name:"recognize#demo",
     //     url:"/p/recognize/demo",
-    //     templateUrl:"assets/views/ga-apps/recognize/recognize_demo.html",
+    //     template:"<div ng-include='getContentUrl()'></div>",
     //     controller:'recognize.controller',
     //     controllerAs:"main"
     // }

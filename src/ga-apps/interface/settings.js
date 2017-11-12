@@ -1,11 +1,29 @@
-app.directive("settings", function () {
+app.directive("settings", ['global.service', function (g) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/interface/settings.html",		
+        template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
+
+
+
+			$scope.getContentUrl = function() {
+    
+		        var view;
+
+		        if (g.isMobile()) {
+
+		            view = "assets/views/mobile/ga-apps/interface/settings.html";
+		        }
+			    else {
+			        view = "assets/views/desktop/ga-apps/interface/settings.html";
+			    }
+
+		        return view;
+		    }
+
 
 			var toggle = true;
 			var status = {opened:false, right:{opened:-20, closed:-400}};
@@ -112,4 +130,9 @@ app.directive("settings", function () {
 			}
 		}
 	}
-});
+
+}]);
+
+
+
+

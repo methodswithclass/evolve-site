@@ -4,8 +4,25 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/interface/evolving.html",		
+        template:"<div ng-include='getContentUrl()'></div>",		
 		link:function ($scope, element, attr) {
+
+
+
+			$scope.getContentUrl = function() {
+    
+		        var view;
+
+		        if (g.isMobile()) {
+
+		            view = "assets/views/mobile/ga-apps/interface/evolving.html";
+		        }
+			    else {
+			        view = "assets/views/desktop/ga-apps/interface/evolving.html";
+			    }
+
+		        return view;
+		    }
 
 
 			var d;

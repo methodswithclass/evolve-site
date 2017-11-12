@@ -4,8 +4,26 @@ app.directive("trashsimdata", ["events.service", function (events) {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/trash/trashsimdata.html",		
+        template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
+
+
+
+			$scope.getContentUrl = function() {
+    
+		        var view;
+
+		        if (g.isMobile()) {
+
+		            view = "assets/views/mobile/ga-apps/trash/trashsimdata.html";
+		        }
+			    else {
+			        view = "assets/views/desktop/ga-apps/trash/trashsimdata.html";
+			    }
+
+		        return view;
+		    }
+
 
 			var winW;
 			var winH;

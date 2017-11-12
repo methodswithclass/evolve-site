@@ -5,6 +5,22 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     self.name = "feedback";
     $scope.name = self.name;
 
+
+    $scope.getContentUrl = function() {
+    
+        var view;
+
+        if (g.isMobile()) {
+
+            view = "assets/views/mobile/ga-apps/feedback/feedback_demo.html";
+        }
+        else {
+            view = "assets/views/desktop/ga-apps/feedback/feedback_demo.html";
+        }
+
+        return view;
+    }
+
     console.log("load controller", self.name);
 
     var update = false;

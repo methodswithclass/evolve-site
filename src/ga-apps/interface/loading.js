@@ -1,11 +1,29 @@
-app.directive("loading", ['data', 'utility', 'events.service', 'send.service', 'react.service', function (data, u, events, send, react) {
+app.directive("loading", ['data', 'utility', 'global.service', 'events.service', 'send.service', 'react.service', function (data, u, g, events, send, react) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/interface/loading.html",		
+        template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
+
+
+
+			$scope.getContentUrl = function() {
+    
+		        var view;
+
+		        if (g.isMobile()) {
+
+		            view = "assets/views/mobile/ga-apps/interface/loading.html";
+		        }
+			    else {
+			        view = "assets/views/desktop/ga-apps/interface/loading.html";
+			    }
+
+		        return view;
+		    }
+
 
 			var $phases;
 			var loading = false;

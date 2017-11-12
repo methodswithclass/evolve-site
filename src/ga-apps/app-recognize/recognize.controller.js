@@ -7,6 +7,22 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     // self.pdata = data.get(self.name);
 
+
+    $scope.getContentUrl = function() {
+    
+        var view;
+
+        if (g.isMobile()) {
+
+            view = "assets/views/mobile/ga-apps/recognize/recognize_demo.html";
+        }
+        else {
+            view = "assets/views/desktop/ga-apps/recognize/recognize_demo.html";
+        }
+
+        return view;
+    }
+
     var simulator = simulators.get(self.name);
 
     var update = false;

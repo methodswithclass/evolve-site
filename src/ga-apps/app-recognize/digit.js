@@ -4,9 +4,24 @@ app.directive("digit", ['events.service', 'react.service', function (events, rea
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/recognize/digit.html",		
+        template:"<div ng-include='getContentUrl()'></div>",		
 		link:function ($scope, element, attr) {
 
+
+			$scope.getContentUrl = function() {
+    
+		        var view;
+
+		        if (g.isMobile()) {
+
+		            view = "assets/views/mobile/ga-apps/recognize/digit.html";
+		        }
+			    else {
+			        view = "assets/views/desktop/ga-apps/recognize/digit.html";
+			    }
+
+		        return view;
+		    }
 
 
 			var imageSize = 28;

@@ -1,16 +1,32 @@
-app.directive("evolvedata", ['events.service', function (events) {
+app.directive("evolvedata", ['events.service', 'global.service', function (events, g) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/interface/evolvedata.html",		
+        template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
 			
 			var winW;
 			var winH;
 
 			var width = 0.5;
+
+
+			$scope.getContentUrl = function() {
+    
+		        var view;
+
+		        if (g.isMobile()) {
+
+		            view = "assets/views/mobile/ga-apps/interface/evolvedata.html";
+		        }
+			    else {
+			        view = "assets/views/desktop/ga-apps/interface/evolvedata.html";
+			    }
+
+		        return view;
+		    }
 			
 
 			// var effW = winW - 20 - 100 - 300 - 30;

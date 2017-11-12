@@ -1,10 +1,10 @@
-app.directive("controls", ["events.service", function (events) {
+app.directive("controls", ["events.service", 'global.service', function (events, g) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/ga-apps/interface/controls.html",		
+		templateUrl:"assets/views/desktop/ga-apps/interface/controls.html",		
 		link:function ($scope, element, attr) {
 
 
