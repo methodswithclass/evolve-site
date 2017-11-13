@@ -1,24 +1,19 @@
 <div class="absolute width height">
 
-	<div class="relative width height-600 border-white cutoff" parallax scroll="body" inner="inner" factor="1" top="true">
+	<div class="relative width height-600 cutoff">
 
-		<div class="relative width height" id="inner">
+		<div class="relative width80 height60 center">
 
-			<div class="relative width80 height60 center">
-
-				<div class="relative width height50">
-					<div class="absolute width text-right top0 font-70">
-						methods with<br>
-						class
-					</div>
+			<div class="relative width height50">
+				<div class="absolute width text-right top0 font-100">
+					methods with<br>class
 				</div>
+			</div>
 
-				<div class="relative width height50">
-					<div class="absolute width text-right bottom0 font-40">
-						evolutionary algorithms
-					</div>
+			<div class="relative width height50">
+				<div class="absolute width text-right bottom0 font-90">
+					evolutionary algorithms
 				</div>
-
 			</div>
 
 		</div>
@@ -33,9 +28,18 @@
 
 				<div class="relative width hcenter padding-v-100">
 
-					<div class="relative width80 height-300 hcenter padding-v-50">
+					<div class="relative width80 hcenter padding-v-50">
 
-						<div class="absolute width40 height">
+
+						<div class="relative width80 height-300 hcenter">
+							<div class="relative width height80 black-back white rounded5 shadow font-40 pointer" on-tap="main.open('trash')">
+								<div class="absolute center">
+									trash pickup
+								</div>
+							</div>
+						</div>
+
+						<div class="relative width80 height-300 hcenter">
 							<div class="relative width height80 black-back white rounded5 shadow font-40 pointer" on-tap="main.open('feedback')">
 								<div class="absolute center">
 									feedback
@@ -43,29 +47,25 @@
 							</div>
 						</div>
 
-						<div class="absolute width40 height right0">
-							<div class="relative width height80 black-back white rounded5 shadow font-40 pointer" on-tap="main.open('trash')">
-								<div class="absolute center">
-									trash pickup
-								</div>
-							</div>
-						</div>
-					</div>
+						
 
 
-					<!-- <div class="relative width80 height-300 hcenter padding-v-50">
+						<!-- <div class="relative width80 height-300 hcenter padding-v-50">
 
-						<div class="absolute width40 height right0">
 							<div class="relative width height80 black-back white rounded5 shadow font-40 pointer" on-tap="main.open('recognize')">
 								<div class="absolute center">
 									recognize
 								</div>
 							</div>
-						</div>
 
-					</div> -->
+						</div> -->
 
-					<div class="relative width60 hcenter padding-v-50">
+					</div>
+
+
+					
+
+					<div class="relative width80 hcenter padding-v-50">
 						<content data="main.overview.content"/>
 					</div>
 

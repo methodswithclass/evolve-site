@@ -4,29 +4,16 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 		restrict:"E",
 		scope:false,
 		replace:true,
-        template:"<div ng-include='getContentUrl()'></div>",	
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/evolvedata.html",	
 		link:function ($scope, element, attr) {
 			
+
+			// console.log("\n############\ncreate evolve data directive\n\n");
+
 			var winW;
 			var winH;
 
 			var width = 0.5;
-
-
-			$scope.getContentUrl = function() {
-    
-		        var view;
-
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/ga-apps/interface/evolvedata.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/ga-apps/interface/evolvedata.html";
-			    }
-
-		        return view;
-		    }
 			
 
 			// var effW = winW - 20 - 100 - 300 - 30;
@@ -46,11 +33,11 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 
 
 
-			console.log("\nregister event evolve-data display\n\n");
-			events.on("load-evolve-data-display", function () {
+			// console.log("\nregister event evolve-data display\n\n");
+			events.on("load-display", "evolve-data", function () {
 
 
-				console.log("\nevolve data load display\n\n");
+				// console.log("\nevolve data load display\n\n");
 
 				evolveDataWidth();
 
@@ -58,6 +45,8 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 
 					evolveDataWidth();
 				})
+
+				return "success";
 
 			});
 

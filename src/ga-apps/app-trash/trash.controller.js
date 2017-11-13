@@ -6,22 +6,10 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     $scope.name = self.name;
     self.sdata;
 
-    $scope.getContentUrl = function() {
-    
-        var view;
+    // console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
 
-        if (g.isMobile()) {
 
-            view = "assets/views/mobile/ga-apps/trash/trash_demo.html";
-        }
-        else {
-            view = "assets/views/desktop/ga-apps/trash/trash_demo.html";
-        }
-
-        return view;
-    }
-
-    events.on("completeSim", function () {
+    events.on("completeSim", "id", function () {
 
         $scope.running(false);
     });
@@ -138,6 +126,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
+            console.log("processing phase");
+
             $scope.resetInput();
 
             u.toggle("disable", "run", {delay:displayDelay});
@@ -158,7 +148,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             
             $scope.getData(function ($d) {
 
-                console.log("get data complete", $d);
+                // console.log("get data complete", $d);
 
                 $scope.setData($d);
 
@@ -177,6 +167,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
+            console.log("initialize algorithm phase");
             
             initializeAlgorithmBackend(function () {
 
@@ -189,6 +180,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         delay:600,
         duration:0, 
         phase:function (complete) {
+
+            console.log("load environment phase");
 
             refreshEnvironment(function () {
 
@@ -203,6 +196,10 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:displayfade,
         phase:function (complete) {
 
+            console.log("load display phase");
+
+            events.dispatch("load-display");
+
             if (complete) complete();
         }
     },
@@ -211,9 +208,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         delay:600,
         duration:loadfadeout, 
         phase:function (complete) {
+
+            console.log("getting things ready phase, finish loading");
+
             $("#loadinginner").animate({opacity:0}, {
                 duration:loadfadeout, 
                 complete:function () {
+
                     console.log("hide loading"); 
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
@@ -227,10 +228,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     u.toggle("enable", "run");
                     u.toggle("enable", "settings");
 
-                    events.dispatch("load-evolve-data-display");
-                    events.dispatch("load-trash-sim-display");
-                    events.dispatch("load-controls-display");
-
+                    // console.log("loading hidden, show display\n", loadResult, "\nready to evolve");
 
                     if (complete) complete();
                 }
@@ -239,14 +237,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     }
     ]
 
-    react.push({
-        name:"phases" + self.name,
-        state:phases
-    })
-
     var load = function () {
 
-         setTimeout(function () {
+        setTimeout(function () {
 
             react.push({
                 name:"phases" + self.name,
@@ -289,6 +282,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         simulator.stop();  
     }
 
+    
 
     load();
 

@@ -10,11 +10,7 @@
     "node": "node server.js",
     "build": "gulp build",
     "start": "gulp serve",
-    "postinstall": "bower install && gulp build",
-    "commit-deploy-dev": "git add * && git commit -m update && git push development master",
-    "commit-deploy": "git add * && git commit -m update && git push heroku master",
-    "deploy-dev": "git push development master",
-    "deploy": "git push heroku master"
+    "postinstall": "bower install && gulp build"
   },
   "engines": {
     "node": "6.9.2",
@@ -41,9 +37,10 @@
     "jshint": "^2.9.4",
     "main-bower-files": "^2.13.1",
     "mc-evolve": "^3.0.0",
-    "mc-shared": "^4.0.31",
+    "mc-shared": "^4.1.4",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
+    "private-bower": "*",
     "uid-generator": "^0.1.1"
   }
 }

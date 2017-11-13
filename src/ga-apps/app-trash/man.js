@@ -13,6 +13,9 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 
 			var setData = function ($d) {
 
+
+				// console.log("set data man\n", $d, "\n\n");
+
 				d = $d
 
 				arena = {width:$d.data.width, height:$d.data.height};
@@ -26,7 +29,7 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 		        })
 		        .then(function (res) {
 
-		            console.log("getting data", res.data);
+		            // console.log("\ngetting data response man\n", res.data.data, "\n\n");
 
 		            var $d = res.data.data;
 		            if (complete) complete($d);

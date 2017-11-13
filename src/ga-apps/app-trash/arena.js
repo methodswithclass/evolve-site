@@ -16,6 +16,8 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 			var setData = function ($d) {
 
+				// console.log("set data arena\n", $d, "\n\n");
+
 				d = $d;
  
 				cols = $d.data.width;
@@ -30,7 +32,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 		        })
 		        .then(function (res) {
 
-		            console.log("getting data", res.data);
+		            // console.log("\ngetting data response arena\n", res.data.data, "\n\n");
 
 		            var $d = res.data.data;
 		            if (complete) complete($d);
@@ -218,14 +220,14 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 		    	state:cleanBlock
 		    })
 
-		    events.on("resetenv", function () {
+		    events.on("resetenv", "id", function () {
 
 				console.log("reset ui");
 
 				makeBlocks(environment)
 			})
 
-			events.on("refreshenv", function () {
+			events.on("refreshenv", "id", function () {
 
 				console.log("refresh ui");
 

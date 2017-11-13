@@ -1,30 +1,70 @@
 stateModule.provider("runtime.state", function ($stateProvider) {
   // runtime dependencies for the service can be injected here, at the provider.$get() function.
 
+    var g = shared.utility_service;
+
+    var _forceMobile = false;
+
     var provider = {};
+
+    var mobile = function (input) {
+
+        _forceMobile = input;
+    }
+
+    var baseViewUrl = function () {
+
+        return "assets/views/" + ((checkMobile() || _forceMobile) ? "mobile" : "desktop");
+    }
+
+
+    var stateViewUrls = [
+    {
+        name:"home",
+        url:"/site/home.html"
+    },
+    {
+        name:"overview",
+        url:"/site/page.html"
+    },
+    {
+        name:"feedback",
+        url:"/site/page.html"
+    },
+    {
+        name:"feedback#demo",
+        url:"/ga-apps/feedback/feedback_demo.html"
+    },
+    {
+        name:"trash",
+        url:"/site/page.html"
+    },
+    {
+        name:"trash#demo",
+        url:"/ga-apps/trash/trash_demo.html"
+    },
+    {
+        name:"recognize",
+        url:"/site/page.html"
+    },
+    {
+        name:"recognize#demo",
+        url:"/ga-apps/recognize/recognize_demo.html"
+    }
+    ]
+
+    // console.log("runtime provider template html", templateHtml);
 
     var states = [
     {
         name:"home",
         url:"/home",
-        template:"<div ng-include='getContentUrl()'></div>",
-        resolve: {
-            page: function () {
-                return "home";
-            }
-        },
         controller:'main.controller',
         controllerAs:"main"
     },
     {
         name:"overview",
         url:"/p/overview",
-        template:"<div ng-include='getContentUrl()'></div>",
-        resolve: {
-            page: function () {
-                return "page";
-            }
-        },
         controller:"main.controller",
         controllerAs:"main"
 
@@ -32,12 +72,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback",
         url:"/p/feedback",
-        template:"<div ng-include='getContentUrl()'></div>",
-        resolve: {
-            page: function () {
-                return "page";
-            }
-        },
         controller:"main.controller",
         controllerAs:"main"
 
@@ -45,53 +79,58 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/p/feedback/demo",
-        template:"<div ng-include='getContentUrl()'></div>",
         controller:'feedback.controller',
         controllerAs:"main"
     },
     {
         name:"trash",
         url:"/p/trash",
-        template:"<div ng-include='getContentUrl()'></div>",
-        resolve: {
-            page: function () {
-                return "page";
-            }
-        },
         controller:'main.controller',
         controllerAs:"main"
     },
     {
         name:"trash#demo",
         url:"/p/trash/demo",
-        template:"<div ng-include='getContentUrl()'></div>",
         controller:'trash.controller',
         controllerAs:"main"
     },
     // {
     //     name:"recognize",
     //     url:"/p/recognize",
-    //     templateUrl:"<div ng-include='getContentUrl()'></div>",
-    //     resolve: {
-    //         page: function () {
-    //             return "page"
-    //         }
-    //     },
     //     controller:'main.controller',
     //     controllerAs:"main"
     // },
     // {
     //     name:"recognize#demo",
     //     url:"/p/recognize/demo",
-    //     template:"<div ng-include='getContentUrl()'></div>",
+    //     templateUrl:"assets/views/" + ((checkMobile() || _forceMobile) ? "mobile" : "desktop") + "/ga-apps/recognize/recognize_demo.html",
     //     controller:'recognize.controller',
     //     controllerAs:"main"
     // }
     ];
 
+    var addTemplateUrl = function (state) {
+
+        var state = states.find(function (p) {
+
+            return p.name == state.name;
+        });
+
+        var stateUrl = stateViewUrls.find(function (p) {
+
+            return p.name == state.name;
+        })
+
+        state.templateUrl = baseViewUrl() + stateUrl.url;
+
+        return state; 
+    }
+
     var addState = function(state) { 
 
         console.log("add state " + state.name);
+
+        state = addTemplateUrl(state);
 
         $stateProvider.state(state);
     }
@@ -109,6 +148,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     provider.addState = addState;
     provider.states = states;
+    provider.mobile = mobile;
 
     return provider;
 });

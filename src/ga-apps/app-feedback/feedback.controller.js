@@ -5,20 +5,9 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     self.name = "feedback";
     $scope.name = self.name;
 
-
     $scope.getContentUrl = function() {
-    
-        var view;
 
-        if (g.isMobile()) {
-
-            view = "assets/views/mobile/ga-apps/feedback/feedback_demo.html";
-        }
-        else {
-            view = "assets/views/desktop/ga-apps/feedback/feedback_demo.html";
-        }
-
-        return view;
+        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/feedback/feedback_demo.html";
     }
 
     console.log("load controller", self.name);
@@ -26,7 +15,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     var update = false;
     var ev = false;
 
-    events.on("close" + self.name, function () {
+    events.on("close" + self.name, "id", function () {
 
         $scope.running(false);
     });
@@ -169,5 +158,6 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
 
     load();
+
 
 }]);

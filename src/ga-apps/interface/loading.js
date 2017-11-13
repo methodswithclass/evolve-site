@@ -4,26 +4,11 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 		restrict:"E",
 		scope:false,
 		replace:true,
-        template:"<div ng-include='getContentUrl()'></div>",	
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/loading.html",	
 		link:function ($scope, element, attr) {
 
 
-
-			$scope.getContentUrl = function() {
-    
-		        var view;
-
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/ga-apps/interface/loading.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/ga-apps/interface/loading.html";
-			    }
-
-		        return view;
-		    }
-
+			// console.log("\n############\ncreate loading directive\n\n");
 
 			var $phases;
 			var loading = false;
@@ -33,9 +18,6 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 				callback:function (x) {
 
 					$phases = x;
-
-					// console.log("load phases", $phases);
-
 				}
 			});
 
@@ -51,6 +33,8 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 		    
 
 		    var complete = function (index) {
+
+		    	// console.log("run complete index", index);
 
         		setTimeout(function () {
 
@@ -69,13 +53,14 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
             }
 
 
-    		events.on("load" + $scope.name, function () {
+    		events.on("load" + $scope.name, "id", function () {
 
     			// console.log("load", $scope.name);
 
     			complete(0);
     			
-    		})
+    		});
+
 
     	}
 

@@ -5,30 +5,19 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     self.name = "recognize";
     $scope.name = self.name;
 
-    // self.pdata = data.get(self.name);
-
-
     $scope.getContentUrl = function() {
-    
-        var view;
 
-        if (g.isMobile()) {
-
-            view = "assets/views/mobile/ga-apps/recognize/recognize_demo.html";
-        }
-        else {
-            view = "assets/views/desktop/ga-apps/recognize/recognize_demo.html";
-        }
-
-        return view;
+        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/recognize/recognize_demo.html";
     }
+
+    // self.pdata = data.get(self.name)
 
     var simulator = simulators.get(self.name);
 
     var update = false;
     var ev = false;
 
-    events.on("closerecognize", function () {
+    events.on("closerecognize", "id", function () {
 
        $scope.running(false);
     });
@@ -322,5 +311,6 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
 
     load();
+
 
 }]);

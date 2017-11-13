@@ -5,7 +5,7 @@ app.directive('content', ['global.service', function (g) {
 		scope:{
 			data:'='
 		},
-        template:"<div ng-include='getContentUrl()'></div>",
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/site/content.html",
 		link:function ($scope, element, attr) {
 			
 			$scope.html = g.renderHtml;

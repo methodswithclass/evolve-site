@@ -1,29 +1,14 @@
-app.directive("trashsimdata", ["events.service", function (events) {
+app.directive("trashsimdata", ["global.service", "events.service", function (g, events) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-        template:"<div ng-include='getContentUrl()'></div>",	
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/trash/trashsimdata.html",	
 		link:function ($scope, element, attr) {
 
 
-
-			$scope.getContentUrl = function() {
-    
-		        var view;
-
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/ga-apps/trash/trashsimdata.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/ga-apps/trash/trashsimdata.html";
-			    }
-
-		        return view;
-		    }
-
+			// console.log("############\ncreate trash sim directive\n\n");
 
 			var winW;
 			var winH;
@@ -46,7 +31,7 @@ app.directive("trashsimdata", ["events.service", function (events) {
 				$elem = $("#simdata");
 				items = $("#simdatainner").children();
 
-				console.log("sim data inner width", winW*width);
+				// console.log("sim data inner width", winW*width);
 
 				$elem.css({width:winW*width, height:winH*height})
 
@@ -56,11 +41,11 @@ app.directive("trashsimdata", ["events.service", function (events) {
 				});
 			}
 
-			console.log("\nregister event trash-sim-data display\n\n");
-			events.on("load-trash-sim-display", function () {
+			// console.log("\nregister event trash-sim-data display\n\n");
+			events.on("load-display", "trash-sim", function () {
 
 
-				console.log("\ntrash sim data load display\n\n");
+				// console.log("\ntrash sim data load display\n\n");
 
 				simDataResize();
 
@@ -69,6 +54,8 @@ app.directive("trashsimdata", ["events.service", function (events) {
 					simDataResize();
 				});
 
+
+				return "success";
 
 			});
 			

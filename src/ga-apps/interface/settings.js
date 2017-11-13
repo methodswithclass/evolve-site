@@ -4,25 +4,11 @@ app.directive("settings", ['global.service', function (g) {
 		restrict:"E",
 		scope:false,
 		replace:true,
-        template:"<div ng-include='getContentUrl()'></div>",	
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/settings.html",	
 		link:function ($scope, element, attr) {
 
 
-
-			$scope.getContentUrl = function() {
-    
-		        var view;
-
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/ga-apps/interface/settings.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/ga-apps/interface/settings.html";
-			    }
-
-		        return view;
-		    }
+			// console.log("\n############\ncreate settings directive\n\n");
 
 
 			var toggle = true;
@@ -128,6 +114,7 @@ app.directive("settings", ['global.service', function (g) {
 					animateToggle();
 				}
 			}
+			
 		}
 	}
 

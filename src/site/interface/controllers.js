@@ -1,4 +1,4 @@
-app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.service', 'page', function ($scope, states, dd, g, page) {
+app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.service', function ($scope, states, dd, g) {
 
 	var self = this;
 
@@ -14,22 +14,5 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 
 		states.go(state);
 	}
-
-	$scope.page = page;
-
-	$scope.getContentUrl = function() {
-    
-        var view;
-
-        if (g.isMobile()) {
-
-            view = "assets/views/mobile/site/" + $scope.page + ".html";
-        }
-	    else {
-	        view = "assets/views/desktop/site/" + $scope.page + ".html";
-	    }
-
-        return view;
-    }
 
 }]);

@@ -79,8 +79,8 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 				changeplot(zeros);
 			}
 
-			events.on("createPlot", createPlot);
-			events.on("resetPlot", function () {
+			events.on("createPlot", "id", createPlot);
+			events.on("resetPlot", "id", function () {
 
 				resetPlot();
 			});

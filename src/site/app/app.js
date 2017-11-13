@@ -6,6 +6,8 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 
 .config(['$locationProvider', 'runtime.stateProvider', function ($locationProvider, runtimeProvider) {
 
+	runtimeProvider.mobile(forceMobile());
+
 	$locationProvider.html5Mode(true);
 
 	var states = runtimeProvider.states;
@@ -15,9 +17,9 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 	}
 }])
 
-.run(function (states) {
+.run(['states', function (states) {
 
 	states.go("home");
 
 	
-});
+}]);

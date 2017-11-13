@@ -27,6 +27,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var setData = function ($d) {
 
+        // console.log("set data trash sim\n", $d, "\n\n")
+
         d = $d;
 
         totalActions = d.data.actions ? d.data.actions.total : 1;
@@ -41,7 +43,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         })
         .then(function (res) {
 
-            console.log("getting data", res.data);
+            // console.log("\ngetting data response trash sim\n", res.data.data, "\n\n");
 
             var $d = res.data.data;
             setData($d);
@@ -245,7 +247,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var setup = function (session, complete) {
 
-        console.log("sim setup instruct", evdata);
+        console.log("sim setup: instruct", evdata);
 
         // genome = evdata.best ? evdata.best.dna : [];
         instruct(session, complete);

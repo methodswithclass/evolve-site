@@ -4,26 +4,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		restrict:"E",
 		scope:false,
 		replace:true,
-        template:"<div ng-include='getContentUrl()'></div>",		
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/evolving.html",		
 		link:function ($scope, element, attr) {
 
 
-
-			$scope.getContentUrl = function() {
-    
-		        var view;
-
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/ga-apps/interface/evolving.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/ga-apps/interface/evolving.html";
-			    }
-
-		        return view;
-		    }
-
+			// console.log("\n############\ncreate evolveing directive\n\n");
 
 			var d;
 			var simulator = simulators.get($scope.name);
@@ -53,7 +38,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 			$scope.setData = function ($d) {
 
-				console.log("set data", $d);
+				// console.log("set data", $scope.name, "\n", $d, "\n\n");
 
 				d = $d
 				totalActions = d.data.actions ? d.data.actions.total : 1;
@@ -62,7 +47,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.getData = function (complete) {
 
-		    	console.log("get data");
+		    	// console.log("get data");
 
 		        $http({
 		        	method:"GET",
@@ -73,7 +58,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            var $d = res.data.data;
 
 
-		            console.log("get data response", $d);
+		            // console.log("\nget data response", $scope.name, "\n", $d, "\n\n");
 
 		            complete($d);
 
@@ -121,7 +106,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.getInput = function () {
 
-		    	console.log("get input", d);
+		    	// console.log("get input", d);
 
 		        $scope.input = {
 		            name:$scope.name,
@@ -431,7 +416,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    events.on("evolve.complete", function () {
+		    events.on("evolve.complete", "id", function () {
 		        completeEvolve();
 		    });
 
@@ -514,6 +499,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	completeEvolve();
 
 		        });
+		    }
+
+
+		    $scope.getContentUrl = function() {
+
+
+		        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/evolving.html";
+
 		    }
 		}
 	}

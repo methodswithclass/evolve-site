@@ -4,9 +4,11 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/desktop/ga-apps/interface/controls.html",		
+		templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/controls.html",		
 		link:function ($scope, element, attr) {
 
+
+			// console.log("\n############\ncreate controls directive\n\n");
 
 			var toggle = true;
 
@@ -82,11 +84,11 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 			}
 
 
-			console.log("\nregister event controls display\n\n");
-			events.on("load-controls-display", function () {
+			// console.log("\nregister event controls display\n\n");
+			events.on("load-display", "controls", function () {
 
 
-				console.log("\ncontrols load display\n\n");
+				// console.log("\ncontrols load display\n\n");
 
 				controlsWidth();
 
@@ -96,6 +98,8 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 
 					controlsWidth();
 				})
+
+				return "success";
 
 			})
 
