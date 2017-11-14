@@ -33,6 +33,9 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 				if (g.isMobile()) {
 
 					$("#evolvedata").css({top:"400px"});
+					$("#stage").css({top:($("#evolvedata").offset().top - $("#hudtoggle").offset().top) + $("#evolvedata").height() + 150 + "px"})
+					events.dispatch("load-display", "trash-sim");
+					events.dispatch("load-display", "controls");
 				}
 			}
 

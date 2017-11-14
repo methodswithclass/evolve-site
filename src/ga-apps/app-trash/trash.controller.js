@@ -198,6 +198,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("load display phase");
 
+            // for mobile, stage set in evolvedata directive load data event.on callback
             events.dispatch("load-display");
 
             if (complete) complete();
