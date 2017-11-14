@@ -29,16 +29,24 @@ app.directive("trashsimdata", ["global.service", "events.service", function (g, 
 				width = 0.25;
 
 				$elem = $("#simdata");
+				$stage = $("#stage");
 				items = $("#simdatainner").children();
 
 				// console.log("sim data inner width", winW*width);
 
-				$elem.css({width:winW*width, height:winH*height})
+				if (g.isMobile()) {
 
-				items.each(function (index) {
+					$elem.css({top:$stage.offset().top + 200});
+				}
+				else {
+					
+					$elem.css({width:winW*width, height:winH*height})
 
-					$(this).css({height:winH*height/items.length});
-				});
+					items.each(function (index) {
+
+						$(this).css({height:winH*height/items.length});
+					});
+				}
 			}
 
 			// console.log("\nregister event trash-sim-data display\n\n");
