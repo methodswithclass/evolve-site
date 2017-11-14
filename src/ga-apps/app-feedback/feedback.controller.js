@@ -1,4 +1,4 @@
-app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', function ($scope, simulator, data, u, send, events, react) {
+app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', function ($scope, $http, simulator, data, u, send, events, react) {
 
     var self = this;
 
@@ -31,40 +31,67 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     });
 
 
-     var setInput = function () {
+     var setInputBackend = function (complete) {
 
         $http({
             method:"POST",
-            url:"/evolve/set", 
-            data:{input:$scope.getInput()}, 
+            url:"/evolve/set",
+            data:{input:$scope.getInput()}
         })
         .then(function (res) {
 
             console.log("Set input", res);
 
+            if (complete) complete();
+
         }, function (err) {
 
-            console.log("Server error while setting input", err);
+            console.log("Server error while setting input", err.message);
 
         })
 
     }
 
-    var initializeAlgorithm = function () {
+    var initializeAlgorithmBackend = function (complete) {
 
 
         $http({
             method:"POST",
-            url:"/evolve/initialize", 
+            url:"/evolve/initialize",
             data:{input:$scope.getInput()}
         })
         .then(function (res) {
 
             console.log("Initialize algorithm", res);
 
+            if (complete) complete();
+
         }, function (err) {
 
-            console.log("Server error while initializing algorithm", err);
+            console.log("Server error while initializing algorithm", err.message);
+
+        })
+
+    }
+
+    var instantiateBackend = function (complete) {
+
+
+        $http({
+            method:"GET",
+            url:"/evolve/instantiate"
+        })
+        .then(function (res) {
+
+            console.log("Instantiate", res);
+
+            $scope.session = res.data.session;
+
+            if (complete) complete();
+
+        }, function (err) {
+
+            console.log("Server error while initializing algorithm", err.message);
 
         })
 
@@ -79,18 +106,30 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
         message:"processing", 
         delay:0,
         duration:0,
-        phase:function () {
+        phase:function (complete) {
+            
             $scope.resetInput();
 
 
-            setInput();
+             $scope.getData(function ($d) {
+
+                // console.log("get data complete", $d);
+
+                $scope.setData($d);
+
+                instantiateBackend(function () {
+
+                    setInputBackend(complete);
+                })
+            })
+
         }
     },
     {
         message:"initialize genetic algoirthm", 
         delay:600,
         duration:0,
-        phase:function () {
+        phase:function (complete) {
             u.toggle("hide", "evolve");
             u.toggle("hide", "refresh");
             u.toggle("hide", "restart");
@@ -99,37 +138,53 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
             u.toggle("hide", "stop");
             u.toggle("hide", "break");
 
-            initializeAlgorithm();
+            console.log("initialize algorithm phase");
+            
+            initializeAlgorithmBackend(function () {
+
+                if (complete) complete();
+            });
+
         }
     },
     {
         message:"load environment", 
         delay:600,
         duration:0, 
-        phase:function () {
+        phase:function (complete) {
             // simulator.create();
+
+            if (complete) complete()
+
         }
     },
     {
         message:"load display", 
         delay:600,
         duration:displayfade,
-        phase:function (duration) {
-            u.toggle("show", "hud", {fade:duration});
+        phase:function (complete) {
+            
+            u.toggle("show", "hud", {fade:displayfade});
+
+            if (complete) complete();
         }
     },
     {
         message:"complete", 
         delay:600,
         duration:loadfadeout, 
-        phase:function (duration) {
+        phase:function (complete) {
+            
             $("#loadinginner").animate({opacity:0}, {
-                duration:duration, 
+                duration:loadfadeout, 
                 complete:function () {
+                    
                     console.log("hide loading"); 
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
+                
                 }
+
             });
         }
     }

@@ -18,6 +18,23 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 				callback:function (x) {
 
 					$phases = x;
+
+					// if (g.isModbile() && !x.mobile) {
+
+					// 	let _phases = [{
+					//         message:"this demo has no mobile version", 
+					//         delay:0,
+					//         duration:0,
+					//         phase:function (complete) {
+
+					//             if (complete) complete();
+
+					//         }
+					//     }]
+
+					//     $phases = _phases.push($phases[$phases.length-1]);
+
+					// }
 				}
 			});
 
