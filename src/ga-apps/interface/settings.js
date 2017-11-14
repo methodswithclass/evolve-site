@@ -97,7 +97,7 @@ app.directive("settings", ['global.service', function (g) {
 		        {
 		            duration:1000, 
 		            complete:function () { 
-		                $("#refreshfeedback").css({top:20});
+		                $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
 		               	complete();
 						toggle = true;
 		            }
@@ -108,8 +108,12 @@ app.directive("settings", ['global.service', function (g) {
 			$scope.open = function () {
 
 				console.log("open settings ", status.opened);
-				var maxHeight = $(window).height()*0.8;
-				$("#settingstoggle").css({height:maxHeight < 800 ? maxHeight : 800});
+				
+				if (!g.isMobile()) {
+					var maxHeight = $(window).height()*0.8;
+					$("#settingstoggle").css({height:maxHeight < 800 ? maxHeight : 800});
+				}
+
 				if (!isFocus() && toggle) {
 					animateToggle();
 				}
