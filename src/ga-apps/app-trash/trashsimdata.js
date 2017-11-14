@@ -30,13 +30,14 @@ app.directive("trashsimdata", ["global.service", "events.service", function (g, 
 
 				$elem = $("#simdata");
 				$stage = $("#stage");
+				$hudtoggle = $("#hudtoggle");
 				items = $("#simdatainner").children();
 
 				// console.log("sim data inner width", winW*width);
 
 				if (g.isMobile()) {
 
-					$elem.css({top:$stage.offset().top + 200});
+					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 200 + "px", width:0.9*winW});
 				}
 				else {
 					

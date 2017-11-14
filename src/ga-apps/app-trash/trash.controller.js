@@ -137,13 +137,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("hide", "evolve", {delay:displayDelay});
             u.toggle("hide", "run", {delay:displayDelay});
             u.toggle("hide", "hud", {delay:displayDelay});
-            u.toggle("hide", "play", {delay:displayDelay});
-            u.toggle("hide", "refresh", {delay:displayDelay});
-            u.toggle("hide", "restart", {delay:displayDelay});
-            u.toggle("hide", "step", {delay:displayDelay});
-            u.toggle("hide", "stop", {delay:displayDelay});
-            u.toggle("hide", "break", {delay:displayDelay});
-            u.toggle("hide", "settings", {delay:displayDelay});
+            // u.toggle("hide", "play", {delay:displayDelay});
+            // u.toggle("hide", "refresh", {delay:displayDelay});
+            // u.toggle("hide", "restart", {delay:displayDelay});
+            // u.toggle("hide", "step", {delay:displayDelay});
+            // u.toggle("hide", "stop", {delay:displayDelay});
+            // u.toggle("hide", "break", {delay:displayDelay});
+            // u.toggle("hide", "settings", {delay:displayDelay});
 
             
             $scope.getData(function ($d) {

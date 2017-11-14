@@ -502,12 +502,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    $scope.getContentUrl = function() {
-
-
-		        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/evolving.html";
-
-		    }
 		}
 	}
 

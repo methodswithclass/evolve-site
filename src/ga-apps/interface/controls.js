@@ -5,7 +5,7 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 		scope:false,
 		replace:true,
 		templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/controls.html",		
-		link:function ($scope, element, attr) {
+		link:function ($scope, $element, attr) {
 
 
 			// console.log("\n############\ncreate controls directive\n\n");
@@ -15,7 +15,9 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 
 			var winW;
 			var controlsW;
-			var toolW
+			var toolW;
+			var cntrlWidth;
+			var zeroPercent;
 
 			var controls = [
 			{
@@ -69,17 +71,55 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 
 				winW = $(window).width();
 
-				width = 0.3;
+				width = g.isMobile() ? 0.6 : 0.3;
+				cntrlWidth = 0;
 				toolW = 0.75;
 
-				$("#controls").css({width:winW*width});
+				$elem = $("#controls");
+				$stage = $("#stage");
+				$hudtoggle = $("#hudtoggle");
 
+				$elem.css({width:winW*width});
+				runToggle.input.css({width:winW*width});
+
+				cntrlWidth = $elem.width()/controls.length;
+
+				if (g.isMobile()) {
+					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
+				}
+
+				
 				controls.forEach(function (value, index) {
 
-					value.input.css({width:winW*width/controls.length*toolW})
-				})
 
-				// runToggle.input.css({width:winW*width});
+					if (g.isMobile()) {
+
+
+						halfPercent = cntrlWidth/2/$elem.width()*100;
+						// zeroPercent = 2*cntrlWidth/controls.length - halfPercent;
+						zeroPercent = 50 - halfPercent;
+
+						console.log("zero percent", zeroPercent, halfPercent);
+
+						if (index == 2) {
+
+							value.input.css({width:cntrlWidth, left:zeroPercent  + "%"});						
+						}
+						else if (index < 2 ) {
+
+							value.input.css({width:cntrlWidth, left:zeroPercent - (2-index)*cntrlWidth/controls.length  + "%"})
+						}
+						else if (index > 2) {
+							value.input.css({width:cntrlWidth, left:zeroPercent + (index-2)*cntrlWidth/controls.length  + "%"})
+						}
+
+					}
+					else {
+
+						value.input.css({width:cntrlWidth, left:index*cntrlWidth/(controls.length-1)});
+					}
+
+				})
 
 			}
 

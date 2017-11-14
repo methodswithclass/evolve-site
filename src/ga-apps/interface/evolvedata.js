@@ -13,7 +13,7 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 			var winW;
 			var winH;
 
-			var width = 0.5;
+			var width = g.isMobile() ? 0.8 : 0.5;
 			
 
 			// var effW = winW - 20 - 100 - 300 - 30;
@@ -29,6 +29,11 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 				winH = $(window).height();
 
 				$("#evolvedata").css({width:winW*width});
+
+				if (g.isMobile()) {
+
+					$("#evolvedata").css({top:"400px"});
+				}
 			}
 
 
