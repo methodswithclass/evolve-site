@@ -39,7 +39,7 @@
 							total generations
 						</div>
 					</div>
-					<div class="absolute width height50 hcenter bottom0 font-20">
+					<div class="absolute width height50 hcenter bottom0 font-40">
 						<div class="absolute center">
 							{{input.gens}}
 						</div>
@@ -54,7 +54,7 @@
 							run for individual
 						</div>
 					</div>
-					<div class="absolute width height50 hcenter bottom0 font-20">
+					<div class="absolute width height50 hcenter bottom0 font-30">
 						<div class="absolute center">
 							{{stepdata.run}} out of {{input.runs}}
 						</div>
@@ -64,12 +64,12 @@
 
 				<div class="absolute width25 height left50">
 
-					<div class="absolute width height50 hcenter font-25">
+					<div class="absolute width height50 hcenter font-30">
 						<div class="absolute center">
 							individual
 						</div>
 					</div>
-					<div class="absolute width height50 hcenter bottom0 font-20">
+					<div class="absolute width height50 hcenter bottom0 font-40">
 						<div class="absolute center">
 							{{stepdata.org}}
 						</div>
@@ -79,12 +79,12 @@
 
 				<div class="absolute width25 height right0">
 
-					<div class="absolute width height50 hcenter font-25">
+					<div class="absolute width height50 hcenter font-30">
 						<div class="absolute center">
 							population
 						</div>
 					</div>
-					<div class="absolute width height50 hcenter bottom0 font-20">
+					<div class="absolute width height50 hcenter bottom0 font-40">
 						<div class="absolute center">
 							{{input.pop}}
 						</div>
@@ -102,19 +102,18 @@
 
 			</div>
 
-			<div class="absolute width height-50 bottom-minus-50">
-				<div class="absolute width-50 height left50 white-back rounded5 font-30 black pointer" on-tap="breakRun()">
+			<div class="absolute width height-100 bottom-minus-100">
+				<div class="absolute width-100 height hcenter white-back rounded10 font-40 black pointer" on-tap="breakRun()">
 					<div class="absolute center">
 						<i class="fa fa-times"></i>
 					</div>
-
-					<div class="absolute left100 width-200 height" id="breakfeedback">
-						<div class="absolute width vcenter text-right font-20 white">
-							finishing up....
-						</div>
-					</div>
 				</div>
 
+				<div class="absolute width-300 left50 height" id="breakfeedback">
+					<div class="absolute width vcenter text-right font-30 white">
+						finishing up....
+					</div>
+				</div>
 				
 			</div>
 
