@@ -66,10 +66,10 @@ app.directive("settings", ['global.service', function (g) {
 				return false;
 			}
 
-			var animateToggle = function () {
+			var animateToggle = function (open_up) {
 
 				controls[0].tool.animate({opacity:0}, 200);
-				$("#settingstoggle").animate({right:status.opened ? status.right.closed : status.right.opened}, 300, function () {
+				$("#settingstoggle").animate({right:(!open_up || status.opened ? status.right.closed : (open_up || status.closed ? status.right.opened : status.right.closed))}, 300, function () {
 					status.opened = !status.opened;
 				})
 			}
@@ -110,12 +110,12 @@ app.directive("settings", ['global.service', function (g) {
 				console.log("open settings ", status.opened);
 				
 				if (!g.isMobile()) {
-					var maxHeight = $(window).height()*0.8;
-					$("#settingstoggle").css({height:maxHeight < 800 ? maxHeight : 800});
+					// var maxHeight = $(window).height()*0.8;
+					// $("#settingstoggle").css({height:maxHeight < 800 ? maxHeight : 800});
 				}
 
 				if (!isFocus() && toggle) {
-					animateToggle();
+					animateToggle(true);
 				}
 			}
 			
