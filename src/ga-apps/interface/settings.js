@@ -12,7 +12,7 @@ app.directive("settings", ['global.service', function (g) {
 
 
 			var toggle = true;
-			var status = {opened:false, right:{opened:-20, closed:-400}};
+			var status = {opened:false, right:{opened:-20, closed:-600}};
 			$("#settingstoggle").css({right:status.right.closed});
 
 			var controls = [
