@@ -1,6 +1,4 @@
 Hello World!!
 
-goodbye
-
 
 
