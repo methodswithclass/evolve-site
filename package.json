@@ -9,8 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "node": "node server.js",
     "build": "gulp build",
-    "start": "gulp serve",
-    "postinstall": "bower install && gulp build"
+    "start": "gulp serve"
   },
   "engines": {
     "node": "6.9.2",
