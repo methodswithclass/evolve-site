@@ -1,0 +1,67 @@
+html, body {
+	height:100%;
+	width:100%;
+	margin:0;
+	padding:0;
+}
+
+.museo {
+
+	font-family: 'museo300'
+}
+
+.underline {
+	border-bottom:2px solid;
+	transition: border-bottom 1s;
+}
+.underline input[type="text"] {
+  border: none;
+}
+.underline input[type="text"]:focus,
+.underline input[type="text"].focus {
+  outline:none;
+  border-bottom: solid 3px white;
+}
+
+.border-black-t {
+
+	outline:none;
+	border:1px solid black;
+}
+
+.border-t {
+	border:1px solid;
+	-webkit-transition:  border 1s;
+    transition:  border 1s;
+}
+
+.border-left-t {
+
+	border-left:1px solid;
+	-webkit-transition:  border-left 1s;
+    transition:  border-left 1s;
+
+}
+
+.border-right-t {
+	border-right:1px solid;
+	-webkit-transition:  border-right 1s;
+    transition:  border-right 1s;
+
+}
+
+.border-top-t {
+	border-top:1px solid;
+	-webkit-transition: border-top 1s;
+    transition: border-top 1s;
+}
+
+.border-bottom-t {
+	border-bottom:1px solid;
+	-webkit-transition: border-bottom 1s;
+    transition: border-bottom 1s;
+}
+
+.white-t {
+	border-color:white;
+}

@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+
+	<title>Evolve</title>
+
+
+
+    <link rel="stylesheet" href="https://code.methodswithclass.com/api/classes.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+    <!-- inject:css -->
+	<link rel="stylesheet" href="assets/css/museo/museo300.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <!-- endinject -->
+
+    <!-- <script src="site/libs/jquery-ui.min.js"></script>
+    <script src="site/libs/rx.all.min.js"></script> -->
+
+    <!-- inject:head:js -->
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery.scrollTo/jquery.scrollTo.js"></script>
+    <script src="../bower_components/hammerjs/hammer.js"></script>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+    <!-- endinject -->
+
+    <base href="/">
+
+    <script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-85962895-2', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+
+</head>
+
+<body ng-app="app">
+
+	<div class="absolute fill museo scrollY scroll-style-1 touch cutoff museo" id="body">
+
+		<div ui-view=""></div>
+
+	</div>
+
+
+	<script src="https://code.methodswithclass.com/api/shared/2.2/shared.js"></script>
+	<script src="https://code.methodswithclass.com/api/parallax/2.2/parallax.js"></script>
+
+
+	<!-- inject:js -->
+
+	<!-- App -->
+
+	
+	<script src="site/app.js"></script>
+	<script src="site/state/stateModule.js"></script>
+	<script src="site/state/runtimeState.js"></script>
+	<script src="site/state/states.js"></script>
+	<script src="site/interface/navbtn.js"></script>
+	<script src="site/interface/controllers.js"></script>
+	<script src="site/interface/content.js"></script>
+	<script src="site/interface/doc.data.js"></script>
+
+	<!-- Evolve -->
+
+	<script src="ga/a.organism.js"></script>
+	<script src="ga/b.generation.js"></script>
+	<script src="ga/c.evolve.js"></script>
+
+
+	<!-- GA-app Interface -->
+
+	<script src="ga-apps/interface/controls.js"></script>
+	<script src="ga-apps/interface/evolvedata.js"></script>
+	<script src="ga-apps/interface/loading.js"></script>
+	<script src="ga-apps/interface/evolving.js"></script>
+	<script src="ga-apps/interface/utility.js"></script>
+
+	<!-- Data -->
+
+	<script src="ga-apps/data/data.js"></script>
+	<script src="ga-apps/data/programs.js"></script>
+	
+	<!-- Trash -->
+
+	<script src="ga-apps/app-trash/app/environment.js"></script>
+	<script src="ga-apps/app-trash/app/robot.js"></script>
+	<script src="ga-apps/app-trash/app/trash.js"></script>
+
+
+	<script src="ga-apps/app-trash/interface/trash.controller.js"></script>
+	<script src="ga-apps/app-trash/interface/arena.js"></script>
+	<script src="ga-apps/app-trash/interface/man.js"></script>
+	<script src="ga-apps/app-trash/interface/trashsimdata.js"></script>
+	<script src="ga-apps/app-trash/interface/trash-sim.js"></script>
+
+	<!-- Feedback -->
+	
+	<script src="ga-apps/app-feedback/app/feedback.js"></script>
+
+	<script src="ga-apps/app-feedback/interface/feedback.controller.js"></script>
+	<script src="ga-apps/app-feedback/interface/feedback-sim.js"></script>
+	<script src="ga-apps/app-feedback/interface/plot.js"></script>
+
+	
+	<!-- endinject -->
+
+
+</body>
+</html>

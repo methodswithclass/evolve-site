@@ -1,0 +1,82 @@
+<div class="absolute width80 height-200 hcenter" id="evolvedata">
+
+	<div class="absolute width height border-top-t border-bottom-t hcenter">
+		<div class="absolute width20 height border-right-t">
+			<div class="relative width height-50">
+				<div class="absolute center">
+					generation
+				</div>
+			</div> 
+			<div class="relative width height-100 font-40">
+				<div class="absolute center">
+					{{stepdata.gen}}
+				</div>
+			</div>
+		</div>
+		<div class="absolute width80 height right0">
+			
+			<div class="relative width height-50 border-bottom-t">
+
+				<div class="absolute width30 height font-30">
+					<div class="absolute center">
+						best
+					</div>
+				</div>
+
+				<div class="absolute width30 height center border-left-t border-right-t fonr-20">
+					<div class="absolute center">
+						performance
+					</div>
+				</div>
+
+				<div class="absolute width30 height right0 font-30">
+					<div class="absolute center">
+						worst
+					</div>
+				</div>
+
+			</div> 
+
+			<div class="relative width height-50 border-bottom-t">
+
+				<div class="absolute width50 height border-right-t font-30">
+					<div class="absolute center">
+						{{evdata.best.fitness}}
+					</div>
+				</div>
+
+				<div class="absolute width50 height right0 font-30">
+					<div class="absolute center">
+						{{evdata.worst.fitness}}
+					</div>
+				</div>
+
+			</div>
+
+			<div class="relative width height-100">
+				<div class="absolute width50 height border-right-t">
+					<div class="absolute width height scrollY touch cutoff right0 scroll-style-1">
+						<div class="relative width30 height-50 inline" ng-repeat="run in evdata.best.runs track by $index">
+							<div class="absolute width80 height60 center border-t font-20">
+								<div class="absolute center">
+									{{run.fit}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="absolute width50 height right0">
+					<div class="absolute width height scrollY touch cutoff right0 scroll-style-1">
+						<div class="relative width30 height-50 inline" ng-repeat="run in evdata.worst.runs track by $index">
+							<div class="absolute width80 height60 center border-t font-20">
+								<div class="absolute center">
+									{{run.fit}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
