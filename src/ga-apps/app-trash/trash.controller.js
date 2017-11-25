@@ -143,25 +143,25 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             $scope.resetInput();
 
 
-            u.toggle("hide", "evolve", {delay:displayDelay});
-            u.toggle("hide", "hud", {delay:displayDelay});
+            u.toggle("hide", "evolve");
+            u.toggle("hide", "hud");
 
-            u.toggle("hide", "run", {delay:displayDelay});
-            u.toggle("hide", "play", {delay:displayDelay});
-            u.toggle("hide", "refresh", {delay:displayDelay});
-            u.toggle("hide", "restart", {delay:displayDelay});
-            u.toggle("hide", "step", {delay:displayDelay});
-            u.toggle("hide", "stop", {delay:displayDelay});
+            u.toggle("hide", "run");
+            u.toggle("hide", "play");
+            u.toggle("hide", "refresh");
+            u.toggle("hide", "restart");
+            u.toggle("hide", "step");
+            u.toggle("hide", "stop");
 
-            u.toggle("hide", "settings", {delay:displayDelay});
+            u.toggle("hide", "settings");
 
 
 
-            u.toggle("disable", "refresh", {delay:displayDelay});
-            u.toggle("disable", "restart", {delay:displayDelay});
-            u.toggle("disable", "step", {delay:displayDelay});
-            u.toggle("disable", "play", {delay:displayDelay});
-            u.toggle("disable", "stop", {delay:displayDelay});
+            u.toggle("disable", "refresh");
+            u.toggle("disable", "restart");
+            u.toggle("disable", "step");
+            u.toggle("disable", "play");
+            u.toggle("disable", "stop");
 
 
             $scope.getData(function ($d) {
@@ -240,17 +240,17 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
                     
                     u.toggle("hide", "loading", {fade:loadfadeout});                    
-                    u.toggle("show", "hud", {fade:loadfadeout});
+                    u.toggle("show", "hud", {fade:loadfadeout, delay:displayDelay});
 
-                    u.toggle("show", "refresh", {delay:displayDelay});
-                    u.toggle("show", "restart", {delay:displayDelay});
-                    u.toggle("show", "step", {delay:displayDelay});
-                    u.toggle("show", "play", {delay:displayDelay});
-                    u.toggle("show", "stop", {delay:displayDelay});
+                    u.toggle("show", "refresh", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "restart", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "step", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "play", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "stop", {fade:loadfadeout, delay:displayDelay});
 
 
-                    u.toggle("show", "run", {delay:displayDelay});
-                    u.toggle("show", "settings", {delay:displayDelay});
+                    u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
 
                     
 
