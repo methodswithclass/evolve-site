@@ -1,37 +1,45 @@
 <div class="absolute width height cutoff">
 
-	<div class="absolute width height scrollY scroll-style-1 cutoffX font-30">
+	<div class="absolute width110 height scrollY cutoffX font-30">
 
-		<div class="absolute width80 height60 hcenter" id="stage">
+		<div class="absolute height" style="width:{{1/1.1*100 + '%'}}">
 
-			<div class="absolute width80 height-50 hcenter font-40 top-minus-50">
-				<div class="absolute center">
-					Simulate Best Individual
+			<div class="absolute width60 height60 left-100" id="stage">
+
+				<div class="absolute width80 height-50 hcenter font-30 top-minus-50">
+					<div class="absolute center">
+						Simulate Best Individual
+					</div>
 				</div>
+
+				<arena></arena>
+
+				<trashman></trashman>
+				
 			</div>
 
-			<arena></arena>
+			<div class="absolute width height opacity0" id="hudtoggle">
 
-			<trashman></trashman>
+				<div class="absolute width-100 height-50 top-20 left-20 black-back white rounded10 shadow font-20">
+					<navbtn name="back" loc="trash"/>
+				</div>
 
-		</div>
+				<controls></controls>
 
-		<div class="absolute width height opacity0" id="hudtoggle">
-
-			<div class="absolute width-100 height-50 top-20 left-20 black-back white rounded10 shadow font-20">
-				<navbtn name="back" loc="trash"/>
 			</div>
 
-			<trashsimdata></trashsimdata>
+			<div class="absolute width50 right-100">
+				<trashsimdata></trashsimdata>
+			</div>
 
-			<controls></controls>
+			<evolvedata></evolvedata>
+			
+			<loading></loading>
 
-		</div>
-		
-		<loading></loading>
+			<div class="absolute width height" id="main-back">
+				<evolving></evolving>
+			</div>
 
-		<div class="absolute width height" id="main-back">
-			<evolving></evolving>
 		</div>
 
 	</div>

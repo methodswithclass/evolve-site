@@ -53,7 +53,7 @@ var data = {
 				return {x:0, y:-1}
 			},
 			points:{
-				success:0,
+				success:1,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -65,7 +65,7 @@ var data = {
 				return {x:0, y:1}
 			},
 			points:{
-				success:0,
+				success:1,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -77,7 +77,7 @@ var data = {
 				return {x:-1, y:0}
 			},
 			points:{
-				success:0,
+				success:1,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -89,7 +89,7 @@ var data = {
 				return {x:1, y:0}
 			},
 			points:{
-				success:0,
+				success:1,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -114,7 +114,7 @@ var data = {
 			},
 			points:{
 				success:10,
-				fail:-1
+				fail:-5
 			},
 			color:"#ff00ff"
 		},
@@ -123,7 +123,7 @@ var data = {
 			name:"move random",
 			change:getRandom,
 			points:{
-				success:0,
+				success:-2,
 				fail:-5
 			},
 			color:"#ffff00"
