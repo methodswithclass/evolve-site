@@ -9,11 +9,12 @@ app.factory("utility", function () {
         }
 
         var $toggle = $("#"+id+"toggle");
+        var $cover = $("#"+id+"togglecover");
 
         var hide = function () {
 
             $toggle.animate({opacity:0}, options.fade ? options.fade : 0, function () {
-                 $toggle.hide();
+                 $toggle.css({display:"none"});
                  if (options.complete) options.complete();
             });
         }
@@ -21,7 +22,7 @@ app.factory("utility", function () {
         var show = function () {
 
             // $toggle.css({opacity:0});
-            $toggle.show();
+            $toggle.css({display:"block"});
             $toggle.animate({opacity:1}, options.fade ? options.fade : 0, function () {
                 if (options.complete) options.complete();
             });
@@ -29,12 +30,16 @@ app.factory("utility", function () {
 
         var disable = function () {
 
-            $toggle.prop("disabled", true);
+            //$toggle.prop("disabled", true);
+            $cover.css({display:"block"});
+            $cover.css({opacity:0.9});
         }
 
         var enable = function () {
 
-            $toggle.prop("disabled", false);
+            //$toggle.prop("disabled", false);
+            $cover.css({opacity:0});
+            $cover.css({display:"none"});
         }
 
         if (toggle == "show") {

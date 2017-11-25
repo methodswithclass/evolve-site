@@ -33,21 +33,9 @@ app.directive("trashsimdata", ["global.service", "events.service", function (g, 
 				$hudtoggle = $("#hudtoggle");
 				items = $("#simdatainner").children();
 
-				// console.log("sim data inner width", winW*width);
+				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() - $elem.height() + "px"});
 
-				if (g.isMobile()) {
 
-					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 200 + "px", width:0.9*winW});
-				}
-				else {
-					
-					$elem.css({width:winW*width, height:winH*height})
-
-					items.each(function (index) {
-
-						$(this).css({height:winH*height/items.length});
-					});
-				}
 			}
 
 			// console.log("\nregister event trash-sim-data display\n\n");

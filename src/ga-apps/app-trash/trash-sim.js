@@ -177,7 +177,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
                 move:{
                     num:i,
                     state:after.state,
-                    name:after.action.name,
+                    action:after.action,
                     total:totalActions
                 }
             });
@@ -268,7 +268,9 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             },
             move:{
                 num:0,
-                name:"wait",
+                action:{
+                    name:"wait"
+                },
                 total:totalActions
             }
         });
@@ -318,13 +320,14 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
             start(session);
 
-            u.toggle("show", "stop", {fade:300});
-            u.toggle("hide", "refresh", {fade:300, delay:500});
-            u.toggle("hide", "restart", {fade:300, delay:400});
-            u.toggle("hide", "step", {fade:300, delay:300});
-            u.toggle("hide", "play", {fade:300, delay:200});
-            u.toggle("hide", "run", {fade:300, delay:100});
-            u.toggle("hide", "settings", {fade:300});
+            u.toggle("disable", "refresh", {fade:300, delay:500});
+            u.toggle("disbale", "restart", {fade:300, delay:400});
+            u.toggle("disable", "step", {fade:300, delay:300});
+            u.toggle("disable", "play", {fade:300, delay:200});
+            u.toggle("enable", "stop", {fade:300});
+
+            u.toggle("disable", "run", {fade:300, delay:100});
+            u.toggle("disable", "settings", {fade:300});
         })
 
         
@@ -343,19 +346,16 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         events.dispatch("completeSim");
 
 
-        u.toggle("hide", "stop", {fade:300});
-        u.toggle("show", "refresh", {fade:300, delay:100});
-        u.toggle("show", "restart", {fade:300, delay:200});
-        u.toggle("show", "step", {fade:300, delay:300});
-        u.toggle("show", "play", {fade:300, delay:400});
-        u.toggle("show", "run", {fade:300, delay:500});
-        u.toggle("show", "settings", {fade:300});
+        u.toggle("enable", "refresh", {fade:300, delay:100});
+        u.toggle("enable", "restart", {fade:300, delay:200});
+        u.toggle("enable", "step", {fade:300, delay:300});
+        u.toggle("enable", "play", {fade:300, delay:400});
+        u.toggle("disable", "stop", {fade:300});
+
+        u.toggle("enable", "run", {fade:300, delay:500});
+        u.toggle("enable", "settings", {fade:300});
     }
 
-    // var print = function () {
-
-    //     environment.print();
-    // }
 
     return {
         setup:setup,
@@ -364,7 +364,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     	step:step,
     	play:play,
     	stop:stop
-        // print:print
     }
 
 

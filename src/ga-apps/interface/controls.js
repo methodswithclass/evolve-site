@@ -71,7 +71,7 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 
 				winW = $(window).width();
 
-				width = g.isMobile() ? 0.6 : 0.3;
+				width = 0.6;
 				cntrlWidth = 0;
 				toolW = 0.75;
 
@@ -79,44 +79,36 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 				$stage = $("#stage");
 				$hudtoggle = $("#hudtoggle");
 
+
 				$elem.css({width:winW*width});
+
 				runToggle.input.css({width:winW*width});
 
 				cntrlWidth = $elem.width()/controls.length;
 
-				if (g.isMobile()) {
-					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
-				}
+				console.log("controls load", cntrlWidth, $elem.width());
+				
+				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
 
 				
 				controls.forEach(function (value, index) {
 
+					halfPercent = cntrlWidth/2/$elem.width()*100;
 
-					if (g.isMobile()) {
+					zeroPercent = 50 - halfPercent;
 
+					console.log("zero percent", zeroPercent, halfPercent);
 
-						halfPercent = cntrlWidth/2/$elem.width()*100;
-						// zeroPercent = 2*cntrlWidth/controls.length - halfPercent;
-						zeroPercent = 50 - halfPercent;
+					if (index == 2) {
 
-						console.log("zero percent", zeroPercent, halfPercent);
-
-						if (index == 2) {
-
-							value.input.css({width:cntrlWidth, left:zeroPercent  + "%"});						
-						}
-						else if (index < 2 ) {
-
-							value.input.css({width:cntrlWidth, left:zeroPercent - (2-index)*cntrlWidth/controls.length  + "%"})
-						}
-						else if (index > 2) {
-							value.input.css({width:cntrlWidth, left:zeroPercent + (index-2)*cntrlWidth/controls.length  + "%"})
-						}
-
+						value.input.css({width:cntrlWidth, left:zeroPercent  + "%"});						
 					}
-					else {
+					else if (index < 2 ) {
 
-						value.input.css({width:cntrlWidth, left:index*cntrlWidth/(controls.length-1)});
+						value.input.css({width:cntrlWidth, left:zeroPercent - (2-index)*cntrlWidth*0.6/controls.length  + "%"})
+					}
+					else if (index > 2) {
+						value.input.css({width:cntrlWidth, left:zeroPercent + (index-2)*cntrlWidth*0.6/controls.length  + "%"})
 					}
 
 				})
@@ -132,9 +124,9 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 
 				controlsWidth();
 
-				// runToggle.input.addClass("width");
-
 				$(window).resize(function () {
+
+					console.log("resize");
 
 					controlsWidth();
 				})

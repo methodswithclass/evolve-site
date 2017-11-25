@@ -238,11 +238,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 				        	$("#breakfeedback").hide();
 
 					        u.toggle("show", "run", {fade:600});
-					        u.toggle("show", "refresh", {fade:600});
-					        u.toggle("show", "play", {fade:600});
-					        u.toggle("show", "settings", {fade:600});
-					        if ($scope.name == "trash") u.toggle("show", "restart", {fade:600});
-					        if ($scope.name == "trash") u.toggle("show", "step", {fade:600});
+					        u.toggle("enable", "refresh", {fade:600});
+					        u.toggle("enable", "play", {fade:600});
+					        u.toggle("enable", "settings", {fade:600});
+					        if ($scope.name == "trash") u.toggle("enable", "restart", {fade:600});
+					        if ($scope.name == "trash") u.toggle("enable", "step", {fade:600});
 				        	u.toggle("show", "hud", {fade:600});
 
 
@@ -440,7 +440,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        u.toggle("hide", "settings", {fade:300});
 		        u.toggle("hide", "run", {fade:300});
-		        u.toggle("hide", "hud", {fade:300});
+		        // u.toggle("hide", "hud", {fade:300});
 		        u.toggle("show", "evolve", {
 		            fade:600,
 		            delay:600,

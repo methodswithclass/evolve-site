@@ -12,7 +12,7 @@ app.directive("settings", ['global.service', function (g) {
 
 
 			var toggle = true;
-			var status = {opened:false, right:{opened:-20, closed:g.isMobile() ? -600 : -400}};
+			var status = {opened:false, right:{opened:-20, closed:-600}};
 			$("#settingstoggle").css({right:status.right.closed});
 
 			var controls = [
@@ -108,11 +108,6 @@ app.directive("settings", ['global.service', function (g) {
 			$scope.open = function () {
 
 				console.log("open settings ", status.opened);
-				
-				if (!g.isMobile()) {
-					// var maxHeight = $(window).height()*0.8;
-					// $("#settingstoggle").css({height:maxHeight < 800 ? maxHeight : 800});
-				}
 
 				if (!isFocus() && toggle) {
 					animateToggle(true);

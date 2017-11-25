@@ -21,6 +21,18 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         }
     })
 
+    self.outcome = function (outcome) {
+
+        if ((self.sdata && self.sdata.move.action.id == 4) || outcome !== "success") {
+
+            return "/assets/img/ex.png";
+        }
+        else {
+            return "/assets/img/check.png";
+        }
+
+    }
+
     var setInputBackend = function (complete) {
 
         $http({
@@ -130,22 +142,28 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             $scope.resetInput();
 
-            u.toggle("disable", "run", {delay:displayDelay});
-            u.toggle("disable", "hud", {delay:displayDelay});
-            u.toggle("disable", "settings", {delay:displayDelay});
 
             u.toggle("hide", "evolve", {delay:displayDelay});
-            u.toggle("hide", "run", {delay:displayDelay});
             u.toggle("hide", "hud", {delay:displayDelay});
+
+            u.toggle("hide", "run", {delay:displayDelay});
             u.toggle("hide", "play", {delay:displayDelay});
             u.toggle("hide", "refresh", {delay:displayDelay});
             u.toggle("hide", "restart", {delay:displayDelay});
             u.toggle("hide", "step", {delay:displayDelay});
             u.toggle("hide", "stop", {delay:displayDelay});
-            u.toggle("hide", "break", {delay:displayDelay});
+
             u.toggle("hide", "settings", {delay:displayDelay});
 
-            
+
+
+            u.toggle("disable", "refresh", {delay:displayDelay});
+            u.toggle("disable", "restart", {delay:displayDelay});
+            u.toggle("disable", "step", {delay:displayDelay});
+            u.toggle("disable", "play", {delay:displayDelay});
+            u.toggle("disable", "stop", {delay:displayDelay});
+
+
             $scope.getData(function ($d) {
 
                 // console.log("get data complete", $d);
@@ -217,17 +235,24 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                 complete:function () {
 
                     console.log("hide loading"); 
-                    $("#loadinginner").parent().hide();
+                    // $("#loadinginner").parent().hide();
                     $scope.running(false);
 
-
+                    
+                    u.toggle("hide", "loading", {fade:loadfadeout});                    
                     u.toggle("show", "hud", {fade:loadfadeout});
-                    u.toggle("show", "settings", {fade:loadfadeout});
-                    u.toggle("show", "run", {fade:loadfadeout});
 
-                    u.toggle("enable", "hud");
-                    u.toggle("enable", "run");
-                    u.toggle("enable", "settings");
+                    u.toggle("show", "refresh", {delay:displayDelay});
+                    u.toggle("show", "restart", {delay:displayDelay});
+                    u.toggle("show", "step", {delay:displayDelay});
+                    u.toggle("show", "play", {delay:displayDelay});
+                    u.toggle("show", "stop", {delay:displayDelay});
+
+
+                    u.toggle("show", "run", {delay:displayDelay});
+                    u.toggle("show", "settings", {delay:displayDelay});
+
+                    
 
                     // console.log("loading hidden, show display\n", loadResult, "\nready to evolve");
 

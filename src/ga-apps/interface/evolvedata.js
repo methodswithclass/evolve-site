@@ -13,33 +13,23 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 			var winW;
 			var winH;
 
-			var width = g.isMobile() ? 0.8 : 0.5;
+			var width = 0.8;
 			
-
-			// var effW = winW - 20 - 100 - 300 - 30;
-			// var effH = winH - 20 - 20 - 30;
-			// var effHsim = winH - 20 - 20 - 30 - 200;
-
-			// var max = Math.min(effW, effH - 100);
-
-
 			var evolveDataWidth = function () {
 
 				winW = $(window).width();
 				winH = $(window).height();
 
-				$("#evolvedata").css({width:winW*width});
+				$("#evolvedata").css({top:"400px"});
+				$("#stage").css({top:($("#evolvedata").offset().top - $("#hudtoggle").offset().top) + $("#evolvedata").height() + 150 + "px"})
 
-				if (g.isMobile()) {
+				// console.log("evolve data dispatch events, trash sim and controls");
 
-					$("#evolvedata").css({top:"400px"});
-					$("#stage").css({top:($("#evolvedata").offset().top - $("#hudtoggle").offset().top) + $("#evolvedata").height() + 150 + "px"})
-					events.dispatch("load-display", "trash-sim");
-					events.dispatch("load-display", "controls");
-				}
+				events.dispatch("load-display", "trash-sim");
+				events.dispatch("load-display", "controls");
+
+				
 			}
-
-
 
 			// console.log("\nregister event evolve-data display\n\n");
 			events.on("load-display", "evolve-data", function () {

@@ -1,19 +1,15 @@
 <div class="absolute width height" id="evolvepage">
 
-
-	<div class="absolute width height">
-
-		<div class="absolute width60 height-300 hcenter">
-			<div class="absolute width height60 center rounded10 black-back white pointer font-50 shadow opacity0" id="runtoggle" on-tap="run()">
-				<div class="absolute center">
-					evolve
-				</div>
+	<div class="absolute width60 height-300 hcenter">
+		<div class="absolute width height60 center rounded10 black-back white pointer font-50 shadow opacity0" id="runtoggle" on-tap="run()">
+			<div class="absolute center">
+				evolve
 			</div>
 		</div>
-
-		<evolvedata></evolvedata>
-
+		<div class="absolute width height60 center rounded10 white-back opacity0 none" id="runtogglecover"></div>
 	</div>
+
+
 
 	<div class="absolute width height opacity0" id="evolvetoggle">
 
@@ -32,22 +28,23 @@
 			
 			<div class="absolute width80 height30 hcenter center">
 				
-				<div class="absolute width25 height">
-					
-					<div class="absolute width height50 hcenter font-25">
+				<div class="absolute width30 height">
+
+					<div class="absolute width height50 hcenter font-30">
 						<div class="absolute center">
-							total generations
+							population
 						</div>
 					</div>
 					<div class="absolute width height50 hcenter bottom0 font-40">
 						<div class="absolute center">
-							{{input.gens}}
+							{{input.pop}}
 						</div>
 					</div>
 
 				</div>
+				
 
-				<div class="absolute width25 height left25">
+				<!-- <div class="absolute width25 height left25">
 
 					<div class="absolute width height50 hcenter font-25">
 						<div class="absolute center">
@@ -60,9 +57,9 @@
 						</div>
 					</div>
 
-				</div>
+				</div> -->
 
-				<div class="absolute width25 height left50">
+				<div class="absolute width30 height" style="left:{{1/3*100 + '%'}}">
 
 					<div class="absolute width height50 hcenter font-30">
 						<div class="absolute center">
@@ -77,16 +74,16 @@
 
 				</div>
 
-				<div class="absolute width25 height right0">
-
-					<div class="absolute width height50 hcenter font-30">
+				<div class="absolute width30 height right0">
+					
+					<div class="absolute width height50 hcenter font-25">
 						<div class="absolute center">
-							population
+							total generations
 						</div>
 					</div>
 					<div class="absolute width height50 hcenter bottom0 font-40">
 						<div class="absolute center">
-							{{input.pop}}
+							{{input.gens}}
 						</div>
 					</div>
 
