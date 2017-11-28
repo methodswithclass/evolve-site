@@ -32,7 +32,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        step:0
 		    }
 
-			$("#breakfeedback").hide();
+			// $("#breakfeedback").hide();
 
 
 
@@ -91,9 +91,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        default_input = $input || {
 		            gens:500,
-		            runs:20,
+		            runs:15,
 		            goal:"max",
-		            pop:100,
+		            pop:60,
 		            evdelay:0
 		        }
 
@@ -235,7 +235,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			        	complete:function () {
 
 			        		$scope.running(false);
-				        	$("#breakfeedback").hide();
+				        	// $("#breakfeedback").hide();
 
 				        	u.toggle("show", "hud", {fade:600});
 
