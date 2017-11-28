@@ -96,9 +96,9 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 				evolveToggle.input.css({height:winH + "px"});
 
 
-				$stage.css({width:winW*width});
+				// $stage.css({width:winW*width});
 
-				events.dispatch("load-display", "trash-sim");
+				// events.dispatch("load-display", "trash-sim");
 
 
 			}

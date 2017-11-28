@@ -6,7 +6,7 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 
 .config(['$locationProvider', 'runtime.stateProvider', function ($locationProvider, runtimeProvider) {
 
-	// runtimeProvider.mobile(forceMobile());
+	runtimeProvider.mobile(forceMobile());
 
 	$locationProvider.html5Mode(true);
 

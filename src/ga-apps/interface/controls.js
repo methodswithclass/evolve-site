@@ -80,11 +80,14 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 				toolW = 0.75;
 
 				$elem = $("#controls");
+				$trashtim = $("#trashsim");
 				$stage = $("#stage");
+				$controls = $("#controls");
 				$hudtoggle = $("#hudtoggle");
 
 
 				$elem.css({width:winW*width});
+				// $trashsim.css({top:$controls.offset().top + $controls.height() + 200 + "ps"});
 
 				runToggle.input.css({width:winW*width});
 				
