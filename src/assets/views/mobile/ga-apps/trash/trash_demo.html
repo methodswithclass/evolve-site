@@ -1,9 +1,15 @@
 <div class="absolute width height cutoff">
 
-	<div class="absolute width110 height scrollY cutoffX font-30">
+	<div class="absolute width110 height scrollY cutoffX font-30" id="main-back">
 
 		<div class="absolute height" style="width:{{1/1.1*100 + '%'}}">
 
+			<div class="absolute width50 right-100">
+				<trashsimdata></trashsimdata>
+			</div>
+
+			<evolvedata></evolvedata>
+			
 			<div class="absolute width60 height60 left-100" id="stage">
 
 				<div class="absolute width80 height-50 hcenter font-30 top-minus-50">
@@ -18,6 +24,9 @@
 				
 			</div>
 
+
+			<loading></loading>
+
 			<div class="absolute width height opacity0" id="hudtoggle">
 
 				<div class="absolute width-100 height-50 top-20 left-20 black-back white rounded10 shadow font-20">
@@ -28,17 +37,9 @@
 
 			</div>
 
-			<div class="absolute width50 right-100">
-				<trashsimdata></trashsimdata>
-			</div>
-
-			<evolvedata></evolvedata>
+		
+			<evolving></evolving>
 			
-			<loading></loading>
-
-			<div class="absolute width height" id="main-back">
-				<evolving></evolving>
-			</div>
 
 		</div>
 

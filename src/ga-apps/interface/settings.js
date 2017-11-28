@@ -15,6 +15,8 @@ app.directive("settings", ['global.service', function (g) {
 			var status = {opened:false, right:{opened:-20, closed:-600}};
 			$("#settingstoggle").css({right:status.right.closed});
 
+			var winH;
+
 			var controls = [
 			{
 				name:"open",
@@ -40,6 +42,12 @@ app.directive("settings", ['global.service', function (g) {
 				input:$("#refreshbtn")
 			}
 			]
+
+
+			var evolveToggle = {
+				name:"evolve",
+				input:$("#evolvetoggle")
+			}
 
 			var setHover = function (i) {
 
@@ -74,7 +82,18 @@ app.directive("settings", ['global.service', function (g) {
 				})
 			}
 
+			var setEvolveHeight = function () {
+
+				winH = $(window).height();
+
+				console.log("evolve toggle", evolveToggle.input[0]);
+
+				evolveToggle.input.css({height:winH + "px"});
+			}
+
 			setTimeout(function () {
+
+				
 
 				$("#main-back").click(function () {
 					controls[0].tool.animate({opacity:0}, 200);
@@ -82,6 +101,13 @@ app.directive("settings", ['global.service', function (g) {
 						status.opened = false;
 					})
 				});
+
+				setEvolveHeight();
+
+				$(window).resize(function () {
+
+					setEvolveHeight();
+				})
 
 			}, 500)
 

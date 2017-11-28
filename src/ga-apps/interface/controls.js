@@ -14,6 +14,7 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 
 
 			var winW;
+			var winH;
 			var controlsW;
 			var toolW;
 			var cntrlWidth;
@@ -52,6 +53,8 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 				input:$("#runtoggle")
 			}
 
+			
+
 			var setHover = function (i) {
 
 				controls[i].input.hover(function () {
@@ -70,6 +73,7 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 			var controlsWidth = function () {
 
 				winW = $(window).width();
+				winH = $(window).height();
 
 				width = 0.6;
 				cntrlWidth = 0;
@@ -83,6 +87,7 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 				$elem.css({width:winW*width});
 
 				runToggle.input.css({width:winW*width});
+				
 
 				cntrlWidth = $elem.width()/controls.length;
 
