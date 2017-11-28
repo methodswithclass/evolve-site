@@ -22,7 +22,7 @@
 			
 			<div class="absolute width80 height80 center">
 
-				<div class="relative width height-100">
+				<div class="relative width height-200">
 
 					<div class="absolute width-100 height-100 top-20 opacity0" id="refreshfeedback">
 						<div class="absolute width height-30 vcenter white-back rounded5 black">
@@ -39,31 +39,31 @@
 					</div>
 				</div>
 
-				<div class="relative width height-100">
-					<div class="absolute width height-30 vcenter border-bottom-white" id="gensinputouter">
+				<div class="relative width height-200">
+					<div class="absolute width80 height-100 center border-bottom-white" id="gensinputouter">
 						
 
 						<div class="absolute width60 height" id="gensinputinner">
-							<div class="absolute width90 center text-right right0">
+							<div class="absolute width90 center text-right right0 font120-rem">
 								generations
 							</div>
 						</div>
-						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="gensinput" type="text" value="100">
+						<input class="absolute width40 height right0 text-right font120-rem transparent-back white nooutline" id="gensinput" type="text">
 
 
 					</div>
 				</div>
 
-				<div class="relative width height-100">
-					<div class="absolute width height-30 vcenter border-bottom-white" id="runsinputouter">
+				<div class="relative width height-200">
+					<div class="absolute width80 height-100 center border-bottom-white" id="runsinputouter">
 						
 
 						<div class="absolute width60 height" id="runsinputinner">
-							<div class="absolute width90 center text-right right0">
+							<div class="absolute width90 center text-right right0 font120-rem">
 								fitness runs
 							</div>
 						</div>
-						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="runsinput" type="text" value="1">
+						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="runsinput" type="text">
 
 
 					</div>
@@ -71,22 +71,22 @@
 
 				<div class="relative width hcenter border-white rounded10">
 
-					<div class="relative width90 hcenter height-50 padding-v-20">
-						<div class="absolute center font-20 white text-center" id="resetwarn">
+					<div class="relative width90 hcenter height-100 padding-v-20">
+						<div class="absolute center font80-rem white text-center" id="resetwarn">
 							these changes will re-start the <br> evolution from the first generation
 						</div>
 					</div>
 
-					<div class="relative width80 hcenter height-100">
-						<div class="absolute width height-50 vcenter border-bottom-white" id="goalinputouter">
+					<div class="relative width80 hcenter height-200">
+						<div class="absolute width80 height-100 center border-bottom-white" id="goalinputouter">
 							
 
 							<div class="absolute width40 height" id="goalinputinner">
-								<div class="absolute width90 center text-right right0">
+								<div class="absolute width90 center text-right right0 font120-rem">
 									goal
 								</div>
 							</div>
-							<select class="absolute width60 height right0 font-30 transparent-back white nooutline" id="goalinput">
+							<select class="absolute width60 height right0 font120-rem transparent-back white nooutline" id="goalinput">
 								<option class="black text-right font-30" ng-repeat="item in goals" value="{{item.goal}}">{{item.goal}}</option>
 							</select>
 
@@ -94,16 +94,16 @@
 						</div>
 					</div>
 
-					<div class="relative width80 hcenter height-100">
-						<div class="absolute width height-30 vcenter border-bottom-white" id="popinputouter">
+					<div class="relative width80 hcenter height-200">
+						<div class="absolute width80 height-100 center border-bottom-white" id="popinputouter">
 							
 
 							<div class="absolute width60 height" id="popinputinner">
-								<div class="absolute width90 center text-right right0">
+								<div class="absolute width90 center text-right right0 font120-rem">
 									population
 								</div>
 							</div>
-							<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="popinput" type="text" value="100">
+							<input class="absolute width40 height right0 text-right font120-rem transparent-back white nooutline" id="popinput" type="text">
 
 
 						</div>
