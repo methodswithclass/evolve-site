@@ -1,4 +1,4 @@
-app.directive("settings", ['global.service', function (g) {
+app.directive("settings", ['global.service', "events.service", function (g, events) {
 
 	return {
 		restrict:"E",
@@ -15,7 +15,10 @@ app.directive("settings", ['global.service', function (g) {
 			var status = {opened:false, right:{opened:-20, closed:-600}};
 			$("#settingstoggle").css({right:status.right.closed});
 
-			var winH;
+			var winH = $(window).height();
+			var winW = $(window).width();
+
+			var width = 0.6;
 
 			var controls = [
 			{
@@ -48,6 +51,8 @@ app.directive("settings", ['global.service', function (g) {
 				name:"evolve",
 				input:$("#evolvetoggle")
 			}
+
+			$stage = $("#stage");
 
 			var setHover = function (i) {
 
@@ -89,6 +94,13 @@ app.directive("settings", ['global.service', function (g) {
 				console.log("evolve toggle", evolveToggle.input[0]);
 
 				evolveToggle.input.css({height:winH + "px"});
+
+
+				$stage.css({width:winW*width});
+
+				events.dispatch("load-display", "trash-sim");
+
+
 			}
 
 			setTimeout(function () {
