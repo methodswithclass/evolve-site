@@ -239,7 +239,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 				var effdim = u.dim(1);
 
 				$("#stage").css({width:effdim.width, height:effdim.height});
-				$("#simdata").css({height:effHsim});
+				//$("#simdata").css({height:effHsim});
 
 				//events.dispatch("refreshEnv");
 				

@@ -67,8 +67,11 @@ app.factory("utility", function () {
         var winW = $(window).width();
         var winH = $(window).height();
 
-        var effH = winH*0.9 - 20 - 20 - 200 - 30;
-        var effW = winW*0.9 - 20 - 100;
+        // var effH = winH*0.9 - 20 - 20 - 200 - 30;
+        // var effW = winW*0.9 - 20 - 100;
+
+        var effH = winH*0.8;
+        var effW = winW*0.8;
 
         var height = effH;
         var width = effH*aspect;
