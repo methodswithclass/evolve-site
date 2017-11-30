@@ -10,9 +10,11 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 
 			// console.log("\n############\ncreate settings directive\n\n");
 
+			let settingsWidth = 800;
+
 
 			var toggle = true;
-			var status = {opened:false, right:{opened:-20, closed:-600}};
+			var status = {opened:false, right:{opened:-20, closed:-settingsWidth}};
 			$("#settingstoggle").css({right:status.right.closed});
 
 			var winH = $(window).height();
