@@ -88,7 +88,14 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 				controls[0].tool.animate({opacity:0}, 200);
 				$("#settingstoggle").animate({right:(!open_up || status.opened ? status.right.closed : (open_up || status.closed ? status.right.opened : status.right.closed))}, 300, function () {
 					status.opened = !status.opened;
+
+					if (!status.opened) {
+						events.dispatch("settings-toggle");
+					}
+
 				})
+
+
 			}
 
 			var setEvolveHeight = function () {

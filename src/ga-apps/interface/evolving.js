@@ -136,23 +136,23 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	           	$scope.evdata = x;
 
-	           	var fits = [];
+	           	// var fits = [];
 
-	           	for (var i in $scope.evdata.best.runs) {
+	           	// for (var i in $scope.evdata.best.runs) {
 
-	           		fits.push({fit:g.truncate($scope.evdata.best.runs[i].fit, 4)});
-	           	}
+	           	// 	fits.push({fit:g.truncate($scope.evdata.best.runs[i].fit, 4)});
+	           	// }
 
-	           	$scope.evdata.best.runs = fits;
+	           	// $scope.evdata.best.runs = fits;
 
-	           	var fits = [];
+	           	// var fits = [];
 
-	           	for (var i in $scope.evdata.worst.runs) {
+	           	// for (var i in $scope.evdata.worst.runs) {
 
-	           		fits.push({fit:g.truncate($scope.evdata.worst.runs[i].fit, 4)});
-	           	}
+	           	// 	fits.push({fit:g.truncate($scope.evdata.worst.runs[i].fit, 4)});
+	           	// }
 
-	           	$scope.evdata.worst.runs = fits;
+	           	// $scope.evdata.worst.runs = fits;
 
 	           	react.push({
 	           		name:"ev." + $scope.name,
@@ -418,6 +418,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 				simulator.refresh($scope.session);
 		    }
 
+
+		    events.on("settings-toggle", function () {
+
+		    	setEvolveBackend(false, function () {});
+		    })
 
 		    events.on("evolve.complete", "id", function () {
 		        completeEvolve();
