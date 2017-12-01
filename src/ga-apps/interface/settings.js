@@ -20,6 +20,8 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 			var winH = $(window).height();
 			var winW = $(window).width();
 
+			var $winH;
+
 			var width = 0.6;
 
 			var controls = [
@@ -91,7 +93,9 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 
 			var setEvolveHeight = function () {
 
-				winH = $(window).height();
+				$winH = $(window).height();
+
+				winH = winH > $winH ? winH : $winH;
 
 				console.log("evolve toggle", evolveToggle.input[0]);
 
