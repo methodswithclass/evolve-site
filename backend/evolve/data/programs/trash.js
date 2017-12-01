@@ -53,7 +53,7 @@ var data = {
 				return {x:0, y:-1}
 			},
 			points:{
-				success:1,
+				success:0,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -65,7 +65,7 @@ var data = {
 				return {x:0, y:1}
 			},
 			points:{
-				success:1,
+				success:0,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -77,7 +77,7 @@ var data = {
 				return {x:-1, y:0}
 			},
 			points:{
-				success:1,
+				success:0,
 				fail:-5
 			},
 			color:"#0000ff"
@@ -89,7 +89,7 @@ var data = {
 				return {x:1, y:0}
 			},
 			points:{
-				success:1,
+				success:0,
 				fail:-5
 			},
 			color:"#0000ff"
