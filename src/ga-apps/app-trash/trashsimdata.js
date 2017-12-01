@@ -34,7 +34,7 @@ app.directive("trashsimdata", ["global.service", "events.service", function (g, 
 				$hudtoggle = $("#hudtoggle");
 				items = $("#simdatainner").children();
 
-				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + $controls.offset().top + $controls.height() + 50 + "px"});
+				$elem.css({top:($controls.offset().top - $hudtoggle.offset().top)+ $controls.height() + 200 + "px"});
 
 			}
 
