@@ -17,7 +17,6 @@ var refreshPages = [
 ]
 
 
-
 // // If an incoming request uses
 // // a protocol other than HTTPS,
 // // redirect that request to the
@@ -71,7 +70,16 @@ app.use("/", express.static(path.join(__dirname, "dist")));
 
 
 
-var listener = app.listen(process.env.NODE_ENV == "production" ? (process.env.PORT || 8080) : 80, function () {
+var PORTS = {
+	heroku:8080,
+	http:80,
+	misc1:3000,
+	misc2:4200,
+	misc3:4210
+}
+
+
+var listener = app.listen(process.env.PORT || (process.env.NODE_ENV == "production" ? PORTS.heroku : PORTS.http), function () {
 
 	console.log("listening on port", listener.address().port);
 });
