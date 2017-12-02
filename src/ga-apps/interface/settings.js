@@ -123,7 +123,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 						if (!status.opened) {
 							
 							react.push({
-					        	name:"manual-set",
+					        	name:"manual",
 					        	state:$scope.settings
 					        })
 

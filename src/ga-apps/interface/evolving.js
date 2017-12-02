@@ -312,6 +312,30 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		   	}
 
+		   	var initializeAlgorithmBackend = function (complete) {
+
+
+		        $http({
+		            method:"POST",
+		            url:"/evolve/initialize",
+		            data:{input:$scope.getInput()}
+		        })
+		        .then(function (res) {
+
+		            console.log("Initialize algorithm", res.data.success);
+
+
+
+		            if (complete) complete();
+
+		        }, function (err) {
+
+		            console.log("Server error while initializing algorithm", err.message);
+
+		        })
+
+		    }
+
 		    var setEvolveBackend = function (resend, complete) {
 
 		    	$http({
@@ -344,7 +368,26 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	                console.log("Run algorithm", res);
 
-	                if (complete) complete();
+	                if (!res.data.success) {
+
+	                	initializeAlgorithmBackend(function () {
+
+	                		runEvolveBackend(function  () {
+
+	                			if (complete) complete();
+
+	                		})
+
+	                	});
+
+
+	                }
+	                else {
+
+	                	 if (complete) complete();
+	                }
+
+	               
 
 	            }, function (err) {
 
@@ -432,18 +475,18 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
     		})
 
 
-    		react.subscribe({
-    			name:"manual-set",
-    			callback:function(x) {
+    		// react.subscribe({
+    		// 	name:"manual-set",
+    		// 	callback:function(x) {
 
-    				manual = x;
+    		// 		manual = x;
 
-    				$scope.getInput(x);
+    		// 		$scope.getInput(x);
 
-    				setEvolveBackend();
+    		// 		//setEvolveBackend();
 
-    			}
-    		})
+    		// 	}
+    		// })
 
 		    events.on("evolve.complete", function () {
 		        completeEvolve();
@@ -482,27 +525,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            delay:600,
 		            complete:function () {
 
-		            	if ($scope.stepdata.gen > 0) {
-		            		
 
-	            			setEvolveBackend(true, function () {
+            			runEvolveBackend(function () {
 
-		            			restartEvolveBackend(function () {
-
-		            				runEvolveComplete();
-		            			});
-
-	            			});
-
-		            	}
-		            	else {
-		            		
-		            		runEvolveBackend(function () {
-
-		            			runEvolveComplete() 
-
-		            		});
-		            	}
+            				runEvolveComplete();
+            			});
 		                
 		            }
 		        });

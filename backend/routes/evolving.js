@@ -50,9 +50,9 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 	var evolution = get.getSessionEvolve(input.session);
 
-	evolution.initialize(input);
+	let success = evolution.initialize(input);
 
-	res.json({success:"success"});
+	res.json({success:success});
 });
 
 
@@ -80,9 +80,9 @@ evolveRouter.post("/run", function (req, res, next) {
 
 	var evolution = get.getSessionEvolve(req.body.input.session)
 
-	evolution.run(req.body.input);
+	let success = evolution.run(req.body.input);
 
-	res.json({success:"success", running:true});
+	res.json({success:success, running:true});
 });
 
 
