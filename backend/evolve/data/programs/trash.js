@@ -123,7 +123,7 @@ var data = {
 			name:"move random",
 			change:getRandom,
 			points:{
-				success:-2,
+				success:0,
 				fail:-5
 			},
 			color:"#ffff00"
