@@ -71,7 +71,7 @@ app.use("/", express.static(path.join(__dirname, "dist")));
 
 
 
-var listener = app.listen(process.env.NODE_ENV == "production" ? (process.env.PORT || 8080) : 3000, function () {
+var listener = app.listen(process.env.NODE_ENV == "production" ? (process.env.PORT || 8080) : 3000, "10.10.154.54", function () {
 
 	console.log("listening on port", listener.address().port);
 });
