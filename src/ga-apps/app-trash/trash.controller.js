@@ -9,7 +9,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     // console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
 
 
-    events.on("completeSim", "id", function () {
+    events.on("completeSim", function () {
 
         $scope.running(false);
     });

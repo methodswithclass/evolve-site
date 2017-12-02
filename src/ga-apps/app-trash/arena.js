@@ -220,14 +220,14 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 		    	state:cleanBlock
 		    })
 
-		    events.on("resetenv", "id", function () {
+		    events.on("resetenv", function () {
 
 				console.log("reset ui");
 
 				makeBlocks(environment)
 			})
 
-			events.on("refreshenv", "id", function () {
+			events.on("refreshenv", function () {
 
 				console.log("refresh ui");
 
@@ -239,9 +239,6 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 				var effdim = u.dim(1);
 
 				$("#stage").css({width:effdim.width, height:effdim.height});
-				//$("#simdata").css({height:effHsim});
-
-				//events.dispatch("refreshEnv");
 				
 			}, 500);
 

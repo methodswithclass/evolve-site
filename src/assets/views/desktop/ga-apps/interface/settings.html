@@ -48,7 +48,7 @@
 								generations
 							</div>
 						</div>
-						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="gensinput" type="text" value="100">
+						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="gensinput" type="text" ng-model="settings.gens" ng-keyup="changeInput()">
 
 
 					</div>
@@ -63,7 +63,7 @@
 								fitness runs
 							</div>
 						</div>
-						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="runsinput" type="text" value="1">
+						<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="runsinput" type="text" ng-model="settings.runs" ng-keyup="changeInput()">
 
 
 					</div>
@@ -86,8 +86,8 @@
 									goal
 								</div>
 							</div>
-							<select class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="goalinput">
-								<option class="black font-30" ng-repeat="item in goals" value="{{item.goal}}">{{item.goal}}</option>
+							<select class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="goalinput" ng-model="settings.goal" ng-keyup="changeInput()">
+								<option class="black font-30" ng-repeat="item in goals">{{item.goal}}</option>
 							</select>
 
 
@@ -103,7 +103,7 @@
 									population
 								</div>
 							</div>
-							<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="popinput" type="text" value="100">
+							<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="popinput" type="text" ng-model="settings.pop" ng-keyup="changeInput()">
 
 
 						</div>

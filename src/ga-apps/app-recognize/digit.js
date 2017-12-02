@@ -164,18 +164,18 @@ app.directive("digit", ['events.service', 'react.service', function (events, rea
 		    // }
 
 
-		    events.on("createDigit", "id", function () {
+		    events.on("createDigit", function () {
 
 		    	processAndMakeImage(indexes.index);
 		    })
 
 
-		    events.on("resetDigits", "id", function () {
+		    events.on("resetDigits", function () {
 
 		    	eraseImage();
 		    })
 
-		    events.on("imageFunctions", "id", function () {
+		    events.on("imageFunctions", function () {
 
 		    	react.push({
 		    		name:"imageFunctions",

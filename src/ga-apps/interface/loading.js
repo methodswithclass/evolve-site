@@ -19,22 +19,6 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 
 					$phases = x;
 
-					// if (g.isModbile() && !x.mobile) {
-
-					// 	let _phases = [{
-					//         message:"this demo has no mobile version", 
-					//         delay:0,
-					//         duration:0,
-					//         phase:function (complete) {
-
-					//             if (complete) complete();
-
-					//         }
-					//     }]
-
-					//     $phases = _phases.push($phases[$phases.length-1]);
-
-					// }
 				}
 			});
 
@@ -70,7 +54,7 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
             }
 
 
-    		events.on("load" + $scope.name, "id", function () {
+    		events.on("load" + $scope.name, function () {
 
     			// console.log("load", $scope.name);
 

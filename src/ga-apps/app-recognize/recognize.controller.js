@@ -17,7 +17,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     var update = false;
     var ev = false;
 
-    events.on("closerecognize", "id", function () {
+    events.on("closerecognize", function () {
 
        $scope.running(false);
     });

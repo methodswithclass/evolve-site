@@ -1,4 +1,4 @@
-app.directive("settings", ['global.service', "events.service", function (g, events) {
+app.directive("settings", ['global.service', "events.service", "react.service", function (g, events, react) {
 
 	return {
 		restrict:"E",
@@ -10,8 +10,8 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 
 			// console.log("\n############\ncreate settings directive\n\n");
 
-			let settingsWidth = 800;
-
+			var settingsWidth = 800;
+			var width = 0.6;
 
 			var toggle = true;
 			var status = {opened:false, right:{opened:-20, closed:-settingsWidth}};
@@ -19,10 +19,23 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 
 			var winH = $(window).height();
 			var winW = $(window).width();
-
 			var $winH;
 
-			var width = 0.6;
+			var manual;
+			$scope.settings = {
+				gens:100,
+				runs:20,
+				goal:"max",
+				pop:100
+			};
+
+			react.subscribe({
+				name:"resetInput",
+				callback:function(x) {
+
+					$scope.settings = x;
+				}
+			})
 
 			var controls = [
 			{
@@ -31,6 +44,11 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 				tool:$("#opentool")
 			}
 			]
+
+			var evolveToggle = {
+				name:"evolve",
+				input:$("#evolvetoggle")
+			}
 
 			var inputs = [
 			{
@@ -49,12 +67,6 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 				input:$("#refreshbtn")
 			}
 			]
-
-
-			var evolveToggle = {
-				name:"evolve",
-				input:$("#evolvetoggle")
-			}
 
 			$stage = $("#stage");
 
@@ -86,15 +98,39 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 			var animateToggle = function (open_up) {
 
 				controls[0].tool.animate({opacity:0}, 200);
-				$("#settingstoggle").animate({right:(!open_up || status.opened ? status.right.closed : (open_up || status.closed ? status.right.opened : status.right.closed))}, 300, function () {
-					status.opened = !status.opened;
+				$("#settingstoggle").animate({
+					
+					right:
+					
+					(
+					 (!open_up || status.opened) 
+					 ? status.right.closed
 
-					if (!status.opened) {
-						events.dispatch("settings-toggle");
+					 : (
+					    (open_up || status.closed) 
+					    ? status.right.opened 
+					    : status.right.closed
+					    )
+					 )
+
+				}, 
+				{
+					
+					duration:300, 
+					complete:function () {
+						status.opened = !status.opened;
+
+						if (!status.opened) {
+							
+							react.push({
+					        	name:"manual-set",
+					        	state:$scope.settings
+					        })
+
+						}
 					}
 
-				})
-
+				});
 
 			}
 
@@ -108,24 +144,9 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 
 				evolveToggle.input.css({height:winH + "px"});
 
-
-				// $stage.css({width:winW*width});
-
-				// events.dispatch("load-display", "trash-sim");
-
-
 			}
 
-			setTimeout(function () {
-
-				
-
-				$("#main-back").click(function () {
-					controls[0].tool.animate({opacity:0}, 200);
-					$("#settingstoggle").animate({right:status.right.closed}, 300, function () {
-						status.opened = false;
-					})
-				});
+			var setupEvolve = function() {
 
 				setEvolveHeight();
 
@@ -133,8 +154,28 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 
 					setEvolveHeight();
 				})
+			}
 
-			}, 500)
+
+			$scope.changeInput = function () {
+
+
+				manual = {
+		            gens:parseInt($("#gensinput").val()),
+		            runs:parseInt($("#runsinput").val()),
+		            goal:$("#goalinput").val(),
+		            pop:parseInt($("#popinput").val())
+		        }
+
+		        console.log("on change input, manual", manual);
+
+		        react.push({
+		        	name:"manual",
+		        	state:manual
+		        })
+
+		        return manual;
+			}
 
 			$scope.animateRefresh = function (complete) {
 
@@ -164,6 +205,20 @@ app.directive("settings", ['global.service', "events.service", function (g, even
 					animateToggle(true);
 				}
 			}
+
+
+			setTimeout(function () {
+
+				$scope.settings = $scope.changeInput();
+
+				$("#main-back").click(function () {
+
+					animateToggle(false);
+				});
+
+				setupEvolve();
+
+			}, 500)
 			
 		}
 	}

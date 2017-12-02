@@ -17,7 +17,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
     		var update = false;
 		    var ev = false;
 		    var latest;
+		    var manual;
     		$scope.input = {};
+
 
     		$scope.evdata = {
 		        index:0,
@@ -89,36 +91,42 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	// console.log("input", d.data);
 
-		        default_input = $input || {
-		            gens:500,
-		            runs:15,
-		            goal:"max",
-		            pop:60,
-		            evdelay:0
-		        }
+		    	manual = $input || {
+		    		gens:500,
+		    		runs:15,
+		    		goal:"max",
+		    		pop:60
+		    	}
 
-		        $("#gensinput").val(default_input.gens),
-		        $("#runsinput").val(default_input.runs),
-		        $("#goalinput").val(default_input.goal),
-		        $("#popinput").val(default_input.pop);
+		        $("#gensinput").val(manual.gens),
+		        $("#runsinput").val(manual.runs),
+		        $("#goalinput").val(manual.goal),
+		        $("#popinput").val(manual.pop);
+
+		        react.push({
+		        	name:"resetInput",
+		        	state:manual
+		        })
 
 		    }
 
-		    $scope.getInput = function () {
+		    $scope.getInput = function ($x) {
 
-		    	// console.log("get input", d);
+		    	if ($x) manual = $x;
 
 		        $scope.input = {
 		            name:$scope.name,
-		            gens:parseInt($("#gensinput").val()),
-		            runs:parseInt($("#runsinput").val()),
-		            goal:$("#goalinput").val(),
-		            pop:parseInt($("#popinput").val()),
-		            evdelay:default_input.evdelay,
+		            gens:parseInt((manual ? manual.gens : undefined) || $("#gensinput").val()),
+		            runs:parseInt((manual ? manual.runs : undefined) || $("#runsinput").val()),
+		            goal:(manual ? manual.goal : undefined) || $("#goalinput").val(),
+		            pop:parseInt((manual ? manual.pop : undefined) || $("#popinput").val()),
+		            evdelay:0,
 		            pdata:d.data,
 		            newenv:true,
 		            session:$scope.session
 		        }
+
+		    	console.log("get input", $scope.input);
 
 		        return $scope.input;
 		    }
@@ -135,24 +143,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	           	// console.log("set evdata", x);
 
 	           	$scope.evdata = x;
-
-	           	// var fits = [];
-
-	           	// for (var i in $scope.evdata.best.runs) {
-
-	           	// 	fits.push({fit:g.truncate($scope.evdata.best.runs[i].fit, 4)});
-	           	// }
-
-	           	// $scope.evdata.best.runs = fits;
-
-	           	// var fits = [];
-
-	           	// for (var i in $scope.evdata.worst.runs) {
-
-	           	// 	fits.push({fit:g.truncate($scope.evdata.worst.runs[i].fit, 4)});
-	           	// }
-
-	           	// $scope.evdata.worst.runs = fits;
 
 	           	react.push({
 	           		name:"ev." + $scope.name,
@@ -333,7 +323,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	                console.log("Set input", res);
 
-	                complete();
+	                if (complete) complete();
 
 	            }, function (err) {
 
@@ -354,7 +344,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	                console.log("Run algorithm", res);
 
-	                complete();
+	                if (complete) complete();
 
 	            }, function (err) {
 
@@ -376,7 +366,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	                console.log("Restart algorithm", res);
 
-	                complete();
+	                if (complete) complete();
 
 	            }, function (err) {
 
@@ -399,7 +389,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 	                console.log("Hard stop algorithm", res);
 
-	                complete();
+	                if (complete) complete();
 
 	            }, function (err) {
 
@@ -419,12 +409,43 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    events.on("settings-toggle", function () {
+		    react.subscribe({
+		    	name:"resetInput",
+		    	callback:function(x) {
 
-		    	setEvolveBackend(false, function () {});
+		    		manual = x;
+
+		    		$scope.getInput(x);
+		    	}
 		    })
 
-		    events.on("evolve.complete", "id", function () {
+
+		    react.subscribe({
+    			name:"manual",
+    			callback:function(x) {
+
+    				manual = x;
+
+    				$scope.getInput(x);
+
+    			}
+    		})
+
+
+    		react.subscribe({
+    			name:"manual-set",
+    			callback:function(x) {
+
+    				manual = x;
+
+    				$scope.getInput(x);
+
+    				setEvolveBackend();
+
+    			}
+    		})
+
+		    events.on("evolve.complete", function () {
 		        completeEvolve();
 		    });
 
@@ -435,7 +456,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $scope.resetInput();
 		        $scope.animateRefresh(function () {
 
-		            setEvolveBackend(false, function () {});
+		            setEvolveBackend();
 		        });
 		    }
 
