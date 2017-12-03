@@ -1,0 +1,18 @@
+branch-defaults:
+  master:
+    environment: null
+    group_suffix: null
+global:
+  application_name: evolve-backend
+  branch: master
+  default_ec2_keyname: ssh-key-3
+  default_platform: Node.js
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: evolve-backend
+  sc: git
+  workspace_type: Application
