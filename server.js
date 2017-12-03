@@ -79,7 +79,35 @@ var PORTS = {
 }
 
 
-var listener = app.listen(process.env.PORT || (process.env.NODE_ENV == "production" ? PORTS.heroku : PORTS.http), function () {
+
+var env = process.env.NODE_ENV;
+var port;
+
+	
+if (process.env.PORT) {
+	port = process.env.PORT;
+}
+else if (env == "production") {
+
+	port = PORTS.heroku;
+
+}
+else if (env == "development") {
+
+	port = PORTS.misc2;
+}
+else if (env == "elstic_beanstaulk") {
+
+	port = PORTS.http;
+}
+else {
+
+	port = PORTS.misc1;
+}
+
+
+
+var listener = app.listen(port, function () {
 
 	console.log("listening on port", listener.address().port);
 });
