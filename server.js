@@ -96,10 +96,6 @@ else if (env == "development") {
 
 	port = PORTS.misc2;
 }
-else if (env == "elstic_beanstaulk") {
-
-	port = PORTS.http;
-}
 else {
 
 	port = PORTS.misc1;
