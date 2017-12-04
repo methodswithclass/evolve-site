@@ -763,7 +763,7 @@ var obj = {};
 		
 			era[index(now)] = new generation({index:now, input:self.input});
 
-			return era.length == self.input.pop;
+			return era[index(now)].length == self.input.pop;
 			
 		}
 

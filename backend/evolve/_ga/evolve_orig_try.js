@@ -543,6 +543,7 @@ var obj = {};
 		var org = 0;
 
 		var active = true;
+		var runtimer;
 
 		self.best;
 		self.worst;
@@ -594,7 +595,7 @@ var obj = {};
 
 			console.log("run population");
 
-			var runtimer = setInterval(function () {
+			runtimer = setInterval(function () {
 
 				if (active) {
 
@@ -1217,6 +1218,8 @@ var obj = {};
 			era = [];
 
 			era[0] = new generation({index:0, input:input});
+
+			return era[0].length == input.pop;
 		}
 
 		// self.run = function (_input) {
@@ -1297,7 +1300,7 @@ var obj = {};
 
 		self.running = function () {
 
-			return active && (now < self.input.gens);
+			return active && (now < input.gens);
 		}
 
 		self.getBest = function () {
@@ -1320,41 +1323,51 @@ var obj = {};
 
 		self.run = function (_input) {
 
-			console.log("run evolve module");
-
-			active = true;
-
-			self.set(_input);
-			step();
-
-		}
-
-		self.restart = function (current, _input) {
-
 			console.log("restart evolve");
 
-			if (_input.goal != self.input.goal || _input.pop != self.input.pop) {
-				self.initialize(_input);
-			}	
-			else {
-				now = current;
+			if (_input.goal != input.goal || _input.pop != input.pop) {
+				console.log("inputs are not equal", _input.pop, input.pop, "reinitialize");
+				return false;
 			}
+			else {
 
-			self.run(_input);
+
+				console.log("inputs are equal", _input.pop, input.pop, "run");
+				active = true;
+				this.set(_input);
+				step();
+				return true;
+			}
 			
 
 		}
 
+		// self.restart = function (current, _input) {
+
+		// 	console.log("restart evolve");
+
+		// 	if (_input.goal != self.input.goal || _input.pop != self.input.pop) {
+		// 		self.initialize(_input);
+		// 	}	
+		// 	else {
+		// 		now = current;
+		// 	}
+
+		// 	self.run(_input);
+			
+
+		// }
+
 		self.hardStop = function (_input) {
 
-			console.log("evolve hard stop", _input, self.input);
+			console.log("evolve hard stop", _input, input);
 
 			self.set(_input);
 			active = false;
 			if (era[index(now)]) era[index(now)].hardStop();
 
-			if (self.input && self.input.setEvdata) {
-				self.input.setEvdata({
+			if (input && input.setEvdata) {
+				input.setEvdata({
 					index:now,
 					best:previous.best,
 					worst:previous.worst

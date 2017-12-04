@@ -21,18 +21,39 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
     		$scope.input = {};
 
 
-    		$scope.evdata = {
-		        index:0,
-		        best:{},
-		        worst:{}
-		    }
+    		/*#########
+    		default initial settings
+			###########*/
+    		var $$InitialSettings$$ = {
+	    		gens:500,
+	    		runs:20,
+	    		goal:"max",
+	    		pop:100
+	    	}
 
-		    $scope.stepdata = {
-		        gen:0,
-		        org:0,
-		        run:0,
-		        step:0
-		    }
+
+	    	$scope.evdata;
+	    	$scope.stepdata;
+
+	    	var initData = function () {
+
+
+	    		$scope.evdata = {
+			        index:0,
+			        best:{},
+			        worst:{}
+			    }
+
+			    $scope.stepdata = {
+			        gen:0,
+			        org:0,
+			        run:0,
+			        step:0
+			    }
+
+			}
+
+			initData();
 
 			$("#breakfeedback").hide();
 
@@ -91,12 +112,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	// console.log("input", d.data);
 
-		    	manual = $input || {
-		    		gens:500,
-		    		runs:15,
-		    		goal:"max",
-		    		pop:60
-		    	}
+		    	manual = $input || $$InitialSettings$$;
 
 		        $("#gensinput").val(manual.gens),
 		        $("#runsinput").val(manual.runs),
@@ -474,20 +490,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
     			}
     		})
 
-
-    		// react.subscribe({
-    		// 	name:"manual-set",
-    		// 	callback:function(x) {
-
-    		// 		manual = x;
-
-    		// 		$scope.getInput(x);
-
-    		// 		//setEvolveBackend();
-
-    		// 	}
-    		// })
-
 		    events.on("evolve.complete", function () {
 		        completeEvolve();
 		    });
@@ -499,7 +501,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $scope.resetInput();
 		        $scope.animateRefresh(function () {
 
-		            setEvolveBackend();
+		            // setEvolveBackend();
+
+		            initializeAlgorithmBackend(function () {
+
+		            	initData();
+		            	
+		            });
+
 		        });
 		    }
 
