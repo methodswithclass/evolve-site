@@ -112,12 +112,26 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	// console.log("input", d.data);
 
-		    	manual = $input || $$InitialSettings$$;
+		    	manual = $input || {
+		    		gens:$$InitialSettings$$.gens,
+		    		runs:$$InitialSettings$$.runs,
+		    		goal:$$InitialSettings$$.goal,
+		    		pop:$$InitialSettings$$.pop
+		    	}
+
+		    	console.log("reset input", $input, "initial", $$InitialSettings$$, "manual", manual);
 
 		        $("#gensinput").val(manual.gens),
 		        $("#runsinput").val(manual.runs),
 		        $("#goalinput").val(manual.goal),
 		        $("#popinput").val(manual.pop);
+
+		        $scope.settings = {
+		        	gens:manual.gens,
+		        	runs:manual.runs,
+		        	goal:manual.goal,
+		        	pop:manual.pop
+		        }
 
 		        react.push({
 		        	name:"resetInput",
@@ -142,7 +156,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            session:$scope.session
 		        }
 
-		    	console.log("get input", $scope.input);
+		    	// console.log("get input", $scope.input);
 
 		        return $scope.input;
 		    }
@@ -498,7 +512,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        console.log("reset gen");
 		        $scope.running(false);
+		        
 		        $scope.resetInput();
+		        
 		        $scope.animateRefresh(function () {
 
 		            // setEvolveBackend();

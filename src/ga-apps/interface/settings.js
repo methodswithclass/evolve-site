@@ -22,12 +22,14 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var $winH;
 
 			var manual;
-			$scope.settings = {
-				gens:100,
-				runs:20,
-				goal:"max",
-				pop:100
-			};
+			// $scope.settings = {
+			// 	gens:500,
+			// 	runs:20,
+			// 	goal:"max",
+			// 	pop:100
+			// };
+
+			$scope.settings;
 
 			react.subscribe({
 				name:"resetInput",
