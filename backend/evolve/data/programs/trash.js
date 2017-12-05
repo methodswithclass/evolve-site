@@ -101,8 +101,8 @@ var data = {
 				return {x:0, y:0}
 			},
 			points:{
-				success:0,
-				fail:0
+				success:-5,
+				fail:-5
 			},
 			color:"#00ffff"
 		},

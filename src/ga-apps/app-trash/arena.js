@@ -1,4 +1,4 @@
-app.directive("arena", ['$http', 'utility', 'events.service', "react.service", function ($http, u, events, react) {
+app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", function ($http, u, g, events, react) {
 
 	return {
 		restrict:"E",
@@ -13,7 +13,9 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 			var cols;
 			var rows;
 			var environment;
+			var effdim;
 
+			var stageFactor = g.isMobile() ? 0.8 : 0.6;
 			var $stage = $("#stagetoggle");
 
 			var setData = function ($d) {
@@ -52,20 +54,8 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 		    	setData($d)
 		    });
 
-
-			// var winW = $(window).width();
-			var winH = $(window).height();
-
-			// var effW = winW - 20 - 100 - 300 - 30;
-			// var effH = winH - 20 - 20 - 30;
-			var effHsim = winH - 20 - 20 - 30 - 300;
-
-			// var dim = Math.min(effW, effH - 200);
-
 			var col = [];
 			var arena = [];
-
-
 
 			var block = function (input) {
 
@@ -238,7 +228,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 			setTimeout(function () {
 
-				var effdim = u.dim(1);
+				effdim = u.dim(stageFactor, 1);
 
 				$stage.css({width:effdim.width, height:effdim.height});
 				
