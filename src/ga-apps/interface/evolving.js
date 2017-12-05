@@ -112,11 +112,23 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	// console.log("input", d.data);
 
-		    	manual = $input || {
-		    		gens:$$InitialSettings$$.gens,
-		    		runs:$$InitialSettings$$.runs,
-		    		goal:$$InitialSettings$$.goal,
-		    		pop:$$InitialSettings$$.pop
+		    	if ($input) {
+
+		    		manual = {
+			    		gens:$input.gens,
+			    		runs:$input.runs,
+			    		goal:$input.goal,
+			    		pop:$input.pop
+			    	}
+		    	}
+		    	else {
+
+			    	manual = {
+			    		gens:$$InitialSettings$$.gens,
+			    		runs:$$InitialSettings$$.runs,
+			    		goal:$$InitialSettings$$.goal,
+			    		pop:$$InitialSettings$$.pop
+			    	}
 		    	}
 
 		    	console.log("reset input", $input, "initial", $$InitialSettings$$, "manual", manual);

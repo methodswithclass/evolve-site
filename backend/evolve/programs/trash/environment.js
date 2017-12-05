@@ -110,7 +110,7 @@ var environment = function () {
 
 	self.reset = function () {
 
-		self.trash();
+		replace();
 	}
 
 	self.refresh = function () {
@@ -195,7 +195,7 @@ var environment = function () {
 
 		self.make();
 
-		self.trash();
+		self.refresh();
 
 		return self.get();
 	}

@@ -356,6 +356,50 @@ var obj = {};
 		
 		initializePop();
 
+		var runPop = function (complete) {
+
+			indi = 0;
+			var running = true;
+			active = true;
+
+			// console.log("run population");
+
+			runtimer = setInterval(function () {
+
+
+				if (active) {
+
+					if (running) {
+
+						running = false;
+
+						self.pop[indi].setActive();
+
+						self.pop[indi].run(function () {
+
+							indi++;
+
+							if (indi < self.total) {
+								running = true;
+							}
+							else {
+								clearInterval(runtimer);
+								runtimer = {};
+								runtimer = null;
+
+								complete();
+							}
+						});
+
+					}
+				}
+
+			}, 10);
+					
+
+		}
+
+
 		var rank = function () {
 
 			self.pop.sort(function (a,b) {
@@ -391,118 +435,54 @@ var obj = {};
 				worst:self.worst
 			}
 		}
-
-		var runPop = function (complete) {
-
-			indi = 0;
-			var running = true;
-			active = true;
-
-			// console.log("run population");
-
-			runtimer = setInterval(function () {
-
-				if (running) {
-
-					running = false;
-
-					// console.log("self.pop", self.pop, indi);
-
-					if (active) {
-
-						// console.log("run individual", indi);
-
-						self.pop[indi].setActive();
-
-						self.pop[indi].run(function () {
-
-							indi++;
-
-							// console.log("run next individual", indi);
-
-							if (indi < self.total) {
-								running = true;
-							}
-							else {
-								clearInterval(runtimer);
-								runtimer = {};
-								runtimer = null;
-
-								complete();
-							}
-						});
-
-
-					}
-					
-				}
-
-			}, 10);
 			
-		}
+
+
 
 		var getIndex = function (factor) {
 			return Math.floor(Math.random()*self.total*factor);
 		}
 
-		var indexExists = function (index, array) {
+		var indexExists = function ($index, array) {
 
-			for (i in array) {
+			var $$index = array.find(function(p) () {
 
-				if (index == array[i]) {
-					return true;
-				}
-			}
+				return p == $index;
+			})
 
-			return false;
+			return $$index >= 0 ? true : ($$index === undefined ? false : false);
+
 		}
 
-		var getPIndex = function (pIndex, standard) {
+		var getPIndex = function ($pIndex, standard) {
 
 			var index;
 
+			var $$pIndex = [];
+
 			do {
 				index = getIndex(standard);
-			} while (indexExists(index, pIndex));
+			} while (indexExists(index, $pIndex));
 
-			pIndex.push(index);
+			$$pIndex = $pIndex.concat(index);
 
-			return pIndex;
+			return $$pIndex;
 
 		}
 
 		var select = function (number, standard) {
 
-			var num_i = number;
-
 			var pIndex = [];
+			var $pIndex = [];
 			var parents = [];
 
-			for (var i = 0; i < num_i; i++) {
+			for (var i = 0; i < number; i++) {
 				pIndex = getPIndex(pIndex, standard);
 				parents.push(self.pop[last(pIndex)]);
 			}
 
 			return parents
 		}
-
-		// var select = function (num_parents) {
-
-		// 	var standard = self.total > 10 ? 0.2 : 0.5;
-
-		// 	var pIndex = [];
-		// 	var parents = [];
-
-		// 	for (var i = 0; i < num_parents; i++) {
-		// 		pIndex = getPIndex(pIndex, standard);
-		// 		parents.push(self.pop[last(pIndex)]);
-		// 	}
-
-		// 	return parents
-		// }
-
-
-
 
 		var reproduce = function (_parents, standard) {
 
@@ -550,65 +530,24 @@ var obj = {};
 			return children;
 		}
 
-		// var reproduce = function (num_parents) {
-
-		// 	var parents = [];
-		// 	var mates = [];
-		// 	var children = [];
-		// 	var offspring = [];
-
-			
-		// 	// var num_parents = Math.min(_parents, Math.floor(self.total*standard/5));
-
-		// 	// var i = 0;
-		// 	// var more = true;
-		// 	while (children.length < self.total) {
-
-		// 		parents = select(num_parents);
-
-		// 		offspring = parents[0].reproduce([parents[1]]);
-		// 		children = children.concat(offspring);
-
-		// 	}
-
-		// 	children = children.slice(0, self.total);
-
-		// 	console.log("total children", children.length);
-
-		// 	return children;
-		// }
-
-		var getGeneration = function () {
-
-			var ext = rank();
-
-			var thisGen = {};
-			thisGen.index = self.index;
-			thisGen.best = ext.best;
-			thisGen.worst = ext.worst;
-
-			return thisGen;
-		}
-
 		self.turnover = function (complete) {
 
 			console.log("turnover", self.index);
 
 			runPop(function () {
 
-				var thisGen = getGeneration();
-
-
-				// var num_parents = 2;
-				// var children = reproduce(num_parents);
+				var ext = rank();
 
 				var _parents = 2;
-				var standard = self.total > 10 ? 0.2 : 0.5;
+				var standard = self.total > 10 ? 2/10 : 1/2;
 
 				var children = reproduce(_parents, standard);
 
 				complete({
-					generation:thisGen,
+					previous:{
+						best:ext.best,
+						worst:ext:worst
+					},
 					next:new generation({index:self.index + 1, input:input, pop:children})
 				});
 
@@ -633,7 +572,7 @@ var obj = {};
 			clearInterval(runtimer);
 			runtimer = null;
 			if (self.pop[indi]) self.pop[indi].hardStop();
-			initializePop();
+			//initializePop();
 		}
 		
 	}
@@ -685,7 +624,7 @@ var obj = {};
 
 					now++;
 
-					previous = x.generation;
+					previous = x.previous;
 					era[index(now)] = x.next;
 
 					// console.log("running evolve", self.input);
