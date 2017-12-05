@@ -1,4 +1,4 @@
-app.directive("trashsimdata", ["global.service", "events.service", function (g, events) {
+app.directive("trashsimdata", ["global.service", "events.service", "utility", function (g, events, u) {
 
 	return {
 		restrict:"E",
@@ -28,13 +28,15 @@ app.directive("trashsimdata", ["global.service", "events.service", function (g, 
 				height = 0.5;
 				width = 0.25;
 
-				$elem = $("#simdata");
-				$stage = $("#stage");
-				$controls = $("#controls");
+				$elem = $("#simdatatoggle");
+				$stage = $("#stagetoggle");
+				$controls = $("#controlstoggle");
 				$hudtoggle = $("#hudtoggle");
-				// items = $("#simdatainner").children();
+
 
 				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 400 + "px"});
+
+
 
 			}
 

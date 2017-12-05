@@ -14,6 +14,8 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 			var rows;
 			var environment;
 
+			var $stage = $("#stagetoggle");
+
 			var setData = function ($d) {
 
 				// console.log("set data arena\n", $d, "\n\n");
@@ -238,7 +240,7 @@ app.directive("arena", ['$http', 'utility', 'events.service', "react.service", f
 
 				var effdim = u.dim(1);
 
-				$("#stage").css({width:effdim.width, height:effdim.height});
+				$stage.css({width:effdim.width, height:effdim.height});
 				
 			}, 500);
 

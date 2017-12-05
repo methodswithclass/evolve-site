@@ -445,7 +445,7 @@ var obj = {};
 
 		var indexExists = function ($index, array) {
 
-			var $$index = array.find(function(p) () {
+			var $$index = array.find(function(p) {
 
 				return p == $index;
 			})
@@ -546,7 +546,7 @@ var obj = {};
 				complete({
 					previous:{
 						best:ext.best,
-						worst:ext:worst
+						worst:ext.worst
 					},
 					next:new generation({index:self.index + 1, input:input, pop:children})
 				});

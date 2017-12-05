@@ -1,4 +1,4 @@
-app.directive("evolvedata", ['events.service', 'global.service', function (events, g) {
+app.directive("evolvedata", ['events.service', 'global.service', "utility", function (events, g, u) {
 
 	return {
 		restrict:"E",
@@ -20,8 +20,15 @@ app.directive("evolvedata", ['events.service', 'global.service', function (event
 				winW = $(window).width();
 				winH = $(window).height();
 
-				$("#evolvedata").css({top:"400px"});
-				$("#stage").css({top:($("#evolvedata").offset().top - $("#hudtoggle").offset().top) + $("#evolvedata").height() + 150 + "px"})
+				$evolve = $("#evolvedatatoggle");
+				$hud = $("#hudtoggle");
+				$stage = $("#stagetoggle");
+
+
+				
+				$evolve.css({top:"400px"});
+				$stage.css({top:($evolve.offset().top - $hud.offset().top) + $evolve.height() + 150 + "px"})
+
 
 				// console.log("evolve data dispatch events, trash sim and controls");
 

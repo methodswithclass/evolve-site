@@ -1,4 +1,4 @@
-app.directive("controls", ["events.service", 'global.service', function (events, g) {
+app.directive("controls", ["events.service", 'global.service', "utility", function (events, g, u) {
 
 	return {
 		restrict:"E",
@@ -79,10 +79,10 @@ app.directive("controls", ["events.service", 'global.service', function (events,
 				cntrlWidth = 0;
 				toolW = 0.75;
 
-				$elem = $("#controls");
-				$trashtim = $("#trashsim");
-				$stage = $("#stage");
-				$controls = $("#controls");
+				$elem = $("#controlstoggle");
+				$trashtim = $("#trashsimtoggle");
+				$stage = $("#stagetoggle");
+				$controls = $("#controlstoggle");
 				$hudtoggle = $("#hudtoggle");
 
 
