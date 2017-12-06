@@ -57,6 +57,17 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 			$("#breakfeedback").hide();
 
+			var setEvdata = function (x) {
+	           	
+	           	// console.log("set evdata", x);
+
+	           	$scope.evdata = x;
+
+	           	react.push({
+	           		name:"ev." + $scope.name,
+	           		state:$scope.evdata
+	           	});
+	        }
 
 
 			$scope.setData = function ($d) {
@@ -179,18 +190,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	return $scope.input;
 		    }
-
-		    var setEvdata = function (x) {
-	           	
-	           	// console.log("set evdata", x);
-
-	           	$scope.evdata = x;
-
-	           	react.push({
-	           		name:"ev." + $scope.name,
-	           		state:$scope.evdata
-	           	});
-	        }
 
 			var stepprogress = function () {
 
@@ -340,6 +339,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    		// console.log("get stepdata", res.data.stepdata);
 
 	                $scope.stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
+
+	                if ($scope.stepdata.gen != $scope.evdata.index) {
+	                	getBest();
+	                }
 
 	                setTimeout(function () {
 
