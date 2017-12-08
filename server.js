@@ -59,7 +59,7 @@ var refresh = function () {
 
 		console.log(req.url);
 
-		var urlArray = req.url.split("/");
+		var urlArray = req.url.split("com/");
 
 		subPages.map(function (value, index) {
 
