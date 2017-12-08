@@ -79,7 +79,7 @@ var refresh = function () {
 
 
 app.use(refresh());
-app.use(forceSSL());
+// app.use(forceSSL());
 // if  (process.env.NODE_ENV == "production") app.use(forceSSL());
 // else {console.log("environment development");}
 
