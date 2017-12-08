@@ -36,25 +36,6 @@ const forceSSL = function() {
 	}
 }
 
-// var refresh = function () {
-
-// 	return function (req, res, next) {
-
-// 		console.log(req.url);
-
-// 		var urlArray = req.url.split("/");
-
-// 		for (var i in refreshPages) {
-// 			if (urlArray[1] == refreshPages[i]) {
-// 				return res.redirect(['http://', req.get('Host')].join(''));
-// 			}
-// 		}
-
-// 		next();
-
-// 	}
-// }
-
 var refresh = function () {
 
 	return function (req, res, next) {
@@ -63,18 +44,37 @@ var refresh = function () {
 
 		var urlArray = req.url.split("/");
 
-		subPages.map(function (value, index) {
-
-			if (urlArray && (urlArray.length > 0 && (urlArray[1].length > 0 && urlArray[1] != value)))  {
+		for (var i in refreshPages) {
+			if (urlArray[1] == refreshPages[i]) {
 				return res.redirect(['http://', req.get('Host')].join(''));
 			}
-
-		})
+		}
 
 		next();
 
 	}
 }
+
+// var refresh = function () {
+
+// 	return function (req, res, next) {
+
+// 		console.log(req.url);
+
+// 		var urlArray = req.url.split("/");
+
+// 		subPages.map(function (value, index) {
+
+// 			if (urlArray && (urlArray.length > 0 && (urlArray[1].length > 0 && urlArray[1] != value)))  {
+// 				return res.redirect(['http://', req.get('Host')].join(''));
+// 			}
+
+// 		})
+
+// 		next();
+
+// 	}
+// }
 
 
 
