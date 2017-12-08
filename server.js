@@ -63,7 +63,10 @@ var refresh = function () {
 
 		subPages.map(function (value, index) {
 
-			if (urlArray[1].length > 0 && urlArray[1] != value)  {
+			if (urlArray
+			    && urlArray.length > 0 
+			    && urlArray[1].length > 0 
+			    && urlArray[1] != value)  {
 				return res.redirect(['http://', req.get('Host')].join(''));
 			}
 
