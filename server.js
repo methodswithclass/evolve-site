@@ -18,6 +18,8 @@ var refreshPages = [
 
 var subPages = [
 "assets"
+"favicon.ico",
+"index.html"
 ]
 
 
