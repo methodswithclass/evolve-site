@@ -59,14 +59,11 @@ var refresh = function () {
 
 		console.log(req.url);
 
-		var urlArray = req.url.split("com/");
+		var urlArray = req.url.split("/");
 
 		subPages.map(function (value, index) {
 
-			if (urlArray
-			    && urlArray.length > 0 
-			    && urlArray[1].length > 0 
-			    && urlArray[1] != value)  {
+			if (urlArray && (urlArray.length > 0 && (urlArray[1].length > 0 && urlArray[1] != value)))  {
 				return res.redirect(['http://', req.get('Host')].join(''));
 			}
 
