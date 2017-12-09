@@ -36,8 +36,6 @@ app.directive("trashsimdata", ["global.service", "events.service", "utility", fu
 
 				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 400 + "px"});
 
-
-
 			}
 
 			// console.log("\nregister event trash-sim-data display\n\n");

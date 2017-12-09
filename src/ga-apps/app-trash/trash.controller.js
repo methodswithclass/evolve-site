@@ -1,4 +1,4 @@
-app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', function ($scope, $http, simulator, u, g, react, events) {
+app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", function ($scope, $http, simulator, u, g, react, events, display) {
 
     var self = this;
 
@@ -222,10 +222,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("show", "simdata", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
 
-
-
-            // for mobile, stage set in evolvedata directive load data event.on callback
-            events.dispatch("load-display");
+            display.load();
 
             if (complete) complete();
         }

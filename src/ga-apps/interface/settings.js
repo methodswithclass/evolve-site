@@ -17,17 +17,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var status = {opened:false, right:{opened:-20, closed:-settingsWidth}};
 			$("#settingstoggle").css({right:status.right.closed});
 
-			var winH = $(window).height();
-			var winW = $(window).width();
-			var $winH;
-
 			var manual;
-			// $scope.settings = {
-			// 	gens:500,
-			// 	runs:20,
-			// 	goal:"max",
-			// 	pop:100
-			// };
 
 			$scope.settings;
 
@@ -46,11 +36,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				tool:$("#opentool")
 			}
 			]
-
-			var evolveToggle = {
-				name:"evolve",
-				input:$("#evolvetoggle")
-			}
 
 			var inputs = [
 			{
@@ -136,28 +121,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			}
 
-			var setEvolveHeight = function () {
-
-				$winH = $(window).height();
-
-				winH = winH > $winH ? winH : $winH;
-
-				console.log("evolve toggle", evolveToggle.input[0]);
-
-				evolveToggle.input.css({height:winH + "px"});
-
-			}
-
-			var setupEvolve = function() {
-
-				setEvolveHeight();
-
-				$(window).resize(function () {
-
-					setEvolveHeight();
-				})
-			}
-
 
 			$scope.changeInput = function () {
 
@@ -217,8 +180,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 					animateToggle(false);
 				});
-
-				setupEvolve();
 
 			}, 500)
 			

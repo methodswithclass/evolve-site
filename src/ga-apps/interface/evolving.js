@@ -1,4 +1,4 @@
-app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'simulators', "$http", function (g, u, events, react, simulators, $http) {
+app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'simulators', "$http", 'display.service', function (g, u, events, react, simulators, $http, display) {
 
 	return {
 		restrict:"E",
@@ -548,6 +548,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        // simulator.refresh();
 		        $scope.evolving(true);
+
+		        display.forceEvolveHeight();
 
 
 		        u.toggle("hide", "settings", {fade:300});

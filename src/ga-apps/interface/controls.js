@@ -17,6 +17,8 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 			var winH;
 			var controlsW;
 			var toolW;
+			var width;
+			var factor;
 			var cntrlWidth;
 			var zeroPercent;
 
@@ -76,6 +78,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 				winH = $(window).height();
 
 				width = 0.6;
+				factor = 0.6/controls.length;
 				cntrlWidth = 0;
 				toolW = 0.75;
 
@@ -109,14 +112,14 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 					if (index == 2) {
 
-						value.input.css({width:cntrlWidth, left:zeroPercent  + "%"});						
+						value.input.css({width:cntrlWidth, left:zeroPercent  + "%"});
 					}
 					else if (index < 2 ) {
 
-						value.input.css({width:cntrlWidth, left:zeroPercent - (2-index)*cntrlWidth*0.6/controls.length  + "%"})
+						value.input.css({width:cntrlWidth, left:zeroPercent - (2-index)*cntrlWidth*factor  + "%"})
 					}
 					else if (index > 2) {
-						value.input.css({width:cntrlWidth, left:zeroPercent + (index-2)*cntrlWidth*0.6/controls.length  + "%"})
+						value.input.css({width:cntrlWidth, left:zeroPercent + (index-2)*cntrlWidth*factor  + "%"})
 					}
 
 				})

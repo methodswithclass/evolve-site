@@ -25,15 +25,10 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 				$stage = $("#stagetoggle");
 
 
-				
 				$evolve.css({top:"400px"});
-				$stage.css({top:($evolve.offset().top - $hud.offset().top) + $evolve.height() + 150 + "px"})
 
 
-				// console.log("evolve data dispatch events, trash sim and controls");
-
-				events.dispatch("load-display", "trash-sim");
-				events.dispatch("load-display", "controls");
+				events.dispatch("load-display", "stage");
 
 				
 			}
