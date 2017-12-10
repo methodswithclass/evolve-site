@@ -119,17 +119,17 @@ var obj = {};
 			}
 		}
 
-		var mutate = function (dna) {
+		var mutate = function ($dna) {
 
 			var i = 0;
 			while (i < self.total) {
 				if (Math.random() < 0.02) {
-					dna[i] = program.gene();
+					$dna[i] = program.gene();
 				}
 				i++;
 			}
 
-			return dna;
+			return $dna;
 
 		}
 
@@ -144,7 +144,7 @@ var obj = {};
 			source = parents[mIndex].dna;
 
 			if (dna.length < self.total) {
-				dna  = dna.concat(source.slice(dna.length - 1, self.total-1));
+				dna  = dna.concat(source.slice(dna.length));
 			}
 			else if (dna.length > self.total) {
 				dna.splice(self.total-1, dna.length - self.total);
@@ -167,48 +167,101 @@ var obj = {};
 
 		}
 
-		var crossover = function (parents) {
+		var crossover = function ($parents) {
 
 			//console.log("crossover", parents.length);
 
-			var dna = [];
+
+			var parents = $parents.map(function (value, index) {
+
+				return value;
+			});
+
+			var getRandomParent = function () {
+
+				return Math.floor(Math.random()*parents.length);
+			}
+
+			// var dna = [];
 			var mates = [];
+			var dnaChainLength = 10;
+			var dnaChainOffset = 2;
+			var dna = [];
+			var mateA;
+			var mateB;
+			var source;
 
-			for (var k = 0; k < parents.length; k++) {
-				dna[k] = [];
-			}
+			// creates a dna chain that is between dnaChainOffset and (dnaChainOffset + dnaChainLength) in length
+			var c_len = Math.floor(Math.random()*dnaChainLength) + dnaChainOffset;
+			
+			// the number of chains there will be per dna strand based on how long the chain is
+			var c_num = Math.floor(self.total/c_len);
 
-			for (var k = 0; k < parents.length; k++) {
-				mates[k] = k;
-			}
-
-			var c_num = Math.floor(Math.random()*10) + 2;
-			var c_len = Math.floor(self.total/c_num);
 			var i = 0;
-			var j = 0;
-			var dna_i = 0;
+
+			var lower;
+			var upper;
 
 			while (i < c_num) {
 
-				shuffle(mates);
+				do {
+					mateA = getRandomParent();
+				} while (mateA == mateB)
 
-				while (j < c_len) {
+				source = parents[mateA];
+				mateB = mateA;
 
-					dna_i = i*c_len + j;
+				lower = i*c_len;
+				upper = (i+1)*c_len;
 
-					for (k in dna) {
-						dna[k][dna_i] = parents[mates[k]].dna[dna_i];
-					}
-
-					j++;
+				if (upper < self.total) {
+					dna = dna.concat(source.dna.slice(lower, upper));
 				}
 
 				i++;
-				j = 0;
-
 			}
 
-			return dna;
+			offspring = new individual({
+				gen:self.generation + 1, 
+				parents:parents, 
+				dna:mutate(dna), 
+				input:input
+			});
+
+
+			return offspring;
+
+
+			// // index per strand
+			// var i = 0;
+
+			// //index per gene per strand
+			// var j = 0;
+
+
+			// var dna_i = 0;
+
+			// while (i < c_num) {
+
+			// 	shuffle(mates);
+
+			// 	while (j < c_len) {
+
+			// 		dna_i = i*c_num + j;
+
+			// 		for (var k in dna) {
+			// 			dna[k][dna_i] = parents[mates[k]].dna[dna_i];
+			// 		}
+
+			// 		j++;
+			// 	}
+
+			// 	i++;
+			// 	j = 0;
+
+			// }
+
+			// return dna;
 
 		}
 
@@ -225,13 +278,15 @@ var obj = {};
 
 			//console.log("reproduce", parents);
 
-			var dna = crossover(mates);
-
 			var offspring = [];
 
-			for (var i = 0; i < mates.length; i++) {
-				offspring.push(createChild(dna[i], mates));
-			}
+			offspring.push(crossover(mates));
+
+			// var offspring = [];
+
+			// for (var i = 0; i < mates.length; i++) {
+			// 	offspring.push(createChild(dna[i], mates));
+			// }
 
 			//console.log("offspring", offspring.length);
 
@@ -450,7 +505,7 @@ var obj = {};
 				return p == $index;
 			})
 
-			return $$index >= 0 ? true : ($$index === undefined ? false : false);
+			return $$index !== undefined;
 
 		}
 
@@ -472,16 +527,42 @@ var obj = {};
 
 		var select = function (number, standard) {
 
-			var pIndex = [];
-			var $pIndex = [];
-			var parents = [];
+			// var pIndex;
+			// var $pIndex = [];
+			// var parents = [];
 
-			for (var i = 0; i < number; i++) {
-				pIndex = getPIndex(pIndex, standard);
-				parents.push(self.pop[last(pIndex)]);
-			}
+			// for (var i = 0; i < number; i++) {
+			// 	pIndex = getPIndex(pIndex, standard);
+			// 	parents.push(self.pop[pIndex]);
+			// }
 
-			return parents
+			// return parents
+
+			var pool = self.pop.filter(function (value, index) {
+
+				return index < standard*self.total;
+
+			})
+
+			var i = 0;
+			var index;
+
+			var parents = pool.map(function (value, $index) {
+
+				index = Math.floor(Math.random()*pool.length/number*i);
+
+				if (i < number) {
+					i++;
+					return pool[index]
+				}
+
+			})
+
+
+			console.log("select", self.pop.length, pool.length, number, parents.length);
+
+			return parents;
+
 		}
 
 		var reproduce = function (_parents, standard) {
@@ -538,8 +619,8 @@ var obj = {};
 
 				var ext = rank();
 
-				var _parents = 2;
-				var standard = self.total > 10 ? 2/10 : 1/2;
+				var _parents = 10;
+				var standard = self.total > 10 ? 6/10 : 1/4;
 
 				var children = reproduce(_parents, standard);
 
