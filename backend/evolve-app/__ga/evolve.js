@@ -177,6 +177,8 @@ var obj = {};
 				return value;
 			});
 
+			// console.log("parents", parents.length);
+
 			var getRandomParent = function () {
 
 				return Math.floor(Math.random()*parents.length);
@@ -206,9 +208,13 @@ var obj = {};
 
 				do {
 					mateA = getRandomParent();
+					// console.log("random parent index", mateA);
 				} while (mateA == mateB)
 
 				source = parents[mateA];
+
+				// console.log("source", mateA, parents.length, source ? true : false, parents[mateA] ? true: false);
+
 				mateB = mateA;
 
 				lower = i*c_len;
@@ -224,7 +230,7 @@ var obj = {};
 			offspring = new individual({
 				gen:self.generation + 1, 
 				parents:parents, 
-				dna:mutate(dna), 
+				dna:mutate(dna),
 				input:input
 			});
 
@@ -544,22 +550,35 @@ var obj = {};
 
 			})
 
-			var i = 0;
-			var index;
 
-			var parents = pool.map(function (value, $index) {
+			var indexes = [];
+			var match;
 
-				index = Math.floor(Math.random()*pool.length/number*i);
+			do {
 
-				if (i < number) {
-					i++;
-					return pool[index]
-				}
+				do {
+					
+					index = Math.floor(Math.random()*pool.length);
 
+					match = indexes.find(function(p) {
+
+						return p == index;
+					});
+
+				} while (match > 0);
+
+				indexes.push(index);
+
+			} while (indexes.length < number);
+
+
+			var parents = indexes.map(function (value, index) {
+
+				return pool[value];
 			})
 
 
-			console.log("select", self.pop.length, pool.length, number, parents.length);
+			// console.log("select", self.pop.length, pool.length, number, parents.length);
 
 			return parents;
 
@@ -571,24 +590,26 @@ var obj = {};
 			var mates = [];
 			var children = [];
 			var offspring = [];
-			var num_children = 0;
+			// var num_children = 0;
 			
 			var num_parents = Math.min(_parents, Math.floor(self.total*standard/5));
 
-			var i = 0;
-			var more = true;
-			while (more) {
+			// var i = 0;
+			// var more = true;
+			do {
 
-				//console.log("set", i, "size", num_parents);
+				// console.log("set", i, "size", num_parents);
 
-				if (i + num_parents >= self.total) {
-					num_parents = self.total - i;
-					more = false;
-				}
+				// if (i + num_parents >= self.total) {
+				// 	num_parents = self.total - i;
+				// 	more = false;
+				// }
 
-				i = i + num_parents;
+				// i = i + num_parents;
 
 				parents = select(num_parents, standard);
+
+				// console.log("parents", num_parents, parents.length);
 
 				male = parents[0];
 				mates = parents.slice(1);
@@ -597,16 +618,15 @@ var obj = {};
 
 				offspring.forEach(function (value, index) {
 
-					value.index = num_children + index + 1;
+					value.index = children.length + index + 1;
 				})
 
 				children = children.concat(offspring);
-				
-				num_children = children.length;
 
-			}
 
-			console.log("total children", children.length);
+			} while (children.length < self.total)
+
+			// console.log("total children", children.length);
 
 			return children;
 		}
