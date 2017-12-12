@@ -6,7 +6,7 @@ var g = require("mc-shared").utility_service;
 
 
 
-var trash = function () {
+var trash = function (options) {
 
 	var self = this;
 
@@ -23,7 +23,7 @@ var trash = function () {
 	var robot = new robotFact();
 	var environment = new environmentFact();
 	
-	environment.createEnv();
+	environment.createEnv(options);
 	robot.setup(environment);
 
 	self.gene = function () {

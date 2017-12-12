@@ -62,7 +62,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}
 
 
-	var load = function () {
+	var load = function (input) {
 
 		winH = $(window).height();
 		winW = $(window).width();

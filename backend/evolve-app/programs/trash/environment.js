@@ -8,13 +8,16 @@ var environment = function () {
 
 	var self = this;
 
-	var trashRate = d.data.trashRate;
-	var stage = {
-		width:d.data.width,
-		height:d.data.height,
-		min:0,
-		max:d.data.width - 1
-	}
+	// var trashRate = d.data.trashRate;
+	// var stage = {
+	// 	width:d.data.width,
+	// 	height:d.data.height,
+	// 	min:0,
+	// 	max:d.data.width - 1
+	// }
+
+	var trashRate;
+	var stage;
 
 	var env = {};
 
@@ -191,7 +194,15 @@ var environment = function () {
 		return success;
 	}
 
-	self.createEnv = function () {
+	self.createEnv = function (options) {
+
+		trashRate = options.trashRate;
+		stage = {
+			width:options.width,
+			height:options.height,
+			min:0,
+			max:options.width - 1
+		}
 
 		self.make();
 

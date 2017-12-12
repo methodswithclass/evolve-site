@@ -104,6 +104,12 @@ var obj = {};
 		}
 
 
+		// reproduction variables
+		var mutateRate = input.crossover.mutate_rate;
+		var dnaChainOffset = input.crossover.splice_len_min;
+		var dnaChainLength = input.crossover.splice_len_max - input.crossover.splice_len_min;
+		// ########
+
 
 		if (params && params.dna) {
 			// console.log("has dna", params.dna);
@@ -123,7 +129,7 @@ var obj = {};
 
 			var i = 0;
 			while (i < self.total) {
-				if (Math.random() < 0.02) {
+				if (Math.random() < mutateRate) {
 					$dna[i] = program.gene();
 				}
 				i++;
@@ -133,39 +139,6 @@ var obj = {};
 
 		}
 
-		var createChild = function (dna, parents) {
-
-			//console.log("create child");
-
-			var child = {};
-
-			var mIndex = Math.floor(Math.random()*parents.length);
-
-			source = parents[mIndex].dna;
-
-			if (dna.length < self.total) {
-				dna  = dna.concat(source.slice(dna.length));
-			}
-			else if (dna.length > self.total) {
-				dna.splice(self.total-1, dna.length - self.total);
-			}
-
-			if (dna.length == self.total) {
-
-				child = new individual({
-					gen:self.generation + 1, 
-					parents:parents, 
-					dna:mutate(dna), 
-					input:input
-				});
-			}
-			else {
-				console.log("wrong length");
-			}
-
-			return child;
-
-		}
 
 		var crossover = function ($parents) {
 
@@ -186,8 +159,6 @@ var obj = {};
 
 			// var dna = [];
 			var mates = [];
-			var dnaChainLength = 10;
-			var dnaChainOffset = 2;
 			var dna = [];
 			var mateA;
 			var mateB;
@@ -227,7 +198,7 @@ var obj = {};
 				i++;
 			}
 
-			offspring = new individual({
+			var offspring = new individual({
 				gen:self.generation + 1, 
 				parents:parents, 
 				dna:mutate(dna),
@@ -238,37 +209,6 @@ var obj = {};
 			return offspring;
 
 
-			// // index per strand
-			// var i = 0;
-
-			// //index per gene per strand
-			// var j = 0;
-
-
-			// var dna_i = 0;
-
-			// while (i < c_num) {
-
-			// 	shuffle(mates);
-
-			// 	while (j < c_len) {
-
-			// 		dna_i = i*c_num + j;
-
-			// 		for (var k in dna) {
-			// 			dna[k][dna_i] = parents[mates[k]].dna[dna_i];
-			// 		}
-
-			// 		j++;
-			// 	}
-
-			// 	i++;
-			// 	j = 0;
-
-			// }
-
-			// return dna;
-
 		}
 
 		self.setActive = function () {
@@ -278,25 +218,9 @@ var obj = {};
 
 		self.reproduce = function (mates) {
 
-			//console.log(mates)
-
 			mates.push(self);
 
-			//console.log("reproduce", parents);
-
-			var offspring = [];
-
-			offspring.push(crossover(mates));
-
-			// var offspring = [];
-
-			// for (var i = 0; i < mates.length; i++) {
-			// 	offspring.push(createChild(dna[i], mates));
-			// }
-
-			//console.log("offspring", offspring.length);
-
-			return offspring;
+			return crossover(mates);
 		}
 
 		var stepdata = function (x) {
@@ -364,6 +288,16 @@ var obj = {};
 		var indi;
 		var input = params.input;
 		var task = input.goal;
+
+		// repoduction variables
+		var num_parents = input.crossover.num_parents;
+		var poolPerc = input.crossover.pool_perc;
+		
+		var popThreshold = 10;
+		var altPoolPerc = 0.25;
+		// ######
+
+
 		self.total = input.pop;
 		self.pop = [];
 		self.index = 1;
@@ -390,12 +324,6 @@ var obj = {};
 				}
 			}
 
-			// i = 0;
-			// while (i < self.total) {
-			// 	self.pop[i].index = i+1;
-			// 	//self.pop[i].print();
-			// 	i++;
-			// }
 
 			console.log("index", self.index, self.total);
 
@@ -498,56 +426,14 @@ var obj = {};
 		}
 			
 
-
-
-		var getIndex = function (factor) {
-			return Math.floor(Math.random()*self.total*factor);
-		}
-
-		var indexExists = function ($index, array) {
-
-			var $$index = array.find(function(p) {
-
-				return p == $index;
-			})
-
-			return $$index !== undefined;
-
-		}
-
-		var getPIndex = function ($pIndex, standard) {
-
-			var index;
-
-			var $$pIndex = [];
-
-			do {
-				index = getIndex(standard);
-			} while (indexExists(index, $pIndex));
-
-			$$pIndex = $pIndex.concat(index);
-
-			return $$pIndex;
-
-		}
-
 		var select = function (number, standard) {
 
-			// var pIndex;
-			// var $pIndex = [];
-			// var parents = [];
 
-			// for (var i = 0; i < number; i++) {
-			// 	pIndex = getPIndex(pIndex, standard);
-			// 	parents.push(self.pop[pIndex]);
-			// }
-
-			// return parents
+			var normalStand = standard*self.total/100
 
 			var pool = self.pop.filter(function (value, index) {
 
-				return index < standard*self.total;
-
+				return index < Math.floor(normalStand*self.total);
 			})
 
 
@@ -565,7 +451,7 @@ var obj = {};
 						return p == index;
 					});
 
-				} while (match > 0);
+				} while (match >= 0);
 
 				indexes.push(index);
 
@@ -589,25 +475,12 @@ var obj = {};
 			var parents = [];
 			var mates = [];
 			var children = [];
-			var offspring = [];
-			// var num_children = 0;
-			
-			var num_parents = Math.min(_parents, Math.floor(self.total*standard/5));
+			var offspring;
 
-			// var i = 0;
-			// var more = true;
+
 			do {
 
-				// console.log("set", i, "size", num_parents);
-
-				// if (i + num_parents >= self.total) {
-				// 	num_parents = self.total - i;
-				// 	more = false;
-				// }
-
-				// i = i + num_parents;
-
-				parents = select(num_parents, standard);
+				parents = select(_parents, standard);
 
 				// console.log("parents", num_parents, parents.length);
 
@@ -616,12 +489,9 @@ var obj = {};
 
 				offspring = male.reproduce(mates);
 
-				offspring.forEach(function (value, index) {
+				offspring.index = children.length + 1;
 
-					value.index = children.length + index + 1;
-				})
-
-				children = children.concat(offspring);
+				children.push(offspring);
 
 
 			} while (children.length < self.total)
@@ -639,10 +509,9 @@ var obj = {};
 
 				var ext = rank();
 
-				var _parents = 10;
-				var standard = self.total > 10 ? 6/10 : 1/4;
+				var standard = self.total <= popThreshold ? altPoolPerc : poolPerc;
 
-				var children = reproduce(_parents, standard);
+				var children = reproduce(num_parents, standard);
 
 				complete({
 					previous:{

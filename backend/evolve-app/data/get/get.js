@@ -41,7 +41,7 @@ var makeEvolve = function () {
 	return new evolveFact.module();
 }
 
-var makeProgram = function (program) {
+var makeProgram = function (program, options) {
 
 	var module = program;
 	var progArray = program.split("/");
@@ -49,7 +49,7 @@ var makeProgram = function (program) {
 
 	var prog = programs(program, module);
 
-	return new prog();
+	return new prog(options);
 }
 
 
@@ -70,12 +70,12 @@ var createSessionEvolve = function (session) {
 	return evolve[session].evolve;
 }
 
-var addProgramToSession = function (session, program) {
+var addProgramToSession = function (session, program, options) {
 
 	console.log("add program to session", session, program);
 
 	evolve[session].programs = {};
-	evolve[session].programs[program] = makeProgram(program);
+	evolve[session].programs[program] = makeProgram(program, options);
 
 	return evolve[session].programs[program];
 }

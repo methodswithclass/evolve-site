@@ -8,6 +8,11 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     // console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
 
+    var trashInput = {
+        gridSize:5,
+        trashRate:0.5
+    }
+
 
     events.on("completeSim", function () {
 
@@ -140,7 +145,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("processing phase");
 
-            $scope.resetInput();
+            $scope.resetInput({programInput:trashInput});
 
 
             u.toggle("hide", "evolve");
@@ -222,7 +227,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("show", "simdata", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
 
-            display.load();
+            display.load(trashInput);
 
             if (complete) complete();
         }

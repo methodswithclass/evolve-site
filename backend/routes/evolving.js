@@ -16,7 +16,7 @@ const uidgen = new UIDGenerator();
 
 var addProgram = function (input) {
 
-	input.program = get.addProgramToSession(input.session, input.name);
+	input.program = get.addProgramToSession(input.session, input.name, input.programInput);
 
 	return input;
 }

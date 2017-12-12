@@ -28,7 +28,15 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	    		gens:500,
 	    		runs:20,
 	    		goal:"max",
-	    		pop:100
+	    		pop:100,
+	    		crossover:{
+	    			num_parents:2,
+	    			pool_perc:0.1,
+	    			splice_len_min:2,
+	    			splice_len_max:10,
+	    			mutate_rate:0.02
+	    		},
+	    		programInput:{}
 	    	}
 
 
@@ -119,9 +127,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        if (!_run) $scope.evolving(_run);
 		    }
 
-		    $scope.resetInput = function ($input) {
+		    $scope.resetInput = function (options) {
 
 		    	// console.log("input", d.data);
+
+		    	var $input = options.$input;
 
 		    	if ($input) {
 
@@ -129,8 +139,34 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    		gens:$input.gens,
 			    		runs:$input.runs,
 			    		goal:$input.goal,
-			    		pop:$input.pop
+			    		pop:$input.pop,
+			    		crossover:{
+			    			num_parents:$input.crossover.num_parents,
+			    			pool_perc:$input.crossover.pool_perc,
+			    			splice_len_min:$input.crossover.splice_len_min,
+			    			splice_len_max:$input.crossover.splice_len_max,
+			    			mutate_rate:$input.crossover.mutate_rate
+			    		},
+			    		programInput:$input.programInput
 			    	}
+		    	}
+		    	else if (options.setInput) {
+
+		    		manual = {
+			    		gens:options.setInput.gens || $$InitialSettings$$.gens,
+			    		runs:options.setInput.runs || $$InitialSettings$$.runs,
+			    		goal:options.setInput.goal || $$InitialSettings$$.goal,
+			    		pop:options.setInput.pop || $$InitialSettings$$.pop,
+			    		crossover:{
+			    			num_parents:options.setInput.crossover.num_parents || $$InitialSettings$$.crossover.num_parents,
+			    			pool_perc:options.setInput.crossover.pool_perc || $$InitialSettings$$.crossover.pool_perc,
+			    			splice_len_min:options.setInput.crossover.splice_len_min || $$InitialSettings$$.crossover.splice_len_min,
+			    			splice_len_max:options.setInput.crossover.splice_len_max || $$InitialSettings$$.crossover.splice_len_max,
+			    			mutate_rate:options.setInput.crossover.mutation_rate || $$InitialSettings$$.crossover.mutate_rate
+			    		},
+			    		programInput:options.setInput.programInput || $$InitialSettings$$.programInput
+			    	}
+
 		    	}
 		    	else {
 
@@ -138,7 +174,15 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    		gens:$$InitialSettings$$.gens,
 			    		runs:$$InitialSettings$$.runs,
 			    		goal:$$InitialSettings$$.goal,
-			    		pop:$$InitialSettings$$.pop
+			    		pop:$$InitialSettings$$.pop,
+			    		crossover:{
+			    			num_parents:$$InitialSettings$$.crossover.num_parents,
+			    			pool_perc:$$InitialSettings$$.crossover.pool_perc,
+			    			splice_len_min:$$InitialSettings$$.crossover.splice_len_min,
+			    			splice_len_max:$$InitialSettings$$.crossover.splice_len_max,
+			    			mutate_rate:$$InitialSettings$$.crossover.mutate_rate
+			    		},
+			    		programInput:$$InitialSettings$$.programInput
 			    	}
 		    	}
 
@@ -153,7 +197,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	gens:manual.gens,
 		        	runs:manual.runs,
 		        	goal:manual.goal,
-		        	pop:manual.pop
+		        	pop:manual.pop,
+		        	crossover:{
+		        		num_parents:manual.crossover.num_parents,
+		        		pool_perc:manual.crossover.pool_perc,
+		        		splice_len_min:manual.crossover.splice_len_min,
+		        		splice_len_max:manual.crossover.splice_len_max,
+		        		mutate_rate:manual.crossover.mutate_rate
+		        	}
 		        }
 
 		        react.push({
@@ -173,6 +224,13 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            runs:parseInt((manual ? manual.runs : undefined) || $("#runsinput").val()),
 		            goal:(manual ? manual.goal : undefined) || $("#goalinput").val(),
 		            pop:parseInt((manual ? manual.pop : undefined) || $("#popinput").val()),
+		            crossover:{
+		            	num_parents:manual.crossover.num_parents,
+		        		pool_perc:manual.crossover.pool_perc,
+		        		splice_len_min:manual.crossover.splice_len_min,
+		        		splice_len_max:manual.crossover.splice_len_max,
+		        		mutate_rate:manual.crossover.mutate_rate
+		            },
 		            evdelay:0,
 		            pdata:d.data,
 		            newenv:true,

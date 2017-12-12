@@ -13,9 +13,103 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var settingsWidth = 800;
 			var width = 0.6;
 
-			var toggle = true;
-			var status = {opened:false, right:{opened:-20, closed:-settingsWidth}};
-			$("#settingstoggle").css({right:status.right.closed});
+
+
+			var toggleOpened = true;
+			var opennStatus = {opened:false, right:{opened:-20, closed:-settingsWidth}};
+			$("#settingstoggle").css({right:openStatus.right.closed});
+
+
+			var kindStatus = {
+				opened:"z-50",
+				closed:"z-20"
+			}
+
+			var kinds = [
+			{
+				id:0,
+				value:"basic",
+				status:true
+			},
+			{
+				id:1,
+				value:"advanced",
+				status:false
+			}
+			]
+
+			var tabParams = {
+				opened:{
+					top:"10px",
+					opacity:1,
+					zIndex:20,
+					class:kindStatus.opened
+				},
+				closed:{
+					top:"20px",
+					opacity:0.2,
+					zIndex:10,
+					class:kindStatus.closed
+				}
+			}
+
+			var toggleKind = kinds[0];
+
+			var toggleKindType = function (kindValue) {
+
+				toggleKind = kinds.find(function (p) {
+
+					return p.value == kindValue;
+				});
+
+
+				kinds = kinds.map(function (value, index) {
+
+					if (value.value == toggleKind.value) {
+
+						// sets toggle kind status to true (indicates that kindValue tab has been selected opened)
+
+						value.status = true;
+					}
+					else {
+
+						// indicates all other tabs closed
+
+						value.status = false;
+					}
+
+					return value;
+
+				})
+
+				return toggleKind;
+			}
+
+			var tabElem = function (kind) {
+				
+				return {
+					tab:$("#" + kind.value + "-tab"),
+					cover:$("#sttings-" + kind.value + "-cover"),
+					settings:$("#settings-" + kind.value)
+				}
+			}
+
+			var toggleTab = function (kind) {
+
+
+				var properties = {
+					top:kind.status ? tabParams.opened.top : tapParmas.closed.top, 
+					opacity:kind.status ? tabParams.opened.opacity : tapParams.closed.opacity
+				}
+
+
+				// tabElem(kind).main.removeClass(kind.status ? tabParams.closed.class : tapParams.opened.class).addClass(kind.status ? tabParams.opened.class : tapParams.closed.class);
+
+				tabElem(kind).main.css({zIndex:kind.status ? tapParams.opened.zIndex : tabParams.closed.zIndex});
+
+				tabElem(kind).cover.css(properties);
+			}
+
 
 			var manual;
 
@@ -57,6 +151,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			$stage = $("#stage");
 
+
 			var setHover = function (i) {
 
 				controls[i].input.hover(function () {
@@ -90,13 +185,13 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 					right:
 					
 					(
-					 (!open_up || status.opened) 
-					 ? status.right.closed
+					 (!open_up || openStatus.opened) 
+					 ? openStatus.right.closed
 
 					 : (
-					    (open_up || status.closed) 
-					    ? status.right.opened 
-					    : status.right.closed
+					    (open_up || openStatus.closed) 
+					    ? openStatus.right.opened 
+					    : openStatus.right.closed
 					    )
 					 )
 
@@ -105,9 +200,9 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 					
 					duration:300, 
 					complete:function () {
-						status.opened = !status.opened;
+						openStatus.opened = !openStatus.opened;
 
-						if (!status.opened) {
+						if (!openStatus.opened) {
 							
 							react.push({
 					        	name:"manual",
@@ -144,7 +239,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			$scope.animateRefresh = function (complete) {
 
-				toggle = false;
+				toggleOpened = false;
 				$("#refreshfeedback").css({opacity:1});
 		        $("#refreshfeedback").animate(
 		        {
@@ -156,7 +251,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            complete:function () { 
 		                $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
 		               	complete();
-						toggle = true;
+						toggleOpened = true;
 		            }
 		        }
 		        )
@@ -164,11 +259,26 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			$scope.open = function () {
 
-				console.log("open settings ", status.opened);
+				console.log("open settings ", openStatus.opened);
 
-				if (!isFocus() && toggle) {
+				if (!isFocus() && toggleOpened) {
 					animateToggle(true);
 				}
+			}
+
+			$scope.changeSettingKind = function (kindValue) {
+
+
+				kinds.map(function (value, index) {
+
+					toggleKindType(kindValue)
+
+					toggleTab(value);
+
+				});
+
+				
+
 			}
 
 
