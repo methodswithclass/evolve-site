@@ -21,8 +21,8 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 			var kindStatus = {
-				opened:"z-50",
-				closed:"z-20"
+				opened:"z-80",
+				closed:"z-60"
 			}
 
 			var kinds = [
@@ -40,14 +40,14 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var tabParams = {
 				opened:{
-					top:"10px",
-					opacity:1,
+					top:0,
+					opacity:0.2,
 					zIndex:20,
 					class:kindStatus.opened
 				},
 				closed:{
 					top:"20px",
-					opacity:0.2,
+					opacity:0,
 					zIndex:10,
 					class:kindStatus.closed
 				}
@@ -57,11 +57,15 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var toggleKindType = function (kindValue) {
 
+				console.log("toggle kind type", kindValue);
+
 				toggleKind = kinds.find(function (p) {
 
 					return p.value == kindValue;
 				});
 
+
+				// console.log("toggle kinid", toggleKind);
 
 				kinds = kinds.map(function (value, index) {
 
@@ -82,32 +86,68 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 				})
 
+				console.log("kinds", kinds, toggleKind);
+
+
+
 				return toggleKind;
+			}
+
+			var getTabParam = function (kind, param) {
+
+				return kind.status ? tabParams.opened[param] : tabParams.closed[param];
 			}
 
 			var tabElem = function (kind) {
 				
 				return {
-					tab:$("#" + kind.value + "-tab"),
-					cover:$("#sttings-" + kind.value + "-cover"),
+					main:$("#" + kind.value + "-tab"),
+					cover:$("#settings-" + kind.value + "-cover"),
 					settings:$("#settings-" + kind.value)
 				}
 			}
 
 			var toggleTab = function (kind) {
 
+				console.log("toggle tab", kind);
 
-				var properties = {
-					top:kind.status ? tabParams.opened.top : tapParmas.closed.top, 
-					opacity:kind.status ? tabParams.opened.opacity : tapParams.closed.opacity
-				}
+				// var properties = 
 
+
+				console.log("elems", tabElem(kind).main[0], tabElem(kind).cover[0], tabElem(kind).settings[0]);
 
 				// tabElem(kind).main.removeClass(kind.status ? tabParams.closed.class : tapParams.opened.class).addClass(kind.status ? tabParams.opened.class : tapParams.closed.class);
 
-				tabElem(kind).main.css({zIndex:kind.status ? tapParams.opened.zIndex : tabParams.closed.zIndex});
+				tabElem(kind).main.css({
+					top:kind.status ? tabParams.opened.top : tabParams.closed.top,
+					zIndex:kind.status ? tabParams.opened.zIndex : tabParams.closed.zIndex
+				});
 
-				tabElem(kind).cover.css(properties);
+				tabElem(kind).cover.css({
+					// top:kind.status ? tabParams.opened.top : tabParams.closed.top, 
+					opacity:kind.status ? tabParams.opened.opacity : tabParams.closed.opacity
+				});
+
+				tabElem(kind).settings
+				.removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
+				.addClass(kind.status ? tabParams.opened.class : tabParams.closed.class);
+
+				// tabElem(kind).main.css({
+				// 	top:getTabParam(kind, "top"),
+				// 	zIndex:getTabParam(kind, "zIndex")
+				// });
+
+				// tabElem(kind).cover.css({
+				// 	top:getTabParam(kind, "top"), 
+				// 	opacity:getTabParam(kind, "opacity")
+				// });
+
+				// tabElem(kind).settings
+				// .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
+				// .addClass(getTabParam(kind, "class"));
+
+
+
 			}
 
 
@@ -266,8 +306,9 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				}
 			}
 
-			$scope.changeSettingKind = function (kindValue) {
+			$scope.changeSettingsKind = function (kindValue) {
 
+				console.log("change settings kind", kindValue);
 
 				kinds.map(function (value, index) {
 

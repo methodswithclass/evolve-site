@@ -20,9 +20,11 @@
 
 	<div class="absolute width height black-back white rounded10 scrollY cutoff touch">
 			
-			<div class="absolute width80 height80 center">
+		<div class="absolute width80 height80 center">
 
-				<div class="relative width height-100">
+			<div class="relative width height-200">
+
+				<div class="absolute center">
 
 					<div class="absolute width-100 height-100 top-20 opacity0" id="refreshfeedback">
 						<div class="absolute width height-30 vcenter white-back rounded5 black">
@@ -37,113 +39,222 @@
 							<i class="fa fa-refresh"></i>
 						</div>
 					</div>
+
 				</div>
 
-				<div class="relative width" id="genssettingsinner">
+			</div>
 
-					<div class="relative width height-100 top-10" id="settings-tabs">
+			<div class="relative width padding-v-50" id="genssettingsinner">
 
-						<div class="absolute width50 height"  ng-click="changeSettingsKind('basic')">
-							<div class="absolute width height-50 top-10 z-20" id="basic-tab">
-								<div class="absolute width height rounded40 white-back opacity0" id="settings-basic-cover"></div>
-								<div class="asbolute width height border-white rounded-top-40 white font-40">
+				<div class="relative width height-70" id="settings-tabs">
+
+					<div class="absolute width50 height pointer"  ng-click="changeSettingsKind('basic')">
+						<div class="absolute width height z-20" id="basic-tab">
+							<div class="absolute width height rounded-top-40 white-back opacity20" id="settings-basic-cover"></div>
+							<div class="absolute width height border-white rounded-top-40 white font-40">
+								<div class="absolute width height-50">
 									<div class="absolute center">
 										Basic
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
 
-						<div class="asolulte width50 height" ng-click="changeSettingsKind('advanced')">
-							<div class="absolute width height-50 top-20 z-10" id="advanced-tab">
-								<div class="absolute width height rounded40 white-back opacity20" id="settings-avdanced-cover"></div>
-								<div class="absolute width height border-white rounded-top-40 white font-40">
+					<div class="absolute width50 height right0 pointer" ng-click="changeSettingsKind('advanced')">
+						<div class="absolute width height z-10 top-20" id="advanced-tab">
+							<div class="absolute width height rounded-top-40 white-back opacity0" id="settings-advanced-cover"></div>
+							<div class="absolute width height border-white rounded-top-40 white font-40">
+								<div class="absolute width height-50">
 									<div class="absolute center">
 										Advanced
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
+
+				</div>
+
+				<div class="relative width height-1000 black-back border-white z-100">
+
+					<div class="absolute width height black-back z-80" id="settings-basic">
+
+						<div class="absolute width80 height hcenter padding-v-50">
+
+							<!-- <div class="relative width height-100 hcenter text-center font-30">
+								<div class="absolute center">
+									Basic Settings
+								</div>
+							</div> -->
+
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="gensinputouter">
+									
+
+									<div class="absolute width60 height" id="gensinputinner">
+										<div class="absolute width90 center text-right right0">
+											generations
+										</div>
+									</div>
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="gensinput" type="text" ng-model="settings.gens" ng-keyup="changeInput()">
+
+
+								</div>
+							</div>
+
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="runsinputouter">
+									
+
+									<div class="absolute width60 height" id="runsinputinner">
+										<div class="absolute width90 center text-right right0">
+											fitness runs
+										</div>
+									</div>
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="runsinput" type="text" ng-model="settings.runs" ng-keyup="changeInput()">
+
+
+								</div>
+							</div>
+
+							<div class="relative width80 hcenter border-white rounded10 margin-v-50">
+
+								<div class="relative width80 hcenter height-50 padding-v-20">
+									<div class="absolute center font-20 white text-center" id="resetwarn">
+										changing these will re-start things from the beginning
+									</div>
+								</div>
+
+								<div class="relative width80 hcenter height-100">
+									<div class="absolute width height-50 vcenter border-bottom-white" id="goalinputouter">
+										
+
+										<div class="absolute width60 height" id="goalinputinner">
+											<div class="absolute width90 center text-right right0">
+												goal
+											</div>
+										</div>
+										<select class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="goalinput" ng-model="settings.goal" ng-keyup="changeInput()">
+											<option class="black font-30" ng-repeat="item in goals">{{item.goal}}</option>
+										</select>
+
+
+									</div>
+								</div>
+
+								<div class="relative width80 hcenter height-100">
+									<div class="absolute width height-30 vcenter border-bottom-white" id="popinputouter">
+										
+
+										<div class="absolute width60 height" id="popinputinner">
+											<div class="absolute width90 center text-right right0">
+												population
+											</div>
+										</div>
+										<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="popinput" type="text" ng-model="settings.pop" ng-keyup="changeInput()">
+
+
+									</div>
+								</div>
+
+							</div>
+
+						</div>
 
 					</div>
 
-					<div class="relative width z-50" id="settings-basic">
+					<div class="absolute width height black-back z-60" id="settings-advanced">
 
-						<div class="relative width height-100">
-							<div class="absolute width height-30 vcenter border-bottom-white" id="gensinputouter">
-								
 
-								<div class="absolute width60 height" id="gensinputinner">
-									<div class="absolute width90 center text-right right0">
-										generations
-									</div>
+						<div class="absolute width80 height hcenter padding-v-50">
+
+							<!-- <div class="relative width height-100 hcenter text-center font-30">
+								<div class="absolute center">
+									Advanced Settings
 								</div>
-								<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="gensinput" type="text" ng-model="settings.gens" ng-keyup="changeInput()">
+							</div> -->
 
 
-							</div>
-						</div>
-
-						<div class="relative width height-100">
-							<div class="absolute width height-30 vcenter border-bottom-white" id="runsinputouter">
-								
-
-								<div class="absolute width60 height" id="runsinputinner">
-									<div class="absolute width90 center text-right right0">
-										fitness runs
-									</div>
-								</div>
-								<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="runsinput" type="text" ng-model="settings.runs" ng-keyup="changeInput()">
-
-
-							</div>
-						</div>
-
-						<div class="relative width hcenter border-white rounded10">
-
-							<div class="relative width90 hcenter height-50 padding-v-20">
-								<div class="absolute center font-20 white text-center" id="resetwarn">
-									these changes will re-start the <br> evolution from the first generation
-								</div>
-							</div>
-
-							<div class="relative width80 hcenter height-100">
-								<div class="absolute width height-50 vcenter border-bottom-white" id="goalinputouter">
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="parentsinputouter">
 									
 
-									<div class="absolute width60 height" id="goalinputinner">
+									<div class="absolute width60 height" id="gensinputinner">
 										<div class="absolute width90 center text-right right0">
-											goal
+											# parents
 										</div>
 									</div>
-									<select class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="goalinput" ng-model="settings.goal" ng-keyup="changeInput()">
-										<option class="black font-30" ng-repeat="item in goals">{{item.goal}}</option>
-									</select>
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="parentsinput" type="text" ng-model="settings.crossover.num_parents" ng-keyup="changeInput()">
 
 
 								</div>
 							</div>
 
-							<div class="relative width80 hcenter height-100">
-								<div class="absolute width height-30 vcenter border-bottom-white" id="popinputouter">
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="poolinputouter">
 									
 
-									<div class="absolute width60 height" id="popinputinner">
+									<div class="absolute width60 height" id="runsinputinner">
 										<div class="absolute width90 center text-right right0">
-											population
+											best of population
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="popinput" type="text" ng-model="settings.pop" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="poolinput" type="text" ng-model="settings.crossover.pool_perc" ng-keyup="changeInput()">
 
 
 								</div>
 							</div>
 
+
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="splicemininputouter">
+									
+
+									<div class="absolute width60 height" id="gensinputinner">
+										<div class="absolute width90 center text-right right0">
+											min of gene splice
+										</div>
+									</div>
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemininput" type="text" ng-model="settings.crossover.splice_len_min" ng-keyup="changeInput()">
+
+
+								</div>
+							</div>
+
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="splicemaxinputouter">
+									
+
+									<div class="absolute width60 height" id="runsinputinner">
+										<div class="absolute width90 center text-right right0">
+											max of gene splice
+										</div>
+									</div>
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemaxinput" type="text" ng-model="settings.crossover.splice_len_max" ng-keyup="changeInput()">
+
+
+								</div>
+							</div>
+
+
+							<div class="relative width height-100">
+								<div class="absolute width height-30 vcenter border-bottom-white" id="mutateinputouter">
+									
+
+									<div class="absolute width60 height" id="gensinputinner">
+										<div class="absolute width90 center text-right right0">
+											mutation rate
+										</div>
+									</div>
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="mutateinput" type="text" ng-model="settings.crossover.mutate_rate" ng-keyup="changeInput()">
+
+
+								</div>
+							</div>
+
+
 						</div>
-
-					</div>
-
-					<div class="absolute width z-20" id="settings-advanced">
 
 
 					</div>
@@ -151,6 +262,8 @@
 				</div>
 
 			</div>
+
+		</div>
 
 	</div>
 </div>

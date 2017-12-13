@@ -198,10 +198,16 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	console.log("reset input", $input, "initial", $$InitialSettings$$, "manual", manual);
 
-		        $("#gensinput").val(manual.gens),
-		        $("#runsinput").val(manual.runs),
-		        $("#goalinput").val(manual.goal),
+		        $("#gensinput").val(manual.gens);
+		        $("#runsinput").val(manual.runs);
+		        $("#goalinput").val(manual.goal);
 		        $("#popinput").val(manual.pop);
+
+		        $("#parentsinput").val(manual.crossover.num_parents);
+		        $("#poolinput").val(manual.crossover.pool_perc);
+		        $("#splicemininput").val(manual.crossover.splice_len_min);
+		        $("#splicemaxinput").val(manual.crossover.splice_len_max);
+		        $("#mutateinput").val(manual.crossover.mutate_rate);
 
 		        $scope.settings = {
 		        	gens:manual.gens,
@@ -235,31 +241,26 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            goal:(manual ? manual.goal : undefined) || $("#goalinput").val(),
 		            pop:parseInt((manual ? manual.pop : undefined) || $("#popinput").val()),
 		            crossover:{
-		            	num_parents:(manual 
+		            	num_parents:parseInt(manual 
 		            	             ? (manual.crossover 
-		            	                ? (manual.crossover.num_parents || $$InitialSettings$$.crossover.num_parents) 
-		            	                : $$InitialSettings$$.crossover.num_parents) 
-		            	             : $$InitialSettings$$.crossover.num_parents),
-		        		pool_perc:(manual 
+		            	                ? manual.crossover.num_parents : undefined) 
+		            	             : undefined || $("#parentsinput").val()),
+		        		pool_perc:parseInt(manual 
 		            	             ? (manual.crossover 
-		            	                ? (manual.crossover.pool_perc || $$InitialSettings$$.crossover.pool_perc) 
-		            	                : $$InitialSettings$$.crossover.pool_perc) 
-		            	             : $$InitialSettings$$.crossover.pool_perc),
-		        		splice_len_min:(manual 
+		            	                ? manual.crossover.pool_perc : undefined) 
+		            	             : undefined || $("#poolinput").val()),
+		        		splice_len_min:parseInt(manual 
 		            	             ? (manual.crossover 
-		            	                ? (manual.crossover.splice_len_min || $$InitialSettings$$.crossover.splice_len_min) 
-		            	                : $$InitialSettings$$.crossover.splice_len_min) 
-		            	             : $$InitialSettings$$.crossover.splice_len_min),
-		        		splice_len_max:(manual 
+		            	                ? manual.crossover.splice_len_min : undefined) 
+		            	             : undefined || $("#splicemininput").val()),
+		        		splice_len_max:parseInt(manual 
 		            	             ? (manual.crossover 
-		            	                ? (manual.crossover.splice_len_max || $$InitialSettings$$.crossover.splice_len_max) 
-		            	                : $$InitialSettings$$.crossover.splice_len_max) 
-		            	             : $$InitialSettings$$.crossover.splice_len_max),
-		        		mutate_rate:(manual 
+		            	                ? manual.crossover.splice_len_max : undefined) 
+		            	             : undefined || $("#splicemaxinput").val()),
+		        		mutate_rate:parseInt(manual 
 		            	             ? (manual.crossover 
-		            	                ? (manual.crossover.mutate_rate || $$InitialSettings$$.crossover.mutate_rate) 
-		            	                : $$InitialSettings$$.crossover.mutate_rate) 
-		            	             : $$InitialSettings$$.crossover.mutate_rate)
+		            	                ? manual.crossover.mutate_rate : undefined) 
+		            	             : undefined || $("#mutateinput").val())
 		            },
 		            programInput:manual.programInput,
 		            evdelay:0,
