@@ -41,7 +41,6 @@ var data = {
 	genome:power(),
 	goals:[{goal:"max"}, {goal:"min"}],
 	actions:{
-		total:50,
 		list:[
 		{
 			id:0,

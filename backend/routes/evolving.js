@@ -16,6 +16,9 @@ const uidgen = new UIDGenerator();
 
 var addProgram = function (input) {
 
+
+	console.log("add program input", input);
+
 	input.program = get.addProgramToSession(input.session, input.name, input.programInput);
 
 	return input;
@@ -44,7 +47,7 @@ evolveRouter.get("/instantiate", function (req, res, next) {
 
 evolveRouter.post("/initialize", function (req, res, next) {
 
-	console.log("initialize");
+	console.log("initialize, input", req.body.input);
 
 	var input = addProgram(req.body.input);
 

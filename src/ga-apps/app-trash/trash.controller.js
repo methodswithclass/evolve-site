@@ -9,7 +9,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     // console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
 
     var trashInput = {
-        gridSize:5,
+        gridSize:10,
         trashRate:0.5
     }
 
@@ -108,8 +108,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
 
         $http({
-            method:"GET",
-            url:"/trash/environment/refresh/" + $scope.session
+            method:"POST",
+            url:"/trash/environment/refresh/",
+            data:{input:$scope.getInput()}
         })
         .then(function (res) {
 
@@ -145,7 +146,11 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("processing phase");
 
-            $scope.resetInput({programInput:trashInput});
+            $scope.resetInput({
+                setInput:{
+                    programInput:trashInput
+                }
+            });
 
 
             u.toggle("hide", "evolve");
@@ -190,7 +195,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
-            console.log("initialize algorithm phase");
+            console.log("initialize algorithm phase, input", $scope.getInput());
             
             initializeAlgorithmBackend(function () {
 

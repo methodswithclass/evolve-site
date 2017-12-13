@@ -16,7 +16,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 			var toggleOpened = true;
-			var opennStatus = {opened:false, right:{opened:-20, closed:-settingsWidth}};
+			var openStatus = {opened:false, right:{opened:-20, closed:-settingsWidth}};
 			$("#settingstoggle").css({right:openStatus.right.closed});
 
 

@@ -10,9 +10,9 @@ var trash = function (options) {
 
 	var self = this;
 
-	var width = d.data.width;
-	var height = d.data.height;
+
 	var actions = d.data.actions;
+	var totalSteps;
 	var runs;
 	var $stepdata;
 
@@ -23,8 +23,18 @@ var trash = function (options) {
 	var robot = new robotFact();
 	var environment = new environmentFact();
 	
-	environment.createEnv(options);
-	robot.setup(environment);
+	// console.log("trash create, environment create options", options);
+
+	environment.refresh(options);
+	robot.setup(environment, options);
+
+
+	var getTotalSteps = function ($options) {
+
+		totalSteps = $options.gridSize*$options.gridSize*2;
+	}
+
+	getTotalSteps(options);
 
 	self.gene = function () {
 		// console.log("get gene");
@@ -65,9 +75,9 @@ var trash = function (options) {
 		robot.reset();
 	}
 
-	self.refresh = function () {
+	self.refresh = function (options) {
 
-		environment.refresh();
+		environment.refresh(options);
 		self.reset();
 
 		return environment.get();
@@ -82,7 +92,7 @@ var trash = function (options) {
 
 		//console.log("step", step);
 
-		if (step < actions.total) {
+		if (step < totalSteps) {
 
 			var after = robot.update();
 
@@ -119,7 +129,10 @@ var trash = function (options) {
 			self.instruct(params.dna);
 
 			if (params.input.newenv) {
-				target = environment.refresh();
+
+				getTotalSteps(params.input.programInput);
+
+				target = environment.refresh(params.input.programInput);
 			}
 			else {
 				environment.trash();

@@ -129,7 +129,15 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 				clear();
 
 				rows = env.arena.length;
-				cols = env.arena[0].length;
+				cols = env.arena.length;
+
+				react.push({
+					name:"man.arena",
+					state:{
+						width:env.arena.length,
+						height:env.arena.length
+					}
+				})
 
 				var square;
 				arena.length = 0;
@@ -181,8 +189,9 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var refreshEnvironmentBackend = function () {
 
 		        $http({
-		            method:"GET",
-		            url:"/trash/environment/refresh/" + $scope.session
+		            method:"POST",
+		            url:"/trash/environment/refresh/",
+		            data:{input:$scope.getInput()}
 		        })
 		        .then(function (res) {
 
