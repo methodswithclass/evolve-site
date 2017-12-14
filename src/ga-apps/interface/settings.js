@@ -13,7 +13,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var settingsWidth = 800;
 			var width = 0.6;
 
-			// var programInput;
+			var programInput;
 			$scope.goals;
 
 
@@ -162,7 +162,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				callback:function (x) {
 
 					console.log("receive program input settings");
-					// programInput = x;
+					programInput = x;
 
 					$scope.goals = x.goals;
 				}
@@ -391,6 +391,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            goal:$scope.settings ? ($scope.settings.goal || "max") : "max",
 		            pop:parseInt($("#popinput").val()),
 		            crossover:{
+		            	method:$scope.settings ? ($scope.settings.method || $scope.methods[0].method) : $scope.methods[0].method,
 		            	parents:parseInt($("#parentsinput").val()),
 		            	pool:parseFloat($("#poolinput").val()),
 		            	splicemin:parseInt($("#splicemininput").val()),

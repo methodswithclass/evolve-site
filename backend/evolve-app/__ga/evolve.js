@@ -105,10 +105,25 @@ var obj = {};
 
 
 		// reproduction variables
-		var mutateRate = input.crossover.mutate;
-		var dnaChainOffset = input.crossover.splicemin;
-		var dnaChainLength = input.crossover.splicemax - input.crossover.splicemin;
+		var crossoverMethod;
+		var methodTypes;
+		var mutateRate;
+		var dnaChainOffset;
+		var dnaChainLength;
 		// ########
+
+
+		var getCrossoverParams = function (input) {
+
+			methodTypes = input.crossover.methodTypes;
+			crossoverMethod = input.crossover.method;
+			mutateRate = input.crossover.mutate;
+			dnaChainOffset = input.crossover.splicemin;
+			dnaChainLength = input.crossover.splicemax - input.crossover.splicemin;
+		}
+
+
+		getCrossoverParams(input);
 
 
 		if (params && params.dna) {
@@ -140,9 +155,97 @@ var obj = {};
 		}
 
 
-		var crossover = function ($parents) {
+		var combinedParentsCrossover = function ($parents) {
 
-			//console.log("crossover", parents.length);
+			/*
+
+			########
+			this function is looped from its caller 
+
+			and delivers individual offspring to its caller
+			########
+
+			*/
+
+			var parents = $parents.map(function (value, index) {
+
+				return value;
+			});
+
+			// console.log("parents", parents.length);
+
+			var getRandomParent = function () {
+
+				return Math.floor(Math.random()*parents.length);
+			}
+
+			
+			var offspring = [];
+			var $offspring;
+			var mates = [];
+			var dna = [];
+			var mateA;
+			var mateB;
+			var source;
+
+			// creates a dna chain that is between dnaChainOffset and (dnaChainOffset + dnaChainLength) in length
+			var c_len = Math.floor(Math.random()*dnaChainLength) + dnaChainOffset;
+			// the number of chains there will be per dna strand based on how long the chain is
+			var c_num = Math.floor(self.total/c_len);
+			var i = 0;
+
+			while (i < c_num) {
+
+				
+				do {
+					mateA = getRandomParent();
+					// console.log("random parent index", mateA);
+				} while (mateA == mateB)
+
+				mateB = mateA;
+				source = parents[mateA];
+
+				// console.log("source", mateA, parents.length, source ? true : false, parents[mateA] ? true: false);
+
+				if ((i+1)*c_len < self.total) {
+					dna = dna.concat(source.dna.slice(i*c_len, (i+1)*c_len));
+				}
+				else {
+					dna = dna.concat(source.dna.slice(i*c_len));
+				}
+
+				i++;
+			}
+
+			$offspring = new individual({
+				gen:self.generation + 1, 
+				parents:parents, 
+				dna:mutate(dna),
+				input:input
+			});
+
+
+			offspring.push($offspring);
+
+			return offspring;
+
+
+		}
+
+		var multiOffspringCrossover = function ($parents) {
+
+
+			/*
+
+			########
+			this function is looped from its caller 
+
+			but also loops internally 
+
+			and delivers multiple offspring to its caller
+			########
+
+			*/
 
 
 			var parents = $parents.map(function (value, index) {
@@ -157,56 +260,82 @@ var obj = {};
 				return Math.floor(Math.random()*parents.length);
 			}
 
-			// var dna = [];
+
 			var mates = [];
 			var dna = [];
 			var mateA;
 			var mateB;
 			var source;
+			var offspring = [];
 
-			// creates a dna chain that is between dnaChainOffset and (dnaChainOffset + dnaChainLength) in length
-			var c_len = Math.floor(Math.random()*dnaChainLength) + dnaChainOffset;
-			
-			// the number of chains there will be per dna strand based on how long the chain is
-			var c_num = Math.floor(self.total/c_len);
 
-			var i = 0;
+			//offspring loop by parent (offspring.length == parent.length, not including self)
+			do {
 
-			var lower;
-			var upper;
 
-			while (i < c_num) {
+				//a new splice length is chosen for each offspring loop
 
-				do {
-					mateA = getRandomParent();
-					// console.log("random parent index", mateA);
-				} while (mateA == mateB)
+				dna = [];
+				// creates a dna chain that is between dnaChainOffset and (dnaChainOffset + dnaChainLength) in length
+				var c_len = Math.floor(Math.random()*dnaChainLength) + dnaChainOffset;
+				// the number of chains there will be per dna strand based on how long the chain is
+				var c_num = Math.floor(self.total/c_len);
+				var i = 0;
+				var j = 1;
 
-				source = parents[mateA];
 
-				// console.log("source", mateA, parents.length, source ? true : false, parents[mateA] ? true: false);
+				//dna splice loop
+				while (i < c_num) {
 
-				mateB = mateA;
+					// new parent chosen from mates pool, make sure not to choose same two in a row
+					do {
+						mateA = getRandomParent();
+						// console.log("random parent index", mateA);
+					} while (mateA == mateB)
+					mateB = mateA;
+					source = parents[mateA]; // current parent to mate with self
 
-				lower = i*c_len;
-				upper = (i+1)*c_len;
+					// console.log("source", mateA, parents.length, source ? true : false, parents[mateA] ? true: false);
 
-				if (upper < self.total) {
-					dna = dna.concat(source.dna.slice(lower, upper));
+
+					// splice procedure
+					if ((i+1)*c_len < self.total && (j+1)*c_len < self.total) {
+						dna = self.dna.slice(i*c_len, (i+1)*c_len).concat(source.dna.slice(j*c_len, (j+1)*c_len));
+					}
+					else {
+						dna = self.dna.slice(i*c_len).concat(source.dna.slice(j*c_len));
+					}
+
+					i++;
+					j++;
 				}
 
-				i++;
-			}
 
-			var offspring = new individual({
-				gen:self.generation + 1, 
-				parents:parents, 
-				dna:mutate(dna),
-				input:input
-			});
+				// dna length resolution
+				if (dna.length < self.total) {
+					dna = dna.concat(self.dna.slice(dna.length-1));
+				}
+				else if (dna.length > self.total) {
+					dna.splice(self.total-1, dna.legnth);
+				}
 
 
-			return offspring;
+				// create new individual from new dna, after mutation, add to array of all offspring
+				$offspring = new individual({
+					gen:self.generation + 1, 
+					parents:[self, source],
+					dna:mutate(dna),
+					input:input
+				});
+
+
+				offspring.push($offspring);
+
+
+			} while (offspring.length < $parents.length) // exit loop when # offspring equals # of parents 
+
+
+		return offspring;
 
 
 		}
@@ -218,9 +347,19 @@ var obj = {};
 
 		self.reproduce = function (mates) {
 
-			mates.push(self);
+			if (crossoverMethod == methodTypes.multiParent) {
 
-			return crossover(mates);
+				mates.push(self);
+
+				offspring = combinedParentsCrossover(mates);
+
+			}
+			else if (crossoverMethod == methodTypes.multiOffspring) {
+
+				offspring = multiOffspringCrossover(mates);
+			}
+
+			return offspring;
 		}
 
 		var stepdata = function (x) {
@@ -290,12 +429,25 @@ var obj = {};
 		var task = input.goal;
 
 		// repoduction variables
-		var num_parents = input.crossover.parents;
-		var poolPerc = input.crossover.pool;
+		var num_parents;
+		var pool;
 		
-		var popThreshold = 10;
-		var altPoolPerc = 0.25;
+		var popThreshold;
+		var altPool;
 		// ######
+
+
+		var getCrossoverParams = function (input) {
+
+
+			num_parents = input.crossover.parents;
+			pool = input.crossover.pool;
+			
+			popThreshold = 10;
+			altPool = 0.25;
+		}
+
+		getCrossoverParams(input);
 
 
 		self.total = input.pop;
@@ -463,6 +615,10 @@ var obj = {};
 				return pool[value];
 			})
 
+			parents.sort(function (a, b) {
+
+				return b.fitness - a.fitness;
+			})
 
 			// console.log("select", self.pop.length, pool.length, number, parents.length);
 
@@ -489,9 +645,13 @@ var obj = {};
 
 				offspring = male.reproduce(mates);
 
-				offspring.index = children.length + 1;
+				offspring.map(function (value, index) {
 
-				children.push(offspring);
+					value.index = children.length + index + 1;
+
+				});
+
+				children = children.concat(offspring);
 
 
 			} while (children.length < self.total)
@@ -501,15 +661,19 @@ var obj = {};
 			return children;
 		}
 
-		self.turnover = function (complete) {
+		self.turnover = function ($input, complete) {
 
 			console.log("turnover", self.index);
+
+			input = $input;
+
+			getCrossoverParams(input);
 
 			runPop(function () {
 
 				var ext = rank();
 
-				var standard = self.total <= popThreshold ? altPoolPerc : poolPerc;
+				var standard = self.total <= popThreshold ? altPool : pool;
 
 				console.log("number of parents", num_parents, standard);
 
@@ -592,7 +756,7 @@ var obj = {};
 
 				stepdataobj.gen = now;
 
-				era[index(now)].turnover(function (x) {
+				era[index(now)].turnover(self.input, function (x) {
 
 					now++;
 

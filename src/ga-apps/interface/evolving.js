@@ -215,6 +215,21 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	        })
 
 
+    		var crossoverMethods = {
+    			multiOffspring:"multi-offspring",
+    			multiParent:"multi-parent"
+    		}
+
+
+    		$scope.methods = [
+    		{
+    			method:crossoverMethods.multiOffspring
+    		},
+    		{
+    			method:crossoverMethods.multiParent
+    		}
+    		]
+
     		/*#########  default initial settings ############*/
     		var $$InitialSettings$$ = {
 	    		gens:500,
@@ -222,6 +237,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	    		goal:"max",
 	    		pop:100,
 	    		crossover:{
+	    			methodTypes:{
+	    				multiOffspring:crossoverMethods.multiOffspring, 
+	    				multiParent:crossoverMethods.multiParent
+	    			},
+	    			method:crossoverMethods.multiOffspring,
 	    			parents:2,
 	    			pool:0.1,
 	    			splicemin:2,
@@ -337,6 +357,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    		goal:$input.goal || manual.goal,
 			    		pop:$input.pop || manual.pop,
 			    		crossover:{
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:$input.crossover.method || manual.crossover.method, 
 			    			parents:$input.crossover.parents || manual.crossover.parents,
 			    			pool:$input.crossover.pool || manual.crossover.pool,
 			    			splicemin:$input.crossover.splicemin || manual.crossover.splicemin,
@@ -349,28 +374,35 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	else if (setInput) {
 
 		    		manual = {
-			    		gens:options.setInput.gens || $$InitialSettings$$.gens,
-			    		runs:options.setInput.runs || $$InitialSettings$$.runs,
-			    		goal:options.setInput.goal || $$InitialSettings$$.goal,
-			    		pop:options.setInput.pop || $$InitialSettings$$.pop,
+			    		gens:setInput.gens || $$InitialSettings$$.gens,
+			    		runs:setInput.runs || $$InitialSettings$$.runs,
+			    		goal:setInput.goal || $$InitialSettings$$.goal,
+			    		pop:setInput.pop || $$InitialSettings$$.pop,
 			    		crossover:{
-			    			parents:options.setInput.crossover 
-			    				? (options.setInput.crossover.parents || $$InitialSettings$$.crossover.parents) 
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:setInput.crossover 
+			    				? (setInput.crossover.method || $$InitialSettings$$.crossover.method) 
+			    				: $$InitialSettings$$.crossover.method,
+			    			parents:setInput.crossover 
+			    				? (setInput.crossover.parents || $$InitialSettings$$.crossover.parents) 
 			    				: $$InitialSettings$$.crossover.parents,
-			    			pool:options.setInput.crossover 
-			    				? (options.setInput.crossover.pool || $$InitialSettings$$.crossover.pool) 
+			    			pool:setInput.crossover 
+			    				? (setInput.crossover.pool || $$InitialSettings$$.crossover.pool) 
 			    				: $$InitialSettings$$.crossover.pool,
-			    			splicemin:options.setInput.crossover 
-			    				? (options.setInput.crossover.splicemin || $$InitialSettings$$.crossover.splicemin) 
+			    			splicemin:setInput.crossover 
+			    				? (setInput.crossover.splicemin || $$InitialSettings$$.crossover.splicemin) 
 			    				: $$InitialSettings$$.crossover.splicemin,
-			    			splicemax:options.setInput.crossover 
-			    				? (options.setInput.crossover.splicemax || $$InitialSettings$$.crossover.splicemax) 
+			    			splicemax:setInput.crossover 
+			    				? (setInput.crossover.splicemax || $$InitialSettings$$.crossover.splicemax) 
 			    				: $$InitialSettings$$.crossover.splicemax,
-			    			mutate:options.setInput.crossover 
-			    				? (options.setInput.crossover.mutate || $$InitialSettings$$.crossover.mutate) 
+			    			mutate:setInput.crossover 
+			    				? (setInput.crossover.mutate || $$InitialSettings$$.crossover.mutate) 
 			    				: $$InitialSettings$$.crossover.mutate
 			    		},
-			    		programInput:options.setInput.programInput || $$InitialSettings$$.programInput
+			    		programInput:setInput.programInput || $$InitialSettings$$.programInput
 			    	}
 
 		    	}
@@ -382,6 +414,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    		goal:$$InitialSettings$$.goal,
 			    		pop:$$InitialSettings$$.pop,
 			    		crossover:{
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:$$InitialSettings$$.crossover.mmethod,
 			    			parents:$$InitialSettings$$.crossover.parents,
 			    			pool:$$InitialSettings$$.crossover.pool,
 			    			splicemin:$$InitialSettings$$.crossover.splicemin,
@@ -392,13 +429,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    	}
 		    	}
 
-		    	// console.log("reset input", $input, "initial", $$InitialSettings$$, "manual", manual);
+		    	// console.log("reset input manual", manual);
 
 		        $("#gensinput").val(manual.gens);
 		        $("#runsinput").val(manual.runs);
 		        $("#goalinput").val(manual.goal);
 		        $("#popinput").val(manual.pop);
 
+		        $("#methoinput").val(manual.crossover.method);
 		        $("#parentsinput").val(manual.crossover.parents);
 		        $("#poolinput").val(manual.crossover.pool);
 		        $("#splicemininput").val(manual.crossover.splicemin);
@@ -411,6 +449,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	goal:manual.goal,
 		        	pop:manual.pop,
 		        	crossover:{
+		        		method:manual.crossover.method,
 		        		parents:manual.crossover.parents,
 		        		pool:manual.crossover.pool,
 		        		splicemin:manual.crossover.splicemin,
@@ -493,9 +532,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    // 		manual = recursiveRegistry("setManual", {manual:{}, registry:options.$input});
 
 		    // 	}
-		    // 	else if (options && options.setInput) {
+		    // 	else if (options && setInput) {
 
-		    // 		manual = recursiveRegistry("setManual", {manual:{}, registry:options.setInput});
+		    // 		manual = recursiveRegistry("setManual", {manual:{}, registry:setInput});
 		    // 	}
 		    // 	else {
 
@@ -522,6 +561,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            goal:(manual ? manual.goal : undefined) || $("#goalinput").val(),
 		            pop:parseInt((manual ? manual.pop : undefined) || $("#popinput").val()),
 		            crossover:{
+		            	methodTypes:{
+		    				multiOffspring:crossoverMethods.multiOffspring, 
+		    				multiParent:crossoverMethods.multiParent
+		    			},
+		    			method:(manual 
+		        	             ? (manual.crossover 
+		        	                ? manual.crossover.method : undefined) 
+		        	             : undefined) || $("#methodinput").val(),
 		            	parents:parseInt((manual 
 		            	             ? (manual.crossover 
 		            	                ? manual.crossover.parents : undefined) 
@@ -549,7 +596,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            session:$scope.session
 		        }
 
-		        // console.log("manual get input", manual);
+		        // console.log("get input manual", manual, "input", $scope.input);
 
 		        // $scope.input = {
 		        // 	name:$scope.name,
@@ -582,6 +629,18 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	return $scope.input;
 		    }
 
+		    react.subscribe({
+		    	name:"resetInput",
+		    	callback:function(x) {
+
+    				$scope.resetInput({
+    					setInput:x
+    				});
+
+		    		$scope.getInput();
+		    	}
+		    })
+
 			var stepprogress = function () {
 
 				var input = $scope.getInput();
@@ -591,7 +650,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        var genT = $scope.input.gens;
 		        var orgT = $scope.input.pop;
 		        var runT = $scope.input.runs;
-		        var stepT = $scope.getInput().programInput.totalSteps;
+		        var stepT = input.programInput.totalSteps;
 
 		        var gen = $scope.stepdata.gen - 1;
 		        var org = $scope.stepdata.org - 1;
@@ -892,17 +951,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 				simulator.reset($scope.session);
 				simulator.refresh($scope.session);
 		    }
-
-
-		    react.subscribe({
-		    	name:"resetInput",
-		    	callback:function(x) {
-
-    				// $scope.resetInput({$input:x});
-
-		    		$scope.getInput(x);
-		    	}
-		    })
 
 
 		    events.on("evolve.complete", function () {
