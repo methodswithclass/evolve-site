@@ -87,7 +87,7 @@ var robot = function () {
 
 		var success = "success";
 
-		// console.log("update", actions, actions.list, plan, state);
+		// console.log("update", plan, state, id);
 
 		if (actions.list[id].name == "clean") {
 			success = environment.clean(pre);

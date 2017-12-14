@@ -86,9 +86,9 @@ var obj = {};
 
 		// console.log(self.name, "create organism");
 
-		var pdata = params.input.pdata;
+
 		var program = params.input.program;
-		self.total = pdata.genome;
+		self.total = params.input.pdata.data.genome;
 		self.dna = [];
 		self.runs = [];
 		self.fitness = 0;
@@ -105,9 +105,9 @@ var obj = {};
 
 
 		// reproduction variables
-		var mutateRate = input.crossover.mutate_rate;
-		var dnaChainOffset = input.crossover.splice_len_min;
-		var dnaChainLength = input.crossover.splice_len_max - input.crossover.splice_len_min;
+		var mutateRate = input.crossover.mutate;
+		var dnaChainOffset = input.crossover.splicemin;
+		var dnaChainLength = input.crossover.splicemax - input.crossover.splicemin;
 		// ########
 
 
@@ -290,8 +290,8 @@ var obj = {};
 		var task = input.goal;
 
 		// repoduction variables
-		var num_parents = input.crossover.num_parents;
-		var poolPerc = input.crossover.pool_perc;
+		var num_parents = input.crossover.parents;
+		var poolPerc = input.crossover.pool;
 		
 		var popThreshold = 10;
 		var altPoolPerc = 0.25;
@@ -482,7 +482,7 @@ var obj = {};
 
 				parents = select(_parents, standard);
 
-				// console.log("parents", num_parents, parents.length);
+				console.log("parents", num_parents, standard, parents.length);
 
 				male = parents[0];
 				mates = parents.slice(1);
@@ -510,6 +510,8 @@ var obj = {};
 				var ext = rank();
 
 				var standard = self.total <= popThreshold ? altPoolPerc : poolPerc;
+
+				console.log("number of parents", num_parents, standard);
 
 				var children = reproduce(num_parents, standard);
 

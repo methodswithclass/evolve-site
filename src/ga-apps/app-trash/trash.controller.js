@@ -6,12 +6,15 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     $scope.name = self.name;
     self.sdata;
 
-    // console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
+    console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
 
     var trashInput = {
+        goals:[{goal:"min"}, {goal:"max"}],
         gridSize:10,
         trashRate:0.5
     }
+
+    trashInput.totalSteps = trashInput.gridSize*trashInput.gridSize*2;
 
 
     events.on("completeSim", function () {
@@ -146,11 +149,18 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("processing phase");
 
-            $scope.resetInput({
-                setInput:{
-                    programInput:trashInput
-                }
-            });
+            // $scope.resetInput();
+
+            react.push({
+                name:"programInput" + self.name,
+                state:trashInput
+            })
+
+            // $scope.resetInput({
+            //     setInput:{
+            //         programInput:trashInput
+            //     }
+            // });
 
 
             u.toggle("hide", "evolve");
@@ -174,17 +184,17 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("disable", "stop");
 
 
-            $scope.getData(function ($d) {
+            // $scope.getData(function ($d) {
 
-                // console.log("get data complete", $d);
+            //     // console.log("get data complete", $d);
 
-                $scope.setData($d);
+            //     $scope.setData($d);
 
                 instantiateBackend(function () {
 
                     setInputBackend(complete);
                 })
-            })
+            // })
 
 
         }
@@ -267,7 +277,10 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
                     u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
 
-                    
+                    react.push({
+                        name:"programInput" + self.name,
+                        state:trashInput
+                    })
 
                     // console.log("loading hidden, show display\n", loadResult, "\nready to evolve");
 

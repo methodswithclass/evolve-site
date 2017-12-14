@@ -19,7 +19,10 @@ var addProgram = function (input) {
 
 	console.log("add program input", input);
 
-	input.program = get.addProgramToSession(input.session, input.name, input.programInput);
+	var result = get.addProgramToSession(input.session, input.name, input.programInput);
+
+	input.program = result.program;
+	input.pdata = result.pdata;
 
 	return input;
 }

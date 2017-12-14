@@ -76,8 +76,11 @@ var addProgramToSession = function (session, program, options) {
 
 	evolve[session].programs = {};
 	evolve[session].programs[program] = makeProgram(program, options);
-
-	return evolve[session].programs[program];
+	
+	return {
+		program:evolve[session].programs[program],
+		pdata:data(program)
+	}
 }
 
 var getSession = function (session) {

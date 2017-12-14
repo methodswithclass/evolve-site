@@ -23,7 +23,7 @@ var environment = function () {
 
 	var setInput = function (options) {
 
-		console.log("set input", options);
+		// console.log("set input", options);
 
 		trashRate = options.gridSize >= 5 ? options.trashRate : 0.25;
 		stage = {

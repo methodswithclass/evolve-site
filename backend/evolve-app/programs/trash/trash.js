@@ -12,7 +12,6 @@ var trash = function (options) {
 
 
 	var actions = d.data.actions;
-	var totalSteps;
 	var runs;
 	var $stepdata;
 
@@ -28,13 +27,6 @@ var trash = function (options) {
 	environment.refresh(options);
 	robot.setup(environment, options);
 
-
-	var getTotalSteps = function ($options) {
-
-		totalSteps = $options.gridSize*$options.gridSize*2;
-	}
-
-	getTotalSteps(options);
 
 	self.gene = function () {
 		// console.log("get gene");
@@ -92,7 +84,7 @@ var trash = function (options) {
 
 		//console.log("step", step);
 
-		if (step < totalSteps) {
+		if (step < options.totalSteps) {
 
 			var after = robot.update();
 
@@ -129,8 +121,6 @@ var trash = function (options) {
 			self.instruct(params.dna);
 
 			if (params.input.newenv) {
-
-				getTotalSteps(params.input.programInput);
 
 				target = environment.refresh(params.input.programInput);
 			}
