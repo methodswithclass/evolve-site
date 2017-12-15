@@ -113,14 +113,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var toggleTab = function (kind) {
 
-				// console.log("toggle tab", kind);
-
-				// var properties = 
-
-
-				// console.log("elems", tabElem(kind).main[0], tabElem(kind).cover[0], tabElem(kind).settings[0]);
-
-				// tabElem(kind).main.removeClass(kind.status ? tabParams.closed.class : tapParams.opened.class).addClass(kind.status ? tabParams.opened.class : tapParams.closed.class);
 
 				tabElem(kind).main.css({
 					top:kind.status ? tabParams.opened.top : tabParams.closed.top,
@@ -149,8 +141,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				// tabElem(kind).settings
 				// .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
 				// .addClass(getTabParam(kind, "class"));
-
-
 
 			}
 
@@ -290,121 +280,8 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			}
 
-			// var validate = function () {
-
-			// 	var valid = true;
-
-			// 	var validateValues = {
-			// 		gens:{
-			// 			value:$("#gensinput").val(),
-			// 			validValue:500
-			// 		},
-			// 		runs:{
-			// 			value:$("#runsinput").val(),
-			// 			validValue:20
-			// 		},
-			// 		goal:{
-			// 			value:$("#goalinput").val(),
-			// 			validValue:"max"
-			// 		},
-			// 		pop:{
-			// 			value:$("#popinput").val(),
-			// 			validValue:100
-			// 		},
-			// 		crossover:{
-			// 			parents:{
-			// 				value:$("#parentsinput").val(),
-			// 				validValue:2
-			// 			},
-			// 			pool:{
-			// 				value:$("#poolinput").val(),
-			// 				validValue:0.1
-			// 			},
-			// 			splicemin:{
-			// 				value:$("#splicemininput").val(),
-			// 				validValue:1
-			// 			},
-			// 			splicemax:{
-			// 				value:$("#splicemaxinput").val(),
-			// 				validValue:12
-			// 			},
-			// 			mutate:{
-			// 				value:$("#mutateinput").val(),
-			// 				validValue:0.02
-			// 			}
-			// 		}
-
-			// 	}
-
-			// 	var valueChecks = {
-			// 		gens:checkValues.gens.value > 0,
-			// 		runs:checkValues.runs.value > 0,
-			// 		goal:checkValues.goal.value == "min" || checkValue.goal.value == "max",
-			// 		pop:checkValue.pop.value > 0,
-			// 		crossover:{
-			// 			parents:checkValue.crossover.parents.value > 2  && checkValue.crossover.parents.value < checkValue.pop.value/2,
-			// 			pool:checkValue.crossover.pool.value > Math.floor(checkValue.pop.value/100*0.05),
-			// 			splicemin:checkValue.crossover.splicemin > 0 && checkValue.crossover.splicemin < 
-			// 		}
-			// 	}
-
-			// 	var poolValue = {
-			// 		value:$("#poolinput").val(),
-			// 		check:parseInt(this.value) < 1,
-			// 		validValue:1
-			// 	}
-
-			// 	var valueArray = [
-			// 		(new poolValue())
-			// 	]
-
-			// 	valueArray.map(function (value, index) {
-
-			// 		if (!value.check) {
-
-			// 			valid = false;
-			// 			value.value = value.validValue;
-			// 		}
-
-			// 	});
-
-			// 	return valid;
-			// }
-
 			$scope.changeInput = function () {
 
-
-				// manual = {
-		  //           gens:{
-		  //           	current:parseInt($("#gensinput").val())
-		  //           },
-		  //           runs:{
-		  //           	current:parseInt($("#runsinput").val())
-		  //           },
-		  //           goal:{
-		  //           	current:$("#goalinput").val()
-		  //           },
-		  //           pop:{
-		  //           	current:parseInt($("#popinput").val())
-		  //           },
-		  //           crossover:{
-		  //           	parents:{
-		  //           		current:parseInt($("#parentsinput").val())
-		  //           	},
-		  //           	pool:{
-		  //           		current:parseFloat($("#poolinput").val())
-		  //           	},
-		  //           	splicemin:{
-		  //           		current:parseInt($("#splicemininput").val())
-		  //           	},
-		  //           	splicemax:{
-		  //           		current:parseInt($("#splicemaxinput").val())
-		  //           	},
-		  //           	mutate:{
-		  //           		current:parseFloat($("#mutateinput").val())
-		  //           	}
-		  //           }
-		  //       }
 
 		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
 
@@ -422,8 +299,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            	mutate:parseFloat($("#mutateinput").val())
 		            }
 		        }
-
-		        // validate();
 
 		        console.log("on change input, manual", manual);
 
