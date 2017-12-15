@@ -1,7 +1,7 @@
 
 
-// var evolveFact = require("mc-evolve");
-var evolveFact = require("../../__ga/evolve.js");
+var evolveFact = require("mc-evolve");
+// var evolveFact = require("../../__ga/evolve.js");
 
 var SESSION_EXPIRY = 3600*24*1000;
 
@@ -73,6 +73,13 @@ var createSessionEvolve = function (session) {
 var addProgramToSession = function (session, program, options) {
 
 	console.log("add program to session", session, program);
+
+	if (evolve[session].programs && evolve[session].programs[program]) {
+		return {
+			program:evolve[session].programs[program],
+			pdata:data(program)
+		}
+	}
 
 	evolve[session].programs = {};
 	evolve[session].programs[program] = makeProgram(program, options);

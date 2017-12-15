@@ -471,6 +471,11 @@ var obj = {};
 				self.index = params.index;
 			}
 			else {
+
+				self.pop.length = 0;
+				self.pop = null;
+				self.pop = [];
+
 				i = 1;
 				while (i <= self.total) {
 					self.pop[i-1] = new individual({gen:self.index, index:i, input:input});

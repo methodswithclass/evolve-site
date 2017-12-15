@@ -24,7 +24,7 @@ gulp.task("serve", ["watch"], shell.task("node server.js"));
 
 gulp.task('watch', ["clean"], function() {
 
-    gulp.watch(["./src/**/*.*", "./backend/evolve-app/**/*.*"], ["build"]);
+    gulp.watch(["./src/**/*.*"], ["build"]);
 
     gulp.start("build");
 
