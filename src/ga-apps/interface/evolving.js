@@ -114,7 +114,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.resetInput = function (options) {
 
-		    	// console.log("input", d.data);
+
 
 		    	react.push({
 	    			name:"evolve.vars",
@@ -123,155 +123,76 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	    			}
 	    		})
 
-		    	var $input = options ? options.$input : undefined;
+
 		    	var setInput = options ? options.setInput : undefined;
 
-		    	if ($input) {
+		    	if (setInput) {
 
-		    			self.manual = {};
-			    		self.manual.gens = $input.gens || self.manual.gens;
-			    		self.manual.runs = $input.runs || self.manual.runs;
-			    		self.manual.goal = $input.goal || self.manual.goal;
-			    		self.manual.pop = $input.pop || self.manual.pop;
-			    		
-			    		self.manual.crossover = {};
-			    		self.manual.crossover.methodTypes = {
-		    				multiOffspring:crossoverMethods.multiOffspring, 
-		    				multiParent:crossoverMethods.multiParent
-		    			}
-			    		self.manual.crossover.method = $input.crossover.method || self.manual.crossover.method;
-		    			self.manual.crossover.parents = $input.crossover.parents || self.manual.crossover.parents
-		    			self.manual.crossover.pool = $input.crossover.pool || self.manual.crossover.pool;
-		    			self.manual.crossover.splicemin = $input.crossover.splicemin || self.manual.crossover.splicemin;
-		    			self.manual.crossover.splicemax = $input.crossover.splicemax || self.manual.crossover.splicemax
-		    			self.manual.crossover.mutate = $input.crossover.mutate || self.manual.crossover.mutate;
-
-			    		self.manual.programInput = $input.programInput || self.manual.programInput;
-		    	}
-		    	else if (setInput) {
+		    		console.log("set input", setInput, self.manual);
 
 
-		    		self.manual = {};
-		    		self.manual.gens = setInput.gens || (self.manual ? self.manual.gens : "");
-		    		self.manual.runs = setInput.runs || (self.manual ? self.manual.runs : "");
-		    		self.manual.goal = setInput.goal || (self.manual ? self.manual.goal : "max");
-		    		self.manual.pop = setInput.pop || (self.manual ? self.manual.pop : "");
-		    		
-		    		self.manual.crossover = {};
-		    		self.manual.crossover.methodTypes = {
-	    				multiOffspring:crossoverMethods.multiOffspring, 
-	    				multiParent:crossoverMethods.multiParent
-	    			}
-		    		self.manual.crossover.method = setInput.crossover 
-			    			? (setInput.crossover.method || 
-			    			   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
-			    			: (self.manual ? self.manual.crossover.method : crossoverMethods.default);
-	    			self.manual.crossover.parents = setInput.crossover 
-			    			? (setInput.crossover.parents || 
-			    			   (self.manual ? self.manual.crossover.parents : "")) 
-			    			: (self.manual ? self.manual.crossover.parents : "");
-	    			self.manual.crossover.pool = setInput.crossover 
-			    			? (setInput.crossover.pool || 
-			    			   (self.manual ? self.manual.crossover.pool : "")) 
-			    			: (self.manual ? self.manual.crossover.pool : "");
-	    			self.manual.crossover.splicemin = setInput.crossover 
-			    			? (setInput.crossover.splicemin || 
-			    			   (self.manual ? self.manual.crossover.splicemin : "")) 
-			    			: (self.manual ? self.manual.crossover.splicemin : "");
-	    			self.manual.crossover.splicemax = setInput.crossover 
-			    			? (setInput.crossover.splicemax || 
-			    			   (self.manual ? self.manual.crossover.splicemax : "")) 
-			    			: (self.manual ? self.manual.crossover.splicemax : "");
-	    			self.manual.crossover.mutate = setInput.crossover 
-			    			? (setInput.crossover.mutate || 
-			    			   (self.manual ? self.manual.crossover.mutate : "")) 
-			    			: (self.manual ? self.manual.crossover.mutate : "");
-
-		    		self.manual.programInput = setInput.programInput || (self.manual ? self.manual.programInput : {});
-
-
-			    	// self.manual = {
-			    	// 	gens:setInput.gens || (self.manual ? self.manual.gens : ""),
-			    	// 	runs:setInput.runs || (self.manual ? self.manual.runs : ""),
-			    	// 	goal:setInput.goal || (self.manual ? self.manual.goal : "max"),
-			    	// 	pop:setInput.pop || (self.manual ? self.manual.pop : ""),
-			    	// 	crossover:{
-			    	// 		methodTypes:{
-			    	// 			multiOffspring:crossoverMethods.multiOffspring, 
-			    	// 			multiParent:crossoverMethods.multiParent
-			    	// 		},
-			    	// 		method:setInput.crossover 
-			    	// 		? (setInput.crossover.method || 
-			    	// 		   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
-			    	// 		: (self.manual ? self.manual.crossover.method : crossoverMethods.default),
-			    	// 		parents:setInput.crossover 
-			    	// 		? (setInput.crossover.parents || 
-			    	// 		   (self.manual ? self.manual.crossover.parents : "")) 
-			    	// 		: (self.manual ? self.manual.crossover.parents : ""),
-			    	// 		pool:setInput.crossover 
-			    	// 		? (setInput.crossover.pool || 
-			    	// 		   (self.manual ? self.manual.crossover.pool : "")) 
-			    	// 		: (self.manual ? self.manual.crossover.pool : ""),
-			    	// 		splicemin:setInput.crossover 
-			    	// 		? (setInput.crossover.splicemin || 
-			    	// 		   (self.manual ? self.manual.crossover.splicemin : "")) 
-			    	// 		: (self.manual ? self.manual.crossover.splicemin : ""),
-			    	// 		splicemax:setInput.crossover 
-			    	// 		? (setInput.crossover.splicemax || 
-			    	// 		   (self.manual ? self.manual.crossover.splicemax : "")) 
-			    	// 		: (self.manual ? self.manual.crossover.splicemax : ""),
-			    	// 		mutate:setInput.crossover 
-			    	// 		? (setInput.crossover.mutate || 
-			    	// 		   (self.manual ? self.manual.crossover.mutate : "")) 
-			    	// 		: (self.manual ? self.manual.crossover.mutate : ""),
-			    	// 	},
-			    	// 	programInput:setInput.programInput || (self.manual ? self.manual.programInput : {}) 
-			    	// }
+			    	self.manual = {
+			    		gens:setInput.gens || (self.manual ? self.manual.gens : ""),
+			    		runs:setInput.runs || (self.manual ? self.manual.runs : ""),
+			    		goal:setInput.goal || (self.manual ? self.manual.goal : "max"),
+			    		pop:setInput.pop || (self.manual ? self.manual.pop : ""),
+			    		crossover:{
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:setInput.crossover 
+					    			? (setInput.crossover.method || 
+					    			   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
+					    			: (self.manual ? self.manual.crossover.method : crossoverMethods.default),
+			    			parents:setInput.crossover 
+					    			? (setInput.crossover.parents || 
+					    			   (self.manual ? self.manual.crossover.parents : "")) 
+					    			: (self.manual ? self.manual.crossover.parents : ""),
+			    			pool:setInput.crossover 
+					    			? (setInput.crossover.pool || 
+					    			   (self.manual ? self.manual.crossover.pool : "")) 
+					    			: (self.manual ? self.manual.crossover.pool : ""),
+			    			splicemin:setInput.crossover 
+					    			? (setInput.crossover.splicemin || 
+					    			   (self.manual ? self.manual.crossover.splicemin : "")) 
+					    			: (self.manual ? self.manual.crossover.splicemin : ""),
+			    			splicemax:setInput.crossover 
+					    			? (setInput.crossover.splicemax || 
+					    			   (self.manual ? self.manual.crossover.splicemax : "")) 
+					    			: (self.manual ? self.manual.crossover.splicemax : ""),
+			    			mutate:setInput.crossover 
+					    			? (setInput.crossover.mutate || 
+					    			   (self.manual ? self.manual.crossover.mutate : "")) 
+					    			: (self.manual ? self.manual.crossover.mutate : ""),
+			    		},
+			    		programInput:setInput.programInput || (self.manual ? self.manual.programInput : {}) 
+			    	}
 
 		    	}
 		    	else {
 
+		    		console.log("reset to default");
 
-		    		self.manual = {};
-		    		self.manual.gens = $$InitialSettings$$.gens || self.manual.gens;
-		    		self.manual.runs = $$InitialSettings$$.runs || self.manual.runs;
-		    		self.manual.goal = $$InitialSettings$$.goal || self.manual.goal;
-		    		self.manual.pop = $$InitialSettings$$.pop || self.manual.pop;
-		    		
-		    		self.manual.crossover = {};
-		    		self.manual.crossover.methodTypes = {
-	    				multiOffspring:crossoverMethods.multiOffspring, 
-	    				multiParent:crossoverMethods.multiParent
-	    			}
-		    		self.manual.crossover.method = $$InitialSettings$$.crossover.method || self.manual.crossover.method;
-	    			self.manual.crossover.parents = $$InitialSettings$$.crossover.parents || self.manual.crossover.parents;
-	    			self.manual.crossover.pool = $$InitialSettings$$.crossover.pool || self.manual.crossover.pool;
-	    			self.manual.crossover.splicemin = $$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin;
-	    			self.manual.crossover.splicemax = $$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax;
-	    			self.manual.crossover.mutate = $$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate;
-
-		    		self.manual.programInput = $$InitialSettings$$.programInput || self.manual.crossover.programInput;
-
-
-			    	// self.manual = {
-			    	// 	gens:$$InitialSettings$$.gens || self.manual.gens,
-			    	// 	runs:$$InitialSettings$$.runs || self.manual.runs,
-			    	// 	goal:$$InitialSettings$$.goal || self.manual.goal,
-			    	// 	pop:$$InitialSettings$$.pop || self.manual.pop,
-			    	// 	crossover:{
-			    	// 		methodTypes:{
-			    	// 			multiOffspring:crossoverMethods.multiOffspring, 
-			    	// 			multiParent:crossoverMethods.multiParent
-			    	// 		},
-			    	// 		method:$$InitialSettings$$.crossover.method || self.manual.crossover.method,
-			    	// 		parents:$$InitialSettings$$.crossover.parents || self.manual.crossover.parents,
-			    	// 		pool:$$InitialSettings$$.crossover.pool || self.manual.crossover.pool,
-			    	// 		splicemin:$$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin,
-			    	// 		splicemax:$$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax,
-			    	// 		mutate:$$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate
-			    	// 	},
-			    	// 	programInput:$$InitialSettings$$.programInput || self.manual.crossover.programInput
-			    	// }
+			    	self.manual = {
+			    		gens:$$InitialSettings$$.gens || self.manual.gens,
+			    		runs:$$InitialSettings$$.runs || self.manual.runs,
+			    		goal:$$InitialSettings$$.goal || self.manual.goal,
+			    		pop:$$InitialSettings$$.pop || self.manual.pop,
+			    		crossover:{
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:$$InitialSettings$$.crossover.method || self.manual.crossover.method,
+			    			parents:$$InitialSettings$$.crossover.parents || self.manual.crossover.parents,
+			    			pool:$$InitialSettings$$.crossover.pool || self.manual.crossover.pool,
+			    			splicemin:$$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin,
+			    			splicemax:$$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax,
+			    			mutate:$$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate
+			    		},
+			    		programInput:self.manual.programInput || $$InitialSettings$$.programInput
+			    	}
 		    	}
 
 		    	console.log("reset input self.manual", self.manual);
@@ -302,6 +223,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        		mutate:self.manual.crossover.mutate
 		        	}
 		        }
+
+		        console.log("reset input, settings", $scope.settings);
 
 		    }
 
@@ -531,7 +454,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
 
-		    		console.log("stepdata", res.data.stepdata, stepdata);
+		    		// console.log("stepdata", res.data.stepdata, stepdata);
 
 	                $scope.stepdata = {
 	                	gen:stepdata.gen,
