@@ -198,13 +198,24 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
     // 		}
 
+    		var crossoverMethods = {
+    			default:"multi-parent",
+    			multiParent:"multi-parent",
+    			multiOffspring:"multi-offspring"
+    		}
+
+    		// react.push({
+    		// 	name:"evolve.vars",
+    		// 	state:{
+    		// 		crossoverMethods:crossoverMethods
+    		// 	}
+    		// })
+
     		react.subscribe({
 	        	name:"programInput" + $scope.name,
 	        	callback:function (x) {
 
-	        		// programInput = x;
-
-	        		console.log("receive program input evolve");
+	        		// console.log("receive program input evolve");
 
 	        		$scope.resetInput({
 	        			setInput:{
@@ -214,21 +225,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	        	}
 	        })
 
-
-    		var crossoverMethods = {
-    			multiOffspring:"multi-offspring",
-    			multiParent:"multi-parent"
-    		}
-
-
-    		$scope.methods = [
-    		{
-    			method:crossoverMethods.multiOffspring
-    		},
-    		{
-    			method:crossoverMethods.multiParent
-    		}
-    		]
 
     		/*#########  default initial settings ############*/
     		var $$InitialSettings$$ = {
@@ -241,7 +237,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	    				multiOffspring:crossoverMethods.multiOffspring, 
 	    				multiParent:crossoverMethods.multiParent
 	    			},
-	    			method:crossoverMethods.multiOffspring,
+	    			method:crossoverMethods.multiParent,
 	    			parents:2,
 	    			pool:0.1,
 	    			splicemin:2,
@@ -289,8 +285,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	           		state:$scope.evdata
 	           	});
 	        }
-
-
 	        
 
 			// $scope.setData = function ($d) {
@@ -346,8 +340,15 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	// console.log("input", d.data);
 
-		    	var $input = options.$input;
-		    	var setInput = options.setInput;
+		    	react.push({
+	    			name:"evolve.vars",
+	    			state:{
+	    				crossoverMethods:crossoverMethods
+	    			}
+	    		})
+
+		    	var $input = options ? options.$input : undefined;
+		    	var setInput = options ? options.setInput : undefined;
 
 		    	if ($input) {
 
@@ -373,36 +374,43 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	}
 		    	else if (setInput) {
 
-		    		manual = {
-			    		gens:setInput.gens || $$InitialSettings$$.gens,
-			    		runs:setInput.runs || $$InitialSettings$$.runs,
-			    		goal:setInput.goal || $$InitialSettings$$.goal,
-			    		pop:setInput.pop || $$InitialSettings$$.pop,
+
+			    	manual = {
+			    		gens:setInput.gens || (manual ? manual.gens : ""),
+			    		runs:setInput.runs || (manual ? manual.runs : ""),
+			    		goal:setInput.goal || (manual ? manual.goal : "max"),
+			    		pop:setInput.pop || (manual ? manual.pop : ""),
 			    		crossover:{
 			    			methodTypes:{
 			    				multiOffspring:crossoverMethods.multiOffspring, 
 			    				multiParent:crossoverMethods.multiParent
 			    			},
 			    			method:setInput.crossover 
-			    				? (setInput.crossover.method || $$InitialSettings$$.crossover.method) 
-			    				: $$InitialSettings$$.crossover.method,
+			    			? (setInput.crossover.method || 
+			    			   (manual ? manual.crossover.method : crossoverMethods.default)) 
+			    			: (manual ? manual.crossover.method : crossoverMethods.default),
 			    			parents:setInput.crossover 
-			    				? (setInput.crossover.parents || $$InitialSettings$$.crossover.parents) 
-			    				: $$InitialSettings$$.crossover.parents,
+			    			? (setInput.crossover.parents || 
+			    			   (manual ? manual.crossover.parents : "")) 
+			    			: (manual ? manual.crossover.parents : ""),
 			    			pool:setInput.crossover 
-			    				? (setInput.crossover.pool || $$InitialSettings$$.crossover.pool) 
-			    				: $$InitialSettings$$.crossover.pool,
+			    			? (setInput.crossover.pool || 
+			    			   (manual ? manual.crossover.pool : "")) 
+			    			: (manual ? manual.crossover.pool : ""),
 			    			splicemin:setInput.crossover 
-			    				? (setInput.crossover.splicemin || $$InitialSettings$$.crossover.splicemin) 
-			    				: $$InitialSettings$$.crossover.splicemin,
+			    			? (setInput.crossover.splicemin || 
+			    			   (manual ? manual.crossover.splicemin : "")) 
+			    			: (manual ? manual.crossover.splicemin : ""),
 			    			splicemax:setInput.crossover 
-			    				? (setInput.crossover.splicemax || $$InitialSettings$$.crossover.splicemax) 
-			    				: $$InitialSettings$$.crossover.splicemax,
+			    			? (setInput.crossover.splicemax || 
+			    			   (manual ? manual.crossover.splicemax : "")) 
+			    			: (manual ? manual.crossover.splicemax : ""),
 			    			mutate:setInput.crossover 
-			    				? (setInput.crossover.mutate || $$InitialSettings$$.crossover.mutate) 
-			    				: $$InitialSettings$$.crossover.mutate
+			    			? (setInput.crossover.mutate || 
+			    			   (manual ? manual.crossover.mutate : "")) 
+			    			: (manual ? manual.crossover.mutate : ""),
 			    		},
-			    		programInput:setInput.programInput || $$InitialSettings$$.programInput
+			    		programInput:setInput.programInput || (manual ? manual.programInput : {}) 
 			    	}
 
 		    	}
@@ -418,7 +426,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    				multiOffspring:crossoverMethods.multiOffspring, 
 			    				multiParent:crossoverMethods.multiParent
 			    			},
-			    			method:$$InitialSettings$$.crossover.mmethod,
+			    			method:$$InitialSettings$$.crossover.method,
 			    			parents:$$InitialSettings$$.crossover.parents,
 			    			pool:$$InitialSettings$$.crossover.pool,
 			    			splicemin:$$InitialSettings$$.crossover.splicemin,
@@ -429,14 +437,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    	}
 		    	}
 
-		    	// console.log("reset input manual", manual);
+		    	console.log("reset input manual", manual);
 
 		        $("#gensinput").val(manual.gens);
 		        $("#runsinput").val(manual.runs);
 		        $("#goalinput").val(manual.goal);
 		        $("#popinput").val(manual.pop);
 
-		        $("#methoinput").val(manual.crossover.method);
+		        $("#methodinput").val(manual.crossover.method);
 		        $("#parentsinput").val(manual.crossover.parents);
 		        $("#poolinput").val(manual.crossover.pool);
 		        $("#splicemininput").val(manual.crossover.splicemin);
@@ -1011,7 +1019,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        });
 
 		        setTimeout(function () {
-		            console.log("animate");
+		            // console.log("animate");
 		            $("#evolvepage").animate({color:"#fff"}, 600);
 		            $("#evolvepage").addClass("white-t");
 		        }, 300);
@@ -1030,8 +1038,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        $scope.running(false);
 		        $("#breakfeedback").show();
-		        $scope.input.gens = $scope.stepdata.gen;
-		        $("#gensinput").val($scope.input.gens);
+
+		        $scope.resetInput({
+		        	setInput:{
+		        		gens:$scope.stepdata.gen
+		        	}
+		    	});
+
+		        // $("#gensinput").val($scope..gens);
 
 		        breakEvolveBackend(function () {
 

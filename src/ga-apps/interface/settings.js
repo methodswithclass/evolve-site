@@ -13,8 +13,10 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var settingsWidth = 800;
 			var width = 0.6;
 
+			var crossoverMethods;
 			var programInput;
 			$scope.goals;
+			$scope.methods;
 
 
 			var toggleOpened = true;
@@ -111,12 +113,12 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var toggleTab = function (kind) {
 
-				console.log("toggle tab", kind);
+				// console.log("toggle tab", kind);
 
 				// var properties = 
 
 
-				console.log("elems", tabElem(kind).main[0], tabElem(kind).cover[0], tabElem(kind).settings[0]);
+				// console.log("elems", tabElem(kind).main[0], tabElem(kind).cover[0], tabElem(kind).settings[0]);
 
 				// tabElem(kind).main.removeClass(kind.status ? tabParams.closed.class : tapParams.opened.class).addClass(kind.status ? tabParams.opened.class : tapParams.closed.class);
 
@@ -157,11 +159,30 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			$scope.settings;
 
+			console.log("register evolve.vars");
+			react.subscribe({
+				name:"evolve.vars",
+				callback:function (x) {
+
+					crossoverMethods = x.crossoverMethods;
+
+					$scope.methods = [
+		    		{
+		    			method:crossoverMethods.multiParent
+		    		},
+		    		{
+		    			method:crossoverMethods.multiOffspring
+		    		}
+		    		]
+
+				}
+			})
+
 			react.subscribe({
 				name:"programInput" + $scope.name,
 				callback:function (x) {
 
-					console.log("receive program input settings");
+					// console.log("receive program input settings");
 					programInput = x;
 
 					$scope.goals = x.goals;
@@ -385,13 +406,15 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		  //           }
 		  //       }
 
+		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
+
 		 		 manual = {
 		            gens:parseInt($("#gensinput").val()),
 		            runs:parseInt($("#runsinput").val()),
 		            goal:$scope.settings ? ($scope.settings.goal || "max") : "max",
 		            pop:parseInt($("#popinput").val()),
 		            crossover:{
-		            	method:$scope.settings ? ($scope.settings.method || $scope.methods[0].method) : $scope.methods[0].method,
+		            	method:$scope.settings ? ($scope.settings.crossover.method || defaultMethod) : defaultMethod,
 		            	parents:parseInt($("#parentsinput").val()),
 		            	pool:parseFloat($("#poolinput").val()),
 		            	splicemin:parseInt($("#splicemininput").val()),

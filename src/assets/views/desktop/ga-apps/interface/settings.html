@@ -176,16 +176,16 @@
 							</div> -->
 
 
-							<div class="relative width80 hcenter height-100">
-								<div class="absolute width height-50 vcenter border-bottom-white" id="goalinputouter">
+							<div class="relative width hcenter height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="methodinputouter">
 									
 
-									<div class="absolute width60 height" id="goalinputinner">
-										<div class="absolute width90 center text-right right0">
+									<div class="absolute width50 height" id="methodinputinner">
+										<div class="absolute width90 center text-right right0 font-25">
 											crossover method
 										</div>
 									</div>
-									<select class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="methodinput" ng-model="settings.method" ng-keyup="changeInput()">
+									<select class="absolute width50 height right0 text-right font-25 transparent-back white nooutline" id="methodinput" ng-model="settings.crossover.method" ng-keyup="changeInput()">
 										<option class="black font-30" ng-repeat="item in methods">{{item.method}}</option>
 									</select>
 
@@ -198,7 +198,7 @@
 								<div class="absolute width height-30 vcenter border-bottom-white" id="parentsinputouter">
 									
 
-									<div class="absolute width60 height" id="gensinputinner">
+									<div class="absolute width60 height" id="parentsinputinner">
 										<div class="absolute width90 center text-right right0">
 											# parents
 										</div>
@@ -213,7 +213,7 @@
 								<div class="absolute width height-30 vcenter border-bottom-white" id="poolinputouter">
 									
 
-									<div class="absolute width60 height" id="runsinputinner">
+									<div class="absolute width60 height" id="poolinputinner">
 										<div class="absolute width90 center text-right right0">
 											best of population
 										</div>
@@ -229,7 +229,7 @@
 								<div class="absolute width height-30 vcenter border-bottom-white" id="splicemininputouter">
 									
 
-									<div class="absolute width60 height" id="gensinputinner">
+									<div class="absolute width60 height" id="splicemininputinner">
 										<div class="absolute width90 center text-right right0">
 											min of gene splice
 										</div>
@@ -244,7 +244,7 @@
 								<div class="absolute width height-30 vcenter border-bottom-white" id="splicemaxinputouter">
 									
 
-									<div class="absolute width60 height" id="runsinputinner">
+									<div class="absolute width60 height" id="splicemaxinputinner">
 										<div class="absolute width90 center text-right right0">
 											max of gene splice
 										</div>
@@ -260,7 +260,7 @@
 								<div class="absolute width height-30 vcenter border-bottom-white" id="mutateinputouter">
 									
 
-									<div class="absolute width60 height" id="gensinputinner">
+									<div class="absolute width60 height" id="mutateinputinner">
 										<div class="absolute width90 center text-right right0">
 											mutation rate
 										</div>

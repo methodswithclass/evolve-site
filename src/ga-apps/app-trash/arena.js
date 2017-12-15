@@ -238,14 +238,14 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 		    events.on("resetenv", function () {
 
-				console.log("reset ui");
+				// console.log("reset ui");
 
 				makeBlocks(environment)
 			})
 
 			events.on("refreshenv", function () {
 
-				console.log("refresh ui");
+				// console.log("refresh ui");
 
 				refreshEnvironmentBackend();
 			})

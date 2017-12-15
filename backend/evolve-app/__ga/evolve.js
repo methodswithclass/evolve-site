@@ -155,7 +155,7 @@ var obj = {};
 		}
 
 
-		var combinedParentsCrossover = function ($parents) {
+		var multiParentCrossover = function ($parents) {
 
 			/*
 
@@ -347,11 +347,13 @@ var obj = {};
 
 		self.reproduce = function (mates) {
 
+			var offspring = [];
+
 			if (crossoverMethod == methodTypes.multiParent) {
 
 				mates.push(self);
 
-				offspring = combinedParentsCrossover(mates);
+				offspring = multiParentCrossover(mates);
 
 			}
 			else if (crossoverMethod == methodTypes.multiOffspring) {
@@ -477,7 +479,7 @@ var obj = {};
 			}
 
 
-			console.log("index", self.index, self.total);
+			// console.log("index", self.index, self.total);
 
 			self.best = {
 				index:self.index,
@@ -636,23 +638,26 @@ var obj = {};
 
 			do {
 
-				parents = select(_parents, standard);
+				if (active) {
 
-				console.log("parents", num_parents, standard, parents.length);
+					parents = select(_parents, standard);
 
-				male = parents[0];
-				mates = parents.slice(1);
+					// console.log("parents", num_parents, standard, parents.length);
 
-				offspring = male.reproduce(mates);
+					male = parents[0];
+					mates = parents.slice(1);
 
-				offspring.map(function (value, index) {
+					offspring = male.reproduce(mates);
 
-					value.index = children.length + index + 1;
+					offspring.map(function (value, index) {
 
-				});
+						value.index = children.length + index + 1;
 
-				children = children.concat(offspring);
+					});
 
+					children = children.concat(offspring);
+
+				}
 
 			} while (children.length < self.total)
 
@@ -675,7 +680,7 @@ var obj = {};
 
 				var standard = self.total <= popThreshold ? altPool : pool;
 
-				console.log("number of parents", num_parents, standard);
+				// console.log("number of parents", num_parents, standard);
 
 				var children = reproduce(num_parents, standard);
 

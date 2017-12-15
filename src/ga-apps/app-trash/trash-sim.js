@@ -15,9 +15,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     var colors = true;
 
     var name = "trash";
-    var d;
-    var totalActions;
-
+    // var d;
+    // var totalActions;
 
 
     var cleanBlock = function (x, y) {
@@ -25,38 +24,48 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var setData = function ($d) {
+    // var setData = function ($d) {
 
-        // console.log("set data trash sim\n", $d, "\n\n")
+    //     // console.log("set data trash sim\n", $d, "\n\n")
 
-        d = $d;
+    //     d = $d;
 
-        totalActions = d.data.actions ? d.data.actions.total : 1;
-    }
+    //     totalActions = d.data.actions ? d.data.actions.total : 1;
+    // }
 
 
-    var getData = function () {
+    // var getData = function () {
 
-        $http({
-            method:"GET",
-            url:"/evolve/data/" + name
-        })
-        .then(function (res) {
+    //     $http({
+    //         method:"GET",
+    //         url:"/evolve/data/" + name
+    //     })
+    //     .then(function (res) {
 
-            // console.log("\ngetting data response trash sim\n", res.data.data, "\n\n");
+    //         // console.log("\ngetting data response trash sim\n", res.data.data, "\n\n");
 
-            var $d = res.data.data;
-            setData($d);
+    //         var $d = res.data.data;
+    //         setData($d);
 
-        }, function (err) {
+    //     }, function (err) {
 
-            // console.log("Server error while getting datat", err);
+    //         // console.log("Server error while getting datat", err);
 
-        })
+    //     })
 
-    }
+    // }
 
-    getData();
+    // getData();
+
+
+    react.subscribe({
+        name:"programInput" + name,
+        callback:function(x) {
+
+            totalActions = x.totalSteps;
+        }
+    })
+    
 
     react.subscribe({
         name:"robot",
@@ -102,7 +111,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         })
         .then(function (res) {
 
-            console.log(res.data.success);
+            // console.log(res.data.success);
 
         }, function (err) {
 
@@ -121,7 +130,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         })
         .then(function (res) {
 
-            console.log(res.data.success);
+            // console.log(res.data.success);
 
             if (complete) complete();
 
@@ -193,7 +202,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
             clean();
 
-            console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
+            // console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
         });
 
     }
@@ -258,7 +267,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         i = 1;
         _score = 0;
 
-        console.log("reset sim");
+        // console.log("reset sim");
 
         output({
             score:{

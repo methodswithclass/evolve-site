@@ -149,7 +149,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("processing phase");
 
-            // $scope.resetInput();
+            $scope.resetInput();
 
             react.push({
                 name:"programInput" + self.name,
