@@ -100,6 +100,24 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        if (!_run) $scope.evolving(_run);
 		    }
 
+
+		    $scope.setInputValues = function (input) {
+
+		    	$("#gensinput").val(input.gens);
+		        $("#runsinput").val(input.runs);
+		        $("#goalinput").val(input.goal);
+		        $("#popinput").val(input.pop);
+
+		        $("#methodinput").val(input.crossover.method);
+		        $("#parentsinput").val(input.crossover.parents);
+		        // $("#poolinput").val(input.crossover.pool ? input.crossover.pool*100 + "%" : "%");
+		        $("#poolinput").val(input.crossover.pool);
+		        $("#splicemininput").val(input.crossover.splicemin);
+		        $("#splicemaxinput").val(input.crossover.splicemax);
+		        // $("#mutateinput").val(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%");
+		        $("#mutateinput").val(input.crossover.mutate);
+		    }
+
 		    $scope.setSettings = function (input) {
 
 		    	 $scope.settings = {
@@ -141,10 +159,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 			    	self.manual = {
-			    		gens:setInput.gens || (self.manual ? self.manual.gens : ""),
-			    		runs:setInput.runs || (self.manual ? self.manual.runs : ""),
+			    		gens:parseInt(setInput.gens || (self.manual ? self.manual.gens : "")),
+			    		runs:parseInt(setInput.runs || (self.manual ? self.manual.runs : "")),
 			    		goal:setInput.goal || (self.manual ? self.manual.goal : "max"),
-			    		pop:setInput.pop || (self.manual ? self.manual.pop : ""),
+			    		pop:parseInt(setInput.pop || (self.manual ? self.manual.pop : "")),
 			    		crossover:{
 			    			methodTypes:{
 			    				multiOffspring:crossoverMethods.multiOffspring, 
@@ -154,29 +172,69 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 					    			? (setInput.crossover.method || 
 					    			   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
 					    			: (self.manual ? self.manual.crossover.method : crossoverMethods.default),
-			    			parents:setInput.crossover 
+			    			parents:parseInt(setInput.crossover 
 					    			? (setInput.crossover.parents || 
 					    			   (self.manual ? self.manual.crossover.parents : "")) 
-					    			: (self.manual ? self.manual.crossover.parents : ""),
-			    			pool:setInput.crossover 
+					    			: (self.manual ? self.manual.crossover.parents : "")),
+			    			pool:parseFloat(setInput.crossover 
 					    			? (setInput.crossover.pool || 
 					    			   (self.manual ? self.manual.crossover.pool : "")) 
-					    			: (self.manual ? self.manual.crossover.pool : ""),
-			    			splicemin:setInput.crossover 
+					    			: (self.manual ? self.manual.crossover.pool : "")),
+			    			splicemin:parseInt(setInput.crossover 
 					    			? (setInput.crossover.splicemin || 
 					    			   (self.manual ? self.manual.crossover.splicemin : "")) 
-					    			: (self.manual ? self.manual.crossover.splicemin : ""),
-			    			splicemax:setInput.crossover 
+					    			: (self.manual ? self.manual.crossover.splicemin : "")),
+			    			splicemax:parseInt(setInput.crossover 
 					    			? (setInput.crossover.splicemax || 
 					    			   (self.manual ? self.manual.crossover.splicemax : "")) 
-					    			: (self.manual ? self.manual.crossover.splicemax : ""),
-			    			mutate:setInput.crossover 
+					    			: (self.manual ? self.manual.crossover.splicemax : "")),
+			    			mutate:parseFloat(setInput.crossover 
 					    			? (setInput.crossover.mutate || 
 					    			   (self.manual ? self.manual.crossover.mutate : "")) 
-					    			: (self.manual ? self.manual.crossover.mutate : ""),
+					    			: (self.manual ? self.manual.crossover.mutate : "")),
 			    		},
 			    		programInput:setInput.programInput || (self.manual ? self.manual.programInput : {}) 
 			    	}
+
+
+			    	// for (var i in setInput) {
+
+			    	// 	if (Object.keys(setinput[i]).length > 0) {
+
+			    	// 		for (var j in setInput[i]) {
+
+			    	// 			self.manual[i][j] = setInput[i][j] || self.manual[i][j];
+			    	// 		}
+			    	// 	}
+
+			    	// 	self.manual[i] = setInput[i] || self.manual[i];
+			    	// }
+
+			    	// self.manual = {
+			    	// 	gens:setInput.gens,
+			    	// 	runs:setInput.runs,
+			    	// 	goal:setInput.goal,
+			    	// 	pop:setInput.pop,
+			    	// 	crossover:{
+			    	// 		methodTypes:{
+			    	// 			multiOffspring:crossoverMethods.multiOffspring, 
+			    	// 			multiParent:crossoverMethods.multiParent
+			    	// 		},
+			    	// 		method:setInput.crossover 
+					   //  			? setInput.crossover.method,
+			    	// 		parents:setInput.crossover 
+					   //  			? setInput.crossover.parents
+			    	// 		pool:setInput.crossover 
+					   //  			? setInput.crossover.pool
+			    	// 		splicemin:setInput.crossover 
+					   //  			? setInput.crossover.splicemin
+			    	// 		splicemax:setInput.crossover 
+					   //  			? setInput.crossover.splicemax
+			    	// 		mutate:setInput.crossover 
+					   //  			? setInput.crossover.mutate
+			    	// 	},
+			    	// 	programInput:setInput.programInput
+			    	// }
 
 		    	}
 		    	else {
@@ -184,42 +242,30 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    		console.log("reset to default");
 
 			    	self.manual = {
-			    		gens:$$InitialSettings$$.gens || self.manual.gens,
-			    		runs:$$InitialSettings$$.runs || self.manual.runs,
+			    		gens:parseInt($$InitialSettings$$.gens || self.manual.gens),
+			    		runs:parseInt($$InitialSettings$$.runs || self.manual.runs),
 			    		goal:$$InitialSettings$$.goal || self.manual.goal,
-			    		pop:$$InitialSettings$$.pop || self.manual.pop,
+			    		pop:parseInt($$InitialSettings$$.pop || self.manual.pop),
 			    		crossover:{
 			    			methodTypes:{
 			    				multiOffspring:crossoverMethods.multiOffspring, 
 			    				multiParent:crossoverMethods.multiParent
 			    			},
 			    			method:$$InitialSettings$$.crossover.method || self.manual.crossover.method,
-			    			parents:$$InitialSettings$$.crossover.parents || self.manual.crossover.parents,
-			    			pool:$$InitialSettings$$.crossover.pool || self.manual.crossover.pool,
-			    			splicemin:$$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin,
-			    			splicemax:$$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax,
-			    			mutate:$$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate
+			    			parents:parseInt($$InitialSettings$$.crossover.parents || self.manual.crossover.parents),
+			    			pool:parseFloat($$InitialSettings$$.crossover.pool || self.manual.crossover.pool),
+			    			splicemin:parseInt($$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin),
+			    			splicemax:parseInt($$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax),
+			    			mutate:parseFloat($$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate)
 			    		},
-			    		programInput:self.manual.programInput || $$InitialSettings$$.programInput
+			    		programInput:(self.manual ? self.manual.programInput : $$InitialSettings$$.programInput) || $$InitialSettings$$.programInput
 			    	}
 		    	}
 
 		    	console.log("reset input self.manual", self.manual);
 
-		        $("#gensinput").val(self.manual.gens);
-		        $("#runsinput").val(self.manual.runs);
-		        $("#goalinput").val(self.manual.goal);
-		        $("#popinput").val(self.manual.pop);
-
-		        $("#methodinput").val(self.manual.crossover.method);
-		        $("#parentsinput").val(self.manual.crossover.parents);
-		        // $("#poolinput").val(self.manual.crossover.pool ? self.manual.crossover.pool*100 + "%" : "%");
-		        $("#poolinput").val(self.manual.crossover.pool);
-		        $("#splicemininput").val(self.manual.crossover.splicemin);
-		        $("#splicemaxinput").val(self.manual.crossover.splicemax);
-		        // $("#mutateinput").val(self.manual.crossover.mutate ? self.manual.crossover.mutate*100 + "%" : "%");
-		        $("#mutateinput").val(self.manual.crossover.mutate);
-
+		        
+		    	$scope.setInputValues(self.manual);
 		       
 
 		       	$scope.setSettings(self.manual);
@@ -279,7 +325,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            	                ? self.manual.crossover.mutate : undefined) 
 		            	             : undefined) || getValue($("#mutateinput").val()))
 		            },
-		            programInput:self.manual.programInput,
+		            programInput:self.manual ? self.manual.programInput : $$InitialSettings$$.programInput,
 		            evdelay:0,
 		            newenv:true,
 		            session:$scope.session
@@ -294,7 +340,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	return $scope.input;
 		    }
-		    
+
 
 		    react.subscribe({
 		    	name:"resetInput",

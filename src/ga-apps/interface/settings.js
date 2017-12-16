@@ -277,28 +277,33 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
 
 		 		 manual = {
-		            gens:parseInt($("#gensinput").val()),
-		            runs:parseInt($("#runsinput").val()),
+		            gens:$("#gensinput").val(),
+		            runs:$("#runsinput").val(),
 		            goal:$scope.settings ? ($scope.settings.goal || "max") : "max",
-		            pop:parseInt($("#popinput").val()),
+		            pop:$("#popinput").val(),
 		            crossover:{
 		            	method:$scope.settings ? ($scope.settings.crossover.method || defaultMethod) : defaultMethod,
-		            	parents:parseInt($("#parentsinput").val()),
-		            	pool:parseFloat($("#poolinput").val()),
-		            	splicemin:parseInt($("#splicemininput").val()),
-		            	splicemax:parseInt($("#splicemaxinput").val()),
-		            	mutate:parseFloat($("#mutateinput").val())
+		            	parents:$("#parentsinput").val(),
+		            	pool:$("#poolinput").val(),
+		            	splicemin:$("#splicemininput").val(),
+		            	splicemax:$("#splicemaxinput").val(),
+		            	mutate:$("#mutateinput").val()
 		            }
 		        }
 
 		        console.log("on change input, manual", manual);
 
-		        react.push({
-		        	name:"resetInput",
-		        	state:manual
-		        })
+		        // react.push({
+		        // 	name:"resetInput",
+		        // 	state:manual
+		        // })
 
-		        // $scope.setSettings(manual);
+
+		        $scope.setSettings(manual);
+
+		        $scope.setInputValues(manual);
+
+		        $scope.getInput();
 
 		        // return manual;
 			}
