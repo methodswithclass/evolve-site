@@ -268,7 +268,18 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var getValue = function (string) {
 
-		    	return parseFloat(string.substr(0, string.length-1)/100)
+				// var last = string.substr(string.length-1);
+
+				var value = string
+
+				// if (last == "%") {
+				// 	value = string.substr(0, string.length-1);
+				// }
+				// else {
+				// 	value = string;
+				// }
+
+		    	return parseFloat(value)/100
 		    }
 
 			$scope.changeInput = function () {
@@ -284,11 +295,12 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            crossover:{
 		            	method:$scope.settings ? ($scope.settings.crossover.method || defaultMethod) : defaultMethod,
 		            	parents:$("#parentsinput").val(),
-		            	pool:$("#poolinput").val(),
+		            	pool:getValue($("#poolinput").val()),
 		            	splicemin:$("#splicemininput").val(),
 		            	splicemax:$("#splicemaxinput").val(),
-		            	mutate:$("#mutateinput").val()
-		            }
+		            	mutate:getValue($("#mutateinput").val())
+		            },
+		            programInput:programInput
 		        }
 
 		        console.log("on change input, manual", manual);
@@ -301,9 +313,11 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 		        $scope.setSettings(manual);
 
-		        $scope.setInputValues(manual);
 
-		        $scope.getInput();
+		        // $scope.setInputValues(manual);
+
+
+		        $scope.getInput(manual);
 
 		        // return manual;
 			}

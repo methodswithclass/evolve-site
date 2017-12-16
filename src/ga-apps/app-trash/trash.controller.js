@@ -10,7 +10,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     var trashInput = {
         goals:[{goal:"min"}, {goal:"max"}],
-        gridSize:10,
+        gridSize:5,
         trashRate:0.5
     }
 

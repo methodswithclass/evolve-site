@@ -111,11 +111,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $("#methodinput").val(input.crossover.method);
 		        $("#parentsinput").val(input.crossover.parents);
 		        // $("#poolinput").val(input.crossover.pool ? input.crossover.pool*100 + "%" : "%");
-		        $("#poolinput").val(input.crossover.pool);
+		        $("#poolinput").val((input.crossover.pool ? input.crossover.pool*100 : ""));
 		        $("#splicemininput").val(input.crossover.splicemin);
 		        $("#splicemaxinput").val(input.crossover.splicemax);
 		        // $("#mutateinput").val(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%");
-		        $("#mutateinput").val(input.crossover.mutate);
+		        $("#mutateinput").val((input.crossover.mutate ? input.crossover.mutate*100 : ""));
 		    }
 
 		    $scope.setSettings = function (input) {
@@ -129,11 +129,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        		method:input.crossover.method,
 		        		parents:input.crossover.parents,
 		        		// pool:(input.crossover.pool ? input.crossover.pool*100 + "%" : "%"),
-		        		pool:input.crossover.pool,
+		        		pool:(input.crossover.pool ? input.crossover.pool*100 : ""),
 		        		splicemin:input.crossover.splicemin,
 		        		splicemax:input.crossover.splicemax,
 		        		// mutate:(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%")
-		        		mutate:input.crossover.mutate
+		        		mutate:(input.crossover.mutate ? input.crossover.mutate*100 : "")
 		        	}
 		        }
 
@@ -197,45 +197,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    	}
 
 
-			    	// for (var i in setInput) {
-
-			    	// 	if (Object.keys(setinput[i]).length > 0) {
-
-			    	// 		for (var j in setInput[i]) {
-
-			    	// 			self.manual[i][j] = setInput[i][j] || self.manual[i][j];
-			    	// 		}
-			    	// 	}
-
-			    	// 	self.manual[i] = setInput[i] || self.manual[i];
-			    	// }
-
-			    	// self.manual = {
-			    	// 	gens:setInput.gens,
-			    	// 	runs:setInput.runs,
-			    	// 	goal:setInput.goal,
-			    	// 	pop:setInput.pop,
-			    	// 	crossover:{
-			    	// 		methodTypes:{
-			    	// 			multiOffspring:crossoverMethods.multiOffspring, 
-			    	// 			multiParent:crossoverMethods.multiParent
-			    	// 		},
-			    	// 		method:setInput.crossover 
-					   //  			? setInput.crossover.method,
-			    	// 		parents:setInput.crossover 
-					   //  			? setInput.crossover.parents
-			    	// 		pool:setInput.crossover 
-					   //  			? setInput.crossover.pool
-			    	// 		splicemin:setInput.crossover 
-					   //  			? setInput.crossover.splicemin
-			    	// 		splicemax:setInput.crossover 
-					   //  			? setInput.crossover.splicemax
-			    	// 		mutate:setInput.crossover 
-					   //  			? setInput.crossover.mutate
-			    	// 	},
-			    	// 	programInput:setInput.programInput
-			    	// }
-
 		    	}
 		    	else {
 
@@ -264,11 +225,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	console.log("reset input self.manual", self.manual);
 
+
+		    	$scope.setSettings(self.manual);
 		        
-		    	$scope.setInputValues(self.manual);
+
+		    	// $scope.setInputValues(self.manual);
 		       
 
-		       	$scope.setSettings(self.manual);
+		       	
 
 
 		        console.log("reset input, settings", $scope.settings);
