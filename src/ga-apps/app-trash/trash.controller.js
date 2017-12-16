@@ -151,16 +151,11 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             $scope.resetInput();
 
-            react.push({
-                name:"programInput" + self.name,
-                state:trashInput
-            })
-
-            // $scope.resetInput({
-            //     setInput:{
-            //         programInput:trashInput
-            //     }
-            // });
+            $scope.resetInput({
+                setInput:{
+                    programInput:trashInput
+                }
+            });
 
 
             u.toggle("hide", "evolve");
@@ -183,19 +178,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("disable", "play");
             u.toggle("disable", "stop");
 
+            // complete();
 
-            // $scope.getData(function ($d) {
 
-            //     // console.log("get data complete", $d);
+            instantiateBackend(function () {
 
-            //     $scope.setData($d);
-
-                instantiateBackend(function () {
-
-                    setInputBackend(complete);
-                })
-            // })
-
+                setInputBackend(complete);
+            })
 
         }
     },
@@ -211,6 +200,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
                 if (complete) complete();
             });
+
+            // complete()
         }
     },
     {
@@ -225,6 +216,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
                 if (complete) complete();
             });
+
+
+            // complete();
 
         }
     },

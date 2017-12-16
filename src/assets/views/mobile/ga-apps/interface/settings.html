@@ -77,9 +77,9 @@
 
 				</div>
 
-				<div class="relative width min-height-1000 black-back border-white z-100" id="gensettingsinner">
+				<div class="relative width min-height-1500 black-back border-white z-100" id="gensettingsinner">
 
-					<div class="relative width black-back z-80" id="settings-basic">
+					<div class="absolute width min-height-1500 height black-back z-80" id="settings-basic">
 
 						<div class="relative width80 hcenter margin-v-100">
 
@@ -160,22 +160,22 @@
 					</div>
 					
 
-					<div class="relative width black-back z-60" id="settings-advanced">
+					<div class="absolute width min-height-1500 black-back z-60" id="settings-advanced">
 
 
 						<div class="relative width80 hcenter margin-v-100">
 
 
-							<div class="relative width hcenter height-100">
-								<div class="absolute width height-50 vcenter border-bottom-white" id="methodinputouter">
+							<div class="relative width hcenter height-200">
+								<div class="absolute width height-100 center border-bottom-white" id="methodinputouter">
 									
 
 									<div class="absolute width50 height" id="methodinputinner">
-										<div class="absolute width90 center text-right right0 font-25">
+										<div class="absolute width90 center text-right right0 font25-rem">
 											crossover method
 										</div>
 									</div>
-									<select class="absolute width50 height right0 text-right font-25 transparent-back white nooutline" id="methodinput" ng-model="settings.crossover.method" ng-keyup="changeInput()">
+									<select class="absolute width50 height right0 text-right font2-rem transparent-back white nooutline" id="methodinput" ng-model="settings.crossover.method" ng-keyup="changeInput()">
 										<option class="black font-30" ng-repeat="item in methods">{{item.method}}</option>
 									</select>
 
@@ -184,78 +184,78 @@
 							</div>
 
 
-							<div class="relative width height-100">
-								<div class="absolute width height-30 vcenter border-bottom-white" id="parentsinputouter">
+							<div class="relative width height-200">
+								<div class="absolute width height-100 center border-bottom-white" id="parentsinputouter">
 									
 
 									<div class="absolute width60 height" id="parentsinputinner">
-										<div class="absolute width90 center text-right right0">
+										<div class="absolute width90 center text-right right0 font25-rem">
 											# parents
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="parentsinput" type="text" ng-model="settings.crossover.parents" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font4-rem transparent-back white nooutline" id="parentsinput" type="text" ng-model="settings.crossover.parents" ng-keyup="changeInput()">
 
 
 								</div>
 							</div>
 
-							<div class="relative width height-100">
-								<div class="absolute width height-30 vcenter border-bottom-white" id="poolinputouter">
+							<div class="relative width height-200">
+								<div class="absolute width height-100 center border-bottom-white" id="poolinputouter">
 									
 
 									<div class="absolute width60 height" id="poolinputinner">
-										<div class="absolute width90 center text-right right0">
+										<div class="absolute width90 center text-right right0 font25-rem">
 											best of population
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="poolinput" type="text" ng-model="settings.crossover.pool" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font4-rem transparent-back white nooutline" id="poolinput" type="text" ng-model="settings.crossover.pool" ng-keyup="changeInput()">
 
 
 								</div>
 							</div>
 
 
-							<div class="relative width height-100">
-								<div class="absolute width height-30 vcenter border-bottom-white" id="splicemininputouter">
+							<div class="relative width height-200">
+								<div class="absolute width height-100 center border-bottom-white" id="splicemininputouter">
 									
 
 									<div class="absolute width60 height" id="splicemininputinner">
-										<div class="absolute width90 center text-right right0">
+										<div class="absolute width90 center text-right right0 font2-rem">
 											min of gene splice
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemininput" type="text" ng-model="settings.crossover.splicemin" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font4-rem transparent-back white nooutline" id="splicemininput" type="text" ng-model="settings.crossover.splicemin" ng-keyup="changeInput()">
 
 
 								</div>
 							</div>
 
-							<div class="relative width height-100">
-								<div class="absolute width height-30 vcenter border-bottom-white" id="splicemaxinputouter">
+							<div class="relative width height-200">
+								<div class="absolute width height-100 center border-bottom-white" id="splicemaxinputouter">
 									
 
 									<div class="absolute width60 height" id="splicemaxinputinner">
-										<div class="absolute width90 center text-right right0">
+										<div class="absolute width90 center text-right right0 font2-rem">
 											max of gene splice
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemaxinput" type="text" ng-model="settings.crossover.splicemax" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font4-rem transparent-back white nooutline" id="splicemaxinput" type="text" ng-model="settings.crossover.splicemax" ng-keyup="changeInput()">
 
 
 								</div>
 							</div>
 
 
-							<div class="relative width height-100">
-								<div class="absolute width height-30 vcenter border-bottom-white" id="mutateinputouter">
+							<div class="relative width height-200">
+								<div class="absolute width height-100 center border-bottom-white" id="mutateinputouter">
 									
 
 									<div class="absolute width60 height" id="mutateinputinner">
-										<div class="absolute width90 center text-right right0">
+										<div class="absolute width90 center text-right right0 font25-rem">
 											mutation rate
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="mutateinput" type="text" ng-model="settings.crossover.mutate" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font4-rem transparent-back white nooutline" id="mutateinput" type="text" ng-model="settings.crossover.mutate" ng-keyup="changeInput()">
 
 
 								</div>

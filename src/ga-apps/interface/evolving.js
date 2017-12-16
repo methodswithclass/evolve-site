@@ -26,19 +26,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
     			multiOffspring:"multi-offspring"
     		}
 
-    		react.subscribe({
-	        	name:"programInput" + $scope.name,
-	        	callback:function (x) {
-
-	        		// console.log("receive program input evolve");
-
-	        		$scope.resetInput({
-	        			setInput:{
-	        				programInput:x
-	        			}
-	        		})
-	        	}
-	        })
+    		
 
 
     		/*#########  default initial settings ############*/
@@ -110,6 +98,27 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    $scope.running = function (_run) {
 		        update = _run;
 		        if (!_run) $scope.evolving(_run);
+		    }
+
+		    $scope.setSettings = function (input) {
+
+		    	 $scope.settings = {
+		        	gens:input.gens,
+		        	runs:input.runs,
+		        	goal:input.goal,
+		        	pop:input.pop,
+		        	crossover:{
+		        		method:input.crossover.method,
+		        		parents:input.crossover.parents,
+		        		// pool:(input.crossover.pool ? input.crossover.pool*100 + "%" : "%"),
+		        		pool:input.crossover.pool,
+		        		splicemin:input.crossover.splicemin,
+		        		splicemax:input.crossover.splicemax,
+		        		// mutate:(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%")
+		        		mutate:input.crossover.mutate
+		        	}
+		        }
+
 		    }
 
 		    $scope.resetInput = function (options) {
@@ -204,28 +213,25 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        $("#methodinput").val(self.manual.crossover.method);
 		        $("#parentsinput").val(self.manual.crossover.parents);
+		        // $("#poolinput").val(self.manual.crossover.pool ? self.manual.crossover.pool*100 + "%" : "%");
 		        $("#poolinput").val(self.manual.crossover.pool);
 		        $("#splicemininput").val(self.manual.crossover.splicemin);
 		        $("#splicemaxinput").val(self.manual.crossover.splicemax);
+		        // $("#mutateinput").val(self.manual.crossover.mutate ? self.manual.crossover.mutate*100 + "%" : "%");
 		        $("#mutateinput").val(self.manual.crossover.mutate);
 
-		        $scope.settings = {
-		        	gens:self.manual.gens,
-		        	runs:self.manual.runs,
-		        	goal:self.manual.goal,
-		        	pop:self.manual.pop,
-		        	crossover:{
-		        		method:self.manual.crossover.method,
-		        		parents:self.manual.crossover.parents,
-		        		pool:self.manual.crossover.pool,
-		        		splicemin:self.manual.crossover.splicemin,
-		        		splicemax:self.manual.crossover.splicemax,
-		        		mutate:self.manual.crossover.mutate
-		        	}
-		        }
+		       
+
+		       	$scope.setSettings(self.manual);
+
 
 		        console.log("reset input, settings", $scope.settings);
 
+		    }
+
+		    var getValue = function (string) {
+
+		    	return parseFloat(string.substr(0, string.length-1)/100)
 		    }
 
 
@@ -259,7 +265,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        		pool:parseFloat((self.manual 
 		            	             ? (self.manual.crossover 
 		            	                ? self.manual.crossover.pool : undefined) 
-		            	             : undefined) || $("#poolinput").val()),
+		            	             : undefined) || getValue($("#poolinput").val())),
 		        		splicemin:parseInt((self.manual 
 		            	             ? (self.manual.crossover 
 		            	                ? self.manual.crossover.splicemin : undefined) 
@@ -271,7 +277,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        		mutate:parseFloat((self.manual 
 		            	             ? (self.manual.crossover 
 		            	                ? self.manual.crossover.mutate : undefined) 
-		            	             : undefined) || $("#mutateinput").val())
+		            	             : undefined) || getValue($("#mutateinput").val()))
 		            },
 		            programInput:self.manual.programInput,
 		            evdelay:0,
@@ -288,6 +294,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	return $scope.input;
 		    }
+		    
 
 		    react.subscribe({
 		    	name:"resetInput",

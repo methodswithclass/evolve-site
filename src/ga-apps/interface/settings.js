@@ -61,7 +61,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var toggleKindType = function (kindValue) {
 
-				console.log("toggle kind type", kindValue);
+				// console.log("toggle kind type", kindValue);
 
 				toggleKind = kinds.find(function (p) {
 
@@ -90,7 +90,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 				})
 
-				console.log("kinds", kinds, toggleKind);
+				// console.log("kinds", kinds, toggleKind);
 
 
 
@@ -115,32 +115,18 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 				tabElem(kind).main.css({
-					top:kind.status ? tabParams.opened.top : tabParams.closed.top,
-					zIndex:kind.status ? tabParams.opened.zIndex : tabParams.closed.zIndex
+					top:getTabParam(kind, "top"),
+					zIndex:getTabParam(kind, "zIndex")
 				});
 
 				tabElem(kind).cover.css({
-					// top:kind.status ? tabParams.opened.top : tabParams.closed.top, 
-					opacity:kind.status ? tabParams.opened.opacity : tabParams.closed.opacity
+					top:getTabParam(kind, "top"), 
+					opacity:getTabParam(kind, "opacity")
 				});
 
 				tabElem(kind).settings
 				.removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
-				.addClass(kind.status ? tabParams.opened.class : tabParams.closed.class);
-
-				// tabElem(kind).main.css({
-				// 	top:getTabParam(kind, "top"),
-				// 	zIndex:getTabParam(kind, "zIndex")
-				// });
-
-				// tabElem(kind).cover.css({
-				// 	top:getTabParam(kind, "top"), 
-				// 	opacity:getTabParam(kind, "opacity")
-				// });
-
-				// tabElem(kind).settings
-				// .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
-				// .addClass(getTabParam(kind, "class"));
+				.addClass(getTabParam(kind, "class"));
 
 			}
 
@@ -149,7 +135,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			$scope.settings;
 
-			console.log("register evolve.vars");
+			// console.log("register evolve.vars");
 			react.subscribe({
 				name:"evolve.vars",
 				callback:function (x) {
@@ -179,13 +165,13 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				}
 			})
 
-			react.subscribe({
-				name:"resetInput",
-				callback:function(x) {
+			// react.subscribe({
+			// 	name:"resetInput",
+			// 	callback:function(x) {
 
-					$scope.settings = x;
-				}
-			})
+			// 		$scope.settings = x;
+			// 	}
+			// })
 
 			var controls = [
 			{
@@ -268,10 +254,10 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 						if (!openStatus.opened) {
 							
-							react.push({
-					        	name:"resetInput",
-					        	state:$scope.settings
-					        })
+							// react.push({
+					  //       	name:"resetInput",
+					  //       	state:$scope.settings
+					  //       })
 
 						}
 					}
@@ -279,6 +265,11 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				});
 
 			}
+
+			var getValue = function (string) {
+
+		    	return parseFloat(string.substr(0, string.length-1)/100)
+		    }
 
 			$scope.changeInput = function () {
 
@@ -307,7 +298,9 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		        	state:manual
 		        })
 
-		        return manual;
+		        // $scope.setSettings(manual);
+
+		        // return manual;
 			}
 
 			$scope.animateRefresh = function (complete) {
