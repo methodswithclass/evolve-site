@@ -6,12 +6,11 @@ var g = require("mc-shared").utility_service;
 
 
 
-var trash = function () {
+var trash = function (options) {
 
 	var self = this;
 
-	var width = d.data.width;
-	var height = d.data.height;
+
 	var actions = d.data.actions;
 	var runs;
 	var $stepdata;
@@ -23,8 +22,11 @@ var trash = function () {
 	var robot = new robotFact();
 	var environment = new environmentFact();
 	
-	environment.createEnv();
-	robot.setup(environment);
+	// console.log("trash create, environment create options", options);
+
+	environment.refresh(options);
+	robot.setup(environment, options);
+
 
 	self.gene = function () {
 		// console.log("get gene");
@@ -65,9 +67,9 @@ var trash = function () {
 		robot.reset();
 	}
 
-	self.refresh = function () {
+	self.refresh = function (options) {
 
-		environment.refresh();
+		environment.refresh(options);
 		self.reset();
 
 		return environment.get();
@@ -82,7 +84,7 @@ var trash = function () {
 
 		//console.log("step", step);
 
-		if (step < actions.total) {
+		if (step < options.totalSteps) {
 
 			var after = robot.update();
 
@@ -119,7 +121,8 @@ var trash = function () {
 			self.instruct(params.dna);
 
 			if (params.input.newenv) {
-				target = environment.refresh();
+
+				target = environment.refresh(params.input.programInput);
 			}
 			else {
 				environment.trash();

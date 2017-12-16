@@ -38,13 +38,9 @@ var getRandom = function () {
 
 var data = {
 	name:"trash",
-	width:5,
-	height:5,
-	trashRate:0.5,
 	genome:power(),
 	goals:[{goal:"max"}, {goal:"min"}],
 	actions:{
-		total:50,
 		list:[
 		{
 			id:0,

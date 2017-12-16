@@ -7,29 +7,49 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
         templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/evolving.html",		
 		link:function ($scope, element, attr) {
 
+			var self = this;
 
-			// console.log("\n############\ncreate evolveing directive\n\n");
 
-			var d;
+			console.log("\n############\ncreate evolveing directive\n\n");
+
+			
 			var simulator = simulators.get($scope.name);
-			var totalActions;
-			var default_input;
     		var update = false;
 		    var ev = false;
-		    var latest;
-		    var manual;
     		$scope.input = {};
 
+    		self.manual;
 
-    		/*#########
-    		default initial settings
-			###########*/
+    		var crossoverMethods = {
+    			default:"multi-parent",
+    			multiParent:"multi-parent",
+    			multiOffspring:"multi-offspring"
+    		}
+
+    		
+
+
+    		/*#########  default initial settings ############*/
     		var $$InitialSettings$$ = {
 	    		gens:500,
 	    		runs:20,
 	    		goal:"max",
-	    		pop:100
+	    		pop:100,
+	    		crossover:{
+	    			methodTypes:{
+	    				multiOffspring:crossoverMethods.multiOffspring, 
+	    				multiParent:crossoverMethods.multiParent
+	    			},
+	    			method:crossoverMethods.multiParent,
+	    			parents:2,
+	    			pool:0.1,
+	    			splicemin:2,
+	    			splicemax:12,
+	    			mutate:0.02
+	    		},
+	    		programInput:null
 	    	}
+	    	/*################################################*/
 
 
 	    	$scope.evdata;
@@ -45,11 +65,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    }
 
 			    $scope.stepdata = {
-			        gen:0,
-			        org:0,
-			        run:0,
-			        step:0
-			    }
+			    	gen:0,
+			    	org:0,
+			    	run:0,
+			    	step:0
+			    };
 
 			}
 
@@ -68,46 +88,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	           		state:$scope.evdata
 	           	});
 	        }
-
-
-			$scope.setData = function ($d) {
-
-				// console.log("set data", $scope.name, "\n", $d, "\n\n");
-
-				d = $d
-				totalActions = d.data.actions ? d.data.actions.total : 1;
-				$scope.goals = d.data.goals;
-			}
-
-		    $scope.getData = function (complete) {
-
-		    	// console.log("get data");
-
-		        $http({
-		        	method:"GET",
-		        	url:"/evolve/data/" + $scope.name
-		        })
-		        .then(function (res) {
-
-		            var $d = res.data.data;
-
-
-		            // console.log("\nget data response", $scope.name, "\n", $d, "\n\n");
-
-		            complete($d);
-
-		        }, function (err) {
-
-		            // console.log("Server error while getting data", err);
-
-		        })
-
-		    }
-
-		    $scope.getData(function ($d) {
-
-		    	$scope.setData($d);
-		    });
+	        
 
 		    $scope.evolving = function (_evolve) {
 		        ev = _evolve;
@@ -119,67 +100,200 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        if (!_run) $scope.evolving(_run);
 		    }
 
-		    $scope.resetInput = function ($input) {
 
-		    	// console.log("input", d.data);
+		    $scope.setInputValues = function (input) {
 
-		    	if ($input) {
+		    	$("#gensinput").val(input.gens);
+		        $("#runsinput").val(input.runs);
+		        $("#goalinput").val(input.goal);
+		        $("#popinput").val(input.pop);
 
-		    		manual = {
-			    		gens:$input.gens,
-			    		runs:$input.runs,
-			    		goal:$input.goal,
-			    		pop:$input.pop
-			    	}
-		    	}
-		    	else {
+		        $("#methodinput").val(input.crossover.method);
+		        $("#parentsinput").val(input.crossover.parents);
+		        // $("#poolinput").val(input.crossover.pool ? input.crossover.pool*100 + "%" : "%");
+		        $("#poolinput").val((input.crossover.pool ? input.crossover.pool*100 : ""));
+		        $("#splicemininput").val(input.crossover.splicemin);
+		        $("#splicemaxinput").val(input.crossover.splicemax);
+		        // $("#mutateinput").val(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%");
+		        $("#mutateinput").val((input.crossover.mutate ? input.crossover.mutate*100 : ""));
+		    }
 
-			    	manual = {
-			    		gens:$$InitialSettings$$.gens,
-			    		runs:$$InitialSettings$$.runs,
-			    		goal:$$InitialSettings$$.goal,
-			    		pop:$$InitialSettings$$.pop
-			    	}
-		    	}
+		    $scope.setSettings = function (input) {
 
-		    	console.log("reset input", $input, "initial", $$InitialSettings$$, "manual", manual);
-
-		        $("#gensinput").val(manual.gens),
-		        $("#runsinput").val(manual.runs),
-		        $("#goalinput").val(manual.goal),
-		        $("#popinput").val(manual.pop);
-
-		        $scope.settings = {
-		        	gens:manual.gens,
-		        	runs:manual.runs,
-		        	goal:manual.goal,
-		        	pop:manual.pop
+		    	 $scope.settings = {
+		        	gens:input.gens,
+		        	runs:input.runs,
+		        	goal:input.goal,
+		        	pop:input.pop,
+		        	crossover:{
+		        		method:input.crossover.method,
+		        		parents:input.crossover.parents,
+		        		// pool:(input.crossover.pool ? input.crossover.pool*100 + "%" : "%"),
+		        		pool:(input.crossover.pool ? input.crossover.pool*100 : ""),
+		        		splicemin:input.crossover.splicemin,
+		        		splicemax:input.crossover.splicemax,
+		        		// mutate:(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%")
+		        		mutate:(input.crossover.mutate ? input.crossover.mutate*100 : "")
+		        	}
 		        }
-
-		        react.push({
-		        	name:"resetInput",
-		        	state:manual
-		        })
 
 		    }
 
+		    $scope.resetInput = function (options) {
+
+
+
+		    	react.push({
+	    			name:"evolve.vars",
+	    			state:{
+	    				crossoverMethods:crossoverMethods
+	    			}
+	    		})
+
+
+		    	var setInput = options ? options.setInput : undefined;
+
+		    	if (setInput) {
+
+		    		console.log("set input", setInput, self.manual);
+
+
+			    	self.manual = {
+			    		gens:parseInt(setInput.gens || (self.manual ? self.manual.gens : "")),
+			    		runs:parseInt(setInput.runs || (self.manual ? self.manual.runs : "")),
+			    		goal:setInput.goal || (self.manual ? self.manual.goal : "max"),
+			    		pop:parseInt(setInput.pop || (self.manual ? self.manual.pop : "")),
+			    		crossover:{
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:setInput.crossover 
+					    			? (setInput.crossover.method || 
+					    			   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
+					    			: (self.manual ? self.manual.crossover.method : crossoverMethods.default),
+			    			parents:parseInt(setInput.crossover 
+					    			? (setInput.crossover.parents || 
+					    			   (self.manual ? self.manual.crossover.parents : "")) 
+					    			: (self.manual ? self.manual.crossover.parents : "")),
+			    			pool:parseFloat(setInput.crossover 
+					    			? (setInput.crossover.pool || 
+					    			   (self.manual ? self.manual.crossover.pool : "")) 
+					    			: (self.manual ? self.manual.crossover.pool : "")),
+			    			splicemin:parseInt(setInput.crossover 
+					    			? (setInput.crossover.splicemin || 
+					    			   (self.manual ? self.manual.crossover.splicemin : "")) 
+					    			: (self.manual ? self.manual.crossover.splicemin : "")),
+			    			splicemax:parseInt(setInput.crossover 
+					    			? (setInput.crossover.splicemax || 
+					    			   (self.manual ? self.manual.crossover.splicemax : "")) 
+					    			: (self.manual ? self.manual.crossover.splicemax : "")),
+			    			mutate:parseFloat(setInput.crossover 
+					    			? (setInput.crossover.mutate || 
+					    			   (self.manual ? self.manual.crossover.mutate : "")) 
+					    			: (self.manual ? self.manual.crossover.mutate : "")),
+			    		},
+			    		programInput:setInput.programInput || (self.manual ? self.manual.programInput : {}) 
+			    	}
+
+
+		    	}
+		    	else {
+
+		    		console.log("reset to default");
+
+			    	self.manual = {
+			    		gens:parseInt($$InitialSettings$$.gens || self.manual.gens),
+			    		runs:parseInt($$InitialSettings$$.runs || self.manual.runs),
+			    		goal:$$InitialSettings$$.goal || self.manual.goal,
+			    		pop:parseInt($$InitialSettings$$.pop || self.manual.pop),
+			    		crossover:{
+			    			methodTypes:{
+			    				multiOffspring:crossoverMethods.multiOffspring, 
+			    				multiParent:crossoverMethods.multiParent
+			    			},
+			    			method:$$InitialSettings$$.crossover.method || self.manual.crossover.method,
+			    			parents:parseInt($$InitialSettings$$.crossover.parents || self.manual.crossover.parents),
+			    			pool:parseFloat($$InitialSettings$$.crossover.pool || self.manual.crossover.pool),
+			    			splicemin:parseInt($$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin),
+			    			splicemax:parseInt($$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax),
+			    			mutate:parseFloat($$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate)
+			    		},
+			    		programInput:(self.manual ? self.manual.programInput : $$InitialSettings$$.programInput) || $$InitialSettings$$.programInput
+			    	}
+		    	}
+
+		    	console.log("reset input self.manual", self.manual);
+
+
+		    	$scope.setSettings(self.manual);
+		        
+
+		    	// $scope.setInputValues(self.manual);
+		       
+
+		       	
+
+
+		        console.log("reset input, settings", $scope.settings);
+
+		    }
+
+		    var getValue = function (string) {
+
+		    	return parseFloat(string.substr(0, string.length-1)/100)
+		    }
+
+
 		    $scope.getInput = function ($x) {
 
-		    	if ($x) manual = $x;
+		    	if ($x) self.manual = $x;
+
+		    	// console.log("get input self.manual", self.manual);
+
+		    	// self.manual = checkSettingsForUpdates();
 
 		        $scope.input = {
 		            name:$scope.name,
-		            gens:parseInt((manual ? manual.gens : undefined) || $("#gensinput").val()),
-		            runs:parseInt((manual ? manual.runs : undefined) || $("#runsinput").val()),
-		            goal:(manual ? manual.goal : undefined) || $("#goalinput").val(),
-		            pop:parseInt((manual ? manual.pop : undefined) || $("#popinput").val()),
+		            gens:parseInt((self.manual ? self.manual.gens : undefined) || $("#gensinput").val()),
+		            runs:parseInt((self.manual ? self.manual.runs : undefined) || $("#runsinput").val()),
+		            goal:(self.manual ? self.manual.goal : undefined) || $("#goalinput").val(),
+		            pop:parseInt((self.manual ? self.manual.pop : undefined) || $("#popinput").val()),
+		            crossover:{
+		            	methodTypes:{
+		    				multiOffspring:crossoverMethods.multiOffspring, 
+		    				multiParent:crossoverMethods.multiParent
+		    			},
+		    			method:(self.manual 
+		        	             ? (self.manual.crossover 
+		        	                ? self.manual.crossover.method : undefined) 
+		        	             : undefined) || $("#methodinput").val(),
+		            	parents:parseInt((self.manual 
+		            	             ? (self.manual.crossover 
+		            	                ? self.manual.crossover.parents : undefined) 
+		            	             : undefined) || $("#parentsinput").val()),
+		        		pool:parseFloat((self.manual 
+		            	             ? (self.manual.crossover 
+		            	                ? self.manual.crossover.pool : undefined) 
+		            	             : undefined) || getValue($("#poolinput").val())),
+		        		splicemin:parseInt((self.manual 
+		            	             ? (self.manual.crossover 
+		            	                ? self.manual.crossover.splicemin : undefined) 
+		            	             : undefined) || $("#splicemininput").val()),
+		        		splicemax:parseInt((self.manual 
+		            	             ? (self.manual.crossover 
+		            	                ? self.manual.crossover.splicemax : undefined) 
+		            	             : undefined) || $("#splicemaxinput").val()),
+		        		mutate:parseFloat((self.manual 
+		            	             ? (self.manual.crossover 
+		            	                ? self.manual.crossover.mutate : undefined) 
+		            	             : undefined) || getValue($("#mutateinput").val()))
+		            },
+		            programInput:self.manual ? self.manual.programInput : $$InitialSettings$$.programInput,
 		            evdelay:0,
-		            pdata:d.data,
 		            newenv:true,
 		            session:$scope.session
 		        }
-
-		    	// console.log("get input", $scope.input);
 
 		        return $scope.input;
 		    }
@@ -191,17 +305,34 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	return $scope.input;
 		    }
 
+
+		    react.subscribe({
+		    	name:"resetInput",
+		    	callback:function(x) {
+
+    				$scope.resetInput({
+    					setInput:x
+    				});
+
+		    		$scope.getInput();
+		    	}
+		    })
+
 			var stepprogress = function () {
+
+				var input = $scope.getInput();
 
 		        var genT = $scope.input.gens;
 		        var orgT = $scope.input.pop;
 		        var runT = $scope.input.runs;
-		        var stepT = totalActions;
+		        var stepT = input.programInput.totalSteps;
 
 		        var gen = $scope.stepdata.gen - 1;
 		        var org = $scope.stepdata.org - 1;
 		        var step = $scope.stepdata.step || 0;
 		        var run = $scope.stepdata.run - 1;
+
+		        // console.log("percent", gen, org, step, run);
 
 		        var stepP = (step + run*stepT + org*(runT*stepT) + gen*(orgT*runT*stepT))/(stepT*runT*orgT*genT);
 		        var runP = (run + org*runT)/runT;
@@ -338,7 +469,16 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    		// console.log("get stepdata", res.data.stepdata);
 
-	                $scope.stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
+		    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
+
+		    		// console.log("stepdata", res.data.stepdata, stepdata);
+
+	                $scope.stepdata = {
+	                	gen:stepdata.gen,
+	                	org:stepdata.org,
+	                	run:stepdata.run,
+	                	step:stepdata.step
+	                }
 
 	                if ($scope.stepdata.gen != $scope.evdata.index) {
 	                	getBest();
@@ -497,28 +637,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    react.subscribe({
-		    	name:"resetInput",
-		    	callback:function(x) {
-
-		    		manual = x;
-
-		    		$scope.getInput(x);
-		    	}
-		    })
-
-
-		    react.subscribe({
-    			name:"manual",
-    			callback:function(x) {
-
-    				manual = x;
-
-    				$scope.getInput(x);
-
-    			}
-    		})
-
 		    events.on("evolve.complete", function () {
 		        completeEvolve();
 		    });
@@ -526,7 +644,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    $scope.resetgen = function () {
 
 		        console.log("reset gen");
-		        $scope.running(false);
+		        // $scope.running(false);
 		        
 		        $scope.resetInput();
 		        
@@ -577,7 +695,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        });
 
 		        setTimeout(function () {
-		            console.log("animate");
+		            // console.log("animate");
 		            $("#evolvepage").animate({color:"#fff"}, 600);
 		            $("#evolvepage").addClass("white-t");
 		        }, 300);
@@ -596,8 +714,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        $scope.running(false);
 		        $("#breakfeedback").show();
-		        $scope.input.gens = $scope.stepdata.gen;
-		        $("#gensinput").val($scope.input.gens);
+
+		        $scope.resetInput({
+		        	setInput:{
+		        		gens:$scope.stepdata.gen
+		        	}
+		    	});
+
+		        // $("#gensinput").val($scope..gens);
 
 		        breakEvolveBackend(function () {
 

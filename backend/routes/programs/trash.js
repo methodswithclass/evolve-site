@@ -23,16 +23,18 @@ trashRouter.post("/simulate", function (req, res, next) {
 })
 
 
-trashRouter.get("/environment/refresh/:session", function (req, res, next) {
+trashRouter.post("/environment/refresh/", function (req, res, next) {
 
 
 	console.log("create environment");
 
-	var trash = get.getSessionProgram(req.params.session, "trash");
+	var input = req.body.input;
+
+	var trash = get.getSessionProgram(input.session, "trash");
 
 	// console.log("program", trash ? 1 : 0);
 
-	var env = trash.refresh();
+	var env = trash.refresh(input.programInput);
 
 	// console.log("env", env);
 

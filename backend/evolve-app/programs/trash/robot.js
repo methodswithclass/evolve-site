@@ -12,12 +12,24 @@ var robot = function () {
 	var actions = d.data.actions;
 	var plan;
 	var position = {x:0, y:0};
-	var stage = {
-		min:0,
-		max:d.data.width-1
-	}
+	// var stage = {
+	// 	min:0,
+	// 	max:d.data.width-1
+	// }
+
+	var stage;
 
 	var environment;
+
+	var setInput = function (options) {
+
+		stage = {
+			width:options.gridSize,
+			height:options.gridSize,
+			min:0,
+			max:options.gridSize - 1
+		}
+	}
 
 	var move = function (diff) {
 
@@ -48,9 +60,11 @@ var robot = function () {
 
 	}
 
-	self.setup = function (env) {
+	self.setup = function (env, options) {
 
 		environment = env
+
+		setInput(options);
 	}
 
 	self.reset = function () {
@@ -73,7 +87,7 @@ var robot = function () {
 
 		var success = "success";
 
-		// console.log("update", actions, actions.list, plan, state);
+		// console.log("update", plan, state, id);
 
 		if (actions.list[id].name == "clean") {
 			success = environment.clean(pre);

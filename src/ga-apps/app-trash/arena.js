@@ -18,41 +18,41 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var stageFactor = g.isMobile() ? 0.8 : 0.6;
 			var $stage = $("#stagetoggle");
 
-			var setData = function ($d) {
+			// var setData = function ($d) {
 
-				// console.log("set data arena\n", $d, "\n\n");
+			// 	// console.log("set data arena\n", $d, "\n\n");
 
-				d = $d;
+			// 	d = $d;
  
-				cols = $d.data.width;
-				rows = $d.data.height;
-			}
+			// 	cols = $d.data.width;
+			// 	rows = $d.data.height;
+			// }
 
-			var getData = function (complete) {
+			// var getData = function (complete) {
 
-		        $http({
-		        	method:"GET",
-		        	url:"/evolve/data/" + name
-		        })
-		        .then(function (res) {
+		 //        $http({
+		 //        	method:"GET",
+		 //        	url:"/evolve/data/" + name
+		 //        })
+		 //        .then(function (res) {
 
-		            // console.log("\ngetting data response arena\n", res.data.data, "\n\n");
+		 //            // console.log("\ngetting data response arena\n", res.data.data, "\n\n");
 
-		            var $d = res.data.data;
-		            if (complete) complete($d);
+		 //            var $d = res.data.data;
+		 //            if (complete) complete($d);
 
-		        }, function (err) {
+		 //        }, function (err) {
 
-		            console.log("Server error while getting data", err.message);
+		 //            console.log("Server error while getting data", err.message);
 
-		        })
+		 //        })
 
-		    }
+		 //    }
 
-		    getData(function ($d) {
+		    // getData(function ($d) {
 
-		    	setData($d)
-		    });
+		    // 	setData($d)
+		    // });
 
 			var col = [];
 			var arena = [];
@@ -128,6 +128,17 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				clear();
 
+				rows = env.arena.length;
+				cols = env.arena.length;
+
+				react.push({
+					name:"man.arena",
+					state:{
+						width:env.arena.length,
+						height:env.arena.length
+					}
+				})
+
 				var square;
 				arena.length = 0;
 				arena = null;
@@ -178,8 +189,9 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var refreshEnvironmentBackend = function () {
 
 		        $http({
-		            method:"GET",
-		            url:"/trash/environment/refresh/" + $scope.session
+		            method:"POST",
+		            url:"/trash/environment/refresh/",
+		            data:{input:$scope.getInput()}
 		        })
 		        .then(function (res) {
 
@@ -195,6 +207,18 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 		        })
 		    }
+
+
+		    // react.subscribe({
+		    // 	name:"arena.input",
+		    // 	callback:function(x) {
+
+		    // 		d = x;
+
+		    // 		cols = d.gridSize;
+		    // 		rows = d.gridSize;
+		    // 	}
+		    // })
 
 
 		    react.subscribe({
@@ -214,14 +238,14 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 		    events.on("resetenv", function () {
 
-				console.log("reset ui");
+				// console.log("reset ui");
 
 				makeBlocks(environment)
 			})
 
 			events.on("refreshenv", function () {
 
-				console.log("refresh ui");
+				// console.log("refresh ui");
 
 				refreshEnvironmentBackend();
 			})

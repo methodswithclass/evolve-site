@@ -9,6 +9,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	var $hud = $("#hudtoggle");
 	var $evolve = $("#evolvetoggle");
 	var $evolvedata = $("#evolvedatatoggle");
+	var $mainBack = $("#main-back");
 
 	var winH = 0;
 	var winW = 0;
@@ -31,8 +32,9 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 	var setEvolveHeight = function () {
 
+		$mainBack = $("#main-back");
 		$evolve = $("#evolvetoggle");
-		$winH = $(window).height();
+		$winH = $mainBack.height();
 
 		winH = winH > $winH ? winH : $winH;
 
@@ -54,18 +56,21 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 	var forceEvolveHeight = function () {
 
+		$mainBack = $("#main-back");
 		$evolve = $("#evolvetoggle");
 
-		while(Math.abs($evolve.height() - $(window).height()) > 2) {
+		while(Math.abs($evolve.height() - $mainBack.height()) > 2) {
 			setEvolveHeight();
 		}
 	}
 
 
-	var load = function () {
+	var load = function (input) {
 
-		winH = $(window).height();
-		winW = $(window).width();
+		$mainBack = $("#main-back");
+
+		winH = $mainBack.height();
+		winW = $mainBack.width();
 
 		events.dispatch("load-display", "evolve-data");
 

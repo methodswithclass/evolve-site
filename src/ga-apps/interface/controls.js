@@ -97,7 +97,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 				cntrlWidth = $elem.width()/controls.length;
 
-				console.log("controls load", cntrlWidth, $elem.width());
+				// console.log("controls load", cntrlWidth, $elem.width());
 				
 				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
 
@@ -108,7 +108,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 					zeroPercent = 50 - halfPercent;
 
-					console.log("zero percent", zeroPercent, halfPercent);
+					// console.log("zero percent", zeroPercent, halfPercent);
 
 					if (index == 2) {
 

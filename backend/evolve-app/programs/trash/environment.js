@@ -1,6 +1,6 @@
 
 
-var d = require("../../data/programs/trash.js");
+// var d = require("../../data/programs/trash.js");
 
 
 var environment = function () {
@@ -8,19 +8,40 @@ var environment = function () {
 
 	var self = this;
 
-	var trashRate = d.data.trashRate;
-	var stage = {
-		width:d.data.width,
-		height:d.data.height,
-		min:0,
-		max:d.data.width - 1
-	}
+	// var trashRate = d.data.trashRate;
+	// var stage = {
+	// 	width:d.data.width,
+	// 	height:d.data.height,
+	// 	min:0,
+	// 	max:d.data.width - 1
+	// }
+
+	var trashRate;
+	var stage;
 
 	var env = {};
+
+	var setInput = function (options) {
+
+		// console.log("set input", options);
+
+		trashRate = options.gridSize >= 5 ? options.trashRate : 0.25;
+		stage = {
+			width:options.gridSize,
+			height:options.gridSize,
+			min:0,
+			max:options.gridSize - 1
+		}
+	}
 
 	self.get = function () {
 
 		return env;
+	}
+
+	var clear = function () {
+
+		env = {};
 	}
 
 	var block = function (x, y) {
@@ -113,7 +134,14 @@ var environment = function () {
 		replace();
 	}
 
-	self.refresh = function () {
+	self.refresh = function (options) {
+
+
+		if (options) setInput(options);
+
+		clear();
+
+		self.make();
 
 		var _trash = [];
 		var k = 0;
@@ -174,6 +202,8 @@ var environment = function () {
 
 	self.clean = function (pos) {
 
+		// console.log("arena", pos.x, pos.y, "\n\n", env.arena, "\n\n", env.arena[pos.x]);
+
 		var block = env.arena[pos.x][pos.y];
 
 		var success = "success";
@@ -191,14 +221,18 @@ var environment = function () {
 		return success;
 	}
 
-	self.createEnv = function () {
+	// self.createEnv = function (options) {
 
-		self.make();
+	// 	console.log("environment create, options", options);
 
-		self.refresh();
+	// 	// if (options) setInput(options);
 
-		return self.get();
-	}
+	// 	// self.make();
+
+	// 	self.refresh(options);
+
+	// 	return self.get();
+	// }
 
 
 }

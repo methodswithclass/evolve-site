@@ -6,7 +6,15 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     $scope.name = self.name;
     self.sdata;
 
-    // console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
+    console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
+
+    var trashInput = {
+        goals:[{goal:"min"}, {goal:"max"}],
+        gridSize:5,
+        trashRate:0.5
+    }
+
+    trashInput.totalSteps = trashInput.gridSize*trashInput.gridSize*2;
 
 
     events.on("completeSim", function () {
@@ -103,8 +111,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
 
         $http({
-            method:"GET",
-            url:"/trash/environment/refresh/" + $scope.session
+            method:"POST",
+            url:"/trash/environment/refresh/",
+            data:{input:$scope.getInput()}
         })
         .then(function (res) {
 
@@ -142,6 +151,12 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             $scope.resetInput();
 
+            $scope.resetInput({
+                setInput:{
+                    programInput:trashInput
+                }
+            });
+
 
             u.toggle("hide", "evolve");
             u.toggle("hide", "hud");
@@ -163,19 +178,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("disable", "play");
             u.toggle("disable", "stop");
 
+            // complete();
 
-            $scope.getData(function ($d) {
 
-                // console.log("get data complete", $d);
+            instantiateBackend(function () {
 
-                $scope.setData($d);
-
-                instantiateBackend(function () {
-
-                    setInputBackend(complete);
-                })
+                setInputBackend(complete);
             })
-
 
         }
     },
@@ -185,12 +194,14 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
-            console.log("initialize algorithm phase");
+            console.log("initialize algorithm phase, input", $scope.getInput());
             
             initializeAlgorithmBackend(function () {
 
                 if (complete) complete();
             });
+
+            // complete()
         }
     },
     {
@@ -205,6 +216,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
                 if (complete) complete();
             });
+
+
+            // complete();
 
         }
     },
@@ -222,7 +236,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("show", "simdata", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
 
-            display.load();
+            display.load(trashInput);
 
             if (complete) complete();
         }
@@ -257,7 +271,10 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
                     u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
 
-                    
+                    react.push({
+                        name:"programInput" + self.name,
+                        state:trashInput
+                    })
 
                     // console.log("loading hidden, show display\n", loadResult, "\nready to evolve");
 

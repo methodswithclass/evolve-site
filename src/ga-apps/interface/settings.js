@@ -13,21 +13,165 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var settingsWidth = 800;
 			var width = 0.6;
 
-			var toggle = true;
-			var status = {opened:false, right:{opened:-20, closed:-settingsWidth}};
-			$("#settingstoggle").css({right:status.right.closed});
+			var crossoverMethods;
+			var programInput;
+			$scope.goals;
+			$scope.methods;
+
+
+			var toggleOpened = true;
+			var openStatus = {opened:false, right:{opened:-20, closed:-settingsWidth}};
+			$("#settingstoggle").css({right:openStatus.right.closed});
+
+
+			var kindStatus = {
+				opened:"z-80",
+				closed:"z-60"
+			}
+
+			var kinds = [
+			{
+				id:0,
+				value:"basic",
+				status:true
+			},
+			{
+				id:1,
+				value:"advanced",
+				status:false
+			}
+			]
+
+			var tabParams = {
+				opened:{
+					top:0,
+					opacity:0.2,
+					zIndex:20,
+					class:kindStatus.opened
+				},
+				closed:{
+					top:"20px",
+					opacity:0,
+					zIndex:10,
+					class:kindStatus.closed
+				}
+			}
+
+			var toggleKind = kinds[0];
+
+			var toggleKindType = function (kindValue) {
+
+				// console.log("toggle kind type", kindValue);
+
+				toggleKind = kinds.find(function (p) {
+
+					return p.value == kindValue;
+				});
+
+
+				// console.log("toggle kinid", toggleKind);
+
+				kinds = kinds.map(function (value, index) {
+
+					if (value.value == toggleKind.value) {
+
+						// sets toggle kind status to true (indicates that kindValue tab has been selected opened)
+
+						value.status = true;
+					}
+					else {
+
+						// indicates all other tabs closed
+
+						value.status = false;
+					}
+
+					return value;
+
+				})
+
+				// console.log("kinds", kinds, toggleKind);
+
+
+
+				return toggleKind;
+			}
+
+			var getTabParam = function (kind, param) {
+
+				return kind.status ? tabParams.opened[param] : tabParams.closed[param];
+			}
+
+			var tabElem = function (kind) {
+				
+				return {
+					main:$("#" + kind.value + "-tab"),
+					cover:$("#settings-" + kind.value + "-cover"),
+					settings:$("#settings-" + kind.value)
+				}
+			}
+
+			var toggleTab = function (kind) {
+
+
+				tabElem(kind).main.css({
+					top:getTabParam(kind, "top"),
+					zIndex:getTabParam(kind, "zIndex")
+				});
+
+				tabElem(kind).cover.css({
+					top:getTabParam(kind, "top"), 
+					opacity:getTabParam(kind, "opacity")
+				});
+
+				tabElem(kind).settings
+				.removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
+				.addClass(getTabParam(kind, "class"));
+
+			}
+
 
 			var manual;
 
 			$scope.settings;
 
+			// console.log("register evolve.vars");
 			react.subscribe({
-				name:"resetInput",
-				callback:function(x) {
+				name:"evolve.vars",
+				callback:function (x) {
 
-					$scope.settings = x;
+					crossoverMethods = x.crossoverMethods;
+
+					$scope.methods = [
+		    		{
+		    			method:crossoverMethods.multiParent
+		    		},
+		    		{
+		    			method:crossoverMethods.multiOffspring
+		    		}
+		    		]
+
 				}
 			})
+
+			react.subscribe({
+				name:"programInput" + $scope.name,
+				callback:function (x) {
+
+					// console.log("receive program input settings");
+					programInput = x;
+
+					$scope.goals = x.goals;
+				}
+			})
+
+			// react.subscribe({
+			// 	name:"resetInput",
+			// 	callback:function(x) {
+
+			// 		$scope.settings = x;
+			// 	}
+			// })
 
 			var controls = [
 			{
@@ -56,6 +200,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			]
 
 			$stage = $("#stage");
+
 
 			var setHover = function (i) {
 
@@ -90,13 +235,13 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 					right:
 					
 					(
-					 (!open_up || status.opened) 
-					 ? status.right.closed
+					 (!open_up || openStatus.opened) 
+					 ? openStatus.right.closed
 
 					 : (
-					    (open_up || status.closed) 
-					    ? status.right.opened 
-					    : status.right.closed
+					    (open_up || openStatus.closed) 
+					    ? openStatus.right.opened 
+					    : openStatus.right.closed
 					    )
 					 )
 
@@ -105,14 +250,14 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 					
 					duration:300, 
 					complete:function () {
-						status.opened = !status.opened;
+						openStatus.opened = !openStatus.opened;
 
-						if (!status.opened) {
+						if (!openStatus.opened) {
 							
-							react.push({
-					        	name:"manual",
-					        	state:$scope.settings
-					        })
+							// react.push({
+					  //       	name:"resetInput",
+					  //       	state:$scope.settings
+					  //       })
 
 						}
 					}
@@ -121,30 +266,65 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			}
 
+			var getValue = function (string) {
+
+				// var last = string.substr(string.length-1);
+
+				var value = string
+
+				// if (last == "%") {
+				// 	value = string.substr(0, string.length-1);
+				// }
+				// else {
+				// 	value = string;
+				// }
+
+		    	return parseFloat(value)/100
+		    }
 
 			$scope.changeInput = function () {
 
 
-				manual = {
-		            gens:parseInt($("#gensinput").val()),
-		            runs:parseInt($("#runsinput").val()),
-		            goal:$("#goalinput").val(),
-		            pop:parseInt($("#popinput").val())
+		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
+
+		 		 manual = {
+		            gens:$("#gensinput").val(),
+		            runs:$("#runsinput").val(),
+		            goal:$scope.settings ? ($scope.settings.goal || "max") : "max",
+		            pop:$("#popinput").val(),
+		            crossover:{
+		            	method:$scope.settings ? ($scope.settings.crossover.method || defaultMethod) : defaultMethod,
+		            	parents:$("#parentsinput").val(),
+		            	pool:getValue($("#poolinput").val()),
+		            	splicemin:$("#splicemininput").val(),
+		            	splicemax:$("#splicemaxinput").val(),
+		            	mutate:getValue($("#mutateinput").val())
+		            },
+		            programInput:programInput
 		        }
 
 		        console.log("on change input, manual", manual);
 
-		        react.push({
-		        	name:"manual",
-		        	state:manual
-		        })
+		        // react.push({
+		        // 	name:"resetInput",
+		        // 	state:manual
+		        // })
 
-		        return manual;
+
+		        $scope.setSettings(manual);
+
+
+		        // $scope.setInputValues(manual);
+
+
+		        $scope.getInput(manual);
+
+		        // return manual;
 			}
 
 			$scope.animateRefresh = function (complete) {
 
-				toggle = false;
+				toggleOpened = false;
 				$("#refreshfeedback").css({opacity:1});
 		        $("#refreshfeedback").animate(
 		        {
@@ -156,7 +336,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            complete:function () { 
 		                $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
 		               	complete();
-						toggle = true;
+						toggleOpened = true;
 		            }
 		        }
 		        )
@@ -164,11 +344,27 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			$scope.open = function () {
 
-				console.log("open settings ", status.opened);
+				console.log("open settings ", openStatus.opened);
 
-				if (!isFocus() && toggle) {
+				if (!isFocus() && toggleOpened) {
 					animateToggle(true);
 				}
+			}
+
+			$scope.changeSettingsKind = function (kindValue) {
+
+				console.log("change settings kind", kindValue);
+
+				kinds.map(function (value, index) {
+
+					toggleKindType(kindValue)
+
+					toggleTab(value);
+
+				});
+
+				
+
 			}
 
 
