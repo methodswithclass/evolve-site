@@ -710,7 +710,7 @@ var obj = {};
 						previous:{
 							best:ext.best,
 							worst:ext.worst
-						}
+						},
 						next:null
 					})
 				}

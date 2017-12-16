@@ -130,7 +130,7 @@ else {
 
 
 
-var listener = app.listen(8080, function () {
+var listener = app.listen(port, function () {
 
 	console.log("listening on port", listener.address().port);
 });
