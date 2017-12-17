@@ -1,7 +1,7 @@
-app.factory("display.service", ["utility", "events.service", "global.service", '$http', function (u, events, g, $http) {
+app.factory("api.service", ["utility", "events.service", "global.service", '$http', function (u, events, g, $http) {
 
 
-	
+
 	var getBest = function ($scope, callback) {
 
 
@@ -22,7 +22,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
     }
 
 
-    var setStepdata = function ($scope, callback) {
+    var stepdata = function ($scope, callback) {
 
 
     	$http({
@@ -61,7 +61,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
     }
 
 
-    var setInput = function ($scope, callback) {
+    var setInput = function ($scope, resend, callback) {
 
 
     	$http({
@@ -152,7 +152,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
     }
 
 
-    var refreshEnvironment = function (complete) {
+    var refreshEnvironment = function ($scope, complete) {
 
 
         $http({
@@ -193,7 +193,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
 
 	return {
 		getBest:getBest,
-		setStepdata:setStepdata,
+		stepdata:stepdata,
 		isRunning:isRunning,
 		instantiate:instantiate,
 		initialize:initialize,

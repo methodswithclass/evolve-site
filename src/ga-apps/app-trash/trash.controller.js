@@ -90,13 +90,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             // complete();
 
 
-           api.instantiate($scope, function (res) {
+            api.instantiate($scope, function (res) {
 
                 console.log("Instantiate session", res);
 
                 $scope.session = res.data.session;
 
-                api.setInput($scope, function (res) {
+                api.setInput($scope, false, function (res) {
 
                     if (complete) complete() 
 
@@ -180,7 +180,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                 complete:function () {
 
                     console.log("hide loading"); 
-                    
+
                     $scope.running(false);
 
                     

@@ -1,4 +1,4 @@
-app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'simulators', "$http", 'display.service', function (g, u, events, react, simulators, $http, display) {
+app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'simulators', "$http", 'display.service', 'api.service', function (g, u, events, react, simulators, $http, display, api) {
 
 	return {
 		restrict:"E",
@@ -365,7 +365,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    var setStepdata = function () {
 
 
-		    	api.getStepdata($scope, function (res) {
+		    	api.stepdata($scope, function (res) {
 
 			    	// console.log("get stepdata", res.data.stepdata);
 
