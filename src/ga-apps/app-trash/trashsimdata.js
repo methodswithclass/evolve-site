@@ -4,7 +4,7 @@ app.directive("trashsimdata", ["global.service", "events.service", "utility", fu
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/trash/trashsimdata.html",	
+        templateUrl:"assets/views/common/ga-apps/trash/trashsimdata.html",	
 		link:function ($scope, element, attr) {
 
 

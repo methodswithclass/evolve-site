@@ -3,6 +3,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 
 	var $stage = $("#stagetoggle");
+	var $arena = $("#arena");
 	var $controls = $("#controlstoggle");
 	var $simdata = $("#simdatatoggle");
 	var $evolvedata = $("#evolvedatatoggle");
