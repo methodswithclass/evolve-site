@@ -15,7 +15,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var environment;
 			var effdim;
 
-			var stageFactor = g.isMobile() ? 0.3 : 0.6;
+			var stageFactor = g.isMobile() ? 0.35 : 0.6;
 			var $stage = $("#arena");
 
 			var col = [];
