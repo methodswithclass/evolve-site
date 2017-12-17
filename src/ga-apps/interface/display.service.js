@@ -26,7 +26,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 		// console.log("evolve data dispatch events, trash sim and controls");
 
-		events.dispatch("load-display", "trash-sim");
+		// events.dispatch("load-display", "trash-sim");
 		events.dispatch("load-display", "controls");
 	})
 
@@ -71,6 +71,8 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 		winH = $mainBack.height();
 		winW = $mainBack.width();
+
+		events.dispatch("fake-batch-events");
 
 		events.dispatch("load-display", "evolve-data");
 

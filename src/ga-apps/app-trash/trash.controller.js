@@ -1,4 +1,4 @@
-app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", function ($scope, $http, simulator, u, g, react, events, display) {
+app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", 'api.service', function ($scope, $http, simulator, u, g, react, events, display, api) {
 
     var self = this;
 
@@ -13,6 +13,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         gridSize:5,
         trashRate:0.5
     }
+
+    var a = 2; var b = 3;
 
     trashInput.totalSteps = trashInput.gridSize*trashInput.gridSize*2;
 
@@ -41,98 +43,32 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
-    var setInputBackend = function (complete) {
+    api.setInput(function (res) {
 
-        $http({
-            method:"POST",
-            url:"/evolve/set",
-            data:{input:$scope.getInput()}
+        console.log("Set input", res);
+    });
+
+    api.initialize(function (res) {
+
+        console.log("Initialize algorithm", res);
+    });
+
+    api.instantiate(function (res) {
+
+        console.log("Instantiate", res);
+
+        $scope.session = res.data.session;
+    })
+
+    api.refreshEnvironment(function (res) {
+
+        console.log("Refresh environment", res);
+
+        react.push({
+            name:"create.env",
+            state:res.data.env
         })
-        .then(function (res) {
-
-            console.log("Set input", res);
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while setting input", err.message);
-
-        })
-
-    }
-
-    var initializeAlgorithmBackend = function (complete) {
-
-
-        $http({
-            method:"POST",
-            url:"/evolve/initialize",
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
-
-            console.log("Initialize algorithm", res);
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
-
-    var instantiateBackend = function (complete) {
-
-
-        $http({
-            method:"GET",
-            url:"/evolve/instantiate"
-        })
-        .then(function (res) {
-
-            console.log("Instantiate", res);
-
-            $scope.session = res.data.session;
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
-
-    var refreshEnvironment = function (complete) {
-
-
-        $http({
-            method:"POST",
-            url:"/trash/environment/refresh/",
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
-
-            console.log("Refresh environment", res);
-
-            react.push({
-                name:"create.env",
-                state:res.data.env
-            })
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
+    })
 
     
     var displayDelay = 100;

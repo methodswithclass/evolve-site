@@ -101,22 +101,37 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    $scope.setInputValues = function (input) {
+		    api.getBest(function (res) {
 
-		    	$("#gensinput").val(input.gens);
-		        $("#runsinput").val(input.runs);
-		        $("#goalinput").val(input.goal);
-		        $("#popinput").val(input.pop);
+		    	setEvdata(res.data.ext);
+		    })
 
-		        $("#methodinput").val(input.crossover.method);
-		        $("#parentsinput").val(input.crossover.parents);
-		        // $("#poolinput").val(input.crossover.pool ? input.crossover.pool*100 + "%" : "%");
-		        $("#poolinput").val((input.crossover.pool ? input.crossover.pool*100 : ""));
-		        $("#splicemininput").val(input.crossover.splicemin);
-		        $("#splicemaxinput").val(input.crossover.splicemax);
-		        // $("#mutateinput").val(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%");
-		        $("#mutateinput").val((input.crossover.mutate ? input.crossover.mutate*100 : ""));
-		    }
+		    api.getStepdata(function (res) {
+
+		    	// console.log("get stepdata", res.data.stepdata);
+
+	    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
+
+	    		// console.log("stepdata", res.data.stepdata, stepdata);
+
+	            $scope.stepdata = {
+	            	gen:stepdata.gen,
+	            	org:stepdata.org,
+	            	run:stepdata.run,
+	            	step:stepdata.step
+	            }
+
+	            if ($scope.stepdata.gen != $scope.evdata.index) {
+	            	getBest();
+	            }
+
+	            setTimeout(function () {
+
+	            	if (update) setStepdata();
+           		}, 0);
+
+		    })
+
 
 		    $scope.setSettings = function (input) {
 
@@ -128,11 +143,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	crossover:{
 		        		method:input.crossover.method,
 		        		parents:input.crossover.parents,
-		        		// pool:(input.crossover.pool ? input.crossover.pool*100 + "%" : "%"),
 		        		pool:(input.crossover.pool ? input.crossover.pool*100 : ""),
 		        		splicemin:input.crossover.splicemin,
 		        		splicemax:input.crossover.splicemax,
-		        		// mutate:(input.crossover.mutate ? input.crossover.mutate*100 + "%" : "%")
 		        		mutate:(input.crossover.mutate ? input.crossover.mutate*100 : "")
 		        	}
 		        }
@@ -140,7 +153,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 		    $scope.resetInput = function (options) {
-
 
 
 		    	react.push({
@@ -230,18 +242,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        
 
 		    	// $scope.setInputValues(self.manual);
-		       
-
-		       	
 
 
 		        console.log("reset input, settings", $scope.settings);
 
-		    }
-
-		    var getValue = function (string) {
-
-		    	return parseFloat(string.substr(0, string.length-1)/100)
 		    }
 
 
@@ -299,9 +303,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 		    $scope.resendInput = function () {
-
-		    	// $scope.input.gen = $scope.stepdata.gen;
-
 		    	return $scope.input;
 		    }
 
@@ -360,27 +361,16 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }, 30);
 
 
-		    var getBest = function (complete) {
+		    var runEvolveComplete = function () {
 
+				isRunning();
 
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/best/" + $scope.session
-		    	})
-		    	.then(function (res) {
+				setStepdata();
 
-	                setEvdata(res.data.ext);
-
-	                if (complete) complete();
-
-	            }, function (err) {
-
-	                console.log("Server error while getting best individual", err);
-
-	            })
-
-
+				simulator.reset($scope.session);
+				simulator.refresh($scope.session);
 		    }
+
 
 		    var completeEvolve = function (simulate) {
 
@@ -428,229 +418,18 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    }
 
-		    
-		    var isRunning = function  () {
 
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/running/" + $scope.session
-		    	})
-		    	.then(function (res) {
-
-		    		$scope.running(res.data.running);
-
-        			setTimeout(function () {
-                	
-	                	if (update) {
-	                		isRunning();
-	                	}
-	                	else {
-				    		completeEvolve();
-				    	}
-
-	                }, 500)
-
-            	}, function (err) {
-
-            		console.log("Server error while checking for evolve complete")
-
-            	})
-
-		    }
-
-		    var setStepdata = function () {
-
-
-		    	$http({
-		    		method:"GET",
-		    		url:"/evolve/stepdata/" + $scope.name + "/" + $scope.session
-		    	})
-		    	.then(function (res) {
-
-		    		// console.log("get stepdata", res.data.stepdata);
-
-		    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
-
-		    		// console.log("stepdata", res.data.stepdata, stepdata);
-
-	                $scope.stepdata = {
-	                	gen:stepdata.gen,
-	                	org:stepdata.org,
-	                	run:stepdata.run,
-	                	step:stepdata.step
-	                }
-
-	                if ($scope.stepdata.gen != $scope.evdata.index) {
-	                	getBest();
-	                }
-
-	                setTimeout(function () {
-
-	                	if (update) setStepdata();
-	                }, 0);
-
-	            }, function (err) {
-
-	                console.log("Server error while getting stepdata", err);
-
-	            })
-
-		   	}
-
-		   	var initializeAlgorithmBackend = function (complete) {
-
-
-		        $http({
-		            method:"POST",
-		            url:"/evolve/initialize",
-		            data:{input:$scope.getInput()}
-		        })
-		        .then(function (res) {
-
-		            console.log("Initialize algorithm", res.data.success);
-
-
-
-		            if (complete) complete();
-
-		        }, function (err) {
-
-		            console.log("Server error while initializing algorithm", err.message);
-
-		        })
-
-		    }
-
-		    var setEvolveBackend = function (resend, complete) {
-
-		    	$http({
-		    		method:"POST",
-		    		url:"/evolve/set",
-		    		data:{input:resend ? $scope.resendInput() : $scope.getInput()}
-		    	})
-		    	.then(function (res) {
-
-	                console.log("Set input", res);
-
-	                if (complete) complete();
-
-	            }, function (err) {
-
-	                console.log("Server error while running algorithm", err);
-
-	            })
-		   	}
-
-		    var runEvolveBackend = function (complete) {
-
-
-		    	$http({
-		    		method:"POST",
-		    		url:"/evolve/run", 
-		    		data:{input:$scope.getInput()}
-		    	})
-		    	.then(function (res) {
-
-	                console.log("Run algorithm", res);
-
-	                if (!res.data.success) {
-
-	                	initializeAlgorithmBackend(function () {
-
-	                		runEvolveBackend(function  () {
-
-	                			if (complete) complete();
-
-	                		})
-
-	                	});
-
-
-	                }
-	                else {
-
-	                	 if (complete) complete();
-	                }
-
-	               
-
-	            }, function (err) {
-
-	                console.log("Server error while running algorithm", err);
-
-	            })
-		    }
-
-
-		    var restartEvolveBackend = function (complete) {
-
-
-	    		$http({
-		    		method:"POST",
-		    		url:"/evolve/restart", 
-		    		data:{input:$scope.getInput(), current:$scope.stepdata.gen}
-		    	})
-		    	.then(function (res) {
-
-	                console.log("Restart algorithm", res);
-
-	                if (complete) complete();
-
-	            }, function (err) {
-
-	                console.log("Server error while running algorithm", err);
-
-	            })
-
-		    	
-		    }
-
-
-		    var breakEvolveBackend = function (complete) {
-
-		    	$http({
-		    		method:"POST",
-		    		url:"/evolve/hardStop",
-		    		data:{name:$scope.name, input:$scope.getInput()}
-		    	})
-		    	.then(function (res) {
-
-	                console.log("Hard stop algorithm", res);
-
-	                if (complete) complete();
-
-	            }, function (err) {
-
-	                console.log("Server error while running algorithm", err);
-
-	            })
-		    }
-
-		    var runEvolveComplete = function () {
-
-				isRunning();
-
-				setStepdata();
-
-				simulator.reset($scope.session);
-				simulator.refresh($scope.session);
-		    }
-
-
-		    events.on("evolve.complete", function () {
-		        completeEvolve();
-		    });
+		    // events.on("evolve.complete", function () {
+		    //     completeEvolve();
+		    // });
 
 		    $scope.resetgen = function () {
 
 		        console.log("reset gen");
-		        // $scope.running(false);
 		        
 		        $scope.resetInput();
 		        
 		        $scope.animateRefresh(function () {
-
-		            // setEvolveBackend();
 
 		            initializeAlgorithmBackend(function () {
 
@@ -664,7 +443,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.run = function () {
 
-		        // simulator.refresh();
 		        $scope.evolving(true);
 
 		        display.forceEvolveHeight();
@@ -678,8 +456,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        u.toggle("disable", "play", {fade:300});
 		        u.toggle("disable", "stop", {fade:300});
 		        
-
-		        // u.toggle("hide", "hud", {fade:300});
 		        u.toggle("show", "evolve", {
 		            fade:600,
 		            delay:600,
@@ -695,20 +471,19 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        });
 
 		        setTimeout(function () {
-		            // console.log("animate");
 		            $("#evolvepage").animate({color:"#fff"}, 600);
 		            $("#evolvepage").addClass("white-t");
 		        }, 300);
 		    }
 
 
-		    $scope.stepevolve = function () {
+		    // $scope.stepevolve = function () {
 
-		        $scope.getInput();
-		        simulator.reset($scope.session);
-		        $scope.evolving(true);
-		        events.dispatch("step");
-		    }
+		    //     $scope.getInput();
+		    //     simulator.reset($scope.session);
+		    //     $scope.evolving(true);
+		    //     events.dispatch("step");
+		    // }
 
 		    $scope.breakRun = function () {
 
@@ -721,12 +496,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	}
 		    	});
 
-		        // $("#gensinput").val($scope..gens);
-
 		        breakEvolveBackend(function () {
-
 		        	completeEvolve();
-
 		        });
 		    }
 

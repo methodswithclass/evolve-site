@@ -11,50 +11,55 @@ app.directive("trashsimdata", ["global.service", "events.service", "utility", fu
 			// console.log("############\ncreate trash sim directive\n\n");
 
 			var winW;
-			var winH;
+			// var winH;
 
 			var height;
-			var width;
+			// var width;
 
 			var $elem;
-			var items;
+			var $stage;
+			var hudToggle;
+			// var items;
 
 
-			var simDataResize = function () {
+			// var simDataResize = function () {
 
-				winH = $(window).height();
-				winW = $(window).width();
+			// 	winH = $(window).height();
+			// 	// winW = $(window).width();
 
-				height = 0.5;
-				width = 0.25;
+			// 	factor = g.isMobile() ? 0.5 : 0.8;
+			// 	// width = 0.25;
 
-				$elem = $("#simdatatoggle");
-				$stage = $("#stagetoggle");
-				$controls = $("#controlstoggle");
-				$hudtoggle = $("#hudtoggle");
+			// 	height = winH*factor;	
 
+			// 	$elem = $("#simdatatoggle");
+			// 	$stage = $("#stagetoggle");
+			// 	// $controls = $("#controlstoggle");
+			// 	$hudtoggle = $("#hudtoggle");
 
-				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 400 + "px"});
+			// 	$elem.css({height:height + "px"});
 
-			}
+			// 	$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + Math.abs(height-$stage.height())/2 + "px"});
 
-			// console.log("\nregister event trash-sim-data display\n\n");
-			events.on("load-display", "trash-sim", function () {
+			// }
 
-
-				// console.log("\ntrash sim data load display\n\n");
-
-				simDataResize();
-
-				$(window).resize(function () {
-
-					simDataResize();
-				});
+			// // console.log("\nregister event trash-sim-data display\n\n");
+			// events.on("load-display", "trash-sim", function () {
 
 
-				return "success";
+			// 	// console.log("\ntrash sim data load display\n\n");
 
-			});
+			// 	simDataResize();
+
+			// 	$(window).resize(function () {
+
+			// 		simDataResize();
+			// 	});
+
+
+			// 	return "success";
+
+			// });
 			
 			
 		}

@@ -18,42 +18,6 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var stageFactor = g.isMobile() ? 0.8 : 0.6;
 			var $stage = $("#stagetoggle");
 
-			// var setData = function ($d) {
-
-			// 	// console.log("set data arena\n", $d, "\n\n");
-
-			// 	d = $d;
- 
-			// 	cols = $d.data.width;
-			// 	rows = $d.data.height;
-			// }
-
-			// var getData = function (complete) {
-
-		 //        $http({
-		 //        	method:"GET",
-		 //        	url:"/evolve/data/" + name
-		 //        })
-		 //        .then(function (res) {
-
-		 //            // console.log("\ngetting data response arena\n", res.data.data, "\n\n");
-
-		 //            var $d = res.data.data;
-		 //            if (complete) complete($d);
-
-		 //        }, function (err) {
-
-		 //            console.log("Server error while getting data", err.message);
-
-		 //        })
-
-		 //    }
-
-		    // getData(function ($d) {
-
-		    // 	setData($d)
-		    // });
-
 			var col = [];
 			var arena = [];
 
@@ -207,18 +171,6 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 		        })
 		    }
-
-
-		    // react.subscribe({
-		    // 	name:"arena.input",
-		    // 	callback:function(x) {
-
-		    // 		d = x;
-
-		    // 		cols = d.gridSize;
-		    // 		rows = d.gridSize;
-		    // 	}
-		    // })
 
 
 		    react.subscribe({
