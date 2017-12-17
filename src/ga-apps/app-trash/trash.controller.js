@@ -8,15 +8,77 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     console.log("\n@@@@@@@@@@@@@\nenter trash controller\n\n");
 
-    var trashInput = {
+    
+
+    // var a = 2; var b = 3;
+
+    // var getTotalSteps = function () {
+
+    //     $scope.programInput.totalSteps = $scope.programInput.gridSize*$scope.programInput.gridSize*2;
+    // }
+
+    
+    $scope.programInput = {
         goals:[{goal:"min"}, {goal:"max"}],
         gridSize:5,
-        trashRate:0.5
+        trashRate:0.5,
+        getTotalSteps:function () {
+
+            return $scope.programInput.gridSize*$scope.programInput.gridSize*2;
+        }
     }
 
-    var a = 2; var b = 3;
+    $scope.programInput.totalSteps = $scope.programInput.getTotalSteps();
 
-    trashInput.totalSteps = trashInput.gridSize*trashInput.gridSize*2;
+    $scope.programInput.update = function () {
+
+        $scope.programInput.totalSteps = $scope.programInput.getTotalSteps();
+    }
+
+    $scope.programInput.update();
+
+
+    $scope.gridSizes = [
+    {
+        gridsize:3
+    },
+    {
+        gridsize:4
+    },
+    {
+        gridsize:5
+    },
+    {
+        gridsize:6
+    },
+    {
+        gridsize:7
+    },
+    {
+        gridsize:8
+    },
+    {
+        gridsize:9
+    },
+    {
+        gridsize:10
+    },
+    {
+        gridsize:11
+    },
+    {
+        gridsize:12
+    },
+    {
+        gridsize:13
+    },
+    {
+        gridsize:14
+    },
+    {
+        gridsize:15
+    }
+    ]
 
 
     events.on("completeSim", function () {
@@ -49,6 +111,25 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     var displayfade = 800;
     var loadfadeout = 800;
 
+    $scope.programInputChange = function () {
+
+        $scope.programInput.update();
+
+        react.push({
+            name:"resetInput",
+            state:{
+                setInput:{
+                    projectInput:$scope.programInput
+                }
+            }
+        })
+
+        $scope.getInput();
+
+        events.dispatch("refreshenv");
+        
+    }
+
     var phases = [
     {
         message:"processing", 
@@ -62,7 +143,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             $scope.resetInput({
                 setInput:{
-                    programInput:trashInput
+                    programInput:$scope.programInput
                 }
             });
 
@@ -162,7 +243,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("show", "simdata", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
 
-            display.load(trashInput);
+            display.load($scope.programInput);
 
             if (complete) complete();
         }
@@ -199,7 +280,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
                     react.push({
                         name:"programInput" + self.name,
-                        state:trashInput
+                        state:$scope.programInput
                     })
 
 

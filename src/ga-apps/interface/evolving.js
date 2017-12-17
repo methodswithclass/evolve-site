@@ -411,6 +411,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 				var input = $scope.getInput();
 
+				
+
 		        var genT = $scope.input.gens;
 		        var orgT = $scope.input.pop;
 		        var runT = $scope.input.runs;

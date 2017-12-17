@@ -136,7 +136,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
             	initialize(function () {
             		
             		run(function  () {
-            			if (callback) callback();
+            			if (callback) callback(res);
             		})
             	});
             }
@@ -148,6 +148,24 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
         }, function (err) {
 
             console.log("Server error: 'run'", err.message)
+        })
+    }
+
+     var instruct = function (session, callback) {
+
+
+        $http({
+            method:"GET",
+            url:"/evolve/instruct/trash/" + session
+        })
+        .then(function (res) {
+
+            if (callback) callback(res);
+
+        }, function (err) {
+
+            console.log("Server error: 'instruct'", err.message);
+
         })
     }
 
@@ -168,6 +186,44 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
 
             console.log("Server error: 'refresh environment'", err.message)
 
+        })
+
+    }
+
+    var resetEnvironment = function (session, callback) {
+
+        $http({
+            method:"GET",
+            url:"/trash/environment/reset/" + session
+        })
+        .then(function (res) {
+
+            if (callback) callback(res);
+
+        }, function (err) {
+
+            console.log("Server error: 'reset environment'", err.message)
+
+        })
+
+    }
+
+
+    var simulate = function (input, callback) {
+
+
+         $http({
+            method:"POST",
+            url:"/trash/simulate",
+            data:input
+        })
+        .then(function (res) {
+
+            if (callback) callback(res);
+
+        }, function (err) {
+
+            console.log("Server error: 'simulate'", err.message);
         })
 
     }
@@ -199,7 +255,10 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
 		initialize:initialize,
 		setInput:setInput,
 		run:run,
+        instruct:instruct,
 		refreshEnvironment:refreshEnvironment,
+        resetEnvironment:resetEnvironment,
+        simulate:simulate,
 		hardStop:hardStop
 	}
 

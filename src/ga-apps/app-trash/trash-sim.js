@@ -1,4 +1,4 @@
-app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', function ($http, u, events, react) {
+app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', function ($http, u, events, react, api) {
 
     var i = 1;
     var _score = 0;
@@ -15,47 +15,13 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     var colors = true;
 
     var name = "trash";
-    // var d;
-    // var totalActions;
+    
 
 
     var cleanBlock = function (x, y) {
 
 
     }
-
-    // var setData = function ($d) {
-
-    //     // console.log("set data trash sim\n", $d, "\n\n")
-
-    //     d = $d;
-
-    //     totalActions = d.data.actions ? d.data.actions.total : 1;
-    // }
-
-
-    // var getData = function () {
-
-    //     $http({
-    //         method:"GET",
-    //         url:"/evolve/data/" + name
-    //     })
-    //     .then(function (res) {
-
-    //         // console.log("\ngetting data response trash sim\n", res.data.data, "\n\n");
-
-    //         var $d = res.data.data;
-    //         setData($d);
-
-    //     }, function (err) {
-
-    //         // console.log("Server error while getting datat", err);
-
-    //     })
-
-    // }
-
-    // getData();
 
 
     react.subscribe({
@@ -101,44 +67,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             name:"sim.trash",
             state:_sout
         });
-    }
-
-    var resetEnvironmentBackend = function (session) {
-
-        $http({
-            method:"GET",
-            url:"/trash/environment/reset/" + session
-        })
-        .then(function (res) {
-
-            // console.log(res.data.success);
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
-
-    var instruct = function (session, complete) {
-
-
-        $http({
-            method:"GET",
-            url:"/evolve/instruct/trash/" + session
-        })
-        .then(function (res) {
-
-            // console.log(res.data.success);
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
     }
 
 
@@ -216,14 +144,10 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         if (active && input.i <= totalActions) {
 
-            $http({
-                method:"POST",
-                url:"/trash/simulate",
-                data:{name:name, i:input.i, session:input.session}
-            })
-            .then(function (res) {
 
-                console.log("run simulation", res.data);
+            api.simulate({name:name, i:input.i, session:input.session}, function (res) {
+
+                // console.log("run simulation", res.data);
 
                 var result = res.data.result;
 
@@ -241,11 +165,38 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
                     u.toggle("show", "step", {delay:anime.predu});
                 }
 
-            }, function (err) {
-
-                console.log("Server error while setting input", err.message);
-
             })
+
+            // $http({
+            //     method:"POST",
+            //     url:"/trash/simulate",
+            //     data:{name:name, i:input.i, session:input.session}
+            // })
+            // .then(function (res) {
+
+            //     console.log("run simulation", res.data);
+
+            //     var result = res.data.result;
+
+            //     animate(result.i, result.after, result.points);
+
+            //     if (!input.step) {
+
+            //         setTimeout(function () {
+
+            //             performStep({i:input.i + 1, step:false, session:input.session});
+            //         }, anime.predu);
+                   
+            //     }
+            //     else {
+            //         u.toggle("show", "step", {delay:anime.predu});
+            //     }
+
+            // }, function (err) {
+
+            //     console.log("Server error while setting input", err.message);
+
+            // })
 
         }
         else {
@@ -258,8 +209,10 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         console.log("sim setup: instruct", evdata);
 
-        // genome = evdata.best ? evdata.best.dna : [];
-        instruct(session, complete);
+        api.instruct(session, function (res) {
+
+            complete();
+        });
     }
 
     var reset = function (session) {
@@ -288,7 +241,13 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         events.dispatch("resetenv");
 
-        resetEnvironmentBackend(session);
+
+        api.resetEnvironment(session, function (res) {
+
+            console.log("Reset environment success", res);
+        });
+
+
         man.outer.css({left:0, top:0});
 
     }
