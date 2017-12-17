@@ -58,11 +58,16 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 
+
+
+
+
 			/*
 			##################################
 			Open and close functions
 	
 			*/
+
 
 			var controls = [
 			{
@@ -203,12 +208,18 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 
+
+
+
+
+
 			/*
 			############################################
 			Toggle Basic and Advanced Kinds of Settings
 
 			*/
 			
+
 
 			var kindStatus = {
 				opened:"z-80",
@@ -342,6 +353,9 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 
+
+
+
 			/*
 			##########################################
 			Change settings functions
@@ -380,6 +394,13 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		        $scope.getInput(manual);
 
 			}
+
+
+
+
+
+
+			
 			
 		}
 	}

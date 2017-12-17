@@ -76,18 +76,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			initData();
 
 			$("#breakfeedback").hide();
-
-			var setEvdata = function (x) {
-	           	
-	           	// console.log("set evdata", x);
-
-	           	$scope.evdata = x;
-
-	           	react.push({
-	           		name:"ev." + $scope.name,
-	           		state:$scope.evdata
-	           	});
-	        }
 	        
 
 		    $scope.evolving = function (_evolve) {
@@ -100,37 +88,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        if (!_run) $scope.evolving(_run);
 		    }
 
-
-		    api.getBest(function (res) {
-
-		    	setEvdata(res.data.ext);
-		    })
-
-		    api.getStepdata(function (res) {
-
-		    	// console.log("get stepdata", res.data.stepdata);
-
-	    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
-
-	    		// console.log("stepdata", res.data.stepdata, stepdata);
-
-	            $scope.stepdata = {
-	            	gen:stepdata.gen,
-	            	org:stepdata.org,
-	            	run:stepdata.run,
-	            	step:stepdata.step
-	            }
-
-	            if ($scope.stepdata.gen != $scope.evdata.index) {
-	            	getBest();
-	            }
-
-	            setTimeout(function () {
-
-	            	if (update) setStepdata();
-           		}, 0);
-
-		    })
 
 
 		    $scope.setSettings = function (input) {
@@ -151,6 +108,27 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        }
 
 		    }
+
+
+
+
+
+
+
+
+
+		    /*
+			##########################################
+			# Input setting flows
+			#
+			#
+			#
+			##########################################
+		    */
+
+
+
+
 
 		    $scope.resetInput = function (options) {
 
@@ -307,6 +285,32 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
+
+
+		    /*
+			----------------------------------------------
+			###############################################
+		    */
+
+
+
+
+
+
+
+
+
+		    /*
+			##########################################
+			# Subscribers
+			#
+			#
+			#
+			##########################################
+		    */
+
+
+
 		    react.subscribe({
 		    	name:"resetInput",
 		    	callback:function(x) {
@@ -318,6 +322,90 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    		$scope.getInput();
 		    	}
 		    })
+
+
+
+
+		    /*
+			----------------------------------------------
+			###############################################
+		    */
+
+
+
+
+
+
+
+
+
+
+		    /*
+			##########################################
+			# Set Evolvution Data
+			#
+			#
+			#
+			##########################################
+		    */
+
+
+		    var setEvdata = function (x) {
+	           	
+	           	// console.log("set evdata", x);
+
+	           	$scope.evdata = x;
+
+	           	react.push({
+	           		name:"ev." + $scope.name,
+	           		state:$scope.evdata
+	           	});
+	        }
+
+		    var setStepdata = function () {
+
+
+		    	api.getStepdata($scope, function (res) {
+
+			    	// console.log("get stepdata", res.data.stepdata);
+
+		    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
+
+		    		// console.log("stepdata", res.data.stepdata, stepdata);
+
+		            $scope.stepdata = {
+		            	gen:stepdata.gen,
+		            	org:stepdata.org,
+		            	run:stepdata.run,
+		            	step:stepdata.step
+		            }
+
+		            if ($scope.stepdata.gen != $scope.evdata.index) {
+		            	getBest();
+		            }
+
+		            setTimeout(function () {
+
+		            	if (update) setStepdata();
+	           		}, 0);
+
+			    })
+
+		    }
+
+
+		    var getBest = function (complete) {
+
+
+		    	api.getBest($scope, function (res) {
+
+			    	setEvdata(res.data.ext);
+
+			    	if (complete) complete();
+
+			    })
+
+		    }
 
 			var stepprogress = function () {
 
@@ -349,6 +437,32 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $("#rundata").css({width:percent*100 + "%"});
 		    }
 
+
+
+
+		    /*
+			----------------------------------------------
+			###############################################
+		    */
+
+
+
+
+
+
+
+
+
+		    /*
+			##########################################
+			# Update Timer
+			#
+			#
+			#
+			##########################################
+		    */
+
+
 		    setInterval(function () {
 
 		        if (update) {
@@ -361,15 +475,28 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }, 30);
 
 
-		    var runEvolveComplete = function () {
 
-				isRunning();
+		    /*
+			----------------------------------------------
+			###############################################
+		    */
 
-				setStepdata();
 
-				simulator.reset($scope.session);
-				simulator.refresh($scope.session);
-		    }
+
+
+
+
+
+
+
+		    /*
+			##########################################
+			# Complete Evolution
+			#
+			#
+			#
+			##########################################
+		    */
 
 
 		    var completeEvolve = function (simulate) {
@@ -419,9 +546,34 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    // events.on("evolve.complete", function () {
-		    //     completeEvolve();
-		    // });
+
+
+		    /*
+			----------------------------------------------
+			###############################################
+		    */
+
+
+
+
+
+
+
+
+
+
+
+		    /*
+			##########################################
+			# Run Control Functions
+			#
+			#
+			#
+			##########################################
+		    */
+
+
+
 
 		    $scope.resetgen = function () {
 
@@ -431,13 +583,50 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        
 		        $scope.animateRefresh(function () {
 
-		            initializeAlgorithmBackend(function () {
+		            api.initialize($scope, function (res) {
 
-		            	initData();
-		            	
-		            });
+				    	console.log("Initialize algorithm success", res);
+
+				    	initData();
+				    })
 
 		        });
+		    }
+
+
+
+
+
+		    var isRunning = function () {
+
+		    	api.isRunning($scope, function (res) {
+
+			    	$scope.running(res.data.running);
+
+					setTimeout(function () {
+		        	
+		            	if (update) {
+		            		isRunning();
+		            	}
+		            	else {
+				    		completeEvolve();
+				    	}
+
+		            }, 500)
+
+			    })
+
+		    }
+
+
+ 			var runEvolveComplete = function () {
+
+				isRunning();
+
+				setStepdata();
+
+				simulator.reset($scope.session);
+				simulator.refresh($scope.session);
 		    }
 
 
@@ -462,10 +651,12 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            complete:function () {
 
 
-            			runEvolveBackend(function () {
+            			api.run($scope, function (res) {
 
-            				runEvolveComplete();
-            			});
+					    	console.log("Run algorithm success", res);
+
+					    	runEvolveComplete();
+					    })
 		                
 		            }
 		        });
@@ -476,14 +667,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        }, 300);
 		    }
 
-
-		    // $scope.stepevolve = function () {
-
-		    //     $scope.getInput();
-		    //     simulator.reset($scope.session);
-		    //     $scope.evolving(true);
-		    //     events.dispatch("step");
-		    // }
 
 		    $scope.breakRun = function () {
 
@@ -496,10 +679,29 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        	}
 		    	});
 
-		        breakEvolveBackend(function () {
-		        	completeEvolve();
-		        });
+		        api.hardStop($scope, function (res) {
+
+	            	console.log("Hard stop algorithm success", res);
+
+	            	completeEvolve();
+			    })
+
+
 		    }
+
+
+
+		    /*
+			----------------------------------------------
+			###############################################
+		    */
+
+
+
+
+
+
+
 
 
 		}

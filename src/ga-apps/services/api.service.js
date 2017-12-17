@@ -1,17 +1,8 @@
-app.factory("display.service", ["utility", "events.service", "global.service", '$http', 'scope.service', function (u, events, g, $http, getScope) {
-
-	var $scope;
+app.factory("display.service", ["utility", "events.service", "global.service", '$http', function (u, events, g, $http) {
 
 
-	var getCurrentScope = function () {
-
-		$scope = getScope.get();
-	}
-
-
-	var getBest = function (callback) {
-
-		getCurrentScope();
+	
+	var getBest = function ($scope, callback) {
 
 
     	$http({
@@ -24,15 +15,15 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
 
         }, function (err) {
 
-            console.log("Server error while getting best individual", err);
+            console.log("Server error: 'getBest'", err.message)
 
         })
 
     }
 
-    var setStepdata = function (callback) {
 
-    	getCurrentScope();
+    var setStepdata = function ($scope, callback) {
+
 
     	$http({
     		method:"GET",
@@ -44,15 +35,14 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
 
         }, function (err) {
 
-            console.log("Server error while getting stepdata", err);
-
+            console.log("Server error: 'stepdata'", err.message)
         })
 
    	}
 
-   	var isRunning = function  (callback) {
 
-   		getCurrentScope();
+   	var isRunning = function  ($scope, callback) {
+
 
     	$http({
     		method:"GET",
@@ -60,33 +50,39 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
     	})
     	.then(function (res) {
 
-    		$scope.running(res.data.running);
-
-			setTimeout(function () {
-        	
-            	if (update) {
-            		isRunning();
-            	}
-            	else {
-		    		completeEvolve();
-		    	}
-
-            }, 500)
-
             if (callback) callback(res);
 
     	}, function (err) {
 
-    		console.log("Server error while calling 'isRunning'")
+    		console.log("Server error: 'isRunning'", err.message)
 
     	})
 
     }
 
 
-    var instantiate = function (callback) {
+    var setInput = function ($scope, callback) {
 
-    	getCurrentScope();
+
+    	$http({
+    		method:"POST",
+    		url:"/evolve/set",
+    		data:{input:resend ? $scope.resendInput() : $scope.getInput()}
+    	})
+    	.then(function (res) {
+
+            if (callback) callback(res);
+
+        }, function (err) {
+
+            console.log("Server error: 'setInput'", err.message)
+
+        })
+   	}
+
+
+    var instantiate = function ($scope, callback) {
+
 
         $http({
             method:"GET",
@@ -98,15 +94,15 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
 
         }, function (err) {
 
-            console.log("Server error while initializing algorithm", err.message);
+            console.log("Server error: 'instaniate'", err.message)
 
         })
 
     }
 
-   	var initialize = function (callback) {
 
-   		getCurrentScope();
+   	var initialize = function ($scope, callback) {
+
 
         $http({
             method:"POST",
@@ -115,45 +111,18 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
         })
         .then(function (res) {
 
-            console.log("Initialize algorithm", res.data.success);
-
-
-
             if (callback) callback(res);
 
         }, function (err) {
 
-            console.log("Server error while initializing algorithm", err.message);
-
+            console.log("Server error: 'initialize'", err.message)
         })
 
     }
 
-    var setInput = function (callback) {
 
-    	getCurrentScope();
+    var run = function ($scope, callback) {
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/set",
-    		data:{input:resend ? $scope.resendInput() : $scope.getInput()}
-    	})
-    	.then(function (res) {
-
-            console.log("Set input", res);
-
-            if (callback) callback(res);
-
-        }, function (err) {
-
-            console.log("Server error while running algorithm", err);
-
-        })
-   	}
-
-    var run = function (callback) {
-
-    	getCurrentScope();
 
     	$http({
     		method:"POST",
@@ -162,40 +131,29 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
     	})
     	.then(function (res) {
 
-            console.log("Run algorithm", res);
-
             if (!res.data.success) {
 
-            	initializeAlgorithmBackend(function () {
-
-            		runEvolveBackend(function  () {
-
+            	initialize(function () {
+            		
+            		run(function  () {
             			if (callback) callback();
-
             		})
-
             	});
-
-
             }
             else {
 
             	 if (callback) callback(res);
             }
 
-           
-
         }, function (err) {
 
-            console.log("Server error while running algorithm", err);
-
+            console.log("Server error: 'run'", err.message)
         })
     }
 
 
     var refreshEnvironment = function (complete) {
 
-    	getCurrentScope();
 
         $http({
             method:"POST",
@@ -208,16 +166,15 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
 
         }, function (err) {
 
-            console.log("Server error while initializing algorithm", err.message);
+            console.log("Server error: 'refresh environment'", err.message)
 
         })
 
     }
 
 
-    var hardStop = function (callback) {
+    var hardStop = function ($scope, callback) {
 
-    	getCurrentScope();
 
     	$http({
     		method:"POST",
@@ -226,19 +183,13 @@ app.factory("display.service", ["utility", "events.service", "global.service", '
     	})
     	.then(function (res) {
 
-            console.log("Hard stop algorithm", res);
-
             if (callback) callback(res);
 
         }, function (err) {
 
-            console.log("Server error while running algorithm", err);
-
+            console.log("Server error: 'hardStop'", err.message)
         })
     }
-
-
-
 
 	return {
 		getBest:getBest,

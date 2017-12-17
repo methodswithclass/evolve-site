@@ -43,33 +43,6 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
-    api.setInput(function (res) {
-
-        console.log("Set input", res);
-    });
-
-    api.initialize(function (res) {
-
-        console.log("Initialize algorithm", res);
-    });
-
-    api.instantiate(function (res) {
-
-        console.log("Instantiate", res);
-
-        $scope.session = res.data.session;
-    })
-
-    api.refreshEnvironment(function (res) {
-
-        console.log("Refresh environment", res);
-
-        react.push({
-            name:"create.env",
-            state:res.data.env
-        })
-    })
-
     
     var displayDelay = 100;
 
@@ -117,9 +90,18 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             // complete();
 
 
-            instantiateBackend(function () {
+           api.instantiate($scope, function (res) {
 
-                setInputBackend(complete);
+                console.log("Instantiate session", res);
+
+                $scope.session = res.data.session;
+
+                api.setInput($scope, function (res) {
+
+                    if (complete) complete() 
+
+                });
+                
             })
 
         }
@@ -132,12 +114,14 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("initialize algorithm phase, input", $scope.getInput());
             
-            initializeAlgorithmBackend(function () {
+                
+            api.initialize($scope, function (res) {
+
+                console.log("Initialize algorithm", res);
 
                 if (complete) complete();
             });
 
-            // complete()
         }
     },
     {
@@ -148,13 +132,19 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("load environment phase");
 
-            refreshEnvironment(function () {
+            
+            api.refreshEnvironment($scope, function (res) {
+
+                console.log("Refresh environment", res);
+
+                react.push({
+                    name:"create.env",
+                    state:res.data.env
+                })
 
                 if (complete) complete();
-            });
 
-
-            // complete();
+            })
 
         }
     },
@@ -190,7 +180,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                 complete:function () {
 
                     console.log("hide loading"); 
-                    // $("#loadinginner").parent().hide();
+                    
                     $scope.running(false);
 
                     
@@ -212,7 +202,6 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                         state:trashInput
                     })
 
-                    // console.log("loading hidden, show display\n", loadResult, "\nready to evolve");
 
                     if (complete) complete();
                 }
