@@ -8,13 +8,6 @@ var environment = function () {
 
 	var self = this;
 
-	// var trashRate = d.data.trashRate;
-	// var stage = {
-	// 	width:d.data.width,
-	// 	height:d.data.height,
-	// 	min:0,
-	// 	max:d.data.width - 1
-	// }
 
 	var trashRate;
 	var stage;
@@ -23,14 +16,15 @@ var environment = function () {
 
 	var setInput = function (options) {
 
-		// console.log("set input", options);
+		console.log("set input environment", options);
 
-		trashRate = options.gridSize >= 5 ? options.trashRate : 0.25;
+		// trashRate = options.grid.size >= 5 ? options.trashRate : 0.25;
+		trashRate = options.trashRate;
 		stage = {
-			width:options.gridSize,
-			height:options.gridSize,
+			width:options.grid.size,
+			height:options.grid.size,
 			min:0,
-			max:options.gridSize - 1
+			max:options.grid.size - 1
 		}
 	}
 
@@ -220,19 +214,6 @@ var environment = function () {
 
 		return success;
 	}
-
-	// self.createEnv = function (options) {
-
-	// 	console.log("environment create, options", options);
-
-	// 	// if (options) setInput(options);
-
-	// 	// self.make();
-
-	// 	self.refresh(options);
-
-	// 	return self.get();
-	// }
 
 
 }

@@ -9,7 +9,6 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 
 			var name = "trash";
-			var d;
 			var cols;
 			var rows;
 			var environment;
@@ -94,6 +93,8 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				rows = env.arena.length;
 				cols = env.arena.length;
+
+				// console.log("make blocks, rows,", rows, "cols,", cols);
 
 				react.push({
 					name:"man.arena",
@@ -210,6 +211,8 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			events.on("refreshenv", function () {
 
+
+				console.log("refresh environment", $scope.getInput());
 
 				api.refreshEnvironment($scope, function (res) {
 
