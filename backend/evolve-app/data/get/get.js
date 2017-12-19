@@ -75,6 +75,7 @@ var addProgramToSession = function (session, program, options) {
 	console.log("add program to session", session, program);
 
 	if (evolve[session].programs && evolve[session].programs[program]) {
+		console.log("program exists");
 		return {
 			program:evolve[session].programs[program],
 			pdata:data(program)

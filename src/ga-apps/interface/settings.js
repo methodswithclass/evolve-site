@@ -10,18 +10,215 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			// console.log("\n############\ncreate settings directive\n\n");
 
+
+
 			var settingsWidth = 800;
 			var width = 0.6;
 
+			var manual;
 			var crossoverMethods;
 			var programInput;
+
+
 			$scope.goals;
 			$scope.methods;
+			$scope.settings;
+
+
+
+			// console.log("register evolve.vars");
+			react.subscribe({
+				name:"evolve.vars",
+				callback:function (x) {
+
+					crossoverMethods = x.crossoverMethods;
+
+					$scope.methods = [
+		    		{
+		    			method:crossoverMethods.multiParent
+		    		},
+		    		{
+		    			method:crossoverMethods.multiOffspring
+		    		}
+		    		]
+
+				}
+			})
+
+			react.subscribe({
+				name:"programInput" + $scope.name,
+				callback:function (x) {
+
+					// console.log("receive program input settings");
+					programInput = x;
+
+					$scope.goals = x.goals;
+				}
+			})
+
+
+
+
+
+
+
+			/*
+			##################################
+			Open and close functions
+	
+			*/
+
+
+			var controls = [
+			{
+				name:"open",
+				input:$("#opensettings"),
+				tool:$("#opentool")
+			}
+			]
+
+			var inputs = [
+			{
+				input:$("#gensinput")
+			},
+			{
+				input:$("#runsinput")
+			},
+			{
+				input:$("#goalinput")
+			},
+			{
+				input:$("#popinput")
+			},
+			{
+				input:$("#refreshbtn")
+			}
+			]
+
+			$stage = $("#stage");
+
+
+			var setHover = function (i) {
+
+				controls[i].input.hover(function () {
+					controls[i].tool.animate({opacity:1}, 100);
+				},
+				function () {
+					controls[i].tool.animate({opacity:0}, 100);
+				});
+			}
+
+			for (i in controls) {
+				setHover(i);
+			}
+
+			var isFocus = function () {
+
+				for (i in inputs) {
+					if (inputs[i].input.is(":focus")) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+
 
 
 			var toggleOpened = true;
 			var openStatus = {opened:false, right:{opened:-20, closed:-settingsWidth}};
 			$("#settingstoggle").css({right:openStatus.right.closed});
+
+			var animateToggle = function (open_up) {
+
+				controls[0].tool.animate({opacity:0}, 200);
+				$("#settingstoggle").animate({
+					
+					right:
+					
+					(
+					 (!open_up || openStatus.opened) 
+					 ? openStatus.right.closed
+
+					 : (
+					    (open_up || openStatus.closed) 
+					    ? openStatus.right.opened 
+					    : openStatus.right.closed
+					    )
+					 )
+
+				}, 
+				{
+					
+					duration:300, 
+					complete:function () {
+						openStatus.opened = !openStatus.opened;
+					}
+
+				});
+
+			}
+
+			$scope.animateRefresh = function (complete) {
+
+				toggleOpened = false;
+				$("#refreshfeedback").css({opacity:1});
+		        $("#refreshfeedback").animate(
+		        {
+		            top:0, 
+		            opacity:0
+		        }, 
+		        {
+		            duration:1000, 
+		            complete:function () { 
+		                $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
+		               	complete();
+						toggleOpened = true;
+		            }
+		        }
+		        )
+			}
+
+			$scope.open = function () {
+
+				console.log("open settings ", openStatus.opened);
+
+				if (!isFocus() && toggleOpened) {
+					animateToggle(true);
+				}
+			}
+
+			setTimeout(function () {
+
+				$("#main-back").click(function () {
+
+					animateToggle(false);
+				});
+
+			}, 500)
+
+
+
+			/*
+			-------------------------------------------
+			############################################
+			*/
+
+
+
+
+
+
+
+
+
+
+			/*
+			############################################
+			Toggle Basic and Advanced Kinds of Settings
+
+			*/
+			
 
 
 			var kindStatus = {
@@ -130,160 +327,49 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			}
 
+			$scope.changeSettingsKind = function (kindValue) {
 
-			var manual;
+				console.log("change settings kind", kindValue);
 
-			$scope.settings;
+				kinds.map(function (value, index) {
 
-			// console.log("register evolve.vars");
-			react.subscribe({
-				name:"evolve.vars",
-				callback:function (x) {
+					toggleKindType(kindValue)
 
-					crossoverMethods = x.crossoverMethods;
-
-					$scope.methods = [
-		    		{
-		    			method:crossoverMethods.multiParent
-		    		},
-		    		{
-		    			method:crossoverMethods.multiOffspring
-		    		}
-		    		]
-
-				}
-			})
-
-			react.subscribe({
-				name:"programInput" + $scope.name,
-				callback:function (x) {
-
-					// console.log("receive program input settings");
-					programInput = x;
-
-					$scope.goals = x.goals;
-				}
-			})
-
-			// react.subscribe({
-			// 	name:"resetInput",
-			// 	callback:function(x) {
-
-			// 		$scope.settings = x;
-			// 	}
-			// })
-
-			var controls = [
-			{
-				name:"open",
-				input:$("#opensettings"),
-				tool:$("#opentool")
-			}
-			]
-
-			var inputs = [
-			{
-				input:$("#gensinput")
-			},
-			{
-				input:$("#runsinput")
-			},
-			{
-				input:$("#goalinput")
-			},
-			{
-				input:$("#popinput")
-			},
-			{
-				input:$("#refreshbtn")
-			}
-			]
-
-			$stage = $("#stage");
-
-
-			var setHover = function (i) {
-
-				controls[i].input.hover(function () {
-					controls[i].tool.animate({opacity:1}, 100);
-				},
-				function () {
-					controls[i].tool.animate({opacity:0}, 100);
-				});
-			}
-
-			for (i in controls) {
-				setHover(i);
-			}
-
-			var isFocus = function () {
-
-				for (i in inputs) {
-					if (inputs[i].input.is(":focus")) {
-						return true;
-					}
-				}
-
-				return false;
-			}
-
-			var animateToggle = function (open_up) {
-
-				controls[0].tool.animate({opacity:0}, 200);
-				$("#settingstoggle").animate({
-					
-					right:
-					
-					(
-					 (!open_up || openStatus.opened) 
-					 ? openStatus.right.closed
-
-					 : (
-					    (open_up || openStatus.closed) 
-					    ? openStatus.right.opened 
-					    : openStatus.right.closed
-					    )
-					 )
-
-				}, 
-				{
-					
-					duration:300, 
-					complete:function () {
-						openStatus.opened = !openStatus.opened;
-
-						if (!openStatus.opened) {
-							
-							// react.push({
-					  //       	name:"resetInput",
-					  //       	state:$scope.settings
-					  //       })
-
-						}
-					}
+					toggleTab(value);
 
 				});
 
 			}
 
-			var getValue = function (string) {
 
-				// var last = string.substr(string.length-1);
+			/*
+			------------------------------------------
+			##########################################
+			*/
 
-				var value = string
 
-				// if (last == "%") {
-				// 	value = string.substr(0, string.length-1);
-				// }
-				// else {
-				// 	value = string;
-				// }
 
-		    	return parseFloat(value)/100
-		    }
+
+
+
+
+
+
+
+			/*
+			##########################################
+			Change settings functions
+
+			*/
+
 
 			$scope.changeInput = function () {
 
+
+				var getValue = function (string) {
+
+			    	return parseFloat(string)/100
+			    }
 
 		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
 
@@ -303,81 +389,18 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            programInput:programInput
 		        }
 
-		        console.log("on change input, manual", manual);
-
-		        // react.push({
-		        // 	name:"resetInput",
-		        // 	state:manual
-		        // })
-
-
 		        $scope.setSettings(manual);
-
-
-		        // $scope.setInputValues(manual);
-
 
 		        $scope.getInput(manual);
 
-		        // return manual;
-			}
-
-			$scope.animateRefresh = function (complete) {
-
-				toggleOpened = false;
-				$("#refreshfeedback").css({opacity:1});
-		        $("#refreshfeedback").animate(
-		        {
-		            top:0, 
-		            opacity:0
-		        }, 
-		        {
-		            duration:1000, 
-		            complete:function () { 
-		                $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
-		               	complete();
-						toggleOpened = true;
-		            }
-		        }
-		        )
-			}
-
-			$scope.open = function () {
-
-				console.log("open settings ", openStatus.opened);
-
-				if (!isFocus() && toggleOpened) {
-					animateToggle(true);
-				}
-			}
-
-			$scope.changeSettingsKind = function (kindValue) {
-
-				console.log("change settings kind", kindValue);
-
-				kinds.map(function (value, index) {
-
-					toggleKindType(kindValue)
-
-					toggleTab(value);
-
-				});
-
-				
-
 			}
 
 
-			setTimeout(function () {
 
-				$scope.settings = $scope.changeInput();
 
-				$("#main-back").click(function () {
 
-					animateToggle(false);
-				});
 
-			}, 500)
+			
 			
 		}
 	}

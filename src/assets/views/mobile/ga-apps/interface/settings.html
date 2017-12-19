@@ -47,13 +47,13 @@
 
 			<div class="relative width padding-v-50" id="genssettingsinner">
 
-				<div class="relative width height-70" id="settings-tabs">
+				<div class="relative width height-100" id="settings-tabs">
 
 					<div class="absolute width50 height pointer"  ng-click="changeSettingsKind('basic')">
 						<div class="absolute width height z-20" id="basic-tab">
 							<div class="absolute width height rounded-top-40 white-back opacity20" id="settings-basic-cover"></div>
 							<div class="absolute width height border-white rounded-top-40 white font-40">
-								<div class="absolute width height-50">
+								<div class="absolute width height-80">
 									<div class="absolute center">
 										Basic
 									</div>
@@ -66,7 +66,7 @@
 						<div class="absolute width height z-10 top-20" id="advanced-tab">
 							<div class="absolute width height rounded-top-40 white-back opacity0" id="settings-advanced-cover"></div>
 							<div class="absolute width height border-white rounded-top-40 white font-40">
-								<div class="absolute width height-50">
+								<div class="absolute width height-80">
 									<div class="absolute center">
 										Advanced
 									</div>
@@ -171,11 +171,11 @@
 									
 
 									<div class="absolute width50 height" id="methodinputinner">
-										<div class="absolute width90 center text-right right0 font25-rem">
+										<div class="absolute width90 center text-right right0 font180-rem">
 											crossover method
 										</div>
 									</div>
-									<select class="absolute width50 height right0 text-right font2-rem transparent-back white nooutline" id="methodinput" ng-model="settings.crossover.method" ng-keyup="changeInput()">
+									<select class="absolute width50 height right0 text-right font180-rem transparent-back white nooutline" id="methodinput" ng-model="settings.crossover.method" ng-keyup="changeInput()">
 										<option class="black font-30" ng-repeat="item in methods">{{item.method}}</option>
 									</select>
 
@@ -189,7 +189,7 @@
 									
 
 									<div class="absolute width60 height" id="parentsinputinner">
-										<div class="absolute width90 center text-right right0 font25-rem">
+										<div class="absolute width90 center text-right right0 font180-rem">
 											# of parents
 										</div>
 									</div>
@@ -204,7 +204,7 @@
 									
 
 									<div class="absolute width60 height" id="poolinputinner">
-										<div class="absolute width90 center text-right right0 font25-rem">
+										<div class="absolute width90 center text-right right0 font180-rem">
 											top population %
 										</div>
 									</div>
@@ -220,7 +220,7 @@
 									
 
 									<div class="absolute width60 height" id="splicemininputinner">
-										<div class="absolute width90 center text-right right0 font2-rem">
+										<div class="absolute width90 center text-right right0 font180-rem">
 											min of gene splice
 										</div>
 									</div>
@@ -235,7 +235,7 @@
 									
 
 									<div class="absolute width60 height" id="splicemaxinputinner">
-										<div class="absolute width90 center text-right right0 font2-rem">
+										<div class="absolute width90 center text-right right0 font180-rem">
 											max of gene splice
 										</div>
 									</div>
@@ -251,7 +251,7 @@
 									
 
 									<div class="absolute width60 height" id="mutateinputinner">
-										<div class="absolute width90 center text-right right0 font25-rem">
+										<div class="absolute width90 center text-right right0 font180-rem">
 											mutation %
 										</div>
 									</div>

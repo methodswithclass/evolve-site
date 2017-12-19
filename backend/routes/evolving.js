@@ -92,23 +92,6 @@ evolveRouter.post("/run", function (req, res, next) {
 });
 
 
-evolveRouter.post("/restart", function (req, res, next) {
-
-	console.log("restart evolve");
-
-	// var input = addProgram(req);
-
-	var evolution = get.getSessionEvolve(req.body.input.session)
-	var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
-	var input = req.body.input;
-	input.program = program;
-
-	evolution.restart(req.body.current, input);
-
-	res.json({success:"success", running:true});
-});
-
-
 evolveRouter.get("/running/:session", function (req, res, next) {
 
 	// console.log("check running", req.body, evolution.running());
@@ -121,7 +104,7 @@ evolveRouter.get("/running/:session", function (req, res, next) {
 
 evolveRouter.get("/best/:session", function (req, res, next) {
 
-	console.log("get best");
+	// console.log("get best");
 
 	var evolution = get.getSessionEvolve(req.params.session)
 
