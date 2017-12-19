@@ -12,44 +12,52 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         _forceMobile = input;
     }
 
-    var baseViewUrl = function () {
+    var baseViewUrl = function (responsive) {
 
-        return "assets/views/" + ((checkMobile() || _forceMobile) ? "mobile" : "desktop");
+        return "assets/views/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
     }
 
 
     var stateViewUrls = [
     {
         name:"home",
-        url:"/site/home.html"
+        url:"/site/home.html",
+        responsive:true
     },
     {
         name:"overview",
-        url:"/site/page.html"
+        url:"/site/page.html",
+        responsive:true
     },
     {
         name:"feedback",
-        url:"/site/page.html"
+        url:"/site/page.html",
+        responsive:true
     },
     {
         name:"feedback#demo",
-        url:"/ga-apps/feedback/feedback_demo.html"
+        url:"/ga-apps/feedback/feedback_demo.html",
+        responsive:true
     },
     {
         name:"trash",
-        url:"/site/page.html"
+        url:"/site/page.html",
+        responsive:true
     },
     {
         name:"trash#demo",
-        url:"/ga-apps/trash/trash_demo.html"
+        url:"/ga-apps/trash/trash_demo.html",
+        responsive:false
     },
     {
         name:"recognize",
-        url:"/site/page.html"
+        url:"/site/page.html",
+        responsive:true
     },
     {
         name:"recognize#demo",
-        url:"/ga-apps/recognize/recognize_demo.html"
+        url:"/ga-apps/recognize/recognize_demo.html",
+        responsive:true
     }
     ]
 
@@ -121,7 +129,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
             return p.name == state.name;
         })
 
-        state.templateUrl = baseViewUrl() + stateUrl.url;
+        state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
 
         return state; 
     }

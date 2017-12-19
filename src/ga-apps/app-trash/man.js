@@ -11,43 +11,6 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 			var arena = {width:0, height:0};
 			var container;
 
-			// var setData = function ($d) {
-
-
-			// 	// console.log("set data man\n", $d, "\n\n");
-
-			// 	d = $d
-
-			// 	arena = {width:$d.data.width, height:$d.data.height};
-			// }
-
-			// var getData = function (complete) {
-
-		 //        $http({
-		 //        	method:"GET", 
-		 //        	url:"/evolve/data/" + name
-		 //        })
-		 //        .then(function (res) {
-
-		 //            // console.log("\ngetting data response man\n", res.data.data, "\n\n");
-
-		 //            var $d = res.data.data;
-		 //            if (complete) complete($d);
-
-		 //        }, function (err) {
-
-		 //            console.log("Server error while getting data", err.message);
-
-		 //        })
-
-		 //    }
-
-		 //    getData(function ($d) {
-
-		 //    	setData($d)
-		 //    });
-
-
 
 			var makeMan = function () {
 				
@@ -73,19 +36,6 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 				}
 
 			}
-
-			// setTimeout(function () {
-
-			// 	var man = makeMan();
-
-			// 	react.push({
-			// 		name:"robot",
-			// 		state:man
-			// 	});
-				
-				
-			// }, 500);
-
 
 
 			react.subscribe({

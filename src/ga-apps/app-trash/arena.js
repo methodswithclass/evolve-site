@@ -1,4 +1,4 @@
-app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", function ($http, u, g, events, react) {
+app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', function ($http, u, g, events, react, api) {
 
 	return {
 		restrict:"E",
@@ -9,50 +9,14 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 
 			var name = "trash";
-			var d;
 			var cols;
 			var rows;
 			var environment;
 			var effdim;
+			var ed;
 
-			var stageFactor = g.isMobile() ? 0.8 : 0.6;
-			var $stage = $("#stagetoggle");
-
-			// var setData = function ($d) {
-
-			// 	// console.log("set data arena\n", $d, "\n\n");
-
-			// 	d = $d;
- 
-			// 	cols = $d.data.width;
-			// 	rows = $d.data.height;
-			// }
-
-			// var getData = function (complete) {
-
-		 //        $http({
-		 //        	method:"GET",
-		 //        	url:"/evolve/data/" + name
-		 //        })
-		 //        .then(function (res) {
-
-		 //            // console.log("\ngetting data response arena\n", res.data.data, "\n\n");
-
-		 //            var $d = res.data.data;
-		 //            if (complete) complete($d);
-
-		 //        }, function (err) {
-
-		 //            console.log("Server error while getting data", err.message);
-
-		 //        })
-
-		 //    }
-
-		    // getData(function ($d) {
-
-		    // 	setData($d)
-		    // });
+			var stageFactor = g.isMobile() ? 0.35 : 0.6;
+			var $stage = $("#arena");
 
 			var col = [];
 			var arena = [];
@@ -131,6 +95,8 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 				rows = env.arena.length;
 				cols = env.arena.length;
 
+				// console.log("make blocks, rows,", rows, "cols,", cols);
+
 				react.push({
 					name:"man.arena",
 					state:{
@@ -166,59 +132,21 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			}
 
-			var attachInstructions = function (plan) {
 
-				var index = 0;
-				var cleaned = 0;
-
-				for (var i = 0; i < cols; i++) {
-
-					for (var j = 0; j < rows; j++) {
-						// index = environment.assess({x:i, y:j});
-
-						if (index == 242) {
-							cleaned = index - 2*Math.pow(3, 4);
-						}
-
-					}
-				}
-
-			}
+			setTimeout(function () {
 
 
-			var refreshEnvironmentBackend = function () {
+				ed = u.correctForAspect({
+					factor:stageFactor, 
+					aspect:1, 
+					width:$(window).width(), 
+					height:$(window).height(),
+					window:true
+				})
 
-		        $http({
-		            method:"POST",
-		            url:"/trash/environment/refresh/",
-		            data:{input:$scope.getInput()}
-		        })
-		        .then(function (res) {
-
-		            console.log("Refresh environment");
-
-		            environment = res.data.env;
-
-		            makeBlocks(environment);
-
-		        }, function (err) {
-
-		            console.log("Server error while refreshing environment", err.message);
-
-		        })
-		    }
-
-
-		    // react.subscribe({
-		    // 	name:"arena.input",
-		    // 	callback:function(x) {
-
-		    // 		d = x;
-
-		    // 		cols = d.gridSize;
-		    // 		rows = d.gridSize;
-		    // 	}
-		    // })
+				$stage.css({width:ed.width, height:ed.height});
+				
+			}, 500);
 
 
 		    react.subscribe({
@@ -236,27 +164,34 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 		    	state:cleanBlock
 		    })
 
-		    events.on("resetenv", function () {
 
-				// console.log("reset ui");
+
+
+		    events.on("resetenv", function () {
 
 				makeBlocks(environment)
 			})
 
+
+
 			events.on("refreshenv", function () {
 
-				// console.log("refresh ui");
 
-				refreshEnvironmentBackend();
+				console.log("refresh environment", $scope.getInput());
+
+				api.refreshEnvironment($scope, function (res) {
+
+
+			    	console.log("Refresh environment");
+
+		            environment = res.data.env;
+
+		            makeBlocks(environment);
+
+			    })
+
 			})
 
-			setTimeout(function () {
-
-				effdim = u.dim(stageFactor, 1);
-
-				$stage.css({width:effdim.width, height:effdim.height});
-				
-			}, 500);
 
 		}
 	}
