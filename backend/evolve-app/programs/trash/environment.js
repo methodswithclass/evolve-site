@@ -16,7 +16,7 @@ var environment = function () {
 
 	var setInput = function (options) {
 
-		console.log("set input environment", options);
+		// console.log("set input environment", options);
 
 		// trashRate = options.grid.size >= 5 ? options.trashRate : 0.25;
 		trashRate = options.trashRate;

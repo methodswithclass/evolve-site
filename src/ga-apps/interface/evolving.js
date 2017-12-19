@@ -462,6 +462,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    programInputToggle();
 
+
+		    // var stepdata = api.stepdata();
+		    // var getBestAPI = api.getBest();
+		    // var run = api.run();
+		    // var initialize = api.initialize();
+		    // var isRunningAPI = api.isRunning();
+		    // var hardStop = api.hardStop();
+
 		    /*
 			##########################################
 			# Set Evolvution Data
@@ -484,6 +492,22 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 	           	});
 	        }
 
+	        var getBest = function (complete) {
+
+
+		    	api.getBest($scope, function (res) {
+
+			    	setEvdata(res.data.ext);
+
+			    	if (complete) complete();
+
+			    })
+
+		    }
+
+		    var genA = 0;
+		    var genB = genA;
+
 		    var setStepdata = function () {
 
 
@@ -492,6 +516,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			    	// console.log("get stepdata", res.data.stepdata);
 
 		    		var stepdata = res.data.stepdata ? res.data.stepdata : $scope.stepdata;
+
+		    		genA = stepdata.gen;
 
 		    		// console.log("stepdata", res.data.stepdata, stepdata);
 
@@ -502,7 +528,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		            	step:stepdata.step
 		            }
 
-		            if ($scope.stepdata.gen != $scope.evdata.index) {
+		            if (genA != genB) {
+		            	genB = genA;
 		            	getBest();
 		            }
 
@@ -516,18 +543,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    var getBest = function (complete) {
-
-
-		    	api.getBest($scope, function (res) {
-
-			    	setEvdata(res.data.ext);
-
-			    	if (complete) complete();
-
-			    })
-
-		    }
+		    
 
 			var stepprogress = function () {
 
@@ -717,9 +733,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 				    	console.log("Initialize algorithm success", res);
 
 				    	initData();
+
+				    	programInputToggle();
+				    	
 				    })
 
 		        });
+
+
 		    }
 
 

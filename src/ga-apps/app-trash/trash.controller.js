@@ -143,6 +143,11 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
+    // var instantiate = api.instantiate();
+    // var initialize = api.initialize();
+    // var setInput = api.setInput();
+    // var refreshEnvironment = api.refreshEnvironment();
+
     
     var displayDelay = 100;
 
@@ -205,7 +210,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             // complete();
 
 
-            api.instantiate($scope, function (res) {
+            api.instantiate(function (res) {
 
                 console.log("Instantiate session", res);
 

@@ -4,227 +4,265 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
 
 	var getBest = function ($scope, callback) {
 
+        // return function ($scope, callback) {
 
-    	$http({
-    		method:"GET",
-    		url:"/evolve/best/" + $scope.session
-    	})
-    	.then(function (res) {
+        	$http({
+        		method:"GET",
+        		url:"/evolve/best/" + $scope.session
+        	})
+        	.then(function (res) {
 
-            if (callback) callback(res);
+                callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'getBest'", err.message)
+                console.log("Server error: 'getBest'", err.message)
 
-        })
+            })
+
+        // }
 
     }
 
 
     var stepdata = function ($scope, callback) {
 
+        // return function ($scope, callback) {
 
-    	$http({
-    		method:"GET",
-    		url:"/evolve/stepdata/" + $scope.name + "/" + $scope.session
-    	})
-    	.then(function (res) {
+        	$http({
+        		method:"GET",
+        		url:"/evolve/stepdata/" + $scope.name + "/" + $scope.session
+        	})
+        	.then(function (res) {
 
-            if (callback) callback(res);
+                callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'stepdata'", err.message)
-        })
+                console.log("Server error: 'stepdata'", err.message)
+            })
+
+        // }
 
    	}
 
 
    	var isRunning = function  ($scope, callback) {
 
+        // return function ($scope, callback) {
 
-    	$http({
-    		method:"GET",
-    		url:"/evolve/running/" + $scope.session
-    	})
-    	.then(function (res) {
+        	$http({
+        		method:"GET",
+        		url:"/evolve/running/" + $scope.session
+        	})
+        	.then(function (res) {
 
-            if (callback) callback(res);
+                callback(res);
 
-    	}, function (err) {
+        	}, function (err) {
 
-    		console.log("Server error: 'isRunning'", err.message)
+        		console.log("Server error: 'isRunning'", err.message)
 
-    	})
+        	})
+
+        // }
 
     }
 
 
     var setInput = function ($scope, resend, callback) {
 
+        // return function ($scope, resend, callback) {
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/set",
-    		data:{input:resend ? $scope.resendInput() : $scope.getInput()}
-    	})
-    	.then(function (res) {
+        	$http({
+        		method:"POST",
+        		url:"/evolve/set",
+        		data:{input:resend ? $scope.resendInput() : $scope.getInput()}
+        	})
+        	.then(function (res) {
 
-            if (callback) callback(res);
+                if (callback) callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'setInput'", err.message)
+                console.log("Server error: 'setInput'", err.message)
 
-        })
+            })
+
+        // }
+
    	}
 
 
-    var instantiate = function ($scope, callback) {
+    var instantiate = function (callback) {
 
 
-        $http({
-            method:"GET",
-            url:"/evolve/instantiate"
-        })
-        .then(function (res) {
+        // return function (callback) {
 
-            if (callback) callback(res);
+            $http({
+                method:"GET",
+                url:"/evolve/instantiate"
+            })
+            .then(function (res) {
 
-        }, function (err) {
+                if (callback) callback(res);
 
-            console.log("Server error: 'instaniate'", err.message)
+            }, function (err) {
 
-        })
+                console.log("Server error: 'instaniate'", err.message)
+
+            })
+
+        // }
+
 
     }
 
 
    	var initialize = function ($scope, callback) {
 
+        // return function ($scope, callback) {
 
-        $http({
-            method:"POST",
-            url:"/evolve/initialize",
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
+            $http({
+                method:"POST",
+                url:"/evolve/initialize",
+                data:{input:$scope.getInput()}
+            })
+            .then(function (res) {
 
-            if (callback) callback(res);
+                if (callback) callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'initialize'", err.message)
-        })
+                console.log("Server error: 'initialize'", err.message)
+            })
+
+        // }
 
     }
 
 
     var run = function ($scope, callback) {
 
+        // return function ($scope, callback) {
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/run", 
-    		data:{input:$scope.getInput()}
-    	})
-    	.then(function (res) {
+        	$http({
+        		method:"POST",
+        		url:"/evolve/run", 
+        		data:{input:$scope.getInput()}
+        	})
+        	.then(function (res) {
 
-            if (!res.data.success) {
+                if (!res.data.success) {
 
-            	initialize(function () {
-            		
-            		run(function  () {
-            			if (callback) callback(res);
-            		})
-            	});
-            }
-            else {
+                	initialize(function () {
+                		
+                		run(function  () {
+                			if (callback) callback(res);
+                		})
+                	});
+                }
+                else {
 
-            	 if (callback) callback(res);
-            }
+                	 if (callback) callback(res);
+                }
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'run'", err.message)
-        })
+                console.log("Server error: 'run'", err.message)
+            })
+
+        // }
+
     }
 
      var instruct = function (session, callback) {
 
+        // return function (session, callback) {
 
-        $http({
-            method:"GET",
-            url:"/evolve/instruct/trash/" + session
-        })
-        .then(function (res) {
+            $http({
+                method:"GET",
+                url:"/evolve/instruct/trash/" + session
+            })
+            .then(function (res) {
 
-            if (callback) callback(res);
+                if (callback) callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'instruct'", err.message);
+                console.log("Server error: 'instruct'", err.message);
 
-        })
+            })
+
+        // }
     }
 
 
-    var refreshEnvironment = function ($scope, complete) {
+    var refreshEnvironment = function ($scope, callback) {
 
+        // return function ($scope, callback) {
 
-        $http({
-            method:"POST",
-            url:"/trash/environment/refresh/",
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
+            $http({
+                method:"POST",
+                url:"/trash/environment/refresh/",
+                data:{input:$scope.getInput()}
+            })
+            .then(function (res) {
 
-            if (complete) complete(res);
+                if (callback) callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'refresh environment'", err.message)
+                console.log("Server error: 'refresh environment'", err.message)
 
-        })
+            })
+
+        // }
 
     }
 
     var resetEnvironment = function (session, callback) {
 
-        $http({
-            method:"GET",
-            url:"/trash/environment/reset/" + session
-        })
-        .then(function (res) {
+        // return function (session, callback) {
 
-            if (callback) callback(res);
+            $http({
+                method:"GET",
+                url:"/trash/environment/reset/" + session
+            })
+            .then(function (res) {
 
-        }, function (err) {
+                if (callback) callback(res);
 
-            console.log("Server error: 'reset environment'", err.message)
+            }, function (err) {
 
-        })
+                console.log("Server error: 'reset environment'", err.message)
+
+            })
+
+        // }
 
     }
 
 
     var simulate = function (input, callback) {
 
+        // return function (input, callack) {
 
-         $http({
-            method:"POST",
-            url:"/trash/simulate",
-            data:input
-        })
-        .then(function (res) {
+            $http({
+                method:"POST",
+                url:"/trash/simulate",
+                data:input
+            })
+            .then(function (res) {
 
-            if (callback) callback(res);
+                if (callback) callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'simulate'", err.message);
-        })
+                console.log("Server error: 'simulate'", err.message);
+            })
+
+        // }
 
     }
 
@@ -232,19 +270,23 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
     var hardStop = function ($scope, callback) {
 
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/hardStop",
-    		data:{name:$scope.name, input:$scope.getInput()}
-    	})
-    	.then(function (res) {
+        // return function ($scope, callback) {
 
-            if (callback) callback(res);
+        	$http({
+        		method:"POST",
+        		url:"/evolve/hardStop",
+        		data:{name:$scope.name, input:$scope.getInput()}
+        	})
+        	.then(function (res) {
 
-        }, function (err) {
+                if (callback) callback(res);
 
-            console.log("Server error: 'hardStop'", err.message)
-        })
+            }, function (err) {
+
+                console.log("Server error: 'hardStop'", err.message)
+            })
+
+        // }
     }
 
 	return {
