@@ -337,11 +337,11 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    var programInputToggle = function ($toggle) {
 
-		    	var toggle;
+		    	var toggle = $toggle;
 
-		    	if ($toggle == null || $toggle == undefined) {
-		    		toggle = true;
-		    	}
+		    	// if ($toggle != null && $toggle != undefined) {
+		    	// 	toggle = $toggle;
+		    	// }
 
 		    	//override
 		    	toggle = false;
@@ -436,7 +436,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $feedback.css(getProps("off", "feedback"));
 
 
-		     if (!toggle || $scope.stepdata.gen > 0) {
+		     if (!toggle || (toggle && $scope.stepdata.gen > 0)) {
 
 		     		$input.css(getProps("off", "input"));
 		        	$grid.css(getProps("off", "grid"));
@@ -465,7 +465,20 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    }
 
 
-		    programInputToggle();
+		    var initProgramToggle = function () {
+
+			    programInputToggle();
+
+
+			    $(window).resize(function () {
+
+			    	programInputToggle();
+			    })
+
+			}
+
+
+			initProgramToggle();
 
 
 		    /*

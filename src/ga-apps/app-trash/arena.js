@@ -15,7 +15,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var effdim;
 			var ed;
 
-			var stageFactor = g.isMobile() ? 0.35 : 0.6;
+			var stageFactor = g.isMobile() ? 0.35 : 0.5;
 			var $stage = $("#arena");
 
 			var col = [];
@@ -132,9 +132,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			}
 
-
-			setTimeout(function () {
-
+			var setStageSize = function () {
 
 				ed = u.correctForAspect({
 					factor:stageFactor, 
@@ -145,6 +143,18 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 				})
 
 				$stage.css({width:ed.width, height:ed.height});
+			}
+
+
+			setTimeout(function () {
+
+
+				setStageSize();
+
+				$(window).resize(function () {
+
+					setStageSize();
+				})
 				
 			}, 500);
 
