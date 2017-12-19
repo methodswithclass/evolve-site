@@ -388,7 +388,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    			feedback:{
 		    				display:"block",
 		    				color:"white",
-		    				fontSize:"20px"
+		    				fontSize:"15px"
 		    			}
 		    		}
 		    	}
@@ -462,13 +462,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    programInputToggle();
 
-
-		    // var stepdata = api.stepdata();
-		    // var getBestAPI = api.getBest();
-		    // var run = api.run();
-		    // var initialize = api.initialize();
-		    // var isRunningAPI = api.isRunning();
-		    // var hardStop = api.hardStop();
 
 		    /*
 			##########################################
