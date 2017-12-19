@@ -429,7 +429,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	// console.log("top of input and cover \n\n\n\n\n", ed.height, ih, $parent.offset().top, $input.offset().top, top);
 
-
+		    	$parent.css({height:g.isMobile() ? "60%" : "80%"})
 		    	$back.css({height:ed.height, width:ed.width, top:top + "px"});
 		    	$cover.css({height:ed.height, width:ed.width, top:top + "px"});
 

@@ -23,7 +23,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 		$hud = $("#hudtoggle");
 		$evolvedata = $("#evolvedatatoggle");
 
-		$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px"})
+		$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px", height:(g.isMobile() ? "50%" : "120%")})
 
 		// console.log("evolve data dispatch events, trash sim and controls");
 
