@@ -343,6 +343,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    		toggle = true;
 		    	}
 
+		    	//override
+		    	toggle = true;
+
 
 		    	$scope.feedback = "these can only be set before evolving";
 
@@ -415,7 +418,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    	var ed = u.correctForAspect({
 		    		factor:1.2,
-		    		aspect:1,
+		    		aspect:0.8,
 		    		height:ih,
 		    		width:iw,
 		    		window:false
