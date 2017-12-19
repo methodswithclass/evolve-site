@@ -344,7 +344,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	}
 
 		    	//override
-		    	toggle = true;
+		    	toggle = false;
 
 
 		    	$scope.feedback = "these can only be set before evolving";
@@ -433,6 +433,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	$back.css({height:ed.height, width:ed.width, top:top + "px"});
 		    	$cover.css({height:ed.height, width:ed.width, top:top + "px"});
 
+		        $feedback.css(getProps("off", "feedback"));
+
 
 		     if (!toggle || $scope.stepdata.gen > 0) {
 
@@ -442,7 +444,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        	$back.css(getProps("off", "back"));
 		        	$cover.css(getProps("off", "cover"));
-		        	$feedback.css(getProps("off", "feedback"));
+		        	// $feedback.css(getProps("off", "feedback"));
 
 		        }
 		        else {
@@ -454,7 +456,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        	$back.css(getProps("on", "back"));
 		        	$cover.css(getProps("on", "cover"));
-		        	$feedback.css(getProps("on", "feedback"));
+		        	// $feedback.css(getProps("on", "feedback"));
 
 
 		        }
