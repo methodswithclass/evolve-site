@@ -335,10 +335,132 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 
+		    var programInputToggle = function ($toggle) {
+
+		    	var toggle;
+
+		    	if ($toggle == null || $toggle == undefined) {
+		    		toggle = true;
+		    	}
 
 
+		    	$scope.feedback = "these can only be set before evolving";
+
+		    	var properties = {
+		    		on:{
+		    			input:{
+		    				color:"black"
+		    			},
+		    			grid:{
+		    				color:"black"
+		    			},
+		    			trash:{
+		    				color:"black"
+		    			},
+		    			back:{
+		    				backgroundColor:"transparent"
+		    			},
+		    			cover:{
+		    				display:"none"
+		    			},
+		    			feedback:{
+		    				display:"none"
+		    			}
+		    		},
+		    		off:{
+		    			input:{
+		    				color:"gray"
+		    			},
+		    			grid:{
+		    				color:"gray"
+		    			},
+		    			trash:{
+		    				color:"gray"
+		    			},
+		    			back:{
+		    				backgroundColor:"black"
+		    			},
+		    			cover:{
+		    				backgroundColor:"white",
+		    				opacity:0.3,
+		    				display:"block"
+		    			},
+		    			feedback:{
+		    				display:"block",
+		    				color:"white",
+		    				fontSize:"20px"
+		    			}
+		    		}
+		    	}
 
 
+		    	var getProps = function (state, id) {
+
+		    		return properties[state][id];
+		    	}
+
+		    	var $parent = $("#programConfig");
+		    	var $input = $("#programInput_input");
+		    	var $cover = $("#programInput_cover");
+		    	var $back = $("#programInput_back");
+		    	var $feedback = $("#programInput_feedback");
+
+
+		    	var $grid = $("#gridSizeInput");
+		    	var $trash = $("#trashRateInput");
+
+
+		    	var ih = $input.height();
+		    	var iw = $input.width();
+
+		    	var ed = u.correctForAspect({
+		    		factor:1.2,
+		    		aspect:1,
+		    		height:ih,
+		    		width:iw,
+		    		window:false
+		    	})
+
+		    	var top = (ih - ed.height)/2;
+
+
+		    	// console.log("top of input and cover \n\n\n\n\n", ed.height, ih, $parent.offset().top, $input.offset().top, top);
+
+
+		    	$back.css({height:ed.height, width:ed.width, top:top + "px"});
+		    	$cover.css({height:ed.height, width:ed.width, top:top + "px"});
+
+
+		     if (!toggle || $scope.stepdata.gen > 0) {
+
+		     		$input.css(getProps("off", "input"));
+		        	$grid.css(getProps("off", "grid"));
+		        	$trash.css(getProps("off", "trash"));
+
+		        	$back.css(getProps("off", "back"));
+		        	$cover.css(getProps("off", "cover"));
+		        	$feedback.css(getProps("off", "feedback"));
+
+		        }
+		        else {
+		        	
+
+		        	$input.css(getProps("on", "input"));
+		        	$grid.css(getProps("on", "grid"));
+		        	$trash.css(getProps("on", "trash"));
+
+		        	$back.css(getProps("on", "back"));
+		        	$cover.css(getProps("on", "cover"));
+		        	$feedback.css(getProps("on", "feedback"));
+
+
+		        }
+
+
+		    }
+
+
+		    programInputToggle();
 
 		    /*
 			##########################################
@@ -437,6 +559,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        }
 
 		        $("#rundata").css({width:percent*100 + "%"});
+
 		    }
 
 
@@ -539,6 +662,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 					            $("#evolvedata").animate({color:"#000"}, 600);
 					        }, 300);
 
+
+					        programInputToggle();
+
+
 					    }
 					});
 
@@ -638,6 +765,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        display.forceEvolveHeight();
 
+
+		        // $("#programInputCover").removeClass("none").addClass("block");
 
 		        u.toggle("hide", "settings", {fade:300});
 		        u.toggle("hide", "run", {fade:300});

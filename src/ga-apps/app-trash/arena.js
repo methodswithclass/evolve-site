@@ -13,6 +13,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var rows;
 			var environment;
 			var effdim;
+			var ed;
 
 			var stageFactor = g.isMobile() ? 0.35 : 0.6;
 			var $stage = $("#arena");
@@ -132,54 +133,18 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			}
 
 
-			var makeAspect = function (factor, aspect) {
-
-
-		        var winW = $(window).width();
-		        var winH = $(window).height();
-
-		        var height;
-		        var width;
-
-		        var effH = winH*factor;
-		        var effW = winW*factor;
-
-		        var primeDim = g.isMobile() ? effW : effH;
-		        var altDim = g.isMobile() ? effH*aspect : effW*aspect;
-
-
-		        if (altDim > primeDim) {
-		            altDim = primeDim;
-		            primeDim = altDim/aspect;
-		        }
-
-		        if (g.isMobile()) {
- 
-			        width = primeDim;
-			        height = altDim;
-
-		        }
-		        else {
-
-			        height = primeDim;
-			        width = altDim;
-
-		        }
-
-		        return {
-		            width:width,
-		            height:height
-		        }
-
-
-			}
-
-
 			setTimeout(function () {
 
-				effdim = makeAspect(stageFactor, 1);
 
-				$stage.css({width:effdim.width, height:effdim.height});
+				ed = u.correctForAspect({
+					factor:stageFactor, 
+					aspect:1, 
+					width:$(window).width(), 
+					height:$(window).height(),
+					window:true
+				})
+
+				$stage.css({width:ed.width, height:ed.height});
 				
 			}, 500);
 
