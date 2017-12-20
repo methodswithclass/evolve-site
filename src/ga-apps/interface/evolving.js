@@ -441,7 +441,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 			        // console.log("\n\n\n\n\n\n\nprogram input toggle \n\n\n\n", toggle, "\n\n\n\n\n\n\n\n\n");
 
-			    	if (toggle != -1 && (toggle == 1 || (toggle == 0 && $scope.stepdata.gen > 0))) {
+			    	if (toggle != -1 && (toggle == 1 || (toggle == 0 && $scope.stepdata.gen == 0))) {
 
 			     		$input.css(getProps("on", "input"));
 			        	$grid.css(getProps("on", "grid"));

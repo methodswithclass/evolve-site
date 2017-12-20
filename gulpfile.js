@@ -1,6 +1,5 @@
 var gulp = require('gulp');
-var autoprefixer = require('gulp-autoprefixer'),
-// jshint = require('gulp-jshint'),
+var autoprefixer = require('gulp-autoprefixer')
 shell = require("gulp-shell"),
 uglify = require('gulp-uglify'),
 imagemin = require('gulp-imagemin'),
@@ -11,7 +10,6 @@ inject = require('gulp-inject'),
 filter = require("gulp-filter"),
 merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files"),
-livereload = require('gulp-livereload'),
 nodemon = require('gulp-nodemon'),
 browserSync = require('browser-sync').create();
 
@@ -23,12 +21,7 @@ var minify = false;
 var injectMin = false;
 
 
-// gulp.task("serve", ["watch"], shell.task("node server.js"));
-
 gulp.task("serve", ["build"], function () {
-
-
-	// livereload.listen();
 
 	// browserSync.init({
  //       proxy: "localhost:4200",
@@ -37,22 +30,19 @@ gulp.task("serve", ["build"], function () {
 
 	var stream = nodemon({ 
 		script: './server.js',
+		ext:"js html css json",
+		watch:["./src", "./backend"],
 		tasks:["build"]
 	});
 	
 
 	stream.on("restart", function () {
 
-		// setTimeout(function () {
+		setTimeout(function () {
 
-		// 	//gulp.src("./server.js")
-		// 	//.pipe(livereload());
+			browserSync.reload();
 
-		// 	// livereload.changed("./dist/index.html");
-
-		// 	browserSync.reload();
-
-		// }, 2000)
+		}, 2000);
 
 	})
 
@@ -61,15 +51,11 @@ gulp.task("serve", ["build"], function () {
 		stream.emit('restart', 10);
 	})
 
-	// stream.on("changes", function () {
-
-
-	// 	gulp.start("build");
-	// })
 	
 })
 
 gulp.task("build", ["clean"], function () {
+
 
 	gulp.start("compile");
 })
@@ -107,7 +93,6 @@ gulp.task('scripts', ['vendor'], function() {
 	    "src/ga-apps/app-recognize/app/image-processor/image.processor.js",
 	    "src/ga-apps/app-feedback/**/*.js",
 	    "src/ga-apps/app-trash/**/*.js",
-	    // "backend/evolve/_ga/evolve.js",
 	    "src/**/*.js"
     ])
 	.pipe(concat('main.js'))

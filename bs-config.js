@@ -16,7 +16,7 @@ module.exports = {
     "ui": {
         "port": 3001
     },
-    "files": false,
+    "files": ["./src", "./backend"],
     "watchEvents": [
         "change"
     ],
@@ -24,8 +24,8 @@ module.exports = {
         "ignoreInitial": true
     },
     "server": false,
-    "proxy": false,
-    "port": 3000,
+    "proxy": "localhost:4200",
+    "port": 3010,
     "middleware": false,
     "serveStatic": [],
     "ghostMode": {
@@ -45,7 +45,7 @@ module.exports = {
     "logSnippet": true,
     "rewriteRules": [],
     "open": "local",
-    "browser": "default",
+    "browser": "chrome",
     "cors": false,
     "xip": false,
     "hostnameSuffix": false,
