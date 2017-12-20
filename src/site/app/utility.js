@@ -109,26 +109,30 @@ app.factory("utility", function () {
 
 
 
-        var factor = input.factor ? input.factor : 1;
-        var aspect = input.aspect ? input.aspect : 1;
+        var factor = input.factor >= 0 ? input.factor : 1;
+        var aspect = input.aspect >= 0 ? input.aspect : 1;
 
-        var ww = input.width ? input.width : null;
-        var wh = input.height ? input.height : null;
+        var ww = input.width >= 0 ? input.width : null;
+        var wh = input.height >= 0 ? input.height : null;
 
         var isWindow = input.window;
 
-        if (!ww || !wh) {
+        // console.log("\n\n\n\n\n\n\ncorrectForAspect", input.id, "\n\n\n\n\n", "mobile", checkMobile(), "window", isWindow, "input width", input.width, "result", ww, "input height", input.height, "result", wh, "\n\n\n\n\n\n\n");
+
+        if (ww instanceof Number || wh instanceof Number) {
             return null;
         }
 
         var ew = ww*factor;
         var eh = wh*factor;
 
+        // console.log("\n\n\n\n\n\n\n\neffective dimesion", input.id,"\n\n\n\n\n\n", "mobile", checkMobile(),  "window", isWindow, "width", ew, "height", eh, "\n\n\n\n\n\n\n\n");
 
         // primary and alternate dimensions determined by device type, primary dimension does not receive an aspect ratio, alternate dimension does
         var pd = isWindow ? (checkMobile() ? ew : eh) : ew;
         var ad = isWindow ? (checkMobile() ? eh*aspect : ew*aspect) : eh;
 
+        // console.log("\n\n\n\n\n\n\n\ndimensions", input.id,"\n\n\n\n\n\n\n", "mobile", checkMobile(), "window", isWindow,"primary", pd, "alternate", ad, "\n\n\n\n\n\n\n\n");
 
         // if the alternate dimension is larger than primary dimension (it is considered bigger than the frame), then we want to adjust each dimension so that the width and height are less than the input width and height
         if (ad != pd) {
@@ -137,9 +141,16 @@ app.factory("utility", function () {
         }
 
 
+        // console.log("\n\n\n\n\n\n\n\ndimensions post", input.id,"\n\n\n\n\n\n\n", "mobile", checkMobile(), "window", isWindow, "primamry", pd, "alternate", ad, "\n\n\n\n\n\n\n\n");
+
+        var _width = (isWindow ? (checkMobile() ? pd : ad) : pd);
+        var _height = (isWindow ? (checkMobile() ? ad : pd) : ad);
+
+        // console.log("\n\n\n\n\n\n\n\noutput", input.id,"\n\n\n\n\n\n\n", "mobile", checkMobile(),  "window", isWindow, "width", _width, "height", _height, "\n\n\n\n\n\n\n\n");
+
         return {
-            width:(isWindow ? (checkMobile() ? pd : ad) : pd),
-            height:(isWindow ? (checkMobile() ? ad : pd) : ad)
+            width:_width,
+            height:_height
         }
 
 

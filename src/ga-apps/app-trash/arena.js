@@ -135,6 +135,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var setStageSize = function () {
 
 				ed = u.correctForAspect({
+					id:"arena",
 					factor:stageFactor, 
 					aspect:1, 
 					width:$(window).width(), 

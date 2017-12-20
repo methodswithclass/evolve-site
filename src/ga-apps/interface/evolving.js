@@ -333,18 +333,16 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 
-
-
 		    var programInputToggle = function ($toggle) {
 
-		    	var toggle = $toggle;
 
-		    	// if ($toggle != null && $toggle != undefined) {
-		    	// 	toggle = $toggle;
-		    	// }
+		    	var toggle = $toggle == false ? -1 : ($toggle == true ? 1 : (($toggle == null || $toggle == undefined) ? 0 : 1));
+		    	
 
-		    	//override
-		    	toggle = false;
+		    	// internal overrides
+		    	// toggle = 0;
+		    	// toggle = -1;
+		    	toggle = 1; 
 
 
 		    	$scope.feedback = "these can only be set before evolving";
@@ -361,7 +359,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    				color:"black"
 		    			},
 		    			back:{
-		    				backgroundColor:"transparent"
+		    				display:"none"
 		    			},
 		    			cover:{
 		    				display:"none"
@@ -381,12 +379,13 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    				color:"gray"
 		    			},
 		    			back:{
+		    				display:"block",
 		    				backgroundColor:"black"
 		    			},
 		    			cover:{
+		    				display:"block",
 		    				backgroundColor:"white",
-		    				opacity:0.3,
-		    				display:"block"
+		    				opacity:0.3
 		    			},
 		    			feedback:{
 		    				display:"block",
@@ -402,78 +401,90 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    		return properties[state][id];
 		    	}
 
+		    	var ih;
+		    	var iw;
+		    	var ed;
+		    	var top;
+
 		    	var $parent = $("#programConfig");
 		    	var $input = $("#programInput_input");
 		    	var $cover = $("#programInput_cover");
 		    	var $back = $("#programInput_back");
 		    	var $feedback = $("#programInput_feedback");
 
-
 		    	var $grid = $("#gridSizeInput");
 		    	var $trash = $("#trashRateInput");
 
+		    	$parent.css({height:(g.isMobile() ? "60%" : "80%")})
 
-		    	var ih = $input.height();
-		    	var iw = $input.width();
+		    	setTimeout(function () {
 
-		    	var ed = u.correctForAspect({
-		    		factor:1.2,
-		    		aspect:0.8,
-		    		height:ih,
-		    		width:iw,
-		    		window:false
-		    	})
+		    		ih = $input.height();
+			    	iw = $input.width();
 
-		    	var top = (ih - ed.height)/2;
+			    	// console.log("\n\n\n\n\n\n\nprogram-input elements\n\n\n\n", "parent", $parent[0], "parent height", $parent.height(), "parent width", $parent.width(), "\n\ninput", $input[0], "input height", $input.height(), "input width", $input.width(), "\n\n\n\n\n\n\n\n\n");
+
+			    	ed = u.correctForAspect({
+			    		id:"program-input",
+			    		factor:1.2,
+			    		aspect:0.8,
+			    		height:ih,
+			    		width:iw,
+			    		window:false
+			    	})
+
+			    	top = (ih - ed.height)/2;
+			    	
+			    	$back.css({height:ed.height, width:ed.width, top:top + "px"});
+			    	$cover.css({height:ed.height, width:ed.width, top:top + "px"});
+			        // $feedback.css(getProps("off", "feedback"));
+
+			        // console.log("\n\n\n\n\n\n\nprogram input toggle \n\n\n\n", toggle, "\n\n\n\n\n\n\n\n\n");
+
+			    	if (toggle != -1 && (toggle == 1 || (toggle == 0 && $scope.stepdata.gen > 0))) {
+
+			     		$input.css(getProps("on", "input"));
+			        	$grid.css(getProps("on", "grid"));
+			        	$trash.css(getProps("on", "trash"));
+
+			        	$back.css(getProps("on", "back"));
+			        	$cover.css(getProps("on", "cover"));
+			        	// $feedback.css(getProps("on", "feedback"));
+
+			        }
+			        else {
+
+			        	$input.css(getProps("off", "input"));
+			        	$grid.css(getProps("off", "grid"));
+			        	$trash.css(getProps("off", "trash"));
+
+			        	$back.css(getProps("off", "back"));
+			        	$cover.css(getProps("off", "cover"));
+			        	// $feedback.css(getProps("off", "feedback"));
+
+			        }
+
+		    	}, 1000);
 
 
-		    	// console.log("top of input and cover \n\n\n\n\n", ed.height, ih, $parent.offset().top, $input.offset().top, top);
-
-		    	$parent.css({height:g.isMobile() ? "60%" : "80%"})
-		    	$back.css({height:ed.height, width:ed.width, top:top + "px"});
-		    	$cover.css({height:ed.height, width:ed.width, top:top + "px"});
-
-		        $feedback.css(getProps("off", "feedback"));
-
-
-		     if (!toggle || (toggle && $scope.stepdata.gen > 0)) {
-
-		     		$input.css(getProps("off", "input"));
-		        	$grid.css(getProps("off", "grid"));
-		        	$trash.css(getProps("off", "trash"));
-
-		        	$back.css(getProps("off", "back"));
-		        	$cover.css(getProps("off", "cover"));
-		        	// $feedback.css(getProps("off", "feedback"));
-
-		        }
-		        else {
-		        	
-
-		        	$input.css(getProps("on", "input"));
-		        	$grid.css(getProps("on", "grid"));
-		        	$trash.css(getProps("on", "trash"));
-
-		        	$back.css(getProps("on", "back"));
-		        	$cover.css(getProps("on", "cover"));
-		        	// $feedback.css(getProps("on", "feedback"));
-
-
-		        }
-
+		    	$scope.programInputToggle = toggle;
 
 		    }
 
 
 		    var initProgramToggle = function () {
 
-			    programInputToggle();
+		    	setTimeout(function () {
+	
+				    programInputToggle($scope.programInputToggle);
 
 
-			    $(window).resize(function () {
+				    $(window).resize(function () {
 
-			    	programInputToggle();
-			    })
+				    	programInputToggle();
+				    })
+
+				}, 1000);
 
 			}
 

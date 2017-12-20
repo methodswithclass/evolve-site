@@ -27,7 +27,6 @@
     "gulp-imagemin": "^3.3.0",
     "gulp-inject": "^4.2.0",
     "gulp-jshint": "^2.0.4",
-    "gulp-livereload": "^3.8.1",
     "gulp-rename": "^1.2.2",
     "gulp-ruby-sass": "^2.1.1",
     "gulp-shell": "^0.6.3",
@@ -41,5 +40,10 @@
     "mongoose": "^4.12.5",
     "private-bower": "*",
     "uid-generator": "^0.1.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.19.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.2.1"
   }
 }

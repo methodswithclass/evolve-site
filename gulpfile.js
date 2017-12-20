@@ -10,7 +10,10 @@ del = require('del'),
 inject = require('gulp-inject'),
 filter = require("gulp-filter"),
 merge = require("merge-stream"),
-mainBowerFiles = require("main-bower-files");
+mainBowerFiles = require("main-bower-files"),
+livereload = require('gulp-livereload'),
+nodemon = require('gulp-nodemon'),
+browserSync = require('browser-sync').create();
 
 
 // var minify = process.env.NODE_ENV == "production";
@@ -20,18 +23,59 @@ var minify = false;
 var injectMin = false;
 
 
-gulp.task("serve", ["watch"], shell.task("node server.js"));
+// gulp.task("serve", ["watch"], shell.task("node server.js"));
 
-gulp.task('watch', ["clean"], function() {
-
-    gulp.watch(["./src/**/*.*"], ["build"]);
-
-    gulp.start("build");
-
-});
+gulp.task("serve", ["build"], function () {
 
 
-gulp.task('build', ["js", "styles", "copy"], function () {
+	// livereload.listen();
+
+	// browserSync.init({
+ //       proxy: "localhost:4200",
+ //       files:["./src/**/*.*", "./backend/**/*.*"]
+ //    });
+
+	var stream = nodemon({ 
+		script: './server.js',
+		tasks:["build"]
+	});
+	
+
+	stream.on("restart", function () {
+
+		// setTimeout(function () {
+
+		// 	//gulp.src("./server.js")
+		// 	//.pipe(livereload());
+
+		// 	// livereload.changed("./dist/index.html");
+
+		// 	browserSync.reload();
+
+		// }, 2000)
+
+	})
+
+	stream.on("crash", function () {
+		
+		stream.emit('restart', 10);
+	})
+
+	// stream.on("changes", function () {
+
+
+	// 	gulp.start("build");
+	// })
+	
+})
+
+gulp.task("build", ["clean"], function () {
+
+	gulp.start("compile");
+})
+
+
+gulp.task('compile', ["js", "styles", "copy"], function () {
 
 
 });
