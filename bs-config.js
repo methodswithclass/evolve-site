@@ -16,7 +16,7 @@ module.exports = {
     "ui": {
         "port": 3001
     },
-    "files": ["./src", "./backend"],
+    "files": false,
     "watchEvents": [
         "change"
     ],
@@ -25,7 +25,7 @@ module.exports = {
     },
     "server": false,
     "proxy": "localhost:4200",
-    "port": 3010,
+    "port": 3020,
     "middleware": false,
     "serveStatic": [],
     "ghostMode": {

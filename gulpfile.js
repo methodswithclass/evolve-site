@@ -11,7 +11,11 @@ filter = require("gulp-filter"),
 merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files"),
 nodemon = require('gulp-nodemon'),
-browserSync = require('browser-sync').create();
+browserSync = require('browser-sync').create(),
+livereload = require('gulp-livereload');
+
+
+const config = require("./config.js");
 
 
 // var minify = process.env.NODE_ENV == "production";
@@ -20,13 +24,12 @@ var minify = false;
 // var injectMin = process.env.NODE_ENV == "production";
 var injectMin = false;
 
+var livereloadPort = 3020;
+
 
 gulp.task("serve", ["build"], function () {
 
-	// browserSync.init({
- //       proxy: "localhost:4200",
- //       files:["./src/**/*.*", "./backend/**/*.*"]
- //    });
+ 	livereload.listen({port:config.livereloadPort})
 
 	var stream = nodemon({ 
 		script: './server.js',
@@ -40,7 +43,7 @@ gulp.task("serve", ["build"], function () {
 
 		setTimeout(function () {
 
-			browserSync.reload();
+			livereload.reload();
 
 		}, 2000);
 

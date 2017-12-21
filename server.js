@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const config = require("./config.js");
 
 const app = express();
 
@@ -77,6 +78,16 @@ var refresh = function () {
 // }
 
 
+var PORTS = {
+	heroku:8080,
+	http:80,
+	livereload:config.livereloadPort,
+	misc1:3000,
+	misc2:4200,
+	misc3:4210
+}
+
+
 
 app.use(refresh());
 // app.use(forceSSL());
@@ -93,17 +104,12 @@ app.use("/evolve", evolveRoutes);
 app.use("/write", writingRoutes);
 app.use("/trash", trashRoutes);
 app.use("/recognize", recognizeRoutes);
+
+app.use(require('connect-livereload')({
+	port: PORTS.livereload
+}));
+
 app.use("/", express.static(path.join(__dirname, "dist")));
-
-
-
-var PORTS = {
-	heroku:8080,
-	http:80,
-	misc1:3000,
-	misc2:4200,
-	misc3:4210
-}
 
 
 
