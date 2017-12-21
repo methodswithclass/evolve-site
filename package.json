@@ -18,6 +18,8 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "bower": "^1.8.2",
+    "browser-sync": "^2.19.0",
+    "connect-livereload": "^0.6.0",
     "del": "^2.2.2",
     "express": "^4.15.3",
     "gulp": "^3.9.1",
@@ -27,6 +29,8 @@
     "gulp-imagemin": "^3.3.0",
     "gulp-inject": "^4.2.0",
     "gulp-jshint": "^2.0.4",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-ruby-sass": "^2.1.1",
     "gulp-shell": "^0.6.3",
@@ -34,17 +38,11 @@
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
     "main-bower-files": "^2.13.1",
-    "mc-evolve": "^4.0.0",
+    "mc-evolve": "^4.0.2",
     "mc-shared": "^4.1.4",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
     "private-bower": "*",
     "uid-generator": "^0.1.1"
-  },
-  "devDependencies": {
-    "browser-sync": "^2.19.0",
-    "connect-livereload": "^0.6.0",
-    "gulp-livereload": "^3.8.1",
-    "gulp-nodemon": "^2.2.1"
   }
 }

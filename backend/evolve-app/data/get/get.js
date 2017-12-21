@@ -1,7 +1,7 @@
 
 
-// var evolveFact = require("mc-evolve");
-var evolveFact = require("../../__ga/evolve.js");
+var evolveFact = require("mc-evolve");
+// var evolveFact = require("../../__ga/evolve.js");
 
 var SESSION_EXPIRY = 3600*24*1000;
 

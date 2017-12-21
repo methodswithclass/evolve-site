@@ -34,7 +34,7 @@ gulp.task("serve", ["build"], function () {
 	var stream = nodemon({ 
 		script: './server.js',
 		ext:"js html css json",
-		watch:["./src", "./backend"],
+		watch:["./src", "./backend", "./server"],
 		tasks:["build"]
 	});
 	

@@ -165,7 +165,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             state:$scope.programInput
         })
 
-        events.dispatch("refreshenv");
+        // events.dispatch("refreshenv");
+
+        setTimeout(function () {
+
+            simulator.refresh();
+
+        }, 1000);
 
     }
 
