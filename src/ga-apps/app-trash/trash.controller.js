@@ -169,7 +169,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
         setTimeout(function () {
 
-            simulator.refresh();
+            simulator.refresh($scope.session);
 
         }, 1000);
 
