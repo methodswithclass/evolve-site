@@ -78,6 +78,7 @@ var trash = function (options) {
 	self.refresh = function (options) {
 
 		environment.refresh(options);
+		robot.setup(environment, options);
 		self.reset();
 
 		return environment.get();
@@ -104,9 +105,11 @@ var trash = function (options) {
 				step:$step
 			}
 
-			fit += getPoints(after);
+			// if ($run == 5 && params.index == 1) {
+			// 	console.log("update", params.gen, $step, after.state, after.id, after.action.change(), after.action.name, after.move.post, fit);
+			// }
 
-			performStep($step + 1, $run, fit, params, complete);
+			performStep($step + 1, $run, fit + getPoints(after), params, complete);
 
 		}
 		else {
@@ -145,52 +148,6 @@ var trash = function (options) {
 			complete(fits);
 		}
 	}
-
-	// self.run = function (params, complete) {
-
-	// 	var self = this;
-
-	// 	input = params.input;
-
-	// 	runs = input.runs;
-
-	// 	var fits = [];
-	// 	var avgfit;
-
-		// performRun(0, fits, params,
-		// 	function (fits, x) {
-
-		// 		//console.log("fits", ...fits, "fit", x);
-
-		// 		fits[fits.length] = x;
-
-		// 		return fits;
-		// 	},
-		// 	function (fits) {
-
-		// 		avgfit = g.truncate(g.average(fits, function (value, index, array) {return value.fit;}),2)
-
-
-		// 		var count = 0;
-		// 		for (i in fits) {
-		// 			if (fits[i].fit >= fits[i].target*actions.list[5].points.success) {
-		// 				count++;
-		// 			}
-		// 		}
-
-		// 		var success = count > fits.length*0.8;
-
-		// 		complete({
-		// 			runs:fits,
-		// 			avg:avgfit,
-		// 			success:success
-		// 		});
-
-		// 	}
-		// );
-		
-	// }
-
 
 
 	self.run = function (params, complete) {

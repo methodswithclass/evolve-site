@@ -165,6 +165,11 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             state:$scope.programInput
         })
 
+        react.push({
+            name:"programInput" + self.name,
+            state:$scope.programInput
+        })
+
         // events.dispatch("refreshenv");
 
         setTimeout(function () {

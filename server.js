@@ -11,6 +11,8 @@ const writingRoutes = require("./backend/routes/write-image.js");
 const trashRoutes = require("./backend/routes/programs/trash.js");
 const recognizeRoutes = require("./backend/routes/programs/recognize.js");
 
+const get = require("./backend/evolve-app/data/get/get.js");
+
 
 var refreshPages = [
 "home",
@@ -109,8 +111,16 @@ app.use(require('connect-livereload')({
 	port: PORTS.livereload
 }));
 
-app.use("/", express.static(path.join(__dirname, "dist")));
+// app.use("/", function (req, res, next) {
 
+// 	get.sessionHardStop();
+
+// 	return express.static(path.join(__dirname, "dist"))
+
+// });
+
+
+app.use("/", express.static(path.join(__dirname, "dist")));
 
 
 var env = process.env.NODE_ENV;

@@ -207,7 +207,7 @@ var obj = {};
 
 				// console.log("source", mateA, parents.length, source ? true : false, parents[mateA] ? true: false);
 
-				if ((i+1)*c_len < self.total) {
+				if ((i+1)*c_len <= self.total) {
 					dna = dna.concat(source.dna.slice(i*c_len, (i+1)*c_len));
 				}
 				else {
