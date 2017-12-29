@@ -12,56 +12,21 @@ app.factory("doc.data", function () {
 			title:"welcome",
 			text:[
 			[
-				"Welcome to the world of evolutionary programming, or genetic algorithms. This site is about artificial intelligence and the subfield of evolutionary modeling of biological evolution that can be used to solve a variety of real world problems in engineering and computer science. It is used in cases when the optimum parameters of the end product are unknown, but the designers have a way to measure the performace of the end product. That way, they can test a variety of parameters to see if it meets their standard. Genetic algorithms provide a structured way to test a variety of different parameters, while also testing better and better parameters until an optimum set is achieved. This is done over a number of repeated generations, while each set of parameters per cycle can be thought of as the individuals in the generation."
+				"Welcome to the world of evolutionary programming, or genetic algorithms. This site is about artificial intelligence and the subfield of evolutionary modeling of biological evolution that can be used to solve a variety of real world problems in engineering and computer science. It is used in cases when the optimum parameters of the end product are unknown, but the designers have a way to measure the performance of the end product. That way, they can test a variety of parameters to see if it meets their standard. Genetic algorithms provide a structured way to test a variety of different parameters, while also testing better and better parameters until an optimum set is achieved. This is done over a number of repeated generations, while each set of parameters per cycle can be thought of as the individuals in the generation."
 			],
 			[
-				"The site is intended for those who have no technical background, each demonstration of the algorthim in action is interactive and can be manipulated simply and easiy. It has the potential to present several demonstrations of the algortihm applied to different problems, all using the same algortihm. Check back often to see if new problems have been added, I'm always thinking of new things to demo.",
+				"The site is intended for those who have no technical background, each demonstration of the algorithm in action is interactive and can be manipulated simply and easily. It has the potential to present several demonstrations of the algorithm applied to different problems, all using the same algorithm. Check back often to see if new problems have been added, I'm always thinking of new things to demo.",
 				"As the user of this site (as the runner of the algorithm) you can adjust how it's run in certain ways. There is a settings panel for each demo where you can change some values that makes the algorithm run differently, and ultimately you will get a different result. Have fun changing the values (the options for values will change in the future giving you more control ultimately), you can always return to default, which is a good middle ground. You can also control the algorithm as it runs, you can start and stop it at will, and add generations without having to start from scratch."
 			]
 			]
 		},
-		// {
-		// 	id:"real",
-		// 	title:"problem solving",
-		// 	text:[
-		// 	[
-		// 		"Solving problems, as it turns out, is rather difficult.",
-		// 		"As the number of dimensions that define a problem grows past a handful, the difficulty of solving it grows exponentially. In the real world, this exponential difficulty exists for most problems.",
-		// 		"Conventionally, this issue is reduced by fixing or approximating several dimensions while solving for others. The result is 'good enough' for most problems being addressed."
-		// 	],
-		// 	[
-		// 		"Optimization is a common problem. Finding the max, min, or other extreme of a set, function, or surface poses its own unique challenges.",
-		// 		"You might not know it, but you use them all the time. Spotify, Google Maps, Facebook, and YouTube all employ optimization algorithms billions of times a day for you and everyone else.",
-		// 		"Problem solving boils down to optimizing in almost every instance. 'Find the fastest or best method for doing x.'"
-		// 	]
-		// 	]
-		// },
-		// {
-		// 	id:"ga",
-		// 	title:"machine learning",
-		// 	text:[
-		// 	[
-		// 		"Some problems have solutions that do not make practical sense to program directly. Image recognition is a good example.",
-		// 		"Take cars for example. Because the color, orinetation, size, and shape of the car varies greatly from image to image, but we want to recognize all of them the same way, the solution to this recognition problem cannot be hard coded. It would take too much time to tell the computer how to recognize all cars in all photos.",
-		// 		"A much more economical, robust, and successful solution is to write a generic algorithm that can figure all of this out on its own. (This specific problem usually requires some human assistance to complete).",
-		// 		"The algorithm learns and evolves its own understanding of what cars look like by looking at hundreds of thousands of images of cars. Then, by much the same process that a human learns what a car looks like as a child, the computer recognizes a car of most any color, orientation, size, and shape.",
-		// 		"As with giving a man a fish, sometimes its better for the computer, and us, to teach the computer to recognize a car in a photo for itself.",
-		// 		"This is machine empowerment, really."
-		// 	],
-		// 	[
-		// 		"The learning process for this car example starts with the human teachers showing the learning computer a small set of a variety of cars and telling the computer that they are all cars. The computer has basic recognition software that allows it to see some basic things, but that software doesn't tell the computer what it's looking at.",
-		// 		"The teachers then give millions of pictures of a lot of things, including cars, to the computer and ask it find all the cars. Through a series of sorting, categorizing, and adapting the computer eventually gets good at seeing a car in any photo. With every pitcure it sees in the set, it adds what are not cars, and how different cars might look to its working library of a car.",
-		// 		"It's a single run, and each attempt to solve the problem of a car is different. The algorithm for recognizing a car is not changed. What is changed is the data set the algorithm references when asking if the thing it sees in the photo is a car."
-		// 	]
-		// 	]
-		// },
 		{
 			id:"ga",
 			title:"the genetic algorithm",
 			text:[
 			[
 				"Genetic Algorithms, or GAs, model themselves after biological evolution. If you are ever faced with a problem with a bunch of things to balance, or you want to improve how well your program runs, granted you have some way to encode it's ability to run, and test it's performance, then a GA might be perfect for you. The GA works like biological evolution, it creates individual copies of your program or problem, and runs all of them against your test, ranking their performance. The best performing are mixed to create new individuals for the next generation. And the cycle is repeated.",
-				"When the process starts, the GA will create a set of randomized parameters that can be called the individuals of the first generation. These individuals are then tested for their performance that obviously fail miserably. But they do score a performcance measure of some level, and some score better than others no matter how badly. The 'best' performing individuals have their parameters mixed to create new a new set of individuals for the next generation."
+				"When the process starts, the GA will create a set of randomized parameters that can be called the individuals of the first generation. These individuals are then tested for their performance that obviously fail miserably. But they do score a performance measure of some level, and some score better than others no matter how badly. The 'best' performing individuals have their parameters mixed to create a new set of individuals for the next generation."
 			],
 			]
 		},
@@ -70,9 +35,9 @@ app.factory("doc.data", function () {
 			title:"mutation",
 			text:[
 			[
-				"But, however, before the new generation can be run in the same way, a very important step must take place. This step is so important that it seems to almost prove biological evolution in a way (but don't hold me to that). The new individuals parameters must undergo a random mutation of their parameters by some small percentage. If this step is not done, the GA fails to change the performance of the parameters after a certain point: it plateaus.",
-				"This seems to mean, if I may be so bold, that in biological evolution, if mutations had not been part of the process (if there had been perfect replication of DNA from parent to child), life would not have evolved at all. This makes sense too, without mutation, in other words, without the addition of new information, eventually the pool of indivuals are just passing around the same genes, so it can't improve. But with mutation, the new imformation can lend to improvements as the best individuals are consistently selected for reproduction.",
-				"Once mutation is complete, the new generation is tested for performance and the process is repeated. After hundreds of generations, the resulting parameters usually will result in a well performing design for whatever your trying to build. Applications of GAs are machine learning, training neural networks, and generalized optimization problems with a large number of paramters."
+				"But, however, before the new generation can be run in the same manner, a very important step must take place. This step is so important that it seems to almost prove biological evolution in a way (but don't hold me to that). The new individual's parameters must undergo a random mutation by some small percentage. If this step is not done, the GA fails to continue to increase the performance of the parameters after a certain point: it plateaus.",
+				"This seems to mean, if I may be so bold, that in biological evolution, if mutations had not been part of the process (if there had been perfect replication of DNA from parent to child), life would not have evolved at all. This makes sense too, without mutation, in other words, without the addition of new information, eventually the pool of indivuals are just passing around the same genes, so it can't improve. But with mutation, new genetic information leads to variety that can be tested to pass or fail, while the successful genes remain, thus leading to complexity being injected into the system through the mechanism of simple mistakes (in the case of biological evolution, and intenetionally in the case of genetic algortithms).",
+				"Once mutation is complete, the new generation is tested for performance and the process is repeated. After hundreds or thousands of generations, the resulting parameters will usually result in a well performing design for whatever you're trying to build. Applications of GAs are machine learning, training neural networks, and generalized optimization problems with a large number of paramters."
 			]
 			]
 		}

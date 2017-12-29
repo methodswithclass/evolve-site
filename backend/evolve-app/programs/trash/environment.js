@@ -160,6 +160,8 @@ var environment = function () {
 
 		var result = 0;
 
+		// console.log("stage", pos, stage);
+
 		if (pos.x < stage.min || pos.x > stage.max || pos.y < stage.min || pos.y > stage.max) {
 			result = 2;
 		}

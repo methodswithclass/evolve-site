@@ -18,6 +18,10 @@ var robot = function () {
 
 	var environment;
 
+	var pre;
+	var state;
+	var id;
+
 	var setInput = function (options) {
 
 		stage = {
@@ -75,16 +79,14 @@ var robot = function () {
 		plan = _plan;
 	}
 
-	self.update = function () {
+	self.update = function ($step, $run, params) {
 
-		var pre = {x:position.x, y:position.y};
-		var state = environment.assess(pre);
+		pre = {x:position.x, y:position.y};
+		state = environment.assess(pre);
 		
-		var id = plan[state];
+		id = plan[state];
 
 		var success = "success";
-
-		// console.log("update", plan, state, id);
 
 		if (actions.list[id].name == "clean") {
 			success = environment.clean(pre);
@@ -95,6 +97,7 @@ var robot = function () {
 
 		return {
 			state:state,
+			id:id,
 			action:actions.list[id],
 			move:{
 				pre:{x:pre.x, y:pre.y},

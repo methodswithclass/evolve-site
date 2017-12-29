@@ -16,20 +16,26 @@
 
 			</div>
 
-			<div class="absolute width80 height80 hcenter opacity0" id="stagetoggle">
+			<div class="absolute width80 hcenter opacity0" id="stagetoggle">
 
-				<div class="absolute width80 height-100 top-minus-50 hcenter" id="stagetitle">
-					<div class="relative center text-center font2-rem">
-						Simulation
-					</div>
-					<div class="relative center text-center font170-rem">
-						see the results of the best individual
+				<div class="absolute width height-100 hcenter" id="stagetitle">
+					<div class="absolute width height80">
+						<div class="relative width height50 text-center font2-rem">
+							<div class="absolute center">
+								Simulation
+							</div>
+						</div>
+						<div class="relative width height50 text-center font170-rem">
+							<div class="absolute center">
+								see the results of the best individual
+							</div>
+						</div>
 					</div>
 				</div>
 
 
 
-				<div class="absolute width50 height60 vcenter" id="arena">
+				<div class="absolute width40 height60 vcenter" id="arena">
 
 					<arena></arena>
 
@@ -38,19 +44,21 @@
 				</div>
 
 
-				<div class="absolute width20 height80 vcenter right30" id="programConfig">
+				<div class="absolute width20 vcenter left45" id="programConfig">
 
 
 					<div class="absolute width80 height80 center">
 
 						<div class="absolute width height40" id="programInput_input">
 
-							<div class="absolute hcenter" id="programInput_back"></div>
-
-							<div class="absolute width90 hcenter height-30" id="programInput_feedback">
-								<div class="absolute center">
-									{{feedback}}
+							<div class="absolute hcenter" id="programInput_back">
+								
+								<div class="absolute width80 height-50 center font-15 white" id="programInput_feedback">
+									<div class="absolute center text-center">
+										{{feedback}}
+									</div>
 								</div>
+
 							</div>
 
 							<div class="relative width height50">

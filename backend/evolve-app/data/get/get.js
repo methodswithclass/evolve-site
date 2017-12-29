@@ -106,6 +106,14 @@ var getSessionProgram = function (session, name) {
 	return evolve[session].programs[name];
 }
 
+var sessionHardStop = function (session) {
+
+
+	var evolve = getSessionEvolve(session);
+
+	evolve.hardStop();
+}
+
 
 
 module.exports =  {
@@ -115,5 +123,6 @@ module.exports =  {
 	addProgramToSession:addProgramToSession,
 	getSession:getSession,
 	getSessionEvolve:getSessionEvolve,
-	getSessionProgram:getSessionProgram
+	getSessionProgram:getSessionProgram,
+	sessionHardStop:sessionHardStop
 }

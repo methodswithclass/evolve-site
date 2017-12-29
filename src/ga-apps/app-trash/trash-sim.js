@@ -166,37 +166,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
                 }
 
             })
-
-            // $http({
-            //     method:"POST",
-            //     url:"/trash/simulate",
-            //     data:{name:name, i:input.i, session:input.session}
-            // })
-            // .then(function (res) {
-
-            //     console.log("run simulation", res.data);
-
-            //     var result = res.data.result;
-
-            //     animate(result.i, result.after, result.points);
-
-            //     if (!input.step) {
-
-            //         setTimeout(function () {
-
-            //             performStep({i:input.i + 1, step:false, session:input.session});
-            //         }, anime.predu);
-                   
-            //     }
-            //     else {
-            //         u.toggle("show", "step", {delay:anime.predu});
-            //     }
-
-            // }, function (err) {
-
-            //     console.log("Server error while setting input", err.message);
-
-            // })
+            
 
         }
         else {

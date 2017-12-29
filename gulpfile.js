@@ -1,6 +1,5 @@
 var gulp = require('gulp');
-var autoprefixer = require('gulp-autoprefixer'),
-// jshint = require('gulp-jshint'),
+var autoprefixer = require('gulp-autoprefixer')
 shell = require("gulp-shell"),
 uglify = require('gulp-uglify'),
 imagemin = require('gulp-imagemin'),
@@ -10,7 +9,13 @@ del = require('del'),
 inject = require('gulp-inject'),
 filter = require("gulp-filter"),
 merge = require("merge-stream"),
-mainBowerFiles = require("main-bower-files");
+mainBowerFiles = require("main-bower-files"),
+nodemon = require('gulp-nodemon'),
+browserSync = require('browser-sync').create(),
+livereload = require('gulp-livereload');
+
+
+const config = require("./config.js");
 
 
 // var minify = process.env.NODE_ENV == "production";
@@ -19,19 +24,47 @@ var minify = false;
 // var injectMin = process.env.NODE_ENV == "production";
 var injectMin = false;
 
-
-gulp.task("serve", ["watch"], shell.task("node server.js"));
-
-gulp.task('watch', ["clean"], function() {
-
-    gulp.watch(["./src/**/*.*"], ["build"]);
-
-    gulp.start("build");
-
-});
+var livereloadPort = 3020;
 
 
-gulp.task('build', ["js", "styles", "copy"], function () {
+gulp.task("serve", ["build"], function () {
+
+ 	livereload.listen({port:config.livereloadPort})
+
+	var stream = nodemon({ 
+		script: './server.js',
+		ext:"js html css json",
+		watch:["./src", "./backend", "./server.js"],
+		tasks:["build"]
+	});
+	
+
+	stream.on("restart", function () {
+
+		setTimeout(function () {
+
+			livereload.reload();
+
+		}, 2000);
+
+	})
+
+	stream.on("crash", function () {
+		
+		stream.emit('restart', 10);
+	})
+
+	
+})
+
+gulp.task("build", ["clean"], function () {
+
+
+	gulp.start("compile");
+})
+
+
+gulp.task('compile', ["js", "styles", "copy"], function () {
 
 
 });
@@ -63,7 +96,6 @@ gulp.task('scripts', ['vendor'], function() {
 	    "src/ga-apps/app-recognize/app/image-processor/image.processor.js",
 	    "src/ga-apps/app-feedback/**/*.js",
 	    "src/ga-apps/app-trash/**/*.js",
-	    // "backend/evolve/_ga/evolve.js",
 	    "src/**/*.js"
     ])
 	.pipe(concat('main.js'))
