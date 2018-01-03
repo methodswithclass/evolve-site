@@ -3,7 +3,7 @@ var robotFact = require("./robot.js");
 var environmentFact = require("./environment.js");
 var d = require("../../data/programs/trash.js");
 var g = require("mc-shared").utility_service;
-
+var Worker = require("webworker-threads").Worker;
 
 
 var trash = function (options) {
@@ -35,7 +35,8 @@ var trash = function (options) {
 	var types = {
 		recursive:"recursive",
 		loop:"loop",
-		async:"async"
+		async:"async",
+		worker:"worker"
 	}
 
 	var type = options.processType;
@@ -284,6 +285,73 @@ var trash = function (options) {
 	
 	}
 
+	var performRunWorker = function ($run, params, complete) {
+
+
+		var fits = [];
+
+		while ($run <= runs) {
+
+			// console.log("run", params.gen, params.index, $run);
+
+			var $$run = new Worker(function () {
+
+				var env;
+				var performStepAsync;
+
+				var runScenario = function ($env, $performStepAsync) {
+
+					var target = $env['0'].refresh(params.input.programInput);
+
+					$env['0'].instruct(params.dna);
+
+					var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
+
+					postMessage({fitness:fit, target:target});
+				
+				}
+
+				this.onmessage = function (event) {
+
+					env = event.data.environment
+					performStepAsync = event.data.performStepAsync;
+
+					runScenario(env, performStepAsync);					
+
+					postMessage(event);
+
+				}
+
+
+				
+
+			})
+
+			$$run.postMessage({
+				environment:environment['0'], 
+				performStepAsync:performStepAsync
+			});
+
+			$$run.onmessage = function (event) {
+
+				console.log("on message", event.data);
+
+				fits.push(event.data);
+
+				// $$run.terminate();
+
+				if (fits.length == runs) {
+					complete(fits);
+				}
+			}
+
+			$run++;
+
+		}
+
+
+	}
+
 	self.run = function (params, complete) {
 
 
@@ -312,7 +380,41 @@ var trash = function (options) {
 
 		// self.instruct(params.dna);
 
-		if (type == types.async) {
+		if (type == types.worker) {
+
+			// console.log("perform run \n\n\n\n\n\n\n\n");
+
+			performRunWorker(0, params, function (fits) {
+
+				avgfit = g.truncate(
+                    g.average(
+						fits, 
+						function (value, index, array) {
+							return value.fitness;
+						})
+                    , 2
+                    );
+
+
+				var count = 0;
+				for (i in fits) {
+					if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
+						count++;
+					}
+				}
+
+				var success = count > fits.length*0.8;
+
+				complete({
+					runs:fits,
+					avg:avgfit,
+					success:success
+				});
+
+			});
+
+		}
+		else if (type == types.async) {
 
 
 			performRunAsync(0, params, function (fits) {

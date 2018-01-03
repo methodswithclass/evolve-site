@@ -56,7 +56,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     var processTypes = {
         recursive:"recursive",
         loop:"loop",
-        async:"async"
+        async:"async",
+        worker:"worker"
     }
     
     $scope.programInput = {
