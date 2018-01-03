@@ -52,6 +52,12 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         size:15
     }
     ]
+
+    var processTypes = {
+        recursive:"recursive",
+        loop:"loop",
+        async:"async"
+    }
     
     $scope.programInput = {
         goals:[{goal:"min"}, {goal:"max"}],
@@ -59,6 +65,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             size:5
         },
         trashPercent:50,
+        processType:processTypes.recursive,
         getTotalSteps:function () {
 
             return $scope.programInput.grid.size*$scope.programInput.grid.size*2;
@@ -218,22 +225,22 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("disable", "play");
             u.toggle("disable", "stop");
 
-            // complete();
+            complete();
 
 
-            api.instantiate(function (res) {
+            // api.instantiate(function (res) {
 
-                console.log("Instantiate session", res);
+            //     console.log("Instantiate session", res);
 
-                $scope.session = res.data.session;
+            //     $scope.session = res.data.session;
 
-                api.setInput($scope, false, function (res) {
+            //     api.setInput($scope, false, function (res) {
 
-                    if (complete) complete() 
+            //         if (complete) complete() 
 
-                });
+            //     });
                 
-            })
+            // })
 
         }
     },
@@ -245,13 +252,32 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
             console.log("initialize algorithm phase, input", $scope.getInput());
             
+
+            api.instantiate(function (res) {
+
+                console.log("Instantiate session", res);
+
+                $scope.session = res.data.session;
                 
-            api.initialize($scope, function (res) {
+                api.initialize($scope, function () {
 
-                console.log("Initialize algorithm", res);
+                    api.setInput($scope, false, function (res) {
 
-                if (complete) complete();
-            });
+                        if (complete) complete() 
+
+                    });
+
+                })
+                
+            })
+
+                
+            // api.initialize($scope, function (res) {
+
+            //     console.log("Initialize algorithm", res);
+
+            //     if (complete) complete();
+            // });
 
         }
     },

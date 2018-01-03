@@ -13,6 +13,7 @@ const recognizeRoutes = require("./backend/routes/programs/recognize.js");
 
 const get = require("./backend/evolve-app/data/get/get.js");
 
+const morgan = require('morgan');
 
 var refreshPages = [
 "home",
@@ -43,7 +44,7 @@ var refresh = function () {
 
 	return function (req, res, next) {
 
-		console.log(req.url);
+		// console.log(req.url);
 
 		var urlArray = req.url.split("/");
 
@@ -89,6 +90,19 @@ var PORTS = {
 	misc3:4210
 }
 
+
+// app.use(morgan('dev', {
+//     skip: function (req, res) {
+//         return res.statusCode < 400
+//     }, 
+//     stream: process.stderr
+// }));
+
+// app.use(morgan('dev', {
+//     skip: function (req, res) {
+//         return res.statusCode >= 400
+//     }, stream: process.stdout
+// }));
 
 
 app.use(refresh());

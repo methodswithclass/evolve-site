@@ -102,19 +102,18 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         controller:'trash.controller',
         controllerAs:"main"
     },
-    // {
-    //     name:"recognize",
-    //     url:"/p/recognize",
-    //     controller:'main.controller',
-    //     controllerAs:"main"
-    // },
-    // {
-    //     name:"recognize#demo",
-    //     url:"/p/recognize/demo",
-    //     templateUrl:"assets/views/" + ((checkMobile() || _forceMobile) ? "mobile" : "desktop") + "/ga-apps/recognize/recognize_demo.html",
-    //     controller:'recognize.controller',
-    //     controllerAs:"main"
-    // }
+    {
+        name:"recognize",
+        url:"/p/recognize",
+        controller:'main.controller',
+        controllerAs:"main"
+    },
+    {
+        name:"recognize#demo",
+        url:"/p/recognize/demo",
+        controller:'recognize.controller',
+        controllerAs:"main"
+    }
     ];
 
     var addTemplateUrl = function (state) {

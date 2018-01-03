@@ -145,7 +145,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         if (active && input.i <= totalActions) {
 
 
-            api.simulate({name:name, i:input.i, session:input.session}, function (res) {
+            api.simulate.trash({name:name, i:input.i, session:input.session}, function (res) {
 
                 // console.log("run simulation", res.data);
 
@@ -179,7 +179,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         console.log("sim setup: instruct", evdata);
 
-        api.instruct(session, function (res) {
+        api.instruct.trash(session, function (res) {
 
             complete();
         });

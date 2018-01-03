@@ -26,20 +26,34 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
     			multiOffspring:"multi-offspring"
     		}
 
-    		
+    		var runPopTypes = {
+    			sync:"sync",
+    			async:"async"
+    		}
+
+    		var reproductionTypes = {
+    			default:"sync",
+    			sync:"sync",
+    			async:"async"
+    		}
 
 
     		/*#########  default initial settings ############*/
     		var $$InitialSettings$$ = {
+    			name:$scope.name,
 	    		gens:500,
 	    		runs:20,
 	    		goal:"max",
 	    		pop:100,
+	    		runPopType:runPopTypes.async,
 	    		crossover:{
 	    			methodTypes:{
+	    				sync:reproductionTypes.sync,
+	    				async:reproductionTypes.async,
 	    				multiOffspring:crossoverMethods.multiOffspring, 
 	    				multiParent:crossoverMethods.multiParent
 	    			},
+	    			reproductionType:reproductionTypes.async,
 	    			method:crossoverMethods.multiParent,
 	    			parents:2,
 	    			pool:0.1,
@@ -93,11 +107,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    $scope.setSettings = function (input) {
 
 		    	 $scope.settings = {
+		    	 	name:input.name,
 		        	gens:input.gens,
 		        	runs:input.runs,
 		        	goal:input.goal,
 		        	pop:input.pop,
+		        	runPopType:input.runPopType,
 		        	crossover:{
+		        		reproductionType:input.crossover.reproductionType,
 		        		method:input.crossover.method,
 		        		parents:input.crossover.parents,
 		        		pool:(input.crossover.pool ? input.crossover.pool*100 : ""),
@@ -136,7 +153,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	react.push({
 	    			name:"evolve.vars",
 	    			state:{
-	    				crossoverMethods:crossoverMethods
+	    				crossoverMethods:crossoverMethods,
+	    				reproductionTypes:reproductionTypes
 	    			}
 	    		})
 
@@ -149,15 +167,23 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 			    	self.manual = {
+			    		name:(setInput.name || (self.manual ? self.manual.gens : "")),
 			    		gens:parseInt(setInput.gens || (self.manual ? self.manual.gens : "")),
 			    		runs:parseInt(setInput.runs || (self.manual ? self.manual.runs : "")),
 			    		goal:setInput.goal || (self.manual ? self.manual.goal : "max"),
 			    		pop:parseInt(setInput.pop || (self.manual ? self.manual.pop : "")),
+			    		runPopType:setInput.runPopType || (self.manual ? self.manual.runPopType : ""),
 			    		crossover:{
 			    			methodTypes:{
+			    				sync:reproductionTypes.sync,
+			    				async:reproductionTypes.async,
 			    				multiOffspring:crossoverMethods.multiOffspring, 
 			    				multiParent:crossoverMethods.multiParent
 			    			},
+			    			reproductionType:setInput.crossover 
+					    			? (setInput.crossover.reproductionType || 
+					    			   (self.manual ? self.manual.crossover.reproductionType : reproductionTypes.default)) 
+					    			: (self.manual ? self.manual.crossover.reproductionType : reproductionTypes.default),
 			    			method:setInput.crossover 
 					    			? (setInput.crossover.method || 
 					    			   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
@@ -193,15 +219,20 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    		console.log("reset to default");
 
 			    	self.manual = {
+			    		name:($$InitialSettings$$.name || self.manual.name),
 			    		gens:parseInt($$InitialSettings$$.gens || self.manual.gens),
 			    		runs:parseInt($$InitialSettings$$.runs || self.manual.runs),
 			    		goal:$$InitialSettings$$.goal || self.manual.goal,
 			    		pop:parseInt($$InitialSettings$$.pop || self.manual.pop),
+			    		runPopType:$$InitialSettings$$.runPopType || self.manual.runPopType,
 			    		crossover:{
 			    			methodTypes:{
+			    				sync:reproductionTypes.sync,
+			    				async:reproductionTypes.async,
 			    				multiOffspring:crossoverMethods.multiOffspring, 
 			    				multiParent:crossoverMethods.multiParent
 			    			},
+			    			reproductionType:$$InitialSettings$$.crossover.reproductionType || self.manual.crossover.reproductionType,
 			    			method:$$InitialSettings$$.crossover.method || self.manual.crossover.method,
 			    			parents:parseInt($$InitialSettings$$.crossover.parents || self.manual.crossover.parents),
 			    			pool:parseFloat($$InitialSettings$$.crossover.pool || self.manual.crossover.pool),
@@ -236,16 +267,23 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	// self.manual = checkSettingsForUpdates();
 
 		        $scope.input = {
-		            name:$scope.name,
+		            name:$scope.name || self.manual.name,
 		            gens:parseInt((self.manual ? self.manual.gens : undefined) || $("#gensinput").val()),
 		            runs:parseInt((self.manual ? self.manual.runs : undefined) || $("#runsinput").val()),
 		            goal:(self.manual ? self.manual.goal : undefined) || $("#goalinput").val(),
 		            pop:parseInt((self.manual ? self.manual.pop : undefined) || $("#popinput").val()),
+		            runPopType:(self.manual ? self.manual.runPopType : undefined),
 		            crossover:{
 		            	methodTypes:{
+		    				sync:reproductionTypes.sync,
+		    				async:reproductionTypes.async,
 		    				multiOffspring:crossoverMethods.multiOffspring, 
 		    				multiParent:crossoverMethods.multiParent
 		    			},
+		    			reproductionType:(self.manual 
+		        	             ? (self.manual.crossover 
+		        	                ? self.manual.crossover.reproductionType : undefined) 
+		        	             : reproductionTypes.default),
 		    			method:(self.manual 
 		        	             ? (self.manual.crossover 
 		        	                ? self.manual.crossover.method : undefined) 

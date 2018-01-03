@@ -364,6 +364,164 @@ var obj = {};
 			return offspring;
 		}
 
+		self.reproduceAsync = function (parents) {
+
+
+			parents.push(self);
+
+
+			var getRandomParent = function () {
+
+				return Math.floor(Math.random()*parents.length);
+			}
+
+
+			return new Promise(function (resolve, reject) {
+
+
+				if (crossoverMethod == methodTypes.multiParent) {
+
+
+
+					var offspring = [];
+					var $offspring;
+					var mates = [];
+					var dna = [];
+					var mateA;
+					var mateB;
+					var source;
+
+					// creates a dna chain that is between dnaChainOffset and (dnaChainOffset + dnaChainLength) in length
+					var c_len = Math.floor(Math.random()*dnaChainLength) + dnaChainOffset;
+					// the number of chains there will be per dna strand based on how long the chain is
+					var c_num = Math.floor(self.total/c_len);
+					var i = 0;
+
+					while (i < c_num) {
+
+						
+						do {
+							mateA = getRandomParent();
+							// console.log("random parent index", mateA);
+						} while (mateA == mateB)
+
+						mateB = mateA;
+						source = parents[mateA];
+
+						// console.log("parents", parents.length, "source index", mateA, "source parent", source ? true : false);
+
+						if ((i+1)*c_len <= self.total) {
+							dna = dna.concat(source.dna.slice(i*c_len, (i+1)*c_len));
+						}
+						else {
+							dna = dna.concat(source.dna.slice(i*c_len));
+						}
+
+						i++;
+					}
+
+					// console.log("dna", dna ? true : false);
+
+					$offspring = new individual({
+						gen:self.generation + 1, 
+						parents:parents, 
+						dna:mutate(dna),
+						input:input
+					});
+
+					offspring.push($offspring);
+
+
+					return resolve(offspring);
+
+				}
+				else if (crossoverMethod == methodTypes.multiOffspring) {
+
+
+
+					var mates = [];
+					var dna = [];
+					var mateA;
+					var mateB;
+					var source;
+					var offspring = [];
+
+
+					//offspring loop by parent (offspring.length == parent.length, not including self)
+					while (offspring.length <= parents.length) {
+
+
+						//a new splice length is chosen for each offspring loop
+
+						dna = [];
+						// creates a dna chain that is between dnaChainOffset and (dnaChainOffset + dnaChainLength) in length
+						var c_len = Math.floor(Math.random()*dnaChainLength) + dnaChainOffset;
+						// the number of chains there will be per dna strand based on how long the chain is
+						var c_num = Math.floor(self.total/c_len);
+						var i = 0;
+						var j = 1;
+
+
+						//dna splice loop
+						while (i < c_num) {
+
+							// new parent chosen from mates pool, make sure not to choose same two in a row
+							do {
+								mateA = getRandomParent();
+								// console.log("random parent index", mateA);
+							} while (mateA == mateB)
+							mateB = mateA;
+							source = parents[mateA]; // current parent to mate with self
+
+							// console.log("source", mateA, parents.length, source ? true : false, parents[mateA] ? true: false);
+
+
+							// splice procedure
+							if ((i+1)*c_len < self.total && (j+1)*c_len < self.total) {
+								dna = self.dna.slice(i*c_len, (i+1)*c_len).concat(source.dna.slice(j*c_len, (j+1)*c_len));
+							}
+							else {
+								dna = self.dna.slice(i*c_len).concat(source.dna.slice(j*c_len));
+							}
+
+							i++;
+							j++;
+						}
+
+
+						// dna length resolution
+						if (dna.length < self.total) {
+							dna = dna.concat(self.dna.slice(dna.length-1));
+						}
+						else if (dna.length > self.total) {
+							dna.splice(self.total-1, dna.legnth);
+						}
+
+
+						// create new individual from new dna, after mutation, add to array of all offspring
+						$offspring = new individual({
+							gen:self.generation + 1, 
+							parents:[self, source],
+							dna:mutate(dna),
+							input:input
+						});
+
+
+						offspring.push($offspring);
+
+
+					}
+
+					return resolve(offspring);
+
+				}
+
+
+			});
+
+
+		}
+
 		var stepdata = function (x) {
 
 			// console.log("step", x);
@@ -400,7 +558,8 @@ var obj = {};
 					self.fitness = x.avg;
 					self.success = x.success;
 
-					complete();
+					if (complete) complete();
+
 				});
 			}
 		}
@@ -438,6 +597,17 @@ var obj = {};
 		var altPool;
 		// ######
 
+
+		var types = {
+			sync:"sync",
+			async:"async"
+		}
+
+		var type = input.runPopType;
+		var selectAsync = false;
+		var reproduceAsync = input.crossover.reproductionType;
+
+		console.log("type", type);
 
 		var getCrossoverParams = function (input) {
 
@@ -548,6 +718,59 @@ var obj = {};
 		}
 
 
+		var runPopAsync = function (complete) {
+
+
+			var runIndi = function (i) {
+
+				// console.log("get indi");
+
+				return new Promise(function (resolve, reject) {
+
+					// console.log("run indi", i);
+					self.pop[i].run()
+
+					return resolve(i);		
+				})
+			}
+
+
+			active = true;
+
+			var i = 0;
+
+			var finished = [];
+
+			while (i < self.total) {
+
+				if (active) {
+
+					runIndi(i)
+					.then(function (i) {
+
+						finished.push(i);
+
+						if (finished.length == self.pop.length) {
+
+							complete();
+						}
+					})
+					.catch(function (err) {
+
+						console.log("Error in promise:", err);
+
+					})
+
+
+					i++
+				}
+
+			}
+
+
+		}
+
+
 		var rank = function () {
 
 			self.pop.sort(function (a,b) {
@@ -603,23 +826,70 @@ var obj = {};
 
 			var indexes = [];
 			var match;
+			var index;
 
-			do {
 
-				do {
-					
+			var getIndexAsync = function () {
+
+				return new Promise(function (resolve, reject) {
+
 					index = Math.floor(Math.random()*pool.length);
+
 
 					match = indexes.find(function(p) {
 
 						return p == index;
 					});
 
-				} while (match >= 0);
+					console.log("match", index, indexes, match, typeof match == "undefined", match == undefined, match === undefined);
 
-				indexes.push(index);
+					if (match === undefined) {
 
-			} while (indexes.length < number);
+						return resolve(index);
+					}
+
+				})
+			}
+
+
+			if (selectAsync) {
+
+				while (indexes.length <= number) {
+					
+					getIndexAsync()
+					.then(function (index) {
+
+						indexes.push(index);
+
+					})
+					.catch(function (err) {
+
+						console.log("Error in promise:", err);
+					})
+
+				}
+
+			}
+			else {
+
+				do {
+
+					do {
+						
+						index = Math.floor(Math.random()*pool.length);
+
+						match = indexes.find(function(p) {
+
+							return p == index;
+						});
+
+					} while (match >= 0);
+
+					indexes.push(index);
+
+				} while (indexes.length < number);
+
+			}
 
 
 			var parents = indexes.map(function (value, index) {
@@ -643,47 +913,118 @@ var obj = {};
 			var parents = [];
 			var mates = [];
 			var children = [];
-			var offspring;
+			var childrenPromise;
 
+			var i = 0;
 
-			do {
+			if (reproduceAsync) {
 
 				if (active) {
 
-					parents = select(_parents, standard);
+					while (i < self.total) {
 
-					if (parents.length == 0) {
 
-						break;
+						parents = select(_parents, standard);
+
+						if (parents.length == 0) {
+
+							break;
+						}
+
+						// console.log("parents", num_parents, standard, parents.length);
+
+						male = parents[0];
+						mates = parents.slice(1);
+
+
+						childrenPromise = male.reproduceAsync(mates)
+						.then(function (offspring) {
+
+
+							offspring.map(function (value, index) {
+
+								value.index = children.length + index + 1;
+
+							});
+
+							children = children.concat(offspring);
+
+
+							return children.length;
+
+						})
+						.then(function (j) {
+
+							if (j == self.total) {
+
+								return children
+							}
+						})
+						.catch(function (err) {
+
+							console.log("Error in promise:", err);
+						})
+
+						// console.log("after then");
+
+						i++;
+
 					}
 
-					// console.log("parents", num_parents, standard, parents.length);
 
-					male = parents[0];
-					mates = parents.slice(1);
+					return childrenPromise;
 
-					offspring = male.reproduce(mates);
-
-					offspring.map(function (value, index) {
-
-						value.index = children.length + index + 1;
-
-					});
-
-					children = children.concat(offspring);
 
 				}
 
-			} while (children.length < self.total)
 
-			if (children.length == 0) {
+			}
+			else {
 
-				return;
+
+				if (active) {
+
+					do {
+
+
+						parents = select(_parents, standard);
+
+						if (parents.length == 0) {
+
+							break;
+						}
+
+						// console.log("parents", num_parents, standard, parents.length);
+
+						male = parents[0];
+						mates = parents.slice(1);
+
+						offspring = male.reproduce(mates);
+
+
+						offspring.map(function (value, index) {
+
+							value.index = children.length + index + 1;
+
+						});
+
+						children = children.concat(offspring);
+
+					} while (children.length < self.total)
+
+
+					if (children.length == 0) {
+
+						return;
+					}
+
+					return children;
+
+				} 
+
 			}
 
-			// console.log("total children", children.length);
-
-			return children;
+			
 		}
 
 		self.turnover = function ($input, complete) {
@@ -694,7 +1035,8 @@ var obj = {};
 
 			getCrossoverParams(input);
 
-			runPop(function () {
+			var runPopComplete = function () {
+
 
 				var ext = rank();
 
@@ -702,28 +1044,70 @@ var obj = {};
 
 				// console.log("number of parents", num_parents, standard);
 
-				var children = reproduce(num_parents, standard);
 
-				if (children.length == 0) {
+				var onComplete = function ($children) {
+
+
+					if ($children.length == 0) {
+
+						complete({
+							previous:{
+								best:ext.best,
+								worst:ext.worst
+							},
+							next:null
+						})
+					}
 
 					complete({
 						previous:{
 							best:ext.best,
 							worst:ext.worst
 						},
-						next:null
-					})
+						next:new generation({index:self.index + 1, input:input, pop:$children})
+					});
+
 				}
 
-				complete({
-					previous:{
-						best:ext.best,
-						worst:ext.worst
-					},
-					next:new generation({index:self.index + 1, input:input, pop:children})
-				});
 
-			});
+				if (reproduceAsync) {
+
+					reproduce(num_parents, standard)
+					.then(function ($children) {
+
+						onComplete($children);
+						
+					})
+					.catch(function (err) {
+
+						console.log("Error in promise:", err);
+					})
+
+				}
+				else {
+
+					var $children = reproduce(num_parents, standard);
+
+					onComplete($children);
+
+				}
+
+
+			}
+
+
+
+			if (type == types.sync) {
+
+				runPop(runPopComplete);
+
+			}
+			else if (type == types.async) {
+
+				runPopAsync(runPopComplete)
+
+			}
+
 
 		}
 

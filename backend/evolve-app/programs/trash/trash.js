@@ -19,7 +19,6 @@ var trash = function (options) {
 	var running = false;
 	var fits = [];
 	var avgfit = 0;
-	var after;
 	var success;
 	var fitness = 0;
 	var step = 0;
@@ -27,26 +26,20 @@ var trash = function (options) {
 
 	var input;
 
-	var robot = new robotFact();
-	var environment = new environmentFact();
-	
-	// console.log("trash create, environment create options", options);
+	var simulation = {};
 
-	environment.refresh(options);
-	robot.setup(environment, options);
+	var environment = {};
+	var envIndex = 0;
 
 
-	self.gene = function () {
-		// console.log("get gene");
-		return Math.floor(Math.random()*actions.list.length);
+	var types = {
+		recursive:"recursive",
+		loop:"loop",
+		async:"async"
 	}
 
-	self.instruct = function (genome) {
-		
-		// console.log("instruct robot");
-		robot.instruct(genome);
-		robot.reset();
-	}
+	var type = options.processType;
+	var envObj = true;
 
 	var getPoints = function (result) {
 
@@ -64,24 +57,78 @@ var trash = function (options) {
 		return 0;
 	}
 
+
+	var createRunEnvironment = function () {
+
+		var env = function (options) {
+
+			var self = this;
+
+			self.robot = new robotFact();
+			self.environment = new environmentFact();
+			
+			self.setup = function(options) {
+
+				self.robot.setup(self.environment, options);
+			}
+
+			self.reset = function () {
+
+				self.environment.reset();
+				self.robot.reset();
+			}
+
+
+			self.refresh = function (options) {
+
+				var target = self.environment.refresh(options);
+				self.setup(options);
+
+				return target;
+			}
+
+			self.get = function () {
+
+				return self.environment.get();
+			}
+
+
+			self.instruct = function (genome) {
+
+				self.robot.instruct(genome);
+				self.robot.reset();
+			}
+
+
+			self.update = function(i) {
+
+				var after = self.robot.update();
+
+				var points = getPoints(after);
+
+				return {
+					i:i,
+					after:after,
+					points:points
+				}
+
+			}
+		}
+
+		return new env();
+
+
+	}
+
+
+	self.gene = function () {
+		// console.log("get gene");
+		return Math.floor(Math.random()*actions.list.length);
+	}
+
 	self.hardStop = function () {
 
 		runs = 0;
-	}
-
-	self.reset = function () {
-		
-		environment.reset();
-		robot.reset();
-	}
-
-	self.refresh = function (options) {
-
-		environment.refresh(options);
-		robot.setup(environment, options);
-		self.reset();
-
-		return environment.get();
 	}
 
 	self.stepdata = function () {
@@ -89,13 +136,19 @@ var trash = function (options) {
 		return $stepdata;
 	}
 
-	var performStep = function ($step, $run, fit, params, complete) {
+	var performStep = function ($step, $run, fit, fits, params, env, complete) {
 
 		//console.log("step", step);
 
+		var result;
+
 		if ($step < options.totalSteps) {
 
-			after = robot.update();
+			// console.log("indi", params.index, "$run", $run, "step", $step);
+
+
+			result = env.update();
+
 
 			$stepdata = {
 				name:"step." + input.name,
@@ -105,41 +158,37 @@ var trash = function (options) {
 				step:$step
 			}
 
-			// if ($run == 5 && params.index == 1) {
-			// 	console.log("update", params.gen, $step, after.state, after.id, after.action.change(), after.action.name, after.move.post, fit);
-			// }
-
-			performStep($step + 1, $run, fit + getPoints(after), params, complete);
+			performStep($step + 1, $run, fit + getPoints(result.after), fits, params, env, complete);
 
 		}
 		else {
-			complete(fit);
+			return complete(fits, fit);
 		}
 	}
 
 	var performRun = function ($run, fits, params, complete) {
 
-		//console.log("run", run);
-
 		if ($run < runs) {
+
+			// console.log("indi", params.index, "run", $run);
 
 			fit = 0;
 			avgfit = 0;
 			running = true;
 
-			self.instruct(params.dna);
 
-			if (params.input.newenv) {
+			target = environment['0'].refresh(params.input.programInput);
 
-				target = environment.refresh(params.input.programInput);
-			}
+			environment['0'].instruct(params.dna);
 
-			performStep(0, $run, 0, params,
-				function (x) {
+
+			performStep(0, $run, 0, fits, params, environment['0'],
+				function (fits, x) {
 
 					fits.push({fitness:x, target:target});
 
 					performRun($run + 1, fits, params, complete);
+
 				}
 			);
 
@@ -149,6 +198,91 @@ var trash = function (options) {
 		}
 	}
 
+	var performStepAsync = function ($step, $run, fit, params, env) {
+
+
+		if ($step < options.totalSteps) {
+
+			// console.log("indi", params.index, "$run", $run, "step", $step);
+
+			var result = env.update();
+
+			$stepdata = {
+				name:"step." + input.name,
+				gen:params.gen,
+				org:params.index,
+				run:$run,
+				step:$step
+			}
+
+			// console.log("fit inside", fit);
+
+			return performStepAsync($step + 1, $run, fit + result.points, params, env);
+
+		}
+		else {
+			// console.log("fit return", fit);
+			return fit;
+		}
+
+	}
+
+
+	var performRunAsync = function ($run, params, complete) {
+
+
+		var fits = [];
+
+		var doRun = function ($$run, params) {
+
+			
+			return new Promise(function (resolve, reject) {
+
+
+				target = environment[$$run.toString()].refresh(params.input.programInput);
+
+				environment[$$run.toString()].instruct(params.dna);
+
+				var fit = performStepAsync(0, $$run, 0, params, environment[$$run.toString()]);
+
+
+				return resolve({fitness:fit, target:target});
+
+			})
+
+		}
+
+
+		// self.instruct(params.dna);
+
+
+		running = true;
+
+		while ($run <= runs) {
+
+			doRun($run, params)
+			.then(function (fit) {
+
+				fits.push(fit);
+
+				// console.log("fits length", fits.length, runs);
+
+				if (fits.length == runs) {
+
+					complete(fits);
+				}
+
+			})
+			.catch(function (err) {
+
+				console.log("Error in promise:", err);
+			})
+
+			$run++;
+
+		}
+	
+	}
 
 	self.run = function (params, complete) {
 
@@ -164,25 +298,67 @@ var trash = function (options) {
 		fits = null;
 		fits = [];
 
-		self.instruct(params.dna);
+
+		while (envIndex <= runs) {
 
 
-		recursion = true;
+			environment[envIndex] = createRunEnvironment();
+
+			console.log("environment", envIndex, "created");
+
+			envIndex++;
+
+		}
+
+		// self.instruct(params.dna);
+
+		if (type == types.async) {
 
 
-		if (recursion) {
+			performRunAsync(0, params, function (fits) {
+
+				avgfit = g.truncate(
+                    g.average(
+						fits, 
+						function (value, index, array) {
+							return value.fitness;
+						})
+                    , 2
+                    );
+
+
+				var count = 0;
+				for (i in fits) {
+					if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
+						count++;
+					}
+				}
+
+				var success = count > fits.length*0.8;
+
+				complete({
+					runs:fits,
+					avg:avgfit,
+					success:success
+				});
+
+			})
+
+
+		}
+		else if (type == types.recursive) {
 
 			performRun(0, fits, params,
 				function (fits) {
 
 					avgfit = g.truncate(
-					                    g.average(
-					                              fits, 
-					                              function (value, index, array) {
-					                              	return value.fitness;
-					                              })
-					                    , 2
-					                    );
+	                    g.average(
+							fits, 
+							function (value, index, array) {
+								return value.fitness;
+							})
+	                    , 2
+	                    );
 
 
 					var count = 0;
@@ -204,9 +380,13 @@ var trash = function (options) {
 			);
 
 		}
-		else {
+		else if (type == types.loop) {
 
 
+			// var $robot = new robotFact();
+			// var $environment = new environmentFact()
+
+			var env = createRunEnvironment();
 
 			do {
 
@@ -214,14 +394,13 @@ var trash = function (options) {
 				fitness = 0;
 				avgfit = 0;
 
-				if (params.input.newenv) {
 
-					target = environment.refresh(params.input.programInput);
-				}
+				target = env.refresh(params.input.programInput);
+
 
 				do {
 
-					after = robot.update();
+					var result = env.update();
 
 					$stepdata = {
 						name:"step." + input.name,
@@ -231,7 +410,7 @@ var trash = function (options) {
 						step:step
 					}
 
-					fitness += getPoints(after);
+					fitness += result.points;
 
 					step++;
 
@@ -270,27 +449,54 @@ var trash = function (options) {
 
 		}
 
-
 	}
 
+	self.reset = function () {
+		
+		// environment.reset();
+		// robot.reset();
 
+		simulation.reset();
+	}
+
+	self.refresh = function (options) {
+
+		// environment.refresh(options);
+		// robot.setup(environment, options);
+
+		simulation.refresh(options);
+		self.reset();
+
+		return simulation.get();
+	}
+
+	self.instruct = function (genome) {
+		
+		console.log("instruct robot");
+		// robot.instruct(genome);
+		// robot.reset();
+
+		simulation.instruct(genome);
+	}
 
 	self.simulate = function (i) {
 
-		console.log(" ");
-		var after = robot.update();
-		var points = getPoints(after);
-
-		var result = {
-			i:i,
-			after:after,
-			points:points
-		}
-
 		// console.log("simulate result", result);
 
-		return result;
+		return simulation.update(i);
 	}
+
+	self.createSimulation = function (options) {
+
+
+		simulation = createRunEnvironment();
+
+		
+		simulation.refresh(options);
+
+	}
+
+	self.createSimulation(options);
 
 
 }

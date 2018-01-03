@@ -17,6 +17,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 			var manual;
 			var crossoverMethods;
+			var reproductionTypes;
 			var programInput;
 
 
@@ -32,6 +33,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 				callback:function (x) {
 
 					crossoverMethods = x.crossoverMethods;
+					reproductionTypes = x.reproductionTypes;
 
 					$scope.methods = [
 		    		{
@@ -373,12 +375,17 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
 
-		 		 manual = {
+		  		var defaultReproduction = (reproductionTypes ? reproductionTypes.default : undefined) || "sync";
+
+		 		manual = {
+		 		 	name:$scope,name,
 		            gens:$("#gensinput").val(),
 		            runs:$("#runsinput").val(),
 		            goal:$scope.settings ? ($scope.settings.goal || "max") : "max",
 		            pop:$("#popinput").val(),
+		            runPopType:$scope.settings.runPopType,
 		            crossover:{
+		            	reproductionType:$scope.settings ? ($scope.settings.crossover.reproductionType || defaultReproduction) : defaultReproduction,
 		            	method:$scope.settings ? ($scope.settings.crossover.method || defaultMethod) : defaultMethod,
 		            	parents:$("#parentsinput").val(),
 		            	pool:getValue($("#poolinput").val()),

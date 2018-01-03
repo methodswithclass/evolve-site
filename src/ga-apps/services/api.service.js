@@ -176,9 +176,11 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
 
     }
 
-     var instruct = function (session, callback) {
+     var instruct = {
 
-        // return function (session, callback) {
+        trash:function (session, callback) {
+
+            // return function (session, callback) {
 
             $http({
                 method:"GET",
@@ -194,9 +196,29 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
 
             })
 
-        // }
-    }
 
+        },
+        recognize:function (session, callback) {
+
+            $http({
+                method:"GET",
+                url:"/evolve/instruct/recognize/" + session
+            })
+            .then(function (res) {
+
+                console.log("instruct successful", res.body);
+
+                if (callback) callback(res);
+
+            }, function (err) {
+
+                console.log("Server error while running best individual", err);
+
+            })
+
+        }
+
+    }
 
     var refreshEnvironment = function ($scope, callback) {
 
@@ -244,7 +266,10 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
     }
 
 
-    var simulate = function (input, callback) {
+    var simulate = {
+
+
+        trash:function (input, callback) {
 
         // return function (input, callack) {
 
@@ -264,7 +289,25 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
 
         // }
 
+        },
+        recognize:function (session, callback) {
+
+            $http({
+                method:"POST",
+                url:"/recognize/simulate/" + session
+            })
+            .then(function (res) {
+
+                if (callback) callback(res);
+
+            }, function (err) {
+
+                console.log("Server error while running best individual", err);
+
+            })
     }
+
+}
 
 
     var hardStop = function ($scope, callback) {

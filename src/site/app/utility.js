@@ -108,10 +108,6 @@ app.factory("utility", function () {
         // the aspect ratio and factor are optional, if not given, they default to one
 
 
-
-        var factor = input.factor >= 0 ? input.factor : 1;
-        var aspect = input.aspect >= 0 ? input.aspect : 1;
-
         var ww = input.width >= 0 ? input.width : null;
         var wh = input.height >= 0 ? input.height : null;
 
@@ -122,6 +118,9 @@ app.factory("utility", function () {
         if (ww instanceof Number || wh instanceof Number) {
             return null;
         }
+
+        var factor = input.factor >= 0 ? input.factor : 1;
+        var aspect = input.aspect >= 0 ? input.aspect : ww/wh;
 
         var ew = ww*factor;
         var eh = wh*factor;

@@ -11,7 +11,6 @@ filter = require("gulp-filter"),
 merge = require("merge-stream"),
 mainBowerFiles = require("main-bower-files"),
 nodemon = require('gulp-nodemon'),
-browserSync = require('browser-sync').create(),
 livereload = require('gulp-livereload');
 
 
@@ -23,8 +22,6 @@ var minify = false;
 
 // var injectMin = process.env.NODE_ENV == "production";
 var injectMin = false;
-
-var livereloadPort = 3020;
 
 
 gulp.task("serve", ["build"], function () {

@@ -1,4 +1,4 @@
-app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'events.service', 'simulators', '$http', function ($scope, u, react, events, simulators, $http) {
+app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'events.service', 'simulators', '$http', 'api.service', function ($scope, u, react, events, simulators, $http, api) {
 
     var self = this;
 
@@ -25,77 +25,6 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     var displayfade = 800;
     var loadfadeout = 800;
-
-    var setInputBackend = function (complete) {
-
-        console.log("set input");
-
-        $http({
-            method:"POST",
-            url:"/evolve/set", 
-            data:{input:$scope.getInput()}, 
-        })
-        .then(function (res) {
-
-            console.log("set input response");
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while setting input", err.message);
-
-        })
-
-    }
-
-    var initializeAlgorithmBackend = function (complete) {
-
-        console.log("initialize evolutionary algorithm");
-
-        $http({
-            method:"POST",
-            url:"/evolve/initialize", 
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
-
-            console.log("Initialize algorithm", res);
-
-            if (complete) complete()
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
-
-
-    var instantiateBackend = function (complete) {
-
-        console.log("instantiate session");
-
-        $http({
-            method:"GET",
-            url:"/evolve/instantiate"
-        })
-        .then(function (res) {
-
-            console.log("Instantiate", res);
-
-            $scope.session = res.data.session;
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
 
 
     var loadDataDatabase = function (data, index) {
@@ -162,28 +91,51 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                 evdelay:0
             });
 
-            u.toggle("disable", "run", {delay:displayDelay});
-            u.toggle("disable", "hud", {delay:displayDelay});
-            u.toggle("disable", "settings", {delay:displayDelay});
+            // u.toggle("disable", "run", {delay:displayDelay});
+            // u.toggle("disable", "hud", {delay:displayDelay});
+            // u.toggle("disable", "settings", {delay:displayDelay});
 
-            u.toggle("hide", "evolve", {delay:displayDelay});
-            u.toggle("hide", "run", {delay:displayDelay});
-            u.toggle("hide", "hud", {delay:displayDelay});
-            u.toggle("hide", "play", {delay:displayDelay});
-            u.toggle("hide", "refresh", {delay:displayDelay});
-            u.toggle("hide", "restart", {delay:displayDelay});
-            u.toggle("hide", "step", {delay:displayDelay});
-            u.toggle("hide", "stop", {delay:displayDelay});
-            u.toggle("hide", "break", {delay:displayDelay});
-            u.toggle("hide", "settings", {delay:displayDelay});
+            // u.toggle("hide", "evolve", {delay:displayDelay});
+            // u.toggle("hide", "run", {delay:displayDelay});
+            // u.toggle("hide", "hud", {delay:displayDelay});
+            // u.toggle("hide", "play", {delay:displayDelay});
+            // u.toggle("hide", "refresh", {delay:displayDelay});
+            // u.toggle("hide", "restart", {delay:displayDelay});
+            // u.toggle("hide", "step", {delay:displayDelay});
+            // u.toggle("hide", "stop", {delay:displayDelay});
+            // u.toggle("hide", "break", {delay:displayDelay});
+            // u.toggle("hide", "settings", {delay:displayDelay});
 
             
-            $scope.getData(function ($d) {
+            // $scope.getData(function ($d) {
 
-                console.log("get data complete", $d);
+            //     console.log("get data complete", $d);
 
-                $scope.setData($d);
-            })
+            //     $scope.setData($d);
+            // })
+
+
+            u.toggle("hide", "evolve");
+            u.toggle("hide", "hud");
+
+            u.toggle("hide", "run");
+            u.toggle("hide", "play");
+            u.toggle("hide", "refresh");
+            u.toggle("hide", "restart");
+            u.toggle("hide", "step");
+            u.toggle("hide", "stop");
+
+            u.toggle("hide", "settings");
+
+
+
+            u.toggle("disable", "refresh");
+            u.toggle("disable", "restart");
+            u.toggle("disable", "step");
+            u.toggle("disable", "play");
+            u.toggle("disable", "stop");
+
+            complete();
 
 
         }
@@ -196,16 +148,33 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
             console.log("initialize phase, processing phase complete (should not appear before set input response)");
 
-            instantiateBackend(function () {
+            // instantiateBackend(function () {
 
-                initializeAlgorithmBackend(function () {
+            //     initializeAlgorithmBackend(function () {
 
-                        setInputBackend(complete);
-                    })
-                });
-                    
+            //         setInputBackend(complete);
+            //     })
 
-            
+            // });
+
+
+            api.instantiate(function (res) {
+
+                console.log("Instantiate session", res);
+
+                $scope.session = res.data.session;
+                
+                api.initialize($scope, function () {
+
+                    api.setInput($scope, false, function (res) {
+
+                        if (complete) complete() 
+
+                    });
+
+                })
+                
+            })            
 
         }
     },
@@ -233,6 +202,11 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
             // u.toggle("show", "hud", {fade:duration});
             // u.toggle("show", "run", {fade:duration});
 
+            u.toggle("show", "stage", {fade:300});
+            u.toggle("show", "controls", {fade:300});
+            u.toggle("show", "simdata", {fade:300});
+            u.toggle("show", "evolvedata", {fade:300});
+
             if (complete) complete();
         }
     },
@@ -251,15 +225,31 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
 
-                    u.toggle("enable", "hud");
-                    u.toggle("enable", "run");
+                    // u.toggle("enable", "hud");
+                    // u.toggle("enable", "run");
                     
 
-                    u.toggle("show", "hud", {fade:loadfadeout});
-                    u.toggle("show", "refresh", {fade:loadfadeout});
-                    u.toggle("show", "play", {fade:loadfadeout});
-                    u.toggle("show", "run", {fade:loadfadeout});
-                    u.toggle("show", "settings", {fade:loadfadeout});
+                    // u.toggle("show", "hud", {fade:loadfadeout});
+                    // u.toggle("show", "refresh", {fade:loadfadeout});
+                    // u.toggle("show", "play", {fade:loadfadeout});
+                    // u.toggle("show", "run", {fade:loadfadeout});
+                    // u.toggle("show", "settings", {fade:loadfadeout});
+
+
+                    u.toggle("hide", "loading", {fade:loadfadeout});                    
+                    u.toggle("show", "hud", {fade:loadfadeout, delay:displayDelay});
+
+                    u.toggle("show", "refresh", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "restart", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "step", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "play", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "stop", {fade:loadfadeout, delay:displayDelay});
+
+
+                    u.toggle("enable", "refresh", {fade:loadfadeout, delay:displayDelay});
+
+                    u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
 
 
                     if (complete) complete();

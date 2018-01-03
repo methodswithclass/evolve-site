@@ -1,4 +1,4 @@
-app.directive("digit", ['events.service', 'react.service', function (events, react) {
+app.directive("digit", ['events.service', 'react.service', 'global.service', function (events, react, g) {
 
 	return {
 		restrict:"E",

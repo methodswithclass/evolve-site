@@ -1,4 +1,4 @@
-app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.service', 'react.service', function ($q, $http, u, events, send, react) {
+app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.service', 'react.service', 'api.service', function ($q, $http, u, events, send, react, api) {
 	
 	var evdata;
 
@@ -57,20 +57,9 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     var instruct = function (session, complete) {
 
 
-    	$http({
-    		method:"GET",
-    		url:"/evolve/instruct/recognize/" + session
-    	})
-    	.then(function (res) {
+    	api.instruct.recognize(session, function (res) {
 
-    		console.log("instruct successful", res.body);
-
-    		complete();
-
-    	}, function (err) {
-
-    		console.log("Server error while running best individual", err);
-
+    		complete(res);
     	})
 
     }
@@ -78,22 +67,13 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     var simulate = function (session) {
 
 
-    	instruct(session, function () {
+    	instruct(session, function (res) {
 
 
-    		$http({
-	    		method:"POST",
-	    		url:"/recognize/simulate/" + session
-	    	})
-	    	.then(function (res) {
+    		api.simulate.recognize(session, function (res) {
 
-	    		makeImage(res.data.image, res.data.output, res.data.label);
-
-	    	}, function (err) {
-
-	    		console.log("Server error while running best individual", err);
-
-	    	})
+    			makeImage(res.data.image, res.data.output, res.data.label);
+    		})
 
     	})
 
