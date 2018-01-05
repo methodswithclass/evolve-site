@@ -1,4 +1,4 @@
-app.directive("settings", ['global.service', "events.service", "react.service", function (g, events, react) {
+app.directive("settings", ['global.service', "events.service", "react.service", 'input.service', function (g, events, react, $input) {
 
 	return {
 		restrict:"E",
@@ -57,10 +57,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 					$scope.goals = x.goals;
 				}
 			})
-
-
-
-
 
 
 
@@ -373,41 +369,33 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			    	return parseFloat(string)/100
 			    }
 
-		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : undefined) || "multi-parent";
+		  		var defaultMethod = (crossoverMethods ? crossoverMethods.default : "mulit-parent");
 
-		  		var defaultReproduction = (reproductionTypes ? reproductionTypes.default : undefined) || "sync";
+		  		var defaultReproduction = (reproductionTypes ? reproductionTypes.default : "sync");
 
 		 		manual = {
-		 		 	name:$scope,name,
-		            gens:$("#gensinput").val(),
-		            runs:$("#runsinput").val(),
+		            gens:parseInt($("#gensinput").val()),
+		            runs:parseInt($("#runsinput").val()),
 		            goal:$scope.settings ? ($scope.settings.goal || "max") : "max",
-		            pop:$("#popinput").val(),
+		            pop:parseInt($("#popinput").val()),
 		            runPopType:$scope.settings.runPopType,
-		            crossover:{
-		            	reproductionType:$scope.settings ? ($scope.settings.crossover.reproductionType || defaultReproduction) : defaultReproduction,
-		            	method:$scope.settings ? ($scope.settings.crossover.method || defaultMethod) : defaultMethod,
-		            	parents:$("#parentsinput").val(),
-		            	pool:getValue($("#poolinput").val()),
-		            	splicemin:$("#splicemininput").val(),
-		            	splicemax:$("#splicemaxinput").val(),
-		            	mutate:getValue($("#mutateinput").val())
-		            },
+	            	reproductionType:($scope.settings.reproductionType || defaultReproduction),
+	            	method:($scope.settings.method || defaultMethod),
+	            	parents:parseInt($("#parentsinput").val()),
+	            	pool:getValue($("#poolinput").val()),
+	            	splicemin:parseInt($("#splicemininput").val()),
+	            	splicemax:parseInt($("#splicemaxinput").val()),
+	            	mutate:getValue($("#mutateinput").val()),
 		            programInput:programInput
 		        }
 
-		        $scope.setSettings(manual);
 
-		        $scope.getInput(manual);
+		        console.log("change input", manual);
+
+		        $scope.settings = $input.setSettings($scope, manual);
 
 			}
 
-
-
-
-
-
-			
 			
 		}
 	}

@@ -115,11 +115,22 @@ var obj = {};
 
 		var getCrossoverParams = function (input) {
 
-			methodTypes = input.crossover.methodTypes;
-			crossoverMethod = input.crossover.method;
-			mutateRate = input.crossover.mutate;
-			dnaChainOffset = input.crossover.splicemin;
-			dnaChainLength = input.crossover.splicemax - input.crossover.splicemin;
+			methodTypes = input.methodTypes;
+
+
+			if (methodTypes === undefined) {
+				
+				methodTypes = {
+					default:"multi-parent",
+					multiParent:"multi-parent",
+					multiOffspring:"multi-offspring"
+				}
+			}
+
+			crossoverMethod = input.method;
+			mutateRate = input.mutate;
+			dnaChainOffset = input.splicemin;
+			dnaChainLength = input.splicemax - input.splicemin;
 		}
 
 
@@ -598,22 +609,42 @@ var obj = {};
 		// ######
 
 
-		var types = {
-			sync:"sync",
-			async:"async"
+		var types = input.processTypes;
+		var reproductionTypes = input.reproductionTypes;
+		
+		if (types === undefined) {
+
+			types = {
+				default:"async",
+				sync:"sync",
+				async:"async"
+			}
+
 		}
 
-		var type = input.runPopType;
-		var selectAsync = false;
-		var reproduceAsync = input.crossover.reproductionType;
+		if (reproductionTypes === undefined) {
 
-		console.log("type", type);
+			reproductionTypes = {
+				default:"async",
+				sync:"sync",
+				async:"async"
+			}
+		}
+
+
+		var selectAsync = false;
+
+
+		var type = input.runPopType;
+		var reproductionType = input.reproductionType;
+
+		// console.log("type", type);
 
 		var getCrossoverParams = function (input) {
 
 
-			num_parents = input.crossover.parents;
-			pool = input.crossover.pool;
+			num_parents = input.parents;
+			pool = input.pool;
 			
 			popThreshold = 10;
 			altPool = 0.25;
@@ -917,7 +948,7 @@ var obj = {};
 
 			var i = 0;
 
-			if (reproduceAsync) {
+			if (reproductionType == reproductionTypes.async) {
 
 				if (active) {
 
@@ -979,7 +1010,7 @@ var obj = {};
 
 
 			}
-			else {
+			else if (reproductionType == reproductionTypes.sync) {
 
 
 				if (active) {
@@ -1070,7 +1101,7 @@ var obj = {};
 				}
 
 
-				if (reproduceAsync) {
+				if (reproductionType == reproductionTypes.async) {
 
 					reproduce(num_parents, standard)
 					.then(function ($children) {
@@ -1084,7 +1115,7 @@ var obj = {};
 					})
 
 				}
-				else {
+				else if (reproductionType == reproductionTypes.sync) {
 
 					var $children = reproduce(num_parents, standard);
 
@@ -1198,7 +1229,7 @@ var obj = {};
 						if (now <= self.input.gens) {
 							setTimeout(function () {
 								step();
-							}, self.input.evdelay);
+							}, 0);
 						}
 						else {
 

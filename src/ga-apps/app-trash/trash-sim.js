@@ -1,4 +1,4 @@
-app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', function ($http, u, events, react, api) {
+app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', 'input.service', function ($http, u, events, react, api, input) {
 
     var i = 1;
     var _score = 0;
@@ -16,6 +16,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var name = "trash";
     
+    var totalActions;
 
 
     var cleanBlock = function (x, y) {
@@ -179,6 +180,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         console.log("sim setup: instruct", evdata);
 
+        
         api.instruct.trash(session, function (res) {
 
             complete();

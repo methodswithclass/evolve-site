@@ -1,4 +1,4 @@
-app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', function ($http, u, g, events, react, api) {
+app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', 'input.service', function ($http, u, g, events, react, api, $input) {
 
 	return {
 		restrict:"E",
@@ -188,7 +188,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			events.on("refreshenv", function () {
 
 
-				console.log("refresh environment", $scope.getInput());
+				console.log("refresh environment", $input.getInput());
 
 				api.refreshEnvironment($scope, function (res) {
 

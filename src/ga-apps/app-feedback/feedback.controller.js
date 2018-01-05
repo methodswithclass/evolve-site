@@ -1,14 +1,14 @@
-app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', function ($scope, $http, simulator, data, u, send, events, react) {
+app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'input.service', function ($scope, $http, simulator, data, u, send, events, react, $input) {
 
     var self = this;
 
     self.name = "feedback";
     $scope.name = self.name;
 
-    $scope.getContentUrl = function() {
+    // $scope.getContentUrl = function() {
 
-        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/feedback/feedback_demo.html";
-    }
+    //     return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/feedback/feedback_demo.html";
+    // }
 
     console.log("load controller", self.name);
 
@@ -31,73 +31,6 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
     });
 
 
-     var setInputBackend = function (complete) {
-
-        $http({
-            method:"POST",
-            url:"/evolve/set",
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
-
-            console.log("Set input", res);
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while setting input", err.message);
-
-        })
-
-    }
-
-    var initializeAlgorithmBackend = function (complete) {
-
-
-        $http({
-            method:"POST",
-            url:"/evolve/initialize",
-            data:{input:$scope.getInput()}
-        })
-        .then(function (res) {
-
-            console.log("Initialize algorithm", res);
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
-
-    var instantiateBackend = function (complete) {
-
-
-        $http({
-            method:"GET",
-            url:"/evolve/instantiate"
-        })
-        .then(function (res) {
-
-            console.log("Instantiate", res);
-
-            $scope.session = res.data.session;
-
-            if (complete) complete();
-
-        }, function (err) {
-
-            console.log("Server error while initializing algorithm", err.message);
-
-        })
-
-    }
-
-
     var displayfade = 800;
     var loadfadeout = 800;
 
@@ -108,20 +41,20 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         duration:0,
         phase:function (complete) {
             
-            $scope.resetInput();
+            // $scope.resetInput();
 
 
-             $scope.getData(function ($d) {
+            u.toggle("hide", "evolve");
+            u.toggle("hide", "hud");
 
-                // console.log("get data complete", $d);
+            u.toggle("hide", "run");
 
-                $scope.setData($d);
 
-                instantiateBackend(function () {
 
-                    setInputBackend(complete);
-                })
-            })
+            u.toggle("hide", "settings");
+
+
+            complete();
 
         }
     },
@@ -130,20 +63,33 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         delay:600,
         duration:0,
         phase:function (complete) {
-            u.toggle("hide", "evolve");
-            u.toggle("hide", "refresh");
-            u.toggle("hide", "restart");
-            u.toggle("hide", "step");
-            u.toggle("hide", "play");
-            u.toggle("hide", "stop");
-            u.toggle("hide", "break");
+
+
 
             console.log("initialize algorithm phase");
             
-            initializeAlgorithmBackend(function () {
+            api.instantiate(function (res) {
 
-                if (complete) complete();
-            });
+                console.log("Instantiate session", res);
+
+                $scope.session = res.data.session;
+
+                $input.setInput({
+                    session:$scope.session
+                })
+                
+                api.initialize($scope, function () {
+
+                    api.setInput($scope, false, function (res) {
+
+                        if (complete) complete() 
+
+                    });
+
+                })
+                
+            })
+
 
         }
     },
@@ -165,6 +111,7 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         phase:function (complete) {
             
             u.toggle("show", "hud", {fade:displayfade});
+            u.toggle("show", "evolvedata", {fade:300});
 
             if (complete) complete();
         }
@@ -182,6 +129,17 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
                     console.log("hide loading"); 
                     $("#loadinginner").parent().hide();
                     $scope.running(false);
+
+
+
+                    u.toggle("hide", "loading", {fade:loadfadeout});                    
+                    u.toggle("show", "hud", {fade:loadfadeout, delay:displayDelay});
+
+
+                    u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
+
+                    if (complete) complete();
                 
                 }
 

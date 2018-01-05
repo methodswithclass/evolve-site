@@ -1,4 +1,4 @@
-app.factory("api.service", ["utility", "events.service", "global.service", '$http', function (u, events, g, $http) {
+app.factory("api.service", ["utility", "events.service", "global.service", 'input.service', '$http', function (u, events, g, $input, $http) {
 
 
 
@@ -77,7 +77,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
         	$http({
         		method:"POST",
         		url:"/evolve/set",
-        		data:{input:resend ? $scope.resendInput() : $scope.getInput()}
+        		data:{input:resend ? $input.resendInput() : $input.getInput()}
         	})
         	.then(function (res) {
 
@@ -126,7 +126,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
             $http({
                 method:"POST",
                 url:"/evolve/initialize",
-                data:{input:$scope.getInput()}
+                data:{input:$input.getInput()}
             })
             .then(function (res) {
 
@@ -149,7 +149,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
         	$http({
         		method:"POST",
         		url:"/evolve/run", 
-        		data:{input:$scope.getInput()}
+        		data:{input:$input.getInput()}
         	})
         	.then(function (res) {
 
@@ -227,7 +227,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
             $http({
                 method:"POST",
                 url:"/trash/environment/refresh/",
-                data:{input:$scope.getInput()}
+                data:{input:$input.getInput()}
             })
             .then(function (res) {
 
@@ -269,14 +269,14 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
     var simulate = {
 
 
-        trash:function (input, callback) {
+        trash:function ($input, callback) {
 
-        // return function (input, callack) {
+        // return function ($input, callack) {
 
             $http({
                 method:"POST",
                 url:"/trash/simulate",
-                data:input
+                data:$input
             })
             .then(function (res) {
 
@@ -318,7 +318,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", '$htt
         	$http({
         		method:"POST",
         		url:"/evolve/hardStop",
-        		data:{name:$scope.name, input:$scope.getInput()}
+        		data:{name:$scope.name, input:$input.getInput()}
         	})
         	.then(function (res) {
 

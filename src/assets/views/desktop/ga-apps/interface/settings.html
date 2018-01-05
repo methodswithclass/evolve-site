@@ -174,7 +174,7 @@
 											crossover method
 										</div>
 									</div>
-									<select class="absolute width50 height right0 text-right font-25 transparent-back white nooutline" id="methodinput" ng-model="settings.crossover.method" ng-keyup="changeInput()">
+									<select class="absolute width50 height right0 text-right font-25 transparent-back white nooutline" id="methodinput" ng-model="settings.method" ng-keyup="changeInput()">
 										<option class="black font-30" ng-repeat="item in methods">{{item.method}}</option>
 									</select>
 
@@ -192,7 +192,7 @@
 											# of parents
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="parentsinput" type="text" ng-model="settings.crossover.parents" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="parentsinput" type="text" ng-model="settings.parents" ng-keyup="changeInput()">
 
 
 								</div>
@@ -207,7 +207,7 @@
 											top population %
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="poolinput" type="text" ng-model="settings.crossover.pool" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="poolinput" type="text" ng-model="settings.pool" ng-keyup="changeInput()">
 
 
 								</div>
@@ -223,7 +223,7 @@
 											min of gene splice
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemininput" type="text" ng-model="settings.crossover.splicemin" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemininput" type="text" ng-model="settings.splicemin" ng-keyup="changeInput()">
 
 
 								</div>
@@ -238,7 +238,7 @@
 											max of gene splice
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemaxinput" type="text" ng-model="settings.crossover.splicemax" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="splicemaxinput" type="text" ng-model="settings.splicemax" ng-keyup="changeInput()">
 
 
 								</div>
@@ -254,7 +254,7 @@
 											mutation %
 										</div>
 									</div>
-									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="mutateinput" type="text" ng-model="settings.crossover.mutate" ng-keyup="changeInput()">
+									<input class="absolute width40 height right0 text-right font-30 transparent-back white nooutline" id="mutateinput" type="text" ng-model="settings.mutate" ng-keyup="changeInput()">
 
 
 								</div>

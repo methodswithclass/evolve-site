@@ -17,7 +17,7 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 	}
 }])
 
-.run(['states', function (states) {
+.run(['states', 'config.service', function (states, config) {
 
 	states.go("home");
 

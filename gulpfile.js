@@ -196,8 +196,16 @@ gulp.task("root", function () {
     ]).pipe(gulp.dest("dist"));
 })
 
+gulp.task('misc', function() {
+	return gulp.src([
+	                'src/assets/config/**/*.*'
+	                ])
+	.pipe(gulp.dest('dist/assets/config'));
+});
 
-gulp.task("copy", ["data", "root", "html", "images", "fonts"], function () {
+
+
+gulp.task("copy", ["data", "misc", "root", "html", "images", "fonts"], function () {
 
 
 })

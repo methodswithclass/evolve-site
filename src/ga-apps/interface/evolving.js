@@ -1,4 +1,4 @@
-app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'simulators', "$http", 'display.service', 'api.service', function (g, u, events, react, simulators, $http, display, api) {
+app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'simulators', "$http", 'display.service', 'api.service', 'input.service', function (g, u, events, react, simulators, $http, display, api, $input) {
 
 	return {
 		restrict:"E",
@@ -16,56 +16,10 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			var simulator = simulators.get($scope.name);
     		var update = false;
 		    var ev = false;
-    		$scope.input = {};
 
-    		self.manual;
+    		
 
-    		var crossoverMethods = {
-    			default:"multi-parent",
-    			multiParent:"multi-parent",
-    			multiOffspring:"multi-offspring"
-    		}
-
-    		var runPopTypes = {
-    			sync:"sync",
-    			async:"async"
-    		}
-
-    		var reproductionTypes = {
-    			default:"sync",
-    			sync:"sync",
-    			async:"async"
-    		}
-
-
-    		/*#########  default initial settings ############*/
-    		var $$InitialSettings$$ = {
-    			name:$scope.name,
-	    		gens:500,
-	    		runs:20,
-	    		goal:"max",
-	    		pop:100,
-	    		runPopType:runPopTypes.async,
-	    		crossover:{
-	    			methodTypes:{
-	    				sync:reproductionTypes.sync,
-	    				async:reproductionTypes.async,
-	    				multiOffspring:crossoverMethods.multiOffspring, 
-	    				multiParent:crossoverMethods.multiParent
-	    			},
-	    			reproductionType:reproductionTypes.async,
-	    			method:crossoverMethods.multiParent,
-	    			parents:2,
-	    			pool:0.1,
-	    			splicemin:2,
-	    			splicemax:12,
-	    			mutate:0.02
-	    		},
-	    		programInput:null
-	    	}
-	    	/*################################################*/
-
-
+		    $scope.input;
 	    	$scope.evdata;
 	    	$scope.stepdata;
 
@@ -101,274 +55,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        update = _run;
 		        if (!_run) $scope.evolving(_run);
 		    }
-
-
-
-		    $scope.setSettings = function (input) {
-
-		    	 $scope.settings = {
-		    	 	name:input.name,
-		        	gens:input.gens,
-		        	runs:input.runs,
-		        	goal:input.goal,
-		        	pop:input.pop,
-		        	runPopType:input.runPopType,
-		        	crossover:{
-		        		reproductionType:input.crossover.reproductionType,
-		        		method:input.crossover.method,
-		        		parents:input.crossover.parents,
-		        		pool:(input.crossover.pool ? input.crossover.pool*100 : ""),
-		        		splicemin:input.crossover.splicemin,
-		        		splicemax:input.crossover.splicemax,
-		        		mutate:(input.crossover.mutate ? input.crossover.mutate*100 : "")
-		        	}
-		        }
-
-		    }
-
-
-
-
-
-
-
-
-
-		    /*
-			##########################################
-			# Input setting flows
-			#
-			#
-			#
-			##########################################
-		    */
-
-
-
-
-
-		    $scope.resetInput = function (options) {
-
-
-		    	react.push({
-	    			name:"evolve.vars",
-	    			state:{
-	    				crossoverMethods:crossoverMethods,
-	    				reproductionTypes:reproductionTypes
-	    			}
-	    		})
-
-
-		    	var setInput = options ? options.setInput : undefined;
-
-		    	if (setInput) {
-
-		    		console.log("set input", setInput, self.manual);
-
-
-			    	self.manual = {
-			    		name:(setInput.name || (self.manual ? self.manual.gens : "")),
-			    		gens:parseInt(setInput.gens || (self.manual ? self.manual.gens : "")),
-			    		runs:parseInt(setInput.runs || (self.manual ? self.manual.runs : "")),
-			    		goal:setInput.goal || (self.manual ? self.manual.goal : "max"),
-			    		pop:parseInt(setInput.pop || (self.manual ? self.manual.pop : "")),
-			    		runPopType:setInput.runPopType || (self.manual ? self.manual.runPopType : ""),
-			    		crossover:{
-			    			methodTypes:{
-			    				sync:reproductionTypes.sync,
-			    				async:reproductionTypes.async,
-			    				multiOffspring:crossoverMethods.multiOffspring, 
-			    				multiParent:crossoverMethods.multiParent
-			    			},
-			    			reproductionType:setInput.crossover 
-					    			? (setInput.crossover.reproductionType || 
-					    			   (self.manual ? self.manual.crossover.reproductionType : reproductionTypes.default)) 
-					    			: (self.manual ? self.manual.crossover.reproductionType : reproductionTypes.default),
-			    			method:setInput.crossover 
-					    			? (setInput.crossover.method || 
-					    			   (self.manual ? self.manual.crossover.method : crossoverMethods.default)) 
-					    			: (self.manual ? self.manual.crossover.method : crossoverMethods.default),
-			    			parents:parseInt(setInput.crossover 
-					    			? (setInput.crossover.parents || 
-					    			   (self.manual ? self.manual.crossover.parents : "")) 
-					    			: (self.manual ? self.manual.crossover.parents : "")),
-			    			pool:parseFloat(setInput.crossover 
-					    			? (setInput.crossover.pool || 
-					    			   (self.manual ? self.manual.crossover.pool : "")) 
-					    			: (self.manual ? self.manual.crossover.pool : "")),
-			    			splicemin:parseInt(setInput.crossover 
-					    			? (setInput.crossover.splicemin || 
-					    			   (self.manual ? self.manual.crossover.splicemin : "")) 
-					    			: (self.manual ? self.manual.crossover.splicemin : "")),
-			    			splicemax:parseInt(setInput.crossover 
-					    			? (setInput.crossover.splicemax || 
-					    			   (self.manual ? self.manual.crossover.splicemax : "")) 
-					    			: (self.manual ? self.manual.crossover.splicemax : "")),
-			    			mutate:parseFloat(setInput.crossover 
-					    			? (setInput.crossover.mutate || 
-					    			   (self.manual ? self.manual.crossover.mutate : "")) 
-					    			: (self.manual ? self.manual.crossover.mutate : "")),
-			    		},
-			    		programInput:setInput.programInput || (self.manual ? self.manual.programInput : {}) 
-			    	}
-
-
-		    	}
-		    	else {
-
-		    		console.log("reset to default");
-
-			    	self.manual = {
-			    		name:($$InitialSettings$$.name || self.manual.name),
-			    		gens:parseInt($$InitialSettings$$.gens || self.manual.gens),
-			    		runs:parseInt($$InitialSettings$$.runs || self.manual.runs),
-			    		goal:$$InitialSettings$$.goal || self.manual.goal,
-			    		pop:parseInt($$InitialSettings$$.pop || self.manual.pop),
-			    		runPopType:$$InitialSettings$$.runPopType || self.manual.runPopType,
-			    		crossover:{
-			    			methodTypes:{
-			    				sync:reproductionTypes.sync,
-			    				async:reproductionTypes.async,
-			    				multiOffspring:crossoverMethods.multiOffspring, 
-			    				multiParent:crossoverMethods.multiParent
-			    			},
-			    			reproductionType:$$InitialSettings$$.crossover.reproductionType || self.manual.crossover.reproductionType,
-			    			method:$$InitialSettings$$.crossover.method || self.manual.crossover.method,
-			    			parents:parseInt($$InitialSettings$$.crossover.parents || self.manual.crossover.parents),
-			    			pool:parseFloat($$InitialSettings$$.crossover.pool || self.manual.crossover.pool),
-			    			splicemin:parseInt($$InitialSettings$$.crossover.splicemin || self.manual.crossover.splicemin),
-			    			splicemax:parseInt($$InitialSettings$$.crossover.splicemax || self.manual.crossover.splicemax),
-			    			mutate:parseFloat($$InitialSettings$$.crossover.mutate || self.manual.crossover.mutate)
-			    		},
-			    		programInput:(self.manual ? self.manual.programInput : $$InitialSettings$$.programInput) || $$InitialSettings$$.programInput
-			    	}
-		    	}
-
-		    	console.log("reset input self.manual", self.manual);
-
-
-		    	$scope.setSettings(self.manual);
-		        
-
-		    	// $scope.setInputValues(self.manual);
-
-
-		        console.log("reset input, settings", $scope.settings);
-
-		    }
-
-
-		    $scope.getInput = function ($x) {
-
-		    	if ($x) self.manual = $x;
-
-		    	// console.log("get input self.manual", self.manual);
-
-		    	// self.manual = checkSettingsForUpdates();
-
-		        $scope.input = {
-		            name:$scope.name || self.manual.name,
-		            gens:parseInt((self.manual ? self.manual.gens : undefined) || $("#gensinput").val()),
-		            runs:parseInt((self.manual ? self.manual.runs : undefined) || $("#runsinput").val()),
-		            goal:(self.manual ? self.manual.goal : undefined) || $("#goalinput").val(),
-		            pop:parseInt((self.manual ? self.manual.pop : undefined) || $("#popinput").val()),
-		            runPopType:(self.manual ? self.manual.runPopType : undefined),
-		            crossover:{
-		            	methodTypes:{
-		    				sync:reproductionTypes.sync,
-		    				async:reproductionTypes.async,
-		    				multiOffspring:crossoverMethods.multiOffspring, 
-		    				multiParent:crossoverMethods.multiParent
-		    			},
-		    			reproductionType:(self.manual 
-		        	             ? (self.manual.crossover 
-		        	                ? self.manual.crossover.reproductionType : undefined) 
-		        	             : reproductionTypes.default),
-		    			method:(self.manual 
-		        	             ? (self.manual.crossover 
-		        	                ? self.manual.crossover.method : undefined) 
-		        	             : undefined) || $("#methodinput").val(),
-		            	parents:parseInt((self.manual 
-		            	             ? (self.manual.crossover 
-		            	                ? self.manual.crossover.parents : undefined) 
-		            	             : undefined) || $("#parentsinput").val()),
-		        		pool:parseFloat((self.manual 
-		            	             ? (self.manual.crossover 
-		            	                ? self.manual.crossover.pool : undefined) 
-		            	             : undefined) || getValue($("#poolinput").val())),
-		        		splicemin:parseInt((self.manual 
-		            	             ? (self.manual.crossover 
-		            	                ? self.manual.crossover.splicemin : undefined) 
-		            	             : undefined) || $("#splicemininput").val()),
-		        		splicemax:parseInt((self.manual 
-		            	             ? (self.manual.crossover 
-		            	                ? self.manual.crossover.splicemax : undefined) 
-		            	             : undefined) || $("#splicemaxinput").val()),
-		        		mutate:parseFloat((self.manual 
-		            	             ? (self.manual.crossover 
-		            	                ? self.manual.crossover.mutate : undefined) 
-		            	             : undefined) || getValue($("#mutateinput").val()))
-		            },
-		            programInput:self.manual ? self.manual.programInput : $$InitialSettings$$.programInput,
-		            evdelay:0,
-		            newenv:true,
-		            session:$scope.session
-		        }
-
-		        return $scope.input;
-		    }
-
-		    $scope.resendInput = function () {
-		    	return $scope.input;
-		    }
-
-
-
-
-		    /*
-			----------------------------------------------
-			###############################################
-		    */
-
-
-
-
-
-
-
-
-
-		    /*
-			##########################################
-			# Subscribers
-			#
-			#
-			#
-			##########################################
-		    */
-
-
-
-		    react.subscribe({
-		    	name:"resetInput",
-		    	callback:function(x) {
-
-    				$scope.resetInput({
-    					setInput:x
-    				});
-
-		    		$scope.getInput();
-		    	}
-		    })
-
-
-
-
-		    /*
-			----------------------------------------------
-			###############################################
-		    */
-
 
 
 		    var programInputToggle = function ($toggle) {
@@ -513,7 +199,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    var initProgramToggle = function () {
 
 		    	setTimeout(function () {
-	
+
 				    programInputToggle($scope.programInputToggle);
 
 
@@ -528,6 +214,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 			initProgramToggle();
+		    
 
 
 		    /*
@@ -607,14 +294,14 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 			var stepprogress = function () {
 
-				var input = $scope.getInput();
+				$scope.input = $input.getInput();
 
 				
 
 		        var genT = $scope.input.gens;
 		        var orgT = $scope.input.pop;
 		        var runT = $scope.input.runs;
-		        var stepT = input.programInput.totalSteps;
+		        var stepT = $scope.input.programInput.totalSteps;
 
 		        var gen = $scope.stepdata.gen - 1;
 		        var org = $scope.stepdata.org - 1;
@@ -739,7 +426,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 					        }, 300);
 
 
-					        programInputToggle();
+					        // programInputToggle();
 
 
 					    }
@@ -784,7 +471,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        console.log("reset gen");
 		        
-		        $scope.resetInput();
+		        // $scope.resetInput();
 		        
 		        $scope.animateRefresh(function () {
 
@@ -885,10 +572,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        $scope.running(false);
 		        $("#breakfeedback").show();
 
-		        $scope.resetInput({
-		        	setInput:{
-		        		gens:$scope.stepdata.gen
-		        	}
+		        $input.setInput({
+		        	gens:$scope.stepdata.gen
 		    	});
 
 		        api.hardStop($scope, function (res) {
