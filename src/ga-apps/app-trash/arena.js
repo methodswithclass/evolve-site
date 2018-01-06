@@ -188,7 +188,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			events.on("refreshenv", function () {
 
 
-				console.log("refresh environment", $input.getInput());
+				console.log("refresh environment");
 
 				api.refreshEnvironment($scope, function (res) {
 

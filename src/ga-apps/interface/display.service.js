@@ -66,14 +66,14 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}
 
 
-	var load = function (input) {
+	var load = function () {
 
 		$mainBack = $("#main-back");
 
 		winH = $mainBack.height();
 		winW = $mainBack.width();
 
-		events.dispatch("fake-batch-events");
+		// events.dispatch("fake-batch-events");
 
 		events.dispatch("load-display", "evolve-data");
 

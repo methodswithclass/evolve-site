@@ -56,65 +56,65 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     var processTypes = config.get("types.processTypes")
 
-    var programInput = config.get("global.trash");
+    $scope.programInput = config.get("global.trash");
     
-    programInput.getTotalSteps = function () {
+    $scope.programInput.getTotalSteps = function () {
 
-        return programInput.grid.size*programInput.grid.size*2;
+        return $scope.programInput.grid.size*$scope.programInput.grid.size*2;
     }
 
-    programInput.convertTrash = function (percentToRate) {
+    $scope.programInput.convertTrash = function (percentToRate) {
 
-        return percentToRate ? programInput.trashPercent/100 : programInput.trashRate*100;
+        return percentToRate ? $scope.programInput.trashPercent/100 : $scope.programInput.trashRate*100;
     }
 
-    programInput.trashRate = programInput.convertTrash(true);
-    programInput.totalSteps = programInput.getTotalSteps();
+    $scope.programInput.trashRate = $scope.programInput.convertTrash(true);
+    $scope.programInput.totalSteps = $scope.programInput.getTotalSteps();
 
 
-    programInput.validate = function () {
+    $scope.programInput.validate = function () {
 
         var _temp = {
-            grid:programInput.grid.size,
-            percent:programInput.trashPercent,
-            rate:programInput.trashRate
+            grid:$scope.programInput.grid.size,
+            percent:$scope.programInput.trashPercent,
+            rate:$scope.programInput.trashRate
         }
 
-        programInput.grid.size = programInput.grid.size >= 3 && programInput.grid.size <= 15 ? parseInt(programInput.grid.size) : 5;
+        $scope.programInput.grid.size = $scope.programInput.grid.size >= 3 && $scope.programInput.grid.size <= 15 ? parseInt($scope.programInput.grid.size) : 5;
 
-        programInput.trashPercent = programInput.trashPercent >= 0 
-           && programInput.trashPercent <= 90
-           && parseInt(programInput.trashPercent) 
-        ? parseInt(programInput.trashPercent) : "";
+        $scope.programInput.trashPercent = $scope.programInput.trashPercent >= 0 
+           && $scope.programInput.trashPercent <= 90
+           && parseInt($scope.programInput.trashPercent) 
+        ? parseInt($scope.programInput.trashPercent) : "";
        
 
 
-        programInput.trashRate = programInput.trashRate >= 0 
-           && programInput.trashRate <= 0.9 
-           && parseFloat(programInput.trashRate) 
-        ? parseFloat(programInput.trashRate) : 0;
+        $scope.programInput.trashRate = $scope.programInput.trashRate >= 0 
+           && $scope.programInput.trashRate <= 0.9 
+           && parseFloat($scope.programInput.trashRate) 
+        ? parseFloat($scope.programInput.trashRate) : 0;
 
 
-        if (_temp.grid != programInput.grid.size || _temp.percent != programInput.trashPercent || _temp.rate != programInput.trashRate) {
+        if (_temp.grid != $scope.programInput.grid.size || _temp.percent != $scope.programInput.trashPercent || _temp.rate != $scope.programInput.trashRate) {
 
-            programInput.update();
+            $scope.programInput.update();
         }
 
     }
 
 
-    programInput.update = function () {
+    $scope.programInput.update = function () {
 
 
-        programInput.trashRate = programInput.convertTrash(true);
-        programInput.totalSteps = programInput.getTotalSteps();
+        $scope.programInput.trashRate = $scope.programInput.convertTrash(true);
+        $scope.programInput.totalSteps = $scope.programInput.getTotalSteps();
 
-        programInput.validate();
+        $scope.programInput.validate();
     }
 
 
 
-    programInput.update();
+    $scope.programInput.update();
 
 
     events.on("completeSim", function () {
@@ -142,7 +142,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     }
 
     $scope.settings;
-    $scope.goals = programInput.goals;
+    $scope.goals = $scope.programInput.goals;
 
     
     var displayDelay = 100;
@@ -154,12 +154,12 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
         // console.log("grid size", programInput.grid.size);
 
-        programInput.update();
+        $scope.programInput.update();
 
-        console.log("program input change");
+        // console.log("program input change");
 
         $input.setInput({
-            programInput:programInput
+            programInput:$scope.programInput
         })
 
 
@@ -178,14 +178,14 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
-            console.log("processing phase");            
+            console.log("processing phase");
+
+            // console.log("processing phase get input then set settings");
 
             $input.setInput({
                 name:self.name,
-                programInput:programInput
-            });
-
-            console.log("processing phase get input then set settings");
+                programInput:$scope.programInput
+            })
 
             $scope.settings = $input.setSettings($scope, $input.getInput(false));
 
@@ -287,7 +287,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("show", "simdata", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
 
-            display.load(programInput);
+            display.load();
 
             if (complete) complete();
         }
@@ -324,9 +324,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
                     u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
 
+
+                    $scope.programInputChange();
+
+
                     react.push({
                         name:"programInput" + self.name,
-                        state:programInput
+                        state:$scope.programInput
                     })
 
 

@@ -170,7 +170,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         
         }
 
-        console.log("set settings", $scope.settings);
+        // console.log("set settings", $scope.settings);
 
         return $scope.settings;
 
@@ -199,7 +199,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         
         }
 
-        console.log("change input", manual);
+        // console.log("change input", manual);
 
     	return setSettings($scope, manual);
     }
@@ -212,9 +212,9 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
  			self.temp[i] = options[i]
  		}
 
- 		console.log("set input", options, self.temp);
+ 		// console.log("set input", options, self.temp);
 
- 		console.log("get input inside set Input");
+ 		// console.log("get input inside set Input");
 
  		setValues(getInput(false));
 
@@ -259,7 +259,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			session: 			self.temp.session || ""
 		}
 
-		console.log("get input", update, self.global);
+		// console.log("get input", update, self.global);
 
         return self.global;
     }
@@ -276,7 +276,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	}
 
 
-	console.log("initial set input", $$initial);
+	// console.log("initial set input", $$initial);
 
 	resetInput();
 
