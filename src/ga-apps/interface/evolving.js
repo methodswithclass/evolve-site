@@ -293,9 +293,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    
 
 			var stepprogress = function () {
-
-				$scope.input = $input.getInput();
-
 				
 
 		        var genT = $scope.input.gens;
@@ -472,6 +469,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        console.log("reset gen");
 		        
 		        // $scope.resetInput();
+
+		        $input.resetInput();
 		        
 		        $scope.animateRefresh(function () {
 
@@ -531,6 +530,12 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        $scope.evolving(true);
 
+
+				console.log("step progress get input")
+
+				$scope.input = $input.getInput();
+
+
 		        display.forceEvolveHeight();
 
 
@@ -571,6 +576,8 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        $scope.running(false);
 		        $("#breakfeedback").show();
+
+		        console.log("set input hard stop");
 
 		        $input.setInput({
 		        	gens:$scope.stepdata.gen

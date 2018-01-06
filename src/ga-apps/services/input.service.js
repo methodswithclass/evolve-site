@@ -30,45 +30,178 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	}, 500);
 
 
-	var getValue = function (value) {
+	var displayTypes = {
+		value:"value",
+		string:"string"
+	}
 
-    	return parseFloat(value/100)
+
+	var getValue = function ($value) {
+
+		var value = parseFloat($value)
+
+    	return value ? g.truncate(value/100, 2) : $value;
     }
 
-    var getString = function (value) {
+    var getString = function ($value) {
 
-    	return value ? Math.floor(value*100) : "";
+    	var value = parseFloat($value);
+
+    	return value ? Math.floor(value*100) : $value;
     }
 
-    var getFloatFromId = function () {
+    var getFloatFromId = function (id) {
 
-    	return parseFloat($("#" + id + "input").val());
+    	var $value = $("#" + id + "input").val();
+
+    	var value = parseFloat($value);
+
+    	return value ? value : $value;
     }
 
     var getIntFromId = function (id) {
 
-    	return parseInt($("#" + id + "input").val());
+    	var $value = $("#" + id + "input").val();
+
+    	var value = parseInt($value);
+
+    	return value ? value : $value;
+    }
+
+    var resolveDisplay = function (options) {
+
+
+    	var pool = parseFloat(options.pool);
+    	var mutate = parseFloat(options.mutate);
+
+    	var $pool;
+    	var $mutate;
+
+
+    	var types = {
+    		value:"value",
+    		string:"string"
+    	}
+
+
+    	// console.log("resolve display input", options);
+
+		if (options.type == types.value) {
+
+			// console.log("type value");
+
+			$pool = pool > 1 ? getValue(pool) : pool;
+
+			$mutate = mutate > 1 ? getValue(mutate) : mutate;
+
+		}
+		else if (options.type == types.string) {
+
+			// console.log("type string");
+
+			$pool = pool < 1 ? getString(pool) : pool;
+
+			$mutate = mutate < 1 ? getString(mutate) : mutate;
+ 		}
+
+
+ 		// console.log("resolve display result", {$pool, $mutate});
+
+
+    	return {
+    		pool:$pool,
+    		mutate:$mutate
+    	}
+
+
+    }
+
+    var setValues = function (input) {
+
+    	var values = resolveDisplay({
+    		pool:input.pool,
+    		mutate:input.mutate,
+    		type:displayTypes.string
+    	})
+
+    	$("#gensinput").val(input.gens);
+    	$("#runsinput").val(input.runs);
+    	$("#goalinput").val(input.goal);
+    	$("#popinput").val(input.pop);
+
+    	$("#methodinput").val(input.method);
+    	$("#parentsinput").val(input.parents);
+    	$("#splicemininput").val(input.splicemin);
+    	$("#splicemaxinput").val(input.splicemax);
+    	
+    	$("#poolinput").val(values.pool);
+    	$("#mutateinput").val(values.mutate);
+
     }
 
     var setSettings = function ($scope, input) {
 
+    	var values = resolveDisplay({
+    		pool:input.pool,
+    		mutate:input.mutate,
+    		type:displayTypes.string
+    	})
+
+
+    	// console.log("set settings", input.pool, input.mutate, values.pool, values.mutate);
+
     	$scope.settings = {
+        	
         	gens: 				input.gens,
         	runs: 				input.runs,
-        	goal: 				input.goal,
+        	goal: 				input.goal || $scope.goals[0].goal,
         	pop:  				input.pop,
     		parents: 			input.parents,
-    		pool: 				getString(input.pool),
+    		pool: 				input.pool,
     		splicemin: 			input.splicemin,
     		splicemax: 			input.splicemax,
-    		mutate: 			getString(input.mutate),
+
+    		pool: 				values.pool,
+    		mutate: 			values.mutate,
+        	
         	runPopType: 		input.runPopType || self.temp.runPopType,
     		method: 			input.method || self.temp.method,
     		reproductionType: 	input.reproductionType || self.temp.reproductionType,
+        
         }
+
+        console.log("set settings", $scope.settings);
 
         return $scope.settings;
 
+    }
+
+
+    var changeInput = function ($scope) {
+
+
+    	var manual = {
+
+            gens: 				$("#gensinput").val(),
+            runs: 				$("#runsinput").val(),
+            goal: 				$scope.settings ? ($scope.settings.goal || "max") : "max",
+            pop: 				$("#popinput").val(),
+        	parents: 			$("#parentsinput").val(),
+        	splicemin: 			$("#splicemininput").val(),
+        	splicemax: 			$("#splicemaxinput").val(),
+
+        	pool: 				$("#poolinput").val(),
+        	mutate: 			$("#mutateinput").val(),
+            
+            runPopType: 		($scope.settings ? $scope.settings.runPopType || runPopTypes.default : runPopTypes.default),
+        	reproductionType: 	($scope.settings ? $scope.settings.reproductionType || reproductionTypes.default : reproductionTypes.default),
+        	method: 			($scope.settings ? $scope.settings.method || crossoverMethods.default : crossoverMethods.default)
+        
+        }
+
+        console.log("change input", manual);
+
+    	return setSettings($scope, manual);
     }
 
 
@@ -79,11 +212,11 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
  			self.temp[i] = options[i]
  		}
 
+ 		console.log("set input", options, self.temp);
 
- 		// console.log("set input", options, self.temp);
+ 		console.log("get input inside set Input");
 
-
- 		getInput(false);
+ 		setValues(getInput(false));
 
  	}
 
@@ -91,42 +224,69 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     var getInput = function (update) {
 
     	if (typeof update === "undefined" || typeof update === "null") update = true;
+		
+
+    	var values = resolveDisplay({
+    		pool:update ? getIntFromId("pool") : self.temp.pool,
+    		mutate:update ? getIntFromId("mutate") : self.temp.mutate,
+    		type:displayTypes.value
+    	})
+
+    	var $goal = $("#goalinput");
+    	var $method = $("#methodinput");
 
 
 		self.global = {
+			
 			name: 				self.temp.name || "",
-			gens: 				update ? getIntFromId("gens") 					: self.temp.gens,
-			runs: 				update ? getIntFromId("runs") 					: self.temp.runs,
-			goal: 				update ? getIntFromId("goal") 					: self.temp.goal,
-			pop: 				update ? getIntFromId("pop") 					: self.temp.pop,
-			parents: 			update ? getIntFromId("parents") 				: self.temp.parents,
-			pool: 				update ? getValue(getIntFromId("pool")) 		: self.temp.pool,
-			splicemin: 			update ? getIntFromId("splicemin") 				: self.temp.splicemin,
-			splicemax: 			update ? getIntFromId("splicemax") 				: self.temp.splicemax,
-			mutate: 			update ? getValue(getIntFromId("mutate")) 	: self.temp.mutate,
+			
+			gens: 				update ? getIntFromId("gens") 						: self.temp.gens,
+			runs: 				update ? getIntFromId("runs") 						: self.temp.runs,
+			goal: 			    update ? $goal.val()								: self.temp.goal,
+			pop: 				update ? getIntFromId("pop") 						: self.temp.pop,
+			parents: 			update ? getIntFromId("parents") 					: self.temp.parents,
+			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp.splicemin,
+			splicemax: 			update ? getIntFromId("splicemax") 					: self.temp.splicemax,
+
+			pool: 				values.pool,
+			mutate: 			values.mutate,
+			
 			runPopType: 		self.temp.runPopType || runPopTypes.default,
-			method: 			self.temp.method || crossoverMethods.default,
+			method: 		    update ? $method.val()								: self.temp.method,
 			reproductionType: 	self.temp.reproductionType || reproductionTypes.default,
+			
 			programInput: 		self.temp.programInput || {},
 			session: 			self.temp.session || ""
 		}
 
+		console.log("get input", update, self.global);
+
         return self.global;
     }
+
 
     var resendInput = function () {
     	return self.global;
     }
 
 
-	setInput($$initial);
+    var resetInput = function () {
 
+		setInput($$initial);	
+	}
+
+
+	console.log("initial set input", $$initial);
+
+	resetInput();
 
 	return {
+		resetInput:resetInput,
 		setInput:setInput,
 		getInput:getInput,
 		resendInput:resendInput,
-		setSettings:setSettings
+		setSettings:setSettings,
+		changeInput:changeInput
 	}
 
 

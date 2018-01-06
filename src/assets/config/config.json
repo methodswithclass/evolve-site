@@ -12,15 +12,16 @@
 			"pool":0.1,
 			"splicemin":2,
 			"splicemax":12,
-			"mutate":0.02,
-			"programInput":{}
+			"mutate":0.02
 		},
 		"trash":{
 			"goals":[
 			{
+				"id":"max",
 				"goal":"max"
 			},
 			{
+				"id":"min",
 				"goal":"min"
 			}
 			],
@@ -33,9 +34,11 @@
 		"feedback":{
 			"goals":[
 			{
+				"id":"converge",
 				"goal":"converge"
 			},
 			{
+				"id":"diverge",
 				"goal":"diverge"
 			}
 			]

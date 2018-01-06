@@ -11,7 +11,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     // $scope.gridSize = 5;
 
-     $scope.grids = [
+    $scope.grids = [
     {
         size:3
     },
@@ -141,6 +141,9 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
     }
 
+    $scope.settings;
+    $scope.goals = programInput.goals;
+
     
     var displayDelay = 100;
 
@@ -153,10 +156,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
 
         programInput.update();
 
-        // react.push({
-        //     name:"resetInput",
-        //     state:programInput
-        // })
+        console.log("program input change");
 
         $input.setInput({
             programInput:programInput
@@ -178,15 +178,16 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
-            console.log("processing phase");
-            
+            console.log("processing phase");            
 
             $input.setInput({
                 name:self.name,
                 programInput:programInput
             });
 
-            $input.setSettings($scope, $input.getInput(false));
+            console.log("processing phase get input then set settings");
+
+            $scope.settings = $input.setSettings($scope, $input.getInput(false));
 
 
             u.toggle("hide", "evolve");
@@ -219,7 +220,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         duration:0,
         phase:function (complete) {
 
-            console.log("initialize algorithm phase, $input", $input.getInput());
+            console.log("initialize algorithm phase");
             
 
             api.instantiate(function (res) {
@@ -227,6 +228,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                 console.log("Instantiate session", res);
 
                 $scope.session = res.data.session;
+
+                console.log("instantiate complete");
 
                 $input.setInput({
                     session:$scope.session
