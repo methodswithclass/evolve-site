@@ -112,6 +112,28 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
         $scope.programInput.validate();
     }
 
+    $scope.programInput.checkInput = function (input1, input2) {
+
+        var result = true;
+
+        result = input1,programInput.grid.size == input2.programInput.grid.size;
+        
+        if (!result) return result;
+        
+        result = input1.programInput.trashRate == input2.programInput.trashRate;
+        
+        if (!result) return result;
+        
+        result = input1.programInput.totalSteps == input2.programInput.totalSteps;
+        
+        if (!result) return result;
+        
+        result = input1.programInput.processType == input2.programInput.processType;
+
+        return result;
+
+    }
+
 
 
     $scope.programInput.update();

@@ -132,7 +132,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     var run = function ($scope, callback) {
 
 
-        console.log("run call get input");
+        console.log("run call input", $input.getInput());
 
     	$http({
     		method:"POST",
