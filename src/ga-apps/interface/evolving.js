@@ -65,74 +65,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 
 
-
-		    var stepprogress = function () {
-		
-
-		        var genT = $scope.input.gens;
-		        var orgT = $scope.input.pop;
-		        var runT = $scope.input.runs;
-		        var stepT = $scope.input.programInput.totalSteps;
-
-		        var gen = $scope.stepdata.gen - 1;
-		        var org = $scope.stepdata.org - 1;
-		        var step = $scope.stepdata.step || 0;
-		        var run = $scope.stepdata.run - 1;
-
-		        // console.log("percent", gen, org, step, run);
-
-		        var stepP = (step + run*stepT + org*(runT*stepT) + gen*(orgT*runT*stepT))/(stepT*runT*orgT*genT);
-		        var runP = (run + org*runT)/runT;
-		        var orgP = (org + gen*orgT)/orgT;
-		        //var genP = gen/genT;
-
-		        var percent = stepP;
-
-		        if (percent >= 1) {
-		            percent = 1;
-		        }
-
-		        $("#rundata").css({width:percent*100 + "%"});
-
-		    }
-
-
-
-
-		    /*
-			##########################################
-			# Update Timer
-			#
-			#
-			#
-			##########################################
-		    */
-
-
-		    setInterval(function () {
-
-		        if (update) {
-		            if (ev) {
-		                stepprogress();
-		            }
-		            $scope.$apply();
-		        }
-
-		    }, 30);
-
-
-
-		    /*
-			----------------------------------------------
-			###############################################
-		    */
-
-
-
-
 		    $scope.resetgen = function () {
 
-		        evolve.resetgen($scope, function () {
+		        evolve.resetgen($scope, function (res) {
 
 
 		        	console.log("Initialize algorithm success", res);

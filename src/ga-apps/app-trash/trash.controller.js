@@ -192,6 +192,32 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
     }
 
+    var programInputConfig = function () {
+
+        var $parent = $("#programConfig");
+
+        $parent.css({height:(g.isMobile() ? "60%" : "80%")})
+    }
+
+
+    var setupProgramInputConfig = function () {
+
+        setTimeout(function () {
+
+            programInputConfig();
+
+
+            $(window).resize(function () {
+
+                programInputConfig();
+            })
+
+        }, 1000);
+
+    }
+
+    setupProgramInputConfig() 
+
     var phases = [
     {
         message:"processing", 
@@ -203,7 +229,7 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
             // console.log("processing phase get input then set settings");
 
-            evolve.setup();
+            evolve.setup(self.name);
 
             $input.setInput({
                 name:self.name,
@@ -329,7 +355,7 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
                     console.log("hide loading"); 
 
-                    $scope.running(false);
+                    evolve.running(false);
 
                     
                     u.toggle("hide", "loading", {fade:displayfade});                    

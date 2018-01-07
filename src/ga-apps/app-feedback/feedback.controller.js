@@ -38,6 +38,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
     $scope.programInput = config.get("global.feedback");
 
+
     react.subscribe({
         name:"sim." + self.name,
         callback:function (x) {
@@ -59,7 +60,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
             
             // $scope.resetInput();
 
-            evolve.setup();
+            evolve.setup(self.name);
 
 
             $input.setInput({
@@ -179,7 +180,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
                     
                     console.log("hide loading"); 
                     $("#loadinginner").parent().hide();
-                    $scope.running(false);
+                    evolve.running(false);
 
 
 
@@ -212,7 +213,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
     self.refresh = function () {
 
-        $scope.running(false);
+        evolve.running(false);
         simulator.refresh();
         $scope.resetgen();
     }
@@ -220,7 +221,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     self.step = function (dna) {
 
 
-        simulator.step(dna, 300);
+        simulator.step(dna, 200);
     }
 
     self.play = function () {
