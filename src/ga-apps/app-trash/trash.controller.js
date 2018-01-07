@@ -1,4 +1,4 @@
-app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", 'api.service', 'input.service', 'config.service', function ($scope, $http, simulator, u, g, react, events, display, api, $input, config) {
+app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', function ($scope, simulator, u, g, react, events, display, api, $input, config, evolve) {
 
     var self = this;
 
@@ -202,6 +202,8 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             console.log("processing phase");
 
             // console.log("processing phase get input then set settings");
+
+            evolve.setup();
 
             $input.setInput({
                 name:self.name,

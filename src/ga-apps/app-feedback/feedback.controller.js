@@ -1,4 +1,4 @@
-app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'display.service', 'input.service', 'api.service', 'config.service', function ($scope, $http, simulator, data, u, send, events, react, display, $input, api, config) {
+app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'display.service', 'input.service', 'api.service', 'config.service', 'evolve.service', function ($scope, simulator, data, u, send, events, react, display, $input, api, config, evolve) {
 
     var self = this;
 
@@ -58,6 +58,8 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         phase:function (complete) {
             
             // $scope.resetInput();
+
+            evolve.setup();
 
 
             $input.setInput({
