@@ -72,7 +72,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 			}
 
 
-			var controlsWidth = function () {
+			var controlsWidth = function (name) {
 
 				winW = $(window).width();
 				winH = $(window).height();
@@ -83,14 +83,14 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 				toolW = 0.75;
 
 				$elem = $("#controlstoggle");
-				$trashtim = $("#trashsimtoggle");
+				// $trashsim = $("#trashsimtoggle");
 				$stage = $("#stagetoggle");
-				$controls = $("#controlstoggle");
+				// $controls = $("#controlstoggle");
 				$hudtoggle = $("#hudtoggle");
 
 
 				$elem.css({width:winW*width});
-				// $trashsim.css({top:$controls.offset().top + $controls.height() + 200 + "ps"});
+				// $trashsim.css({top:$elem.offset().top + $elem.height() + 200 + "ps"});
 
 				runToggle.input.css({width:winW*width});
 				
@@ -99,8 +99,17 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 				// console.log("controls load", cntrlWidth, $elem.width());
 				
-				$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
 
+				if (name == "trash") {
+
+					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
+				}
+				else if (name == "feedback") {
+
+					// $elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 100 + "px"});
+				
+					$elem.css({top:"50px", zIndex:50});
+				}
 				
 				controls.forEach(function (value, index) {
 
@@ -128,18 +137,38 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 
 			// console.log("\nregister event controls display\n\n");
-			events.on("load-display", "controls", function () {
+			events.on("load-display", "controls-trash", function () {
 
 
 				// console.log("\ncontrols load display\n\n");
 
-				controlsWidth();
+				controlsWidth("trash");
 
 				$(window).resize(function () {
 
 					console.log("resize");
 
-					controlsWidth();
+					controlsWidth("trash");
+				})
+
+				return "success";
+
+			})
+
+
+			// console.log("\nregister event controls display\n\n");
+			events.on("load-display", "controls-feedback", function () {
+
+
+				// console.log("\ncontrols load display\n\n");
+
+				controlsWidth("feedback");
+
+				$(window).resize(function () {
+
+					console.log("resize");
+
+					controlsWidth("feedback");
 				})
 
 				return "success";

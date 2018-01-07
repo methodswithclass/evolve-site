@@ -15,6 +15,7 @@ var feedback = function () {
 
 	var input;
 
+	var $stepdata;
 
 
 	self.gene = function () {
@@ -38,6 +39,12 @@ var feedback = function () {
 
 		return 0;
 
+	}
+
+
+	self.stepdata = function () {
+
+		return $stepdata;
 	}
 
 
@@ -81,13 +88,13 @@ var feedback = function () {
 		var avg = g.truncate(g.average(fits, function (value, index, array) {return value.fit;}), 2);
 
 
-		params.input.stepData({
+		$stepdata = {
 			name:"step." + params.input.name,
 			gen:params.gen,
 			org:params.index,
 			run:1,
 			step:1
-		})
+		}
 
 		complete({
 			runs:fits,

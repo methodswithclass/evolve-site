@@ -1,4 +1,4 @@
-app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'input.service', function ($scope, $http, simulator, data, u, send, events, react, $input) {
+app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'display.service', 'input.service', 'api.service', 'config.service', function ($scope, $http, simulator, data, u, send, events, react, display, $input, api, config) {
 
     var self = this;
 
@@ -12,8 +12,8 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
 
     console.log("load controller", self.name);
 
-    var update = false;
-    var ev = false;
+    // var update = false;
+    // var ev = false;
 
     events.on("close" + self.name, "id", function () {
 
@@ -24,6 +24,21 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
 
 
     react.subscribe({
+        name:"ev.feedback",
+        callback:function (x) {
+            // console.log("set evdata trash", x);
+            // evdata = x;
+
+            self.step(x.best.dna);
+        }
+
+    });
+
+    var processTypes = config.get("types.processTypes")
+
+    $scope.programInput = config.get("global.feedback");
+
+    react.subscribe({
         name:"sim." + self.name,
         callback:function (x) {
             self.sdata = x;
@@ -31,8 +46,9 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
     });
 
 
+    var displayDelay = 100;
+
     var displayfade = 800;
-    var loadfadeout = 800;
 
     var phases = [
     {
@@ -44,14 +60,34 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
             // $scope.resetInput();
 
 
+            $input.setInput({
+                name:self.name,
+                programInput:$scope.programInput
+            })
+
+            $scope.settings = $input.setSettings($scope, $input.getInput(false));
+
+
+
             u.toggle("hide", "evolve");
             u.toggle("hide", "hud");
 
             u.toggle("hide", "run");
-
-
+            u.toggle("hide", "play");
+            u.toggle("hide", "refresh");
+            u.toggle("hide", "restart");
+            u.toggle("hide", "step");
+            u.toggle("hide", "stop");
 
             u.toggle("hide", "settings");
+
+
+
+            u.toggle("disable", "refresh");
+            u.toggle("disable", "restart");
+            u.toggle("disable", "step");
+            u.toggle("disable", "play");
+            u.toggle("disable", "stop");
 
 
             complete();
@@ -98,7 +134,14 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         delay:600,
         duration:0, 
         phase:function (complete) {
-            // simulator.create();
+            
+            console.log("load environment");
+
+            simulator.create();
+            simulator.reset();
+
+            // events.dispatch("createPlot");
+            // events.dispatch("resetPlot");
 
             if (complete) complete()
 
@@ -110,8 +153,14 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         duration:displayfade,
         phase:function (complete) {
             
-            u.toggle("show", "hud", {fade:displayfade});
+            u.toggle("show", "stage", {fade:300});
+            u.toggle("show", "controls", {fade:300});
+            u.toggle("show", "hud", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
+
+            display.load(self.name);
+
+
 
             if (complete) complete();
         }
@@ -119,11 +168,11 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
     {
         message:"complete", 
         delay:600,
-        duration:loadfadeout, 
+        duration:displayfade, 
         phase:function (complete) {
             
             $("#loadinginner").animate({opacity:0}, {
-                duration:loadfadeout, 
+                duration:displayfade, 
                 complete:function () {
                     
                     console.log("hide loading"); 
@@ -132,12 +181,22 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
 
 
 
-                    u.toggle("hide", "loading", {fade:loadfadeout});                    
-                    u.toggle("show", "hud", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("hide", "loading", {fade:displayfade});                    
+                    u.toggle("show", "hud", {fade:displayfade, delay:displayDelay});
+
+                    u.toggle("show", "refresh", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "restart", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "step", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "play", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "stop", {fade:displayfade, delay:displayDelay});
 
 
-                    u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("enable", "play", {fade:displayfade, delay:displayDelay});
+                    u.toggle("enable", "refresh", {fade:displayfade, delay:displayDelay});
+
+                    // u.toggle("show", "run", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "settings", {fade:displayfade, delay:displayDelay});
+
 
                     if (complete) complete();
                 
@@ -147,6 +206,35 @@ app.controller("feedback.controller", ['$scope', '$http', 'feedback-sim', 'data'
         }
     }
     ]
+
+
+    self.refresh = function () {
+
+        $scope.running(false);
+        simulator.refresh();
+        $scope.resetgen();
+    }
+
+    self.step = function (dna) {
+
+
+        simulator.step(dna, 300);
+    }
+
+    self.play = function () {
+        
+
+        $scope.run();
+
+    }
+
+    self.stop = function () {
+
+
+        $scope.breakRun();
+
+    }
+
 
     
     react.push({

@@ -71,15 +71,16 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 			var changeplot = function (dna, duration) {
 
 				for (i in plot) {
-					plot[i].changeY(dna[i], duration);
+					plot[i].changeY((Array.isArray(dna) ? dna[i] : dna), duration);
 				}
 			}
 
 			var resetPlot = function () {
-				changeplot(zeros);
+				changeplot(0, 300);
 			}
 
 			events.on("createPlot", createPlot);
+			
 			events.on("resetPlot", function () {
 
 				resetPlot();
@@ -92,9 +93,18 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 			setTimeout(function () {
 
-				var effdim = u.dim(2);
+				// var effdim = u.dim(2);
 
-				$("#stage").css({width:effdim.width, height:effdim.height});
+				var ed = u.correctForAspect({
+					id:"plot",
+					factor:0.8, 
+					aspect:2, 
+					width:$(window).width(), 
+					height:$(window).height(),
+					window:true
+				})
+
+				$("#arena").css({width:ed.width, height:ed.height});
 
 			}, 500);
 

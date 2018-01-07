@@ -401,22 +401,33 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			        		$scope.running(false);
 				        	$("#breakfeedback").hide();
 
-				        	u.toggle("show", "hud", {fade:600});
 
-					        u.toggle("enable", "refresh", {fade:600});
-					        u.toggle("enable", "play", {fade:600});
-					        if ($scope.name == "trash") u.toggle("enable", "restart", {fade:600});
-					        if ($scope.name == "trash") u.toggle("enable", "step", {fade:600});
-				        	
+				        	if ($scope.name != "feedback") {
+					        	
+					        	u.toggle("show", "hud", {fade:600});
 
-					        u.toggle("show", "run", {fade:600});
-					        u.toggle("show", "settings", {fade:600});
+						        u.toggle("enable", "refresh", {fade:600});
+						        u.toggle("enable", "play", {fade:600});
+						        if ($scope.name == "trash") u.toggle("enable", "restart", {fade:600});
+						        if ($scope.name == "trash") u.toggle("enable", "step", {fade:600});
+					        	
+
+						        u.toggle("show", "run", {fade:600});
+						        u.toggle("show", "settings", {fade:600});
 
 
-				        	simulator.setup($scope.session, function () {
+					        	simulator.setup($scope.session, function () {
 
-					    		simulator.refresh($scope.session); 
-					    	});
+						    		simulator.refresh($scope.session); 
+						    	});
+
+				        	}
+				        	else {
+
+				        		u.toggle("disable", "stop", {fade:600});
+						        u.toggle("enable", "play", {fade:600});
+						        u.toggle("enable", "refresh", {fade:600});
+				        	}
 
 					    	setTimeout(function () {
 					            $("#evolvedata").animate({color:"#000"}, 600);
@@ -541,29 +552,50 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		        // $("#programInputCover").removeClass("none").addClass("block");
 
-		        u.toggle("hide", "settings", {fade:300});
-		        u.toggle("hide", "run", {fade:300});
-		        u.toggle("disable", "refresh", {fade:300});
-		        u.toggle("disable", "restart", {fade:300});
-		        u.toggle("disable", "step", {fade:300});
-		        u.toggle("disable", "play", {fade:300});
-		        u.toggle("disable", "stop", {fade:300});
-		        
-		        u.toggle("show", "evolve", {
-		            fade:600,
-		            delay:600,
-		            complete:function () {
+		        if ($scope.name != "feedback") {
+
+			        u.toggle("hide", "settings", {fade:300});
+			        u.toggle("hide", "run", {fade:300});
+			        u.toggle("disable", "refresh", {fade:300});
+			        u.toggle("disable", "restart", {fade:300});
+			        u.toggle("disable", "step", {fade:300});
+			        u.toggle("disable", "play", {fade:300});
+			        u.toggle("disable", "stop", {fade:300});
 
 
-            			api.run($scope, function (res) {
+			        u.toggle("show", "evolve", {
+			            fade:600,
+			            delay:600,
+			            complete:function () {
 
-					    	console.log("Run algorithm success", res);
 
-					    	runEvolveComplete();
-					    })
-		                
-		            }
-		        });
+	            			api.run($scope, function (res) {
+
+						    	console.log("Run algorithm success", res);
+
+						    	runEvolveComplete();
+						    })
+			                
+			            }
+			        });
+
+		    	}
+		    	else {
+
+
+		    		u.toggle("enable", "stop", {fade:300});
+			        u.toggle("disable", "play", {fade:300});
+			        u.toggle("disable", "refresh", {fade:300});
+
+
+		    		api.run($scope, function (res) {
+
+				    	console.log("Run algorithm success", res);
+
+				    	runEvolveComplete();
+				    })
+
+		    	}
 
 		        setTimeout(function () {
 		            $("#evolvepage").animate({color:"#fff"}, 600);

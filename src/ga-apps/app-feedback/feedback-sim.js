@@ -21,12 +21,21 @@ app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.se
 
     var create = function () {
 
+        console.log("create plot");
+
         events.dispatch("createPlot");
     }
 
     var reset = function () {
 
+        console.log("reset plot");
+
         events.dispatch("resetPlot");
+    }
+
+    var refresh = function () {
+
+        reset();
     }
 
     var step = function (dna, duration) {
@@ -40,6 +49,7 @@ app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.se
     return {
         create:create,
         reset:reset,
+        refresh:refresh,
     	step:step
     }
 

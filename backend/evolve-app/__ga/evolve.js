@@ -1229,14 +1229,9 @@ var obj = {};
 						if (now <= self.input.gens) {
 							setTimeout(function () {
 								step();
-							}, 0);
+							}, self.input.programInput.evdelay);
 						}
-						else {
-
-							if (self.input && self.input.completeEvolve) {
-								self.input.completeEvolve();
-							}
-						}
+						
 
 					}
 					else {

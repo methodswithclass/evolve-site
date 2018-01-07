@@ -28,6 +28,7 @@
 			"grid":{
 				"size":5
 			},
+			"evdelay":0,
 			"trashPercent":50,
 			"processType":"recursive"
 		},
@@ -41,19 +42,35 @@
 				"id":"diverge",
 				"goal":"diverge"
 			}
-			]
+			],
+			"evdelay":200
 		},
 		"recognize":{
 			"goals":[
 			{
+				"id":"max",
 				"goal":"max"
 			},
 			{
+				"id":"min",
 				"goal":"min"
 			}
 			],
 			"network":{
-				"hiddenLayer_1":16
+				"layers":[
+					{
+						"index":0,
+						"nodes":784
+					},
+					{
+						"index":1,
+						"nodes":16
+					},
+					{
+						"index":2,
+						"nodes":10
+					}
+				]
 			},
 			"function":"threshold"
 		}

@@ -170,7 +170,6 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     var displayDelay = 100;
 
     var displayfade = 800;
-    var loadfadeout = 800;
 
     $scope.programInputChange = function () {
 
@@ -309,7 +308,7 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
             u.toggle("show", "simdata", {fade:300});
             u.toggle("show", "evolvedata", {fade:300});
 
-            display.load();
+            display.load(self.name);
 
             if (complete) complete();
         }
@@ -317,13 +316,13 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
     {
         message:"getting things ready", 
         delay:600,
-        duration:loadfadeout, 
+        duration:displayfade, 
         phase:function (complete) {
 
             console.log("getting things ready phase, finish loading");
 
             $("#loadinginner").animate({opacity:0}, {
-                duration:loadfadeout, 
+                duration:displayfade, 
                 complete:function () {
 
                     console.log("hide loading"); 
@@ -331,20 +330,20 @@ app.controller("trash.controller", ['$scope', '$http', 'trash-sim', 'utility', '
                     $scope.running(false);
 
                     
-                    u.toggle("hide", "loading", {fade:loadfadeout});                    
-                    u.toggle("show", "hud", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("hide", "loading", {fade:displayfade});                    
+                    u.toggle("show", "hud", {fade:displayfade, delay:displayDelay});
 
-                    u.toggle("show", "refresh", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "restart", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "step", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "play", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "stop", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "refresh", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "restart", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "step", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "play", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "stop", {fade:displayfade, delay:displayDelay});
 
 
-                    u.toggle("enable", "refresh", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("enable", "refresh", {fade:displayfade, delay:displayDelay});
 
-                    u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
+                    u.toggle("show", "run", {fade:displayfade, delay:displayDelay});
+                    u.toggle("show", "settings", {fade:displayfade, delay:displayDelay});
 
 
                     $scope.programInputChange();
