@@ -16,6 +16,26 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	var winW = 0;
 	var $winH;
 
+	var displayDelay = 100;
+    var displayfade = 800;
+
+	var hasBeenBuilt = {
+		feedback:false,
+		trash:false,
+		recognize:false
+	}
+
+
+	var isBuilt = function (name) {
+
+		hasBeenBuilt[name] = true;
+	}
+
+	var beenBuilt = function (name) {
+
+		return hasBeenBuilt[name];
+	}
+
 
 	events.on("load-display", "stage-trash", function () {
 
@@ -32,10 +52,82 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 		$stage = $("#stagetoggle");
 		$hud = $("#hudtoggle");
+		$controls = $("#controlstoggle");
 
-		$stage.css({top:"300px", height:(g.isMobile() ? "50%" : "50%")})
+		$stage.css({top:($controls.offset().top - $hud.offset().top) + $controls.height() + 100 + "px", height:(g.isMobile() ? "50%" : "50%")})
 
 	})
+
+
+	var elementsToggle = function (name, toggle) {
+
+
+
+		if (toggle == "hide") {
+
+
+            u.toggle("hide", "evolve");
+            u.toggle("hide", "hud");
+
+            u.toggle("hide", "run");
+            u.toggle("hide", "play");
+            u.toggle("hide", "refresh");
+            u.toggle("hide", "restart");
+            u.toggle("hide", "step");
+            u.toggle("hide", "stop");
+
+            u.toggle("hide", "settings");
+
+
+
+            u.toggle("disable", "refresh");
+            u.toggle("disable", "restart");
+            u.toggle("disable", "step");
+            u.toggle("disable", "play");
+            u.toggle("disable", "stop");
+
+        }
+        else if (toggle == "show") {
+
+			                    
+            u.toggle("show", "hud", {fade:displayfade, delay:displayDelay});
+
+            u.toggle("show", "stage", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "controls", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "hud", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "evolvedata", {fade:displayfade, delay:displayDelay});
+
+            if (name != "feedback") {
+            	u.toggle("show", "simdata", {fade:displayfade, delay:displayDelay});
+            }
+
+
+            u.toggle("show", "settings", {fade:displayfade, delay:displayDelay});
+
+
+            u.toggle("show", "refresh", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "restart", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "step", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "play", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "stop", {fade:displayfade, delay:displayDelay});
+
+            if (name != "feedback") {
+            	u.toggle("show", "run", {fade:displayfade, delay:displayDelay});
+        	}
+
+
+            if (name == "feedback") {
+            	u.toggle("enable", "play", {fade:displayfade, delay:displayDelay});
+        	}
+            u.toggle("enable", "refresh", {fade:displayfade, delay:displayDelay});
+
+
+        }
+
+
+
+    }
+
 
 	var setEvolveHeight = function () {
 
@@ -75,7 +167,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	var loadPhases = function (phases) {
 
 
-		console.log(phases);
+		// console.log(phases);
 
 		var runPhase = function (i) {
 
@@ -135,14 +227,15 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 				index:0,
 				phase:function () {
 
-					events.dispatch("load-display", "stage-feedback");
+					events.dispatch("load-display", "controls-feedback");
 				}
 			},
 			{
 				index:1,
 				phase:function () {
 
-					events.dispatch("load-display", "controls-feedback");
+
+					events.dispatch("load-display", "stage-feedback");
 				}
 			},
 			{
@@ -152,10 +245,19 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 					events.dispatch("load-display", "evolve-data-feedback");
 				}
 			}
+			],
+			recognize:[
+			{
+				index:0,
+				phase:function () {
+
+
+				}
+			}
 			]
 		}
 
-		console.log(name, phases[name]);
+		// console.log(name, phases[name]);
 
 
 		loadPhases(phases[name]);
@@ -168,7 +270,10 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 	return {
 		forceEvolveHeight:forceEvolveHeight,
-		load:load
+		load:load,
+		beenBuilt:beenBuilt,
+		isBuilt:isBuilt,
+		elementsToggle:elementsToggle
 	}
 
 

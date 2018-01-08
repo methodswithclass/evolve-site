@@ -170,7 +170,7 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 		            duration:1000, 
 		            complete:function () { 
 		                $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
-		               	complete();
+		               	if (complete) complete();
 						toggleOpened = true;
 		            }
 		        }

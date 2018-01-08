@@ -1,30 +1,21 @@
-app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'events.service', 'simulators', '$http', 'api.service', function ($scope, u, react, events, simulators, $http, api) {
+app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'events.service', 'recognize-sim', 'api.service', 'input.service', 'evolve.service', 'display.service', 'config.service',  function ($scope, u, react, events, simulator, api, $input, evolve, display, config) {
 
     var self = this;
 
+    
     self.name = "recognize";
     $scope.name = self.name;
+    
 
-    $scope.getContentUrl = function() {
+    var processTypes;
 
-        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/recognize/recognize_demo.html";
-    }
-
-    // self.pdata = data.get(self.name)
-
-    var simulator = simulators.get(self.name);
-
-    var update = false;
-    var ev = false;
-
-    events.on("closerecognize", function () {
-
-       $scope.running(false);
-    });
+    $scope.programInput;
 
 
-    var displayfade = 800;
-    var loadfadeout = 800;
+    var pageBuilt = display.beenBuilt(self.name);
+
+
+    console.log("page built", self.name, pageBuilt, "\n\n\n\n\n\n\n\n")
 
 
     var loadDataDatabase = function (data, index) {
@@ -69,50 +60,27 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     }
 
-    var displayDelay = 100;
 
     var phases = [
     {
         message:"processing", 
         delay:0,
         duration:0,
-        phase:function (complete) {
+        phase:function (options) {
 
             console.log("processing phase");
 
 
-            $scope.resetInput();
-
-            $scope.resetInput({
-                gens:20,
-                runs:5,
-                goal:"max",
-                pop:20,
-                evdelay:0
-            });
+            enter();
 
 
-            u.toggle("hide", "evolve");
-            u.toggle("hide", "hud");
-
-            u.toggle("hide", "run");
-            u.toggle("hide", "play");
-            u.toggle("hide", "refresh");
-            u.toggle("hide", "restart");
-            u.toggle("hide", "step");
-            u.toggle("hide", "stop");
-
-            u.toggle("hide", "settings");
+            display.elementsToggle(self.name, "hide");
 
 
+            setTimeout(function () {
 
-            u.toggle("disable", "refresh");
-            u.toggle("disable", "restart");
-            u.toggle("disable", "step");
-            u.toggle("disable", "play");
-            u.toggle("disable", "stop");
-
-            complete();
+                if (typeof options.complete === "function") options.complete() 
+            }, options.duration)
 
 
         }
@@ -121,28 +89,49 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         message:"initializing evolutionary algoirthm", 
         delay:600,
         duration:0,
-        phase:function (complete) {
+        phase:function (options) {
 
             console.log("initialize phase, processing phase complete (should not appear before set input response)");
 
 
-            api.instantiate(function (res) {
+            if (!pageBuilt) {
+               
+                api.instantiate(function (res) {
 
-                console.log("Instantiate session", res);
+                    console.log("Instantiate session", res);
 
-                $scope.session = res.data.session;
-                
-                api.initialize($scope, function () {
+                    $scope.session = res.data.session;
+                    
+                    api.initialize(function () {
 
-                    api.setInput($scope, false, function (res) {
+                        api.setInput(false, function (res) {
 
-                        if (complete) complete() 
+                            setTimeout(function () {
+
+                                if (typeof options.complete === "function") options.complete() 
+                            }, options.duration)
+
+                        });
+
+                    })
+                    
+                })
+            }
+            else {
+
+                api.initialize(function () {
+
+                    api.setInput(false, function (res) {
+
+                        setTimeout(function () {
+
+                            if (typeof options.complete === "function") options.complete() 
+                        }, options.duration)
 
                     });
 
                 })
-                
-            })            
+            }
 
         }
     },
@@ -150,81 +139,64 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         message:"loading data", 
         delay:600,
         duration:0, 
-        phase:function (complete) {
+        phase:function (options) {
 
             console.log("loading phase");
 
             // writeImagesDatabase();
 
-            if (complete) complete();
+            setTimeout(function () {
+
+                if (typeof options.complete === "function") options.complete() 
+            }, options.duration)
         }
     },
     {
         message:"loading display", 
         delay:600,
         duration:displayfade,
-        phase:function (complete) {
+        phase:function (options) {
 
             console.log("loading display phase");
 
-            // u.toggle("show", "hud", {fade:duration});
-            // u.toggle("show", "run", {fade:duration});
+            display.load(self.name);
 
-            u.toggle("show", "stage", {fade:300});
-            u.toggle("show", "controls", {fade:300});
-            u.toggle("show", "simdata", {fade:300});
-            u.toggle("show", "evolvedata", {fade:300});
+            setTimeout(function () {
 
-            if (complete) complete();
+                if (typeof options.complete === "function") options.complete() 
+            }, options.duration)
         }
     },
     {
         message:"getting things ready", 
         delay:600,
         duration:loadfadeout, 
-        phase:function (complete) {
+        phase:function (options) {
 
             console.log("getting things ready phase");
 
-            $("#loadinginner").animate({opacity:0}, {
-                duration:loadfadeout, 
-                complete:function () {
+            
+            $input.running(false);
 
-                    
-                    console.log("hide loading"); 
-                    $("#loadinginner").parent().hide();
-                    $scope.running(false);
+            display.elementsToggle(self.name, "show");
 
-
-
-
-                    u.toggle("hide", "loading", {fade:loadfadeout});                    
-                    u.toggle("show", "hud", {fade:loadfadeout, delay:displayDelay});
-
-                    u.toggle("show", "refresh", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "restart", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "step", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "play", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "stop", {fade:loadfadeout, delay:displayDelay});
-
-
-                    u.toggle("enable", "refresh", {fade:loadfadeout, delay:displayDelay});
-
-                    u.toggle("show", "run", {fade:loadfadeout, delay:displayDelay});
-                    u.toggle("show", "settings", {fade:loadfadeout, delay:displayDelay});
-
-
-                    if (complete) complete();
-                }
-            });
 
             events.dispatch("imageFunctions");
+
+
+            setTimeout(function () {
+
+                if (typeof options.complete === "function") options.complete() 
+            }, options.duration)
+
         }
     }
     ]
     
 
     var load = function () {
+
+        console.log("load controller", self.name);
 
         setTimeout(function () {
 
@@ -233,7 +205,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                 state:phases
             });
 
-            events.dispatch("load" + self.name);
+            // events.dispatch("load" + self.name);
+
+            $scope.runPhase(0);
 
         }, 500);
         
@@ -262,7 +236,48 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     }
 
 
+    var build = function () {
+
+        
+        processTypes = config.get("types.processTypes")
+
+        $scope.programInput = config.get("global.feedback");
+    }
+
+
+    var enter = function () {
+
+
+        console.log("enter controller", self.name);
+
+
+        $input.resetInput();
+
+        $input.setInput({
+            gens:20,
+            runs:5,
+            pop:20,
+            session:null
+        });
+
+        var input = $input.getInput(false);
+
+        evolve.setup(self.name);
+
+        $scope.settings = $input.setSettings($scope, input);
+
+    }
+
+
+    if (!pageBuilt) {
+        build();
+        display.isBuilt(self.name);
+    }
+
+
     load();
+
+   
 
 
 }]);

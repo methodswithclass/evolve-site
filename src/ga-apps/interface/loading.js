@@ -13,14 +13,6 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 			var $phases;
 			var loading = false;
 
-			react.subscribe({
-				name:"phases" + $scope.name,
-				callback:function (x) {
-
-					$phases = x;
-
-				}
-			});
 
 			var setMessage = function (message) {
 
@@ -33,34 +25,36 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
 
 		    
 
-		    var complete = function (index) {
+		    $scope.runPhase = function (index) {
 
 		    	// console.log("run complete index", index);
 
-        		setTimeout(function () {
+		    	if (index < $phases.length) {
 
-                	if (index < $phases.length) {
+        			setTimeout(function () {
 
                 		setMessage($phases[index].message);
 
-                		$phases[index].phase(function () {
+                		$phases[index].phase({
+                			duration:$phases[index].duration,
+                			complete:function () {
 
-                			complete(index + 1);
+                				$scope.runPhase(index + 1);
+                			}
                 		});
-                	}
 
-            	}, 500);
+            		}, $phases[index].delay);
+
+            	}
+
+        	}
+
+
+            $scope.initLoading = function (_phases) {
+
+				$phases = _phases;
 
             }
-
-
-    		events.on("load" + $scope.name, function () {
-
-    			// console.log("load", $scope.name);
-
-    			complete(0);
-    			
-    		});
 
 
     	}

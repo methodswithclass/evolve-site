@@ -40,7 +40,7 @@ app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.se
 
     var step = function (dna, duration) {
 
-        console.log("step simulator");
+        // console.log("step simulator");
 
         changeplot(dna, duration);
 

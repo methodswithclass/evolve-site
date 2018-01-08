@@ -23,7 +23,7 @@ trashRouter.post("/simulate", function (req, res, next) {
 })
 
 
-trashRouter.post("/environment/refresh/", function (req, res, next) {
+trashRouter.post("/environment/refresh", function (req, res, next) {
 
 	var input = req.body.input;
 
@@ -42,12 +42,12 @@ trashRouter.post("/environment/refresh/", function (req, res, next) {
 })
 
 
-trashRouter.get("/environment/reset/:session", function (req, res, next) {
+trashRouter.post("/environment/reset", function (req, res, next) {
 
 
 	console.log("reset environment");
 
-	var trash = get.getSessionProgram(req.params.session, "trash");
+	var trash = get.getSessionProgram(req.body.input.session, "trash");
 
 	trash.reset();
 

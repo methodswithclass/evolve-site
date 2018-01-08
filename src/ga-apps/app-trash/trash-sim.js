@@ -176,18 +176,18 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     }
 
 
-    var setup = function (session, complete) {
+    var setup = function (complete) {
 
         console.log("sim setup: instruct", evdata);
 
         
-        api.instruct.trash(session, function (res) {
+        api.instruct.trash(function (res) {
 
             complete();
         });
     }
 
-    var reset = function (session) {
+    var reset = function () {
 
         i = 1;
         _score = 0;
@@ -214,7 +214,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         events.dispatch("resetenv");
 
 
-        api.resetEnvironment(session, function (res) {
+        api.resetEnvironment(function (res) {
 
             console.log("Reset environment success", res);
         });
@@ -224,10 +224,10 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var refresh = function (session) {
+    var refresh = function () {
 
         events.dispatch("refreshenv");
-        reset(session);
+        reset();
     }
 
     var start = function (session) {
@@ -256,7 +256,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         stepper = {};
         stepper = null;
 
-        setup(session, function () {
+        setup(function () {
 
             start(session);
 

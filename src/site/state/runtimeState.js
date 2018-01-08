@@ -37,7 +37,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/ga-apps/feedback/feedback_demo.html",
-        responsive:true
+        responsive:false
     },
     {
         name:"trash",
@@ -57,7 +57,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"recognize#demo",
         url:"/ga-apps/recognize/recognize_demo.html",
-        responsive:true
+        responsive:false
     }
     ]
 

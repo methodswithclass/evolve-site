@@ -67,16 +67,17 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 
 		    $scope.resetgen = function () {
 
-		        evolve.resetgen($scope, function (res) {
+		        
+		    	$scope.animateRefresh();
 
+
+		        evolve.resetgen(function () {
 
 		        	console.log("Initialize algorithm success", res);
-
-			    	initData();
-
-			    	// programInputToggle();
-
+		        	initData();
 		        });
+
+
 		    }
 
 
@@ -94,19 +95,6 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		        evolve.breakRun($scope);
 
 		    }
-
-
-
-		    /*
-			----------------------------------------------
-			###############################################
-		    */
-
-
-
-
-
-
 
 
 

@@ -15,7 +15,7 @@ recognizeRouter.post("/simulate", function (req, res, next) {
 
 	console.log("run best");
 
-	var recognize = get.getSessionProgram(req.body.session, "recognize");
+	var recognize = get.getSessionProgram(req.body.input.session, "recognize");
 
 	recognize.simulate(function (image, output, label) {
 

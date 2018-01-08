@@ -28,11 +28,11 @@ var addProgram = function (input) {
 }
 
 
-evolveRouter.get("/data/:name", function (req, res, next) {
+evolveRouter.post("/data", function (req, res, next) {
 
-	console.log("get data req", req.params.name);
+	console.log("get data req", req.body.input.name);
 
-	res.json({data:get.data(req.params.name)});
+	res.json({data:get.data(req.body.input.name)});
 })
 
 
@@ -92,49 +92,49 @@ evolveRouter.post("/run", function (req, res, next) {
 });
 
 
-evolveRouter.get("/running/:session", function (req, res, next) {
+evolveRouter.post("/running", function (req, res, next) {
 
 	// console.log("check running", req.body, evolution.running());
 
-	var evolution = get.getSessionEvolve(req.params.session)
+	var evolution = get.getSessionEvolve(req.body.input.session)
 
 	res.json({running:evolution.running()})
 })
 
 
-evolveRouter.get("/best/:session", function (req, res, next) {
+evolveRouter.post("/best", function (req, res, next) {
 
 	// console.log("get best");
 
-	var evolution = get.getSessionEvolve(req.params.session)
+	var evolution = get.getSessionEvolve(req.body.input.session)
 
 	res.json({ext:evolution.getBest()});
 })
 
 
 
-evolveRouter.get("/instruct/:name/:session", function (req, res, next) {
+evolveRouter.post("/instruct", function (req, res, next) {
 
 	console.log("instruct");
 
-	var evolution = get.getSessionEvolve(req.params.session)
+	var evolution = get.getSessionEvolve(req.body.input.session)
 	var ext = evolution.getBest();
-	var trash = get.getSessionProgram(req.params.session, req.params.name);
+	var prog = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
 	// console.log("instruct best dna", best, best.dna);
 
-	trash.instruct(ext.best.dna);
+	prog.instruct(ext.best.dna);
 
 	res.json({success:"program successfully instructed"});
 })
 
 
 
-evolveRouter.get("/stepdata/:name/:session", function (req, res, next) {
+evolveRouter.post("/stepdata", function (req, res, next) {
 
 	// console.log("get stepdata", req.body, evolution.getstepdata());
 
-	var program = get.getSessionProgram(req.params.session, req.params.name);
+	var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
 	var stepdata = program.stepdata();
 

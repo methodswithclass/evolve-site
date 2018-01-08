@@ -70,7 +70,7 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     	instruct(session, function (res) {
 
 
-    		api.simulate.recognize(session, function (res) {
+    		api.simulate.recognize(function (res) {
 
     			makeImage(res.data.image, res.data.output, res.data.label);
     		})

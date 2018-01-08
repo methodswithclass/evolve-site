@@ -294,9 +294,11 @@ angular.module('shared.module', [])
 						}
 					}
 
-					console.log("dispatch event in series with id:", sub.id, "from event bundle named:", name);
+					
 
 					if (sub) {
+
+						console.log("dispatch event in series with id:", sub.id, "from event bundle named:", name);
 
 						if (self.events[name] && self.events[name][sub.id] && self.events[name][sub.id].event) {
 
@@ -318,10 +320,14 @@ angular.module('shared.module', [])
 						}
 
 					}
+					else {
+
+						result["single"] = null;
+					}
 
 					// console.log("return value", result);
 
-					runEvent(index + 1);
+					return runEvent(index + 1);
 				}
 
 			}
@@ -360,7 +366,7 @@ angular.module('shared.module', [])
 		else if (self.events[name]) {
 
 			console.log("dispatch event bundle named:", name);
-			runEvent(0);
+			result = runEvent(0);
 		}
 		else {
 

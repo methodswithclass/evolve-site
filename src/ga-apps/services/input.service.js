@@ -16,8 +16,13 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	var $$initial = config.get("global.initial");
 
 
-	setTimeout(function () {
+	var displayTypes = {
+		value:"value",
+		string:"string"
+	}
 
+
+	var sendVars = function () {
 
 		react.push({
 			name:"evolve.vars",
@@ -27,12 +32,6 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			}
 		})
 
-	}, 500);
-
-
-	var displayTypes = {
-		value:"value",
-		string:"string"
 	}
 
 
@@ -126,9 +125,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
     	$("#gensinput").val(input.gens);
     	$("#runsinput").val(input.runs);
-    	$("#goalinput").val(input.goal);
     	$("#popinput").val(input.pop);
-
     	$("#methodinput").val(input.method);
     	$("#parentsinput").val(input.parents);
     	$("#splicemininput").val(input.splicemin);
@@ -154,7 +151,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         	
         	gens: 				input.gens,
         	runs: 				input.runs,
-        	goal: 				input.goal || $scope.goals[0].goal,
+        	goal: 				"max",
         	pop:  				input.pop,
     		parents: 			input.parents,
     		pool: 				input.pool,
@@ -184,7 +181,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
             gens: 				$("#gensinput").val(),
             runs: 				$("#runsinput").val(),
-            goal: 				$scope.settings ? ($scope.settings.goal || "max") : "max",
+            goal: 				"max",
             pop: 				$("#popinput").val(),
         	parents: 			$("#parentsinput").val(),
         	splicemin: 			$("#splicemininput").val(),
@@ -212,11 +209,11 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
  			self.temp[i] = options[i]
  		}
 
- 		// console.log("set input", options, self.temp);
 
- 		// console.log("get input inside set Input");
+        for (var i in options) {
 
- 		setValues(getInput(false));
+            self.global[i] = options[i];
+        }
 
  	}
 
@@ -232,7 +229,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     		type:displayTypes.value
     	})
 
-    	var $goal = $("#goalinput");
+    	// var $goal = $("#goalinput");
     	var $method = $("#methodinput");
 
 
@@ -242,7 +239,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			
 			gens: 				update ? getIntFromId("gens") 						: self.temp.gens,
 			runs: 				update ? getIntFromId("runs") 						: self.temp.runs,
-			goal: 			    update ? $goal.val()								: self.temp.goal,
+			goal: 			    "max",
 			pop: 				update ? getIntFromId("pop") 						: self.temp.pop,
 			parents: 			update ? getIntFromId("parents") 					: self.temp.parents,
 			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp.splicemin,
@@ -259,7 +256,9 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			session: 			self.temp.session || ""
 		}
 
-		// console.log("get input", update, self.global);
+		console.log("get input", update, self.temp, self.global);
+
+        setValues(self.global);
 
         return self.global;
     }
@@ -272,13 +271,12 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
     var resetInput = function () {
 
+    	sendVars();
+
 		setInput($$initial);	
 	}
 
 
-	// console.log("initial set input", $$initial);
-
-	resetInput();
 
 	return {
 		resetInput:resetInput,

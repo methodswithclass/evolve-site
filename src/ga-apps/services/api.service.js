@@ -2,16 +2,17 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
 
 
 
-	var getBest = function ($scope, callback) {
+	var getBest = function (callback) {
 
        
     	$http({
-    		method:"GET",
-    		url:"/evolve/best/" + $scope.session
+    		method:"POST",
+    		url:"/evolve/best",
+            data:{input:$input.getInput()}
     	})
     	.then(function (res) {
 
-            callback(res);
+            if (typeof callback === "function")callback(res);
 
         }, function (err) {
 
@@ -23,16 +24,17 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     }
 
 
-    var stepdata = function ($scope, callback) {
+    var stepdata = function (callback) {
 
       
     	$http({
-    		method:"GET",
-    		url:"/evolve/stepdata/" + $scope.name + "/" + $scope.session
+    		method:"POST",
+    		url:"/evolve/stepdata",
+            data:{input:$input.getInput()}
     	})
     	.then(function (res) {
 
-            callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 
@@ -42,16 +44,17 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
    	}
 
 
-   	var isRunning = function  ($scope, callback) {
+   	var isRunning = function  (callback) {
 
 
     	$http({
-    		method:"GET",
-    		url:"/evolve/running/" + $scope.session
+    		method:"POST",
+    		url:"/evolve/running",
+            data:{input:$input.getInput()}
     	})
     	.then(function (res) {
 
-            callback(res);
+            if (typeof callback === "function") callback(res);
 
     	}, function (err) {
 
@@ -62,7 +65,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     }
 
 
-    var setInput = function ($scope, resend, callback) {
+    var setInput = function (resend, callback) {
 
        
         console.log("setInput http call get input or resendInput");
@@ -74,7 +77,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     	})
     	.then(function (res) {
 
-            if (callback) callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 
@@ -94,7 +97,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
         })
         .then(function (res) {
 
-            if (callback) callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 
@@ -106,7 +109,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     }
 
 
-   	var initialize = function ($scope, callback) {
+   	var initialize = function (callback) {
 
     
         console.log("initialize http call get input");
@@ -118,7 +121,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
         })
         .then(function (res) {
 
-            if (callback) callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 
@@ -129,7 +132,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     }
 
 
-    var run = function ($scope, callback) {
+    var run = function (callback) {
 
 
         console.log("run call input", $input.getInput());
@@ -146,13 +149,13 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
             	initialize(function () {
             		
             		run(function  () {
-            			if (callback) callback(res);
+            			if (typeof callback === "function") callback(res);
             		})
             	});
             }
             else {
 
-            	 if (callback) callback(res);
+            	 if (typeof callback === "function") callback(res);
             }
 
         }, function (err) {
@@ -162,49 +165,26 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
 
     }
 
-    var instruct = {
+    var instruct = function (callback) {
 
-        trash:function (session, callback) {
+        $http({
+            method:"POST",
+            url:"/evolve/instruct",
+            data:{input:$input.getInput()}
+        })
+        .then(function (res) {
 
-            $http({
-                method:"GET",
-                url:"/evolve/instruct/trash/" + session
-            })
-            .then(function (res) {
+            if (typeof callback === "function") callback(res);
 
-                if (callback) callback(res);
+        }, function (err) {
 
-            }, function (err) {
+            console.log("Server error: 'instruct'", err.message);
 
-                console.log("Server error: 'instruct'", err.message);
-
-            })
-
-
-        },
-        recognize:function (session, callback) {
-
-            $http({
-                method:"GET",
-                url:"/evolve/instruct/recognize/" + session
-            })
-            .then(function (res) {
-
-                console.log("instruct successful", res.body);
-
-                if (callback) callback(res);
-
-            }, function (err) {
-
-                console.log("Server error while running best individual", err);
-
-            })
-
-        }
+        })
 
     }
 
-    var refreshEnvironment = function ($scope, callback) {
+    var refreshEnvironment = function (callback) {
 
 
         console.log("refresh environment call get input");
@@ -216,7 +196,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
         })
         .then(function (res) {
 
-            if (callback) callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 
@@ -226,15 +206,16 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
 
     }
 
-    var resetEnvironment = function (session, callback) {
+    var resetEnvironment = function (callback) {
 
         $http({
-            method:"GET",
-            url:"/trash/environment/reset/" + session
+            method:"POST",
+            url:"/trash/environment/reset",
+            data:{input:$input.getInput()}
         })
         .then(function (res) {
 
-            if (callback) callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 
@@ -257,7 +238,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
             })
             .then(function (res) {
 
-                if (callback) callback(res);
+                if (typeof callback === "function") callback(res);
 
             }, function (err) {
 
@@ -267,15 +248,16 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
         
 
         },
-        recognize:function (session, callback) {
+        recognize:function (callback) {
 
             $http({
                 method:"POST",
-                url:"/recognize/simulate/" + session
+                url:"/recognize/simulate",
+                data:{input:$input.getInput()}
             })
             .then(function (res) {
 
-                if (callback) callback(res);
+                if (typeof callback === "function") callback(res);
 
             }, function (err) {
 
@@ -287,7 +269,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     }
 
 
-    var hardStop = function ($scope, callback) {
+    var hardStop = function (callback) {
 
 
         console.log("hard stop call get input");
@@ -295,11 +277,11 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     	$http({
     		method:"POST",
     		url:"/evolve/hardStop",
-    		data:{name:$scope.name, input:$input.getInput()}
+    		data:{input:$input.getInput()}
     	})
     	.then(function (res) {
 
-            if (callback) callback(res);
+            if (typeof callback === "function") callback(res);
 
         }, function (err) {
 

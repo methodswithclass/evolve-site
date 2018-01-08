@@ -29,7 +29,7 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 					$evolve.css({top:"400px"});
 				}
 				else if (name == "feedback") {
-					$evolve.css({top:($stage.offset().top - $hud.offset().top) + $stage.height() + 100 + "px"});	
+					$evolve.css({top:($stage.offset().top - $hud.offset().top) + $stage.height() + 50 + "px"});	
 				}
 				
 			}
