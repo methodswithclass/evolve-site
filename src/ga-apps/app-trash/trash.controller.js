@@ -12,12 +12,13 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     $scope.programInput;
 
     var processTypes;
-    var displayfade;
+    var displayParams = display.getParams();
+
 
     var pageBuilt = display.beenBuilt(self.name);
 
 
-    console.log("page built", self.name, pageBuilt, "\n\n\n\n\n\n\n\n")
+    console.log("\n\n\ncontroller", self.name, "built", pageBuilt, "\n\n\n")
 
 
     self.outcome = function (outcome) {
@@ -185,7 +186,7 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     {
         message:"loading display", 
         delay:600,
-        duration:displayfade,
+        duration:displayParams.fade,
         phase:function (options) {
 
             console.log("load display phase");
@@ -201,13 +202,15 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     {
         message:"getting things ready", 
         delay:600,
-        duration:displayfade, 
+        duration:displayParams.fade, 
         phase:function (options) {
 
             console.log("getting things ready phase, finish loading");
 
 
-            evolve.running(false);
+            evolve.running(false, $scope);
+
+            u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
 
             display.elementsToggle(self.name, "show");
 
@@ -237,7 +240,7 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
             $scope.initLoading(phases);
 
-            u.toggle("show", "loading", {fade:displayfade});
+            u.toggle("show", "loading", {fade:displayParams.fade});
 
             $scope.runPhase(0);
 
@@ -406,8 +409,6 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
         }
 
-        displayfade = 800;
-
 
         $scope.programInput.update();
 
@@ -420,6 +421,8 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
             }
         })
 
+        display.isBuilt(self.name);
+
     }
 
 
@@ -428,15 +431,31 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
         setupProgramInputConfig();
 
-        $input.resetInput();
 
-        $input.setInput({
-            name:self.name,
-            programInput:$scope.programInput,
-            session:null
-        })
+        if (!pageBuilt) {
 
-        $input.getInput(false);
+            $input.createInput(self.name);
+
+
+            $input.resetInput();
+
+            $input.setInput({
+                name:self.name,
+                programInput:$scope.programInput
+            })
+            
+
+        }
+        else {
+
+            $input.setName(self.name);
+
+            $input.resetInput();
+
+        }
+
+
+        
 
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));
@@ -447,11 +466,8 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     }
 
 
-    if (!pageBuilt) {
-        build();
-        display.isBuilt(self.name);
-    }
 
+    build();
 
     load();
 

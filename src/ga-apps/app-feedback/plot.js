@@ -59,9 +59,31 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 					$(container).animate({top:normalize(self.coords.y)}, duration);
 				}
 
+				self.destroy = function () {
+
+					$(container).remove();
+					container = null;
+				}
+
+			}
+
+			var destroyPlot = function () {
+
+				for (var i in plot) {
+
+					plot[i].destroy();
+				}
+
+				plot.length = 0;
+				plot = [];
+				plot = null;
 			}
 
 			var createPlot = function () {
+
+				destroyPlot();
+
+				plot = [];
 
 				for (var i = 0; i < total; i++) {
 					plot[i] = new point(i*$inner.width()/total);

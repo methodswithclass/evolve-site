@@ -71,9 +71,9 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		    	$scope.animateRefresh();
 
 
-		        evolve.resetgen(function () {
+		        evolve.resetgen(function (data) {
 
-		        	console.log("Initialize algorithm success", res);
+		        	console.log("Initialize algorithm success", data.res);
 		        	initData();
 		        });
 

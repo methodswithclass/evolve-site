@@ -7,14 +7,14 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	self.global = {};
 	self.temp = {};
 
+    self.name;
+
 
 	var crossoverMethods = config.get("types.crossoverMethods");
 	var runPopTypes = config.get("types.runPopTypes");
 	var reproductionTypes = config.get("types.reproductionTypes");
 
-
 	var $$initial = config.get("global.initial");
-
 
 	var displayTypes = {
 		value:"value",
@@ -38,32 +38,26 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	var getValue = function ($value) {
 
 		var value = parseFloat($value)
-
     	return value ? g.truncate(value/100, 2) : $value;
     }
 
     var getString = function ($value) {
 
     	var value = parseFloat($value);
-
     	return value ? Math.floor(value*100) : $value;
     }
 
     var getFloatFromId = function (id) {
 
     	var $value = $("#" + id + "input").val();
-
     	var value = parseFloat($value);
-
     	return value ? value : $value;
     }
 
     var getIntFromId = function (id) {
 
     	var $value = $("#" + id + "input").val();
-
     	var value = parseInt($value);
-
     	return value ? value : $value;
     }
 
@@ -82,7 +76,6 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     		string:"string"
     	}
 
-
     	// console.log("resolve display input", options);
 
 		if (options.type == types.value) {
@@ -90,7 +83,6 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			// console.log("type value");
 
 			$pool = pool > 1 ? getValue(pool) : pool;
-
 			$mutate = mutate > 1 ? getValue(mutate) : mutate;
 
 		}
@@ -99,19 +91,15 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			// console.log("type string");
 
 			$pool = pool < 1 ? getString(pool) : pool;
-
 			$mutate = mutate < 1 ? getString(mutate) : mutate;
  		}
 
-
  		// console.log("resolve display result", {$pool, $mutate});
-
 
     	return {
     		pool:$pool,
     		mutate:$mutate
     	}
-
 
     }
 
@@ -126,13 +114,12 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     	$("#gensinput").val(input.gens);
     	$("#runsinput").val(input.runs);
     	$("#popinput").val(input.pop);
-    	$("#methodinput").val(input.method);
     	$("#parentsinput").val(input.parents);
     	$("#splicemininput").val(input.splicemin);
     	$("#splicemaxinput").val(input.splicemax);
-    	
     	$("#poolinput").val(values.pool);
     	$("#mutateinput").val(values.mutate);
+        $("#methodinput").val(input.method);
 
     }
 
@@ -148,23 +135,20 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     	// console.log("set settings", input.pool, input.mutate, values.pool, values.mutate);
 
     	$scope.settings = {
-        	
         	gens: 				input.gens,
         	runs: 				input.runs,
-        	goal: 				"max",
         	pop:  				input.pop,
     		parents: 			input.parents,
     		pool: 				input.pool,
     		splicemin: 			input.splicemin,
     		splicemax: 			input.splicemax,
-
     		pool: 				values.pool,
     		mutate: 			values.mutate,
-        	
-        	runPopType: 		input.runPopType || self.temp.runPopType,
-    		method: 			input.method || self.temp.method,
-    		reproductionType: 	input.reproductionType || self.temp.reproductionType,
-        
+            goal:               "max",
+            method:             input.method || self.temp[self.name].method,
+
+        	runPopType: 		input.runPopType || self.temp[self.name].runPopType,
+    		reproductionType: 	input.reproductionType || self.temp[self.name].reproductionType
         }
 
         // console.log("set settings", $scope.settings);
@@ -178,22 +162,15 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
 
     	var manual = {
-
             gens: 				$("#gensinput").val(),
             runs: 				$("#runsinput").val(),
-            goal: 				"max",
             pop: 				$("#popinput").val(),
         	parents: 			$("#parentsinput").val(),
         	splicemin: 			$("#splicemininput").val(),
         	splicemax: 			$("#splicemaxinput").val(),
-
         	pool: 				$("#poolinput").val(),
         	mutate: 			$("#mutateinput").val(),
-            
-            runPopType: 		($scope.settings ? $scope.settings.runPopType || runPopTypes.default : runPopTypes.default),
-        	reproductionType: 	($scope.settings ? $scope.settings.reproductionType || reproductionTypes.default : reproductionTypes.default),
-        	method: 			($scope.settings ? $scope.settings.method || crossoverMethods.default : crossoverMethods.default)
-        
+        	method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
         }
 
         // console.log("change input", manual);
@@ -202,17 +179,31 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     }
 
 
+    var createInput = function (name) {
+
+        self.name = name;
+        self.global[self.name] = {};
+        self.temp[self.name] = {};
+    }
+
+
+    var setName = function (name) {
+
+        self.name = name;
+    }
+
+
  	var setInput = function (options) {
 
  		for (var i in options) {
 
- 			self.temp[i] = options[i]
+ 			self.temp[self.name][i] = options[i]
  		}
 
 
         for (var i in options) {
 
-            self.global[i] = options[i];
+            self.global[self.name][i] = options[i];
         }
 
  	}
@@ -224,48 +215,47 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 		
 
     	var values = resolveDisplay({
-    		pool:update ? getIntFromId("pool") : self.temp.pool,
-    		mutate:update ? getIntFromId("mutate") : self.temp.mutate,
+    		pool:update ? getIntFromId("pool") : self.temp[self.name].pool,
+    		mutate:update ? getIntFromId("mutate") : self.temp[self.name].mutate,
     		type:displayTypes.value
     	})
 
-    	// var $goal = $("#goalinput");
+
     	var $method = $("#methodinput");
 
 
-		self.global = {
+		self.global[self.name] = {
 			
-			name: 				self.temp.name || "",
-			
-			gens: 				update ? getIntFromId("gens") 						: self.temp.gens,
-			runs: 				update ? getIntFromId("runs") 						: self.temp.runs,
-			goal: 			    "max",
-			pop: 				update ? getIntFromId("pop") 						: self.temp.pop,
-			parents: 			update ? getIntFromId("parents") 					: self.temp.parents,
-			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp.splicemin,
-			splicemax: 			update ? getIntFromId("splicemax") 					: self.temp.splicemax,
+			name: 				self.name,
 
-			pool: 				values.pool,
-			mutate: 			values.mutate,
-			
-			runPopType: 		self.temp.runPopType || runPopTypes.default,
-			method: 		    update ? $method.val()								: self.temp.method,
-			reproductionType: 	self.temp.reproductionType || reproductionTypes.default,
-			
-			programInput: 		self.temp.programInput || {},
-			session: 			self.temp.session || ""
+			gens: 				update ? getIntFromId("gens") 						: self.temp[self.name].gens,
+			runs: 				update ? getIntFromId("runs") 						: self.temp[self.name].runs,
+			pop: 				update ? getIntFromId("pop") 						: self.temp[self.name].pop,
+			parents: 			update ? getIntFromId("parents") 					: self.temp[self.name].parents,
+			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp[self.name].splicemin,
+			splicemax: 			update ? getIntFromId("splicemax") 					: self.temp[self.name].splicemax,
+            method:             update ? $method.val()                              : self.temp[self.name].method,
+
+            pool:               values.pool,
+            mutate:             values.mutate,
+            goal:               "max",
+
+			runPopType: 		self.temp[self.name].runPopType || runPopTypes.default,
+			reproductionType: 	self.temp[self.name].reproductionType || reproductionTypes.default,
+			programInput: 		self.temp[self.name].programInput || {},
+			session: 			self.temp[self.name].session || ""
 		}
 
-		console.log("get input", update, self.temp, self.global);
+		// console.log("get input", update, self.temp, self.global);
 
-        setValues(self.global);
+        setValues(self.global[self.name]);
 
-        return self.global;
+        return self.global[self.name];
     }
 
 
     var resendInput = function () {
-    	return self.global;
+    	return self.global[self.name];
     }
 
 
@@ -279,6 +269,8 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
 
 	return {
+        createInput:createInput,
+        setName:setName,
 		resetInput:resetInput,
 		setInput:setInput,
 		getInput:getInput,

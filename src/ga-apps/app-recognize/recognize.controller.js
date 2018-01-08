@@ -9,13 +9,15 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     var processTypes;
 
+    var displayParams = display.getParams();
+
     $scope.programInput;
 
 
     var pageBuilt = display.beenBuilt(self.name);
 
 
-    console.log("page built", self.name, pageBuilt, "\n\n\n\n\n\n\n\n")
+    console.log("\n\n\ncontroller", self.name, "built", pageBuilt, "\n\n\n")
 
 
     var loadDataDatabase = function (data, index) {
@@ -154,7 +156,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     {
         message:"loading display", 
         delay:600,
-        duration:displayfade,
+        duration:displayParams.fade,
         phase:function (options) {
 
             console.log("loading display phase");
@@ -170,13 +172,16 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     {
         message:"getting things ready", 
         delay:600,
-        duration:loadfadeout, 
+        duration:displayParams.fade, 
         phase:function (options) {
 
             console.log("getting things ready phase");
 
             
-            $input.running(false);
+            evolve.running(false, $scope);
+
+
+            u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
 
             display.elementsToggle(self.name, "show");
 
@@ -242,6 +247,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         processTypes = config.get("types.processTypes")
 
         $scope.programInput = config.get("global.feedback");
+
+
+        display.isBuilt(self.name);
     }
 
 
@@ -269,11 +277,8 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
     }
 
 
-    if (!pageBuilt) {
-        build();
-        display.isBuilt(self.name);
-    }
 
+    build();
 
     load();
 

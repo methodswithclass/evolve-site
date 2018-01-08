@@ -54,10 +54,10 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     }
 
 
-    var instruct = function (session, complete) {
+    var instruct = function (complete) {
 
 
-    	api.instruct.recognize(session, function (res) {
+    	api.instruct(function (res) {
 
     		complete(res);
     	})
@@ -67,7 +67,7 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
     var simulate = function (session) {
 
 
-    	instruct(session, function (res) {
+    	instruct(function (res) {
 
 
     		api.simulate.recognize(function (res) {

@@ -278,11 +278,11 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
         if (input.session) {
 
-            api.initialize(function () {
+            api.initialize(function (res) {
 
                 initData();
 
-                if (typeof complete === "function") complete();
+                if (typeof complete === "function") complete({res:res});
 
             });
         }
@@ -295,60 +295,63 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
     	evolving(true, $scope);
 
 
-		console.log("step progress get input")
+		// console.log("step progress get input")
+
 
 		input = $input.getInput();
 
 
-        display.forceEvolveHeight();
+        if (self.name == "feedback") {
 
 
-        // $("#programInputCover").removeClass("none").addClass("block");
-
-        if (self.name != "feedback") {
-
-	        u.toggle("hide", "settings", {fade:300});
-	        u.toggle("hide", "run", {fade:300});
-	        u.toggle("disable", "refresh", {fade:300});
-	        u.toggle("disable", "restart", {fade:300});
-	        u.toggle("disable", "step", {fade:300});
-	        u.toggle("disable", "play", {fade:300});
-	        u.toggle("disable", "stop", {fade:300});
+            u.toggle("enable", "stop", {fade:300});
+            u.toggle("disable", "play", {fade:300});
+            u.toggle("disable", "refresh", {fade:300});
 
 
-	        u.toggle("show", "evolve", {
-	            fade:600,
-	            delay:600,
-	            complete:function () {
+            api.run(function (res) {
 
+                console.log("Run algorithm success", res);
 
-        			api.run(function (res) {
+                runEvolveComplete($scope);
+            })
 
-				    	console.log("Run algorithm success", res);
-
-				    	runEvolveComplete($scope);
-				    })
-	                
-	            }
-	        });
 
     	}
     	else {
 
 
-    		u.toggle("enable", "stop", {fade:300});
-	        u.toggle("disable", "play", {fade:300});
-	        u.toggle("disable", "refresh", {fade:300});
+            display.forceEvolveHeight();
 
 
-    		api.run(function (res) {
+            u.toggle("hide", "settings", {fade:300});
+            u.toggle("hide", "run", {fade:300});
+            u.toggle("disable", "refresh", {fade:300});
+            u.toggle("disable", "restart", {fade:300});
+            u.toggle("disable", "step", {fade:300});
+            u.toggle("disable", "play", {fade:300});
+            u.toggle("disable", "stop", {fade:300});
 
-		    	console.log("Run algorithm success", res);
 
-		    	runEvolveComplete($scope);
-		    })
+            u.toggle("show", "evolve", {
+                fade:600,
+                delay:600,
+                complete:function () {
+
+
+                    api.run(function (res) {
+
+                        console.log("Run algorithm success", res);
+
+                        runEvolveComplete($scope);
+                    })
+                    
+                }
+            });
+    		
 
     	}
+
 
         setTimeout(function () {
             $("#evolvepage").animate({color:"#fff"}, 600);
@@ -365,11 +368,22 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
         running(false, $scope);
         $("#breakfeedback").show();
 
-        console.log("set input hard stop");
+        // console.log("set input hard stop");
 
         $input.setInput({
             gens:$stepdata.gen
         });
+
+        // uncomment this line to force the gens value to change in the settings panel to the current generation when hardstop was called
+        // so that to continue evolving, the gens value must be increased to the previous or desired value
+
+        // keeping this line commented out, the gens value (while it was changed on the backend to force the stop) 
+        // does not change in the settings panel, so that continuing to evolve only requires hitting the evolve button again
+        // with no other action
+        
+        // ## this line sets the gens value to the current generation
+        // ## $input.getInput(false);
+        // ##
 
         api.hardStop(function (res) {
 

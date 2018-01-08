@@ -16,25 +16,33 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	var winW = 0;
 	var $winH;
 
-	var displayDelay = 100;
-    var displayfade = 800;
 
-	var hasBeenBuilt = {
-		feedback:false,
-		trash:false,
-		recognize:false
-	}
+    var params = {
+    	delay:100,
+    	fade:800
+    }
+
+    var getParams = function () {
+
+    	return params;
+    }
+
+    var hasBeenBuilt = {
+    	feedback:false,
+    	trash:false,
+    	recognize:false
+    }
 
 
-	var isBuilt = function (name) {
+    var beenBuilt = function (name) {
 
-		hasBeenBuilt[name] = true;
-	}
+    	return hasBeenBuilt[name];
+    }
 
-	var beenBuilt = function (name) {
+    var isBuilt = function (name) {
 
-		return hasBeenBuilt[name];
-	}
+    	hasBeenBuilt[name] = true;
+    }
 
 
 	events.on("load-display", "stage-trash", function () {
@@ -90,36 +98,36 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
         else if (toggle == "show") {
 
 			                    
-            u.toggle("show", "hud", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "hud", {fade:params.fade, delay:params.delay});
 
-            u.toggle("show", "stage", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "controls", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "hud", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "evolvedata", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "stage", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "controls", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "hud", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "evolvedata", {fade:params.fade, delay:params.delay});
 
             if (name != "feedback") {
-            	u.toggle("show", "simdata", {fade:displayfade, delay:displayDelay});
+            	u.toggle("show", "simdata", {fade:params.fade, delay:params.delay});
             }
 
 
-            u.toggle("show", "settings", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
 
 
-            u.toggle("show", "refresh", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "restart", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "step", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "play", {fade:displayfade, delay:displayDelay});
-            u.toggle("show", "stop", {fade:displayfade, delay:displayDelay});
+            u.toggle("show", "refresh", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "restart", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "step", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "play", {fade:params.fade, delay:params.delay});
+            u.toggle("show", "stop", {fade:params.fade, delay:params.delay});
 
             if (name != "feedback") {
-            	u.toggle("show", "run", {fade:displayfade, delay:displayDelay});
+            	u.toggle("show", "run", {fade:params.fade, delay:params.delay});
         	}
 
 
             if (name == "feedback") {
-            	u.toggle("enable", "play", {fade:displayfade, delay:displayDelay});
+            	u.toggle("enable", "play", {fade:params.fade, delay:params.delay});
         	}
-            u.toggle("enable", "refresh", {fade:displayfade, delay:displayDelay});
+            u.toggle("enable", "refresh", {fade:params.fade, delay:params.delay});
 
 
         }
@@ -271,9 +279,10 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	return {
 		forceEvolveHeight:forceEvolveHeight,
 		load:load,
+		getParams:getParams,
+		elementsToggle:elementsToggle,
 		beenBuilt:beenBuilt,
-		isBuilt:isBuilt,
-		elementsToggle:elementsToggle
+		isBuilt:isBuilt
 	}
 
 

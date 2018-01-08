@@ -181,9 +181,9 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         console.log("sim setup: instruct", evdata);
 
         
-        api.instruct.trash(function (res) {
+        api.instruct(function (res) {
 
-            complete();
+            if (typeof complete === "function") complete();
         });
     }
 

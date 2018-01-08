@@ -9,21 +9,20 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     $scope.programInput;
 
     var processTypes;
-    var displayDelay;
-    var displayfade;
+    var displayParams = display.getParams();
         
 
     var pageBuilt = display.beenBuilt(self.name);
 
 
-    console.log("\n\n\npage built", self.name, pageBuilt, "\n\n\n")
+    console.log("\n\n\ncontroller", self.name, "built", pageBuilt, "\n\n\n")
 
 
     var phases = [
     {
         message:"processing", 
         delay:600,
-        duration:displayfade,
+        duration:displayParams.fade,
         phase:function (options) {
             
 
@@ -38,7 +37,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     {
         message:"initialize genetic algoirthm", 
         delay:600,
-        duration:displayfade,
+        duration:displayParams.fade,
         phase:function (options) {
 
 
@@ -76,22 +75,13 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
             }
             else {
 
-                // api.initialize(function (res) {
-
-                //     console.log("Initialize session", res);
-
-                //     api.setInput(false, function (res) {
-
-                //         setTimeout(function () {
-
-                //             if (typeof options.complete === "function") options.complete() 
-                //         }, options.duration)
-
-                //     });
-
-                // })
-
                 $scope.resetgen();
+
+
+                setTimeout(function () {
+
+                    if (typeof options.complete === "function") options.complete() 
+                }, options.duration)
 
             }
 
@@ -101,7 +91,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     {
         message:"load environment", 
         delay:600,
-        duration:displayfade, 
+        duration:displayParams.fade, 
         phase:function (options) {
             
             console.log("load environment");
@@ -120,7 +110,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     {
         message:"load display", 
         delay:600,
-        duration:displayfade,
+        duration:displayParams.fade,
         phase:function (options) {
 
 
@@ -136,7 +126,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     {
         message:"complete", 
         delay:600,
-        duration:displayfade, 
+        duration:displayParams.fade, 
         phase:function (options) {
             
 
@@ -145,7 +135,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
             evolve.running(false, $scope);
 
-            u.toggle("hide", "loading", {fade:displayfade, delay:displayDelay});
+            u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
 
             display.elementsToggle(self.name, "show");
 
@@ -192,7 +182,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
             $scope.initLoading(phases);
 
-            u.toggle("show", "loading", {fade:displayfade});
+            u.toggle("show", "loading", {fade:displayParams.fade});
 
             $scope.runPhase(0);
 
@@ -226,9 +216,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
             }
         });
 
-
-        displayDelay = 100;
-        displayfade = 800;
+        display.isBuilt(self.name);
 
     }
 
@@ -237,27 +225,39 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
         console.log("enter controller", self.name);
 
-        $input.resetInput();
 
-        $input.setInput({
-            name:self.name,
-            programInput:$scope.programInput
-        })
+        if (!pageBuilt) {
 
-        var input = $input.getInput(false);
+            $input.createInput(self.name);
+
+
+            $input.resetInput();
+
+            $input.setInput({
+                name:self.name,
+                programInput:$scope.programInput
+            })
+            
+
+        }
+        else {
+
+            $input.setName(self.name);
+
+            $input.resetInput();
+
+        }
+
 
         evolve.setup(self.name);
 
-        $scope.settings = $input.setSettings($scope, input);
+        $scope.settings = $input.setSettings($scope, $input.getInput(false));
 
     }
 
 
-    if (!pageBuilt) {
-        build();
-        display.isBuilt(self.name);
-    }
-
+    
+    build();
     
     load();
 
