@@ -1,4 +1,9 @@
 {
+	"activePages":{
+		"feedback":true,
+		"trash":true,
+		"recognize":false
+	},
 	"global":{
 		"initial":{
 			"gens":500,

@@ -140,18 +140,13 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
             }
             else {
 
-                api.initialize(function () {
+                $scope.resetgen();
 
-                    api.setInput(false, function (res) {
 
-                        setTimeout(function () {
+                setTimeout(function () {
 
-                            if (typeof options.complete === "function") options.complete() 
-                        }, options.duration) 
-
-                    });
-
-                })
+                    if (typeof options.complete === "function") options.complete() 
+                }, options.duration)
             }
 
         }

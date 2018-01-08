@@ -1,4 +1,4 @@
-app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.service', function ($scope, states, dd, g) {
+app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.service', 'config.service', function ($scope, states, dd, g, config) {
 
 	var self = this;
 
@@ -14,5 +14,7 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 
 		states.go(state);
 	}
+
+	$scope.isActive = config.get("activePages");
 
 }]);

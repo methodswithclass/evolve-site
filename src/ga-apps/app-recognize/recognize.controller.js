@@ -103,6 +103,10 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                     console.log("Instantiate session", res);
 
                     $scope.session = res.data.session;
+
+                    $input.setInput({
+                        session:$scope.session
+                    })
                     
                     api.initialize(function () {
 
@@ -121,18 +125,14 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
             }
             else {
 
-                api.initialize(function () {
+                $scope.resetgen();
 
-                    api.setInput(false, function (res) {
 
-                        setTimeout(function () {
+                setTimeout(function () {
 
-                            if (typeof options.complete === "function") options.complete() 
-                        }, options.duration)
+                    if (typeof options.complete === "function") options.complete() 
+                }, options.duration)
 
-                    });
-
-                })
             }
 
         }
@@ -205,12 +205,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
         setTimeout(function () {
 
-            react.push({
-                name:"phases" + self.name,
-                state:phases
-            });
+            $scope.initLoading(phases);
 
-            // events.dispatch("load" + self.name);
+            u.toggle("show", "loading", {fade:displayParams.fade});
 
             $scope.runPhase(0);
 
@@ -259,20 +256,31 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         console.log("enter controller", self.name);
 
 
-        $input.resetInput();
+        if (!pageBuilt) {
 
-        $input.setInput({
-            gens:20,
-            runs:5,
-            pop:20,
-            session:null
-        });
+            $input.createInput(self.name);
 
-        var input = $input.getInput(false);
+            $input.resetInput();
+
+            $input.setInput({
+                name:self.name,
+                gens:20,
+                runs:5,
+                pop:20
+            });
+            
+        }
+        else {
+
+            $input.setName(self.name);
+
+            $input.resetInput();
+
+        }
 
         evolve.setup(self.name);
 
-        $scope.settings = $input.setSettings($scope, input);
+        $scope.settings = $input.setSettings($scope, $input.getInput(false));
 
     }
 

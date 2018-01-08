@@ -42,6 +42,8 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 				self.coords = {x:x, y:0};
 
+				// console.log("create point", self.coords);
+
 				var container = document.createElement("div");
 				$(container).addClass("absolute black-back");
 				container.style.width = "2px";
@@ -61,6 +63,8 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 				self.destroy = function () {
 
+					// console.log("destroy point", self.coords);
+
 					$(container).remove();
 					container = null;
 				}
@@ -68,6 +72,8 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 			}
 
 			var destroyPlot = function () {
+
+				console.log("destroy plot");
 
 				for (var i in plot) {
 
@@ -85,8 +91,11 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 				plot = [];
 
+				console.log("create plot");
+
 				for (var i = 0; i < total; i++) {
 					plot[i] = new point(i*$inner.width()/total);
+					// console.log("new point", plot[i].coords);
 				}
 			}
 
@@ -101,21 +110,19 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 				changeplot(0, 300);
 			}
 
-			events.on("createPlot", createPlot);
-			
-			events.on("resetPlot", function () {
-
-				resetPlot();
-			});
-
-			react.push({
-				name:"importplot",
-				state:changeplot
-			});
 
 			setTimeout(function () {
 
 				// var effdim = u.dim(2);
+
+				react.push({
+					name:"importplot",
+					state:{
+						changeplot:changeplot,
+						createplot:createPlot,
+						resetplot:resetPlot
+					}
+				});
 
 				var ed = u.correctForAspect({
 					id:"plot",

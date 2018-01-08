@@ -10,11 +10,24 @@ app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.se
 
     }
 
+    var createplot = function () {
+
+        console.log("plot not created");
+    }
+
+
+    var resetplot = function () {
+
+        console.log("plot not reset");
+    }
+
     react.subscribe({
         name:"importplot",
         callback:function (x) {
 
-            changeplot = x;
+            changeplot = x.changeplot;
+            createplot = x.createplot;
+            resetplot = x.resetplot;
 
         }
     })
@@ -23,14 +36,18 @@ app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.se
 
         console.log("create plot");
 
-        events.dispatch("createPlot");
+        // events.dispatch("createPlot");
+
+        createplot();
     }
 
     var reset = function () {
 
         console.log("reset plot");
 
-        events.dispatch("resetPlot");
+        // events.dispatch("resetPlot");
+
+        resetplot();
     }
 
     var refresh = function () {
