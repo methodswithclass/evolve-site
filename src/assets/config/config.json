@@ -2,7 +2,7 @@
 	"activePages":{
 		"feedback":true,
 		"trash":true,
-		"recognize":true
+		"recognize":false
 	},
 	"global":{
 		"initial":{
