@@ -140,6 +140,8 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
             display.elementsToggle(self.name, "show");
 
 
+            display.isBuilt(self.name);
+
             setTimeout(function () {
 
                 if (typeof options.complete === "function") options.complete() 
@@ -176,17 +178,17 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
 
     var load = function () {
 
-        console.log("load controller", self.name);
 
-        setTimeout(function () {
+        display.waitForElem("#loadingtoggle", function () {
+
+            console.log("load controller", self.name);
 
             $scope.initLoading(phases);
 
             u.toggle("show", "loading", {fade:displayParams.fade});
 
             $scope.runPhase(0);
-
-        }, 500);
+        })
     }
 
 
@@ -216,8 +218,6 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
             }
         });
 
-        display.isBuilt(self.name);
-
     }
 
 
@@ -229,27 +229,20 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
         if (!pageBuilt) {
 
             $input.createInput(self.name);
-
-
-            $input.resetInput();
-
-            $input.setInput({
-                name:self.name,
-                programInput:$scope.programInput
-            })
-            
-
         }
         else {
 
             $input.setName(self.name);
-
-            $input.resetInput();
-
         }
 
 
         evolve.setup(self.name);
+
+
+        $input.setInput({
+            name:self.name,
+            programInput:$scope.programInput
+        })
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));
 

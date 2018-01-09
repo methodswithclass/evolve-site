@@ -248,12 +248,12 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
         
 
         },
-        recognize:function (callback) {
+        recognize:function (index, callback) {
 
             $http({
                 method:"POST",
                 url:"/recognize/simulate",
-                data:{input:$input.getInput()}
+                data:{index:index, input:$input.getInput()}
             })
             .then(function (res) {
 
@@ -264,6 +264,24 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
                 console.log("Server error while running best individual", err);
 
             })
+        },
+        digit:function (index, callback) {
+
+            $http({
+                method:"POST",
+                url:"/recognize/digit",
+                data:{index:index, input:$input.getInput()}
+            })
+            .then(function (res) {
+
+                if (typeof callback === "function") callback(res);
+
+            }, function (err) {
+
+                console.log("Server error while running best individual", err);
+
+            })
+
         }
 
     }

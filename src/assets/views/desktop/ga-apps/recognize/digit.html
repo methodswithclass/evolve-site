@@ -1,6 +1,6 @@
-<div class="absolute width80 height" id="digit">
+<div class="absolute width height" id="digit-arena">
 
-	<div class="absolute left-200 vcenter margin-20" id="digit-canvas">
+	<div class="absolute width height vcenter border" id="digit-canvas">
 
 		<div class="relative width margin-1 noedge imagerow" ng-repeat="row in image track by $index">
 			<div class="relative inline height margin-1 noedge imagepixel" ng-repeat="pixel in row track by $index" 
@@ -10,41 +10,50 @@
 
 	<div class="absolute width-200 height-400 vcenter right0">
 
-		<div class="relative width height50 font-50 black">
-			<div class="absolute vcenter">
-				output:
-			</div>
-		</div>
 
-
-		<div class="absolute width40 height50 top0 left100">
-			
-			<div class="absolute width70 height right0 border-left border-right">
-
+		<div class="absolute width height50 font-30 black">
+			<div class="absolute width height50 top-50 left-minus-100 rotate-counter-90">
+				<div class="absolute hcenter bottom0">
+					output
+				</div>
 			</div>
 
-			<div class="relative width height-20" ng-repeat="out in output track by $index">
-				<div class="absolute width30 height">
-					<div class="absolute vcenter font-15">
-						{{out.index}}
+
+			<div class="absolute width-100 height right0 border-left border-right">
+
+				<div class="relative width height-20" ng-repeat="out in output track by $index">
+					<div class="absolute width30 height">
+						<div class="absolute vcenter font-15">
+							{{out.index}}
+						</div>
+					</div>
+
+					<div class="absolute width70 height right0">
+						<div class="absolute left0 vcenter font-15">
+							{{out.outputTrun}}
+						</div>
 					</div>
 				</div>
 
-				<div class="absolute width70 height right0">
-					<div class="absolute left0 vcenter font-15">
-						{{out.outputTrun}}
-					</div>
-				</div>
 			</div>
 
 		</div>
 		
-
-		<div class="relative width height50 font-50 black">
-			<div class="absolute vcenter">
-				actual: {{label}}
+		<div class="absolute width height50 font-30 black bottom0">
+			<div class="absolute width height50 top-50 left-minus-100 rotate-counter-90">
+				<div class="absolute hcenter bottom0">
+					actual
+				</div>
 			</div>
+
+			<div class="absolute width-100 height right0">
+				<div class="absolute center">
+					{{label}}
+				</div>
+			</div>
+
 		</div>
+
 	</div>
 
 </div>

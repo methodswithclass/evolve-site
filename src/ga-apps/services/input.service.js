@@ -195,6 +195,8 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
  	var setInput = function (options) {
 
+        console.log("set input", self.name, options);
+
  		for (var i in options) {
 
  			self.temp[self.name][i] = options[i]
@@ -246,7 +248,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			session: 			self.temp[self.name].session || ""
 		}
 
-		// console.log("get input", update, self.temp, self.global);
+		console.log("get input", update, self.temp[self.name], self.global[self.name]);
 
         setValues(self.global[self.name]);
 

@@ -11,12 +11,18 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 
 	}
 
+	var displayOutput = function () {
+
+
+	}
+
 	react.subscribe({
 		name:"imageFunctions",
 		callback:function(x) {
 
 			makeImage = x.makeImage;
 			eraseImage = x.eraseImage;
+			displayOutput = x.displayOutput;
 		}
 	});
 
@@ -64,15 +70,17 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'events.service', 'send.
 
     }
 
-    var simulate = function (session) {
+    var simulate = function (index) {
 
 
     	instruct(function (res) {
 
 
-    		api.simulate.recognize(function (res) {
+    		api.simulate.recognize(index, function (res) {
 
-    			makeImage(res.data.image, res.data.output, res.data.label);
+    			// makeImage(res.data.image, res.data.output, res.data.label);
+
+    			displayOutput(res.data.output);
     		})
 
     	})

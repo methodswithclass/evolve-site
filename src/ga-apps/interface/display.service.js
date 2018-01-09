@@ -67,6 +67,16 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	})
 
 
+	events.on("load-display", "stage-recognize", function () {
+
+		$stage = $("#stagetoggle");
+		$hud = $("#hudtoggle");
+		$evolvedata = $("#evolvedatatoggle");
+
+		$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px", height:(g.isMobile() ? "50%" : "80%")})
+	})
+
+
 	var elementsToggle = function (name, toggle) {
 
 
@@ -172,6 +182,32 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}
 
 
+	var waitForElem = function (elem, complete) {
+
+        var count = 0;
+
+        var waitTimer = setInterval(function () {
+
+            if ($(elem)[0] || count >= 500) {
+
+                clearInterval(waitTimer);
+                waitTimer = null;
+
+                if ($(elem)[0]) {
+                    
+                    if (typeof complete === "function") complete();
+                }
+                
+            }
+            else {
+
+                count++;
+            }
+
+        }, 30);
+    }
+
+
 	var loadPhases = function (phases) {
 
 
@@ -259,7 +295,21 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 				index:0,
 				phase:function () {
 
+					events.dispatch("load-display", "evolve-data-recognize");
+				}
+			},
+			{
+				index:1,
+				phase:function () {
 
+					events.dispatch("load-display", "stage-recognize");
+				}
+			},
+			{
+				index:2,
+				phase:function () {
+
+					events.dispatch("load-display", "controls-recognize");
 				}
 			}
 			]
@@ -277,6 +327,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 
 	return {
+		waitForElem:waitForElem,
 		forceEvolveHeight:forceEvolveHeight,
 		load:load,
 		getParams:getParams,

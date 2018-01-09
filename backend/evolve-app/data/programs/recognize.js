@@ -119,7 +119,8 @@ var data = {
 	width:imageWidth,
 	height:imageHeight,
 	length:imageLength,
-	network:network
+	network:network,
+	dataFile:kaggleTrainString
 }
 
 var getImages = function () {

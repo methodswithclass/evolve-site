@@ -189,6 +189,8 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
             events.dispatch("imageFunctions");
 
 
+            display.isBuilt(self.name);
+
             setTimeout(function () {
 
                 if (typeof options.complete === "function") options.complete() 
@@ -201,18 +203,17 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     var load = function () {
 
-        console.log("load controller", self.name);
 
-        setTimeout(function () {
+        display.waitForElem("#loadingtoggle", function () {
+
+            console.log("load controller", self.name);
 
             $scope.initLoading(phases);
 
             u.toggle("show", "loading", {fade:displayParams.fade});
 
             $scope.runPhase(0);
-
-        }, 500);
-        
+        })
     }
 
 
@@ -230,11 +231,12 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
         simulator.reset();
         simulator.create();
+        // simulator.simulate();
     }
 
     self.play = function () {
 
-        simulator.simulate($scope.session);
+        simulator.simulate();
     }
 
 
@@ -245,8 +247,6 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
         $scope.programInput = config.get("global.feedback");
 
-
-        display.isBuilt(self.name);
     }
 
 
@@ -259,26 +259,23 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         if (!pageBuilt) {
 
             $input.createInput(self.name);
-
-            $input.resetInput();
-
-            $input.setInput({
-                name:self.name,
-                gens:20,
-                runs:5,
-                pop:20
-            });
             
         }
         else {
 
             $input.setName(self.name);
 
-            $input.resetInput();
-
         }
 
         evolve.setup(self.name);
+
+
+        $input.setInput({
+            name:self.name,
+            gens:20,
+            runs:5,
+            pop:20
+        });
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));
 

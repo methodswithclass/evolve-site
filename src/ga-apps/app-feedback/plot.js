@@ -1,4 +1,4 @@
-app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'react.service', function (data, u, events, send, react) {
+app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'react.service', 'global.service', 'display.service', function (data, u, events, send, react, g, display) {
 
 	return {
 		restrict:"E",
@@ -111,9 +111,8 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 			}
 
 
-			setTimeout(function () {
+			display.waitForElem("#arena", function () {
 
-				// var effdim = u.dim(2);
 
 				react.push({
 					name:"importplot",
@@ -127,7 +126,7 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 				var ed = u.correctForAspect({
 					id:"plot",
 					factor:0.8, 
-					aspect:2, 
+					aspect:g.isMobile() ? 0.5 : 2, 
 					width:$(window).width(), 
 					height:$(window).height(),
 					window:true
@@ -135,7 +134,7 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 				$("#arena").css({width:ed.width, height:ed.height});
 
-			}, 500);
+			})
 
 		}
 

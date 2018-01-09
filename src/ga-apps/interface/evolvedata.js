@@ -25,7 +25,7 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 				$stage = $("#stagetoggle");
 
 
-				if (name == "trash") {
+				if (name == "trash" || name == "recognize") {
 					$evolve.css({top:"400px"});
 				}
 				else if (name == "feedback") {
@@ -63,6 +63,24 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 				$(window).resize(function () {
 
 					evolveDataWidth("feedback");
+				})
+
+				return "success";
+
+			});
+
+
+			// console.log("\nregister event evolve-data display\n\n");
+			events.on("load-display", "evolve-data-recognize", function () {
+
+
+				// console.log("\nevolve data load display\n\n");
+
+				evolveDataWidth("recognize");
+
+				$(window).resize(function () {
+
+					evolveDataWidth("recognize");
 				})
 
 				return "success";

@@ -100,7 +100,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 				// console.log("controls load", cntrlWidth, $elem.width());
 				
 
-				if (name == "trash") {
+				if (name == "trash" || name == "recognize") {
 
 					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
 				}
@@ -169,6 +169,26 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 					console.log("resize");
 
 					controlsWidth("feedback");
+				})
+
+				return "success";
+
+			})
+
+
+			// console.log("\nregister event controls display\n\n");
+			events.on("load-display", "controls-recognize", function () {
+
+
+				// console.log("\ncontrols load display\n\n");
+
+				controlsWidth("recognize");
+
+				$(window).resize(function () {
+
+					console.log("resize");
+
+					controlsWidth("recognize");
 				})
 
 				return "success";

@@ -1,4 +1,4 @@
-app.directive("digit", ['events.service', 'react.service', 'global.service', function (events, react, g) {
+app.directive("digit", ['utility', 'events.service', 'react.service', 'global.service', 'api.service', 'display.service', function (u, events, react, g, api, display) {
 
 	return {
 		restrict:"E",
@@ -9,18 +9,8 @@ app.directive("digit", ['events.service', 'react.service', 'global.service', fun
 
 
 			$scope.getContentUrl = function() {
-    
-		        var view;
 
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/ga-apps/recognize/digit.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/ga-apps/recognize/digit.html";
-			    }
-
-		        return view;
+		        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/recognize/digit.html";
 		    }
 
 
@@ -31,14 +21,45 @@ app.directive("digit", ['events.service', 'react.service', 'global.service', fun
 		    $scope.label = "";
 		    $scope.output = [];
 
-		    setTimeout(function () {
+
+		    var displayParams = display.getParams();
 
 
-		    	$("#digit-canvas").css({width:($("#digit").height() * 0.8) + "px", height:($("#digit").height() *0.8) + "px"});
+			display.waitForElem("#arena", function () {
 
-		    	console.log("canvas", $("#digit-canvas").width(), $("#digit-canvas").height());
 
-		    }, 100)
+				console.log("set digit arena");
+
+		    	var ed = u.correctForAspect({
+					id:"digit",
+					factor:1.2, 
+					aspect:2, 
+					width:$(window).width(), 
+					height:$(window).height(),
+					window:true
+				})
+
+				$("#arena").css({width:ed.width, height:ed.height});
+
+			})
+
+
+			display.waitForElem("#digit-canvas", function () {
+
+				console.log("set digit canvas");
+
+
+				var ed = u.correctForAspect({
+					id:"digit-canvas",
+					factor:1, 
+					aspect:1, 
+					width:$("#digit-arena").width(), 
+					height:$("#digit-arena").height(),
+					window:true
+				})
+
+				$("#digit-canvas").css({width:ed.width, height:ed.height});
+			})
 
 
 		    var indexes = {
@@ -88,7 +109,7 @@ app.directive("digit", ['events.service', 'react.service', 'global.service', fun
 
 		    		console.log("imagerow, pixel", $(".imagerow").height(), $(".imagepixel").width());
 
-		        }, 100)
+		        }, 500)
 
 		    }
 
@@ -136,37 +157,31 @@ app.directive("digit", ['events.service', 'react.service', 'global.service', fun
 		    }
 
 		    
-		    var processAndMakeImage = function (i) {
+		    var getDigit = function (i) {
 
-		        // imageprocessor.getImage(i, "train", function (result) {
 
-		        //     imageData = result;
+		    	u.toggle("show", "loading", {fade:displayParams.fade});
 
-		        //     console.log("image data", imageData.image.length, imageData.label ? imageData.label : "");
+		        api.simulate.digit(i, function (res) {
 
-		        //     makeImage(imageData.image);
+		        	u.toggle("hide", "loading", {fade:displayParams.fade});
 
-		        // });
+		        	makeImage(res.data.image, {}, res.data.label);
+
+		        	u.toggle("enable", "play", {fade:displayParams.fade, delay:displayParams.delay})
+		        })
 
 		    }
 
-		    // var makeImageFromProcessed = function (i, j) {
+		    var displayOutput = function (output) {
 
-		    //     imageprocessor.getPreprocessedDataImage(i, j, function (result) {
-
-		    //         imageData = result;
-
-		    //         console.log("image data", imageData.label);
-
-		    //         makeImage(imageData.image);
-		    //     })
-
-		    // }
+		    	$scope.output = output;
+		    }
 
 
 		    events.on("createDigit", function () {
 
-		    	processAndMakeImage(indexes.index);
+		    	getDigit(indexes.index);
 		    })
 
 
@@ -181,7 +196,8 @@ app.directive("digit", ['events.service', 'react.service', 'global.service', fun
 		    		name:"imageFunctions",
 		    		state:{
 		    			makeImage:makeImage,
-		    			eraseImage:eraseImage
+		    			eraseImage:eraseImage,
+		    			displayOutput:displayOutput
 		    		}
 		    	})
 		    })

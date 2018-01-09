@@ -240,7 +240,7 @@ var recognize = function () {
 		runs = 0;
 	}
 
-	self.simulate = function (complete) {
+	self.simulate = function (index, complete) {
 
 		var net = [];
 		var dna = [];
@@ -252,10 +252,10 @@ var recognize = function () {
 		dna = d.recognizeArrayToObject(bestDNA);
 		net = assignWeights(net, dna);
 
-		var imageIndex = getTrainImageIndex();
+		// var imageIndex = getTrainImageIndex();
 
 
-		var image = d.data.images[imageIndex];
+		var image = d.data.images[index];
 
 
 		label = image.label;
@@ -270,7 +270,7 @@ var recognize = function () {
 			output[i].outputTrun = g.truncate(output[i].output, 4);
 		}
 
-		complete(image.pixels, output, label);
+		complete(output);
 		
 
 	}

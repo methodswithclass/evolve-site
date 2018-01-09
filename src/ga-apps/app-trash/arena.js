@@ -132,6 +132,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			}
 
+
 			var setStageSize = function () {
 
 				ed = u.correctForAspect({
@@ -147,7 +148,8 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			}
 
 
-			setTimeout(function () {
+
+			display.waitForElem($stage, function () {
 
 
 				setStageSize();
@@ -156,8 +158,9 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 					setStageSize();
 				})
-				
-			}, 500);
+
+
+			})
 
 
 		    react.subscribe({
