@@ -46,6 +46,9 @@ app.directive("loading", ['data', 'utility', 'global.service', 'events.service',
             		}, $phases[index].delay);
 
             	}
+            	else {
+            		setMessage("");
+            	}
 
         	}
 

@@ -160,11 +160,15 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 		    var getDigit = function (i) {
 
 
+		    	display.setElemScrollTop("#loadingtoggle");
+
 		    	u.toggle("show", "loading", {fade:displayParams.fade});
 
 		        api.simulate.digit(i, function (res) {
 
 		        	u.toggle("hide", "loading", {fade:displayParams.fade});
+
+		        	display.setElemScrollTop("#loadingtoggle", 0);
 
 		        	makeImage(res.data.image, {}, res.data.label);
 

@@ -1,4 +1,4 @@
-app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', 'input.service', function ($http, u, g, events, react, api, $input) {
+app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', 'input.service', 'display.service', function ($http, u, g, events, react, api, $input, display) {
 
 	return {
 		restrict:"E",

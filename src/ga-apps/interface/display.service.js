@@ -181,6 +181,15 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 		}
 	}
 
+	var setElemScrollTop = function (elem, scrollTop) {
+
+
+		var $hud = $("#hudtoggle")
+
+		$(elem).css({top:(scrollTop ? scrollTop : (-1)*$hud.offset().top) + "px"});
+
+	}
+
 
 	var waitForElem = function (elem, complete) {
 
@@ -328,6 +337,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 	return {
 		waitForElem:waitForElem,
+		setElemScrollTop:setElemScrollTop,
 		forceEvolveHeight:forceEvolveHeight,
 		load:load,
 		getParams:getParams,
