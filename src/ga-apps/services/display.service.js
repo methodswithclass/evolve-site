@@ -191,18 +191,55 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}
 
 
-	var waitForElem = function (elem, complete) {
+	var waitForElem = function (elemArray, complete) {
 
         var count = 0;
 
+        var checkElements = function (array) {
+
+        	var result = false;
+        	var active = {};
+
+        	if (Array.isArray(array)) {
+
+	        	while (Object.keys(active).length < array.length-1) {
+
+	        		// console.log("test array i", array[i]);
+
+	        		for (var i in array) {
+
+		        		if ($(array[i])[0]) {
+		        			active[i] = true;
+		        		}
+
+	        		}
+
+	        	}
+
+	        	result = true;
+
+        	}
+        	else {
+
+        		while (!$(array)[0]) {
+        			result = false;
+        		}
+        		
+        		result = true;
+
+        	}
+
+        	return result;
+        }
+
         var waitTimer = setInterval(function () {
 
-            if ($(elem)[0] || count >= 500) {
+            if (checkElements(elemArray) || count >= 500) {
 
                 clearInterval(waitTimer);
                 waitTimer = null;
 
-                if ($(elem)[0]) {
+                if (count < 500) {
                     
                     if (typeof complete === "function") complete();
                 }
@@ -319,6 +356,12 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 				phase:function () {
 
 					events.dispatch("load-display", "controls-recognize");
+				}
+			},
+			{
+				index:3,
+				phase:function () {
+					events.dispatch("setup-digit");
 				}
 			}
 			]

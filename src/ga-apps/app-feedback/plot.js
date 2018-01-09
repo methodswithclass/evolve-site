@@ -125,11 +125,11 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 				var ed = u.correctForAspect({
 					id:"plot",
-					factor:0.8, 
-					aspect:g.isMobile() ? 0.5 : 2, 
+					factor:0.5, 
+					aspect:2, 
 					width:$(window).width(), 
 					height:$(window).height(),
-					window:true
+					// window:true
 				})
 
 				$("#arena").css({width:ed.width, height:ed.height});

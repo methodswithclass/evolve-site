@@ -248,7 +248,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			session: 			self.temp[self.name].session || ""
 		}
 
-		console.log("get input", update, self.temp[self.name], self.global[self.name]);
+		// console.log("get input", update, self.temp[self.name], self.global[self.name]);
 
         setValues(self.global[self.name]);
 

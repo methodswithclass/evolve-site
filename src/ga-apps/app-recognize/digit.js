@@ -25,41 +25,50 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 		    var displayParams = display.getParams();
 
 
-			display.waitForElem("#arena", function () {
+		    var setupDigit = function () {
+
+		    	console.log("setup digit function");
+
+				display.waitForElem("#arena", function () {
 
 
-				console.log("set digit arena");
+					console.log("set digit arena");
 
-		    	var ed = u.correctForAspect({
-					id:"digit",
-					factor:1.2, 
-					aspect:2, 
-					width:$(window).width(), 
-					height:$(window).height(),
-					window:true
+			    	var ed = u.correctForAspect({
+						id:"digit",
+						factor:0.8, 
+						aspect:2, 
+						width:$(window).width(), 
+						height:$(window).height(),
+						// window:true
+					})
+
+					$("#arena").css({width:ed.width, height:ed.height});
+
 				})
 
-				$("#arena").css({width:ed.width, height:ed.height});
 
-			})
+				display.waitForElem(["#digit-arena", "#digit-canvas"], function () {
 
-
-			display.waitForElem("#digit-canvas", function () {
-
-				console.log("set digit canvas");
+					console.log("set digit canvas");
 
 
-				var ed = u.correctForAspect({
-					id:"digit-canvas",
-					factor:1, 
-					aspect:1, 
-					width:$("#digit-arena").width(), 
-					height:$("#digit-arena").height(),
-					window:true
+					var ed = u.correctForAspect({
+						id:"digit-canvas",
+						factor:0.5, 
+						aspect:1, 
+						width:$("#digit-arena").width(), 
+						height:$("#digit-arena").height(),
+						// window:true
+					})
+
+
+					console.log("digital canvas width height", ed.width, ed.height);
+
+					$("#digit-canvas").css({width:ed.width, height:ed.height});
 				})
 
-				$("#digit-canvas").css({width:ed.width, height:ed.height});
-			})
+			}
 
 
 		    var indexes = {
@@ -204,6 +213,11 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 		    			displayOutput:displayOutput
 		    		}
 		    	})
+		    })
+
+		    events.on("setup-digit", function () {
+
+		    	setupDigit();
 		    })
 
 		}
