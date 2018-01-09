@@ -1,4 +1,4 @@
-app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', function ($scope, simulator, u, g, react, events, display, api, $input, config, evolve) {
+app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.service', 'react.service', 'events.service', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', 'loading.service', function ($scope, simulator, u, g, react, events, display, api, $input, config, evolve, loading) {
 
     var self = this;
 
@@ -83,8 +83,8 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     var phases = [
     {
         message:"processing", 
-        delay:0,
-        duration:0,
+        delay:300,
+        duration:600,
         phase:function (options) {
 
             console.log("processing phase");
@@ -102,8 +102,8 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     },
     {
         message:"initializing evolutionary algoirthm", 
-        delay:600,
-        duration:0,
+        delay:300,
+        duration:600,
         phase:function (options) {
 
             console.log("initialize algorithm phase");
@@ -153,8 +153,8 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     },
     {
         message:"loading environment", 
-        delay:600,
-        duration:0, 
+        delay:300,
+        duration:displayParams.fade, 
         phase:function (options) {
 
             console.log("load environment phase");
@@ -180,7 +180,7 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     },
     {
         message:"loading display", 
-        delay:600,
+        delay:300,
         duration:displayParams.fade,
         phase:function (options) {
 
@@ -196,7 +196,7 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     },
     {
         message:"getting things ready", 
-        delay:600,
+        delay:300,
         duration:displayParams.fade, 
         phase:function (options) {
 
@@ -233,15 +233,15 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
     var load = function () {
 
 
-        display.waitForElem("#loadingtoggle", function () {
+        display.waitForElem({elems:"#loadingtoggle"}, function (options) {
 
             console.log("load controller", self.name);
 
-            $scope.initLoading(phases);
+            loading.init($scope, phases);
 
             u.toggle("show", "loading", {fade:displayParams.fade});
 
-            $scope.runPhase(0);
+            loading.runPhase(0);
         })
     }
     

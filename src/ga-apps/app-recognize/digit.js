@@ -29,7 +29,7 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 
 		    	console.log("setup digit function");
 
-				display.waitForElem("#arena", function () {
+				display.waitForElem({elems:"#arena"}, function (options) {
 
 
 					console.log("set digit arena");
@@ -39,8 +39,7 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 						factor:0.8, 
 						aspect:2, 
 						width:$(window).width(), 
-						height:$(window).height(),
-						// window:true
+						height:$(window).height()
 					})
 
 					$("#arena").css({width:ed.width, height:ed.height});
@@ -48,7 +47,7 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 				})
 
 
-				display.waitForElem(["#digit-arena", "#digit-canvas"], function () {
+				display.waitForElem({elems:["#digit-arena", "#digit-canvas"]}, function (options) {
 
 					console.log("set digit canvas");
 
@@ -58,8 +57,7 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 						factor:0.5, 
 						aspect:1, 
 						width:$("#digit-arena").width(), 
-						height:$("#digit-arena").height(),
-						// window:true
+						height:$("#digit-arena").height()
 					})
 
 

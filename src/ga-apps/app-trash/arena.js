@@ -140,8 +140,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 					factor:stageFactor, 
 					aspect:1, 
 					width:$(window).width(), 
-					height:$(window).height(),
-					// window:true
+					height:$(window).height()
 				})
 
 				$stage.css({width:ed.width, height:ed.height});
@@ -149,7 +148,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 
 
-			display.waitForElem($stage, function () {
+			display.waitForElem({elems:$stage}, function (options) {
 
 
 				setStageSize();

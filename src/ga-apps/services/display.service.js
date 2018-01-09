@@ -76,6 +76,11 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 		$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px", height:(g.isMobile() ? "50%" : "80%")})
 	})
 
+	var toggleElem = function (elem, toggle) {
+
+		u.toggle(toggle, elem, {fade:params.fade, delay:params.delay});
+	}
+
 
 	var elementsToggle = function (name, toggle) {
 
@@ -191,39 +196,51 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}
 
 
-	var waitForElem = function (elemArray, complete) {
+	var waitForElem = function (options, complete) {
 
         var count = 0;
+        var result = false;
+        var active = {}
 
         var checkElements = function (array) {
 
-        	var result = false;
-        	var active = {};
+        	result = false;
+        	active = {};
 
         	if (Array.isArray(array)) {
 
-	        	while (Object.keys(active).length < array.length-1) {
+        		// console.log("###################\n\n\n\n\n\narray is array \n\n\n\n\n\n################")
 
-	        		// console.log("test array i", array[i]);
+        		for (var i in array) {
 
-	        		for (var i in array) {
+        			// console.log("element", array[i], "does not exist");
 
-		        		if ($(array[i])[0]) {
-		        			active[i] = true;
-		        		}
-
+	        		if ($(array[i])[0]) {
+	        			active[i] = true;
 	        		}
 
-	        	}
+        		}
 
-	        	result = true;
+
+	        	if (Object.keys(active).length < array.length-1) {
+
+	        		result = true;
+	        	}
+	        	else {
+	        		result = false;
+	        	}
 
         	}
         	else {
 
-        		while (!$(array)[0]) {
+        		// console.log("@@@@@@@@@@@@@@@@\n\n\n\n\n\n\n\n\array is single\n\n\n\n\n\n@@@@@@@@@@@@@@")
+
+        		if (!$(array)[0]) {
+        			// console.log("element does not exist");
         			result = false;
         		}
+
+        		// console.log("element exists");
         		
         		result = true;
 
@@ -234,14 +251,20 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
         var waitTimer = setInterval(function () {
 
-            if (checkElements(elemArray) || count >= 500) {
+            if (checkElements(options.elems) || count >= 500) {
+
+            	// console.log("clear interval");
 
                 clearInterval(waitTimer);
                 waitTimer = null;
 
                 if (count < 500) {
-                    
-                    if (typeof complete === "function") complete();
+
+                	if (typeof complete === "function") complete(options);
+            	}
+                else {
+
+                	// console.log("count limit reached");
                 }
                 
             }
@@ -378,15 +401,38 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}	
 
 
+	// var initLoading = function (_phases) {
+
+	// 	console.log("no loading");
+	// }
+
+	// var runPhase = function (index) {
+
+	// 	console.log("no run phase");
+	// }
+
+	// var setCallbacks = function (x) {
+
+	// 	console.log("set callbacks");
+
+	// 	initLoading = x.initLoading;
+	// 	runPhase = x.runPhase;
+	// }
+
+
 	return {
 		waitForElem:waitForElem,
 		setElemScrollTop:setElemScrollTop,
+		toggleElem:toggleElem,
 		forceEvolveHeight:forceEvolveHeight,
 		load:load,
 		getParams:getParams,
 		elementsToggle:elementsToggle,
 		beenBuilt:beenBuilt,
 		isBuilt:isBuilt
+		// initLoading:initLoading,
+		// runPhase:runPhase,
+		// setCallbacks:setCallbacks
 	}
 
 

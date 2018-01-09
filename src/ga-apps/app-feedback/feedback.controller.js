@@ -1,4 +1,4 @@
-app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'display.service', 'input.service', 'api.service', 'config.service', 'evolve.service', function ($scope, simulator, data, u, send, events, react, display, $input, api, config, evolve) {
+app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utility', 'send.service', 'events.service', 'react.service', 'display.service', 'input.service', 'api.service', 'config.service', 'evolve.service', 'loading.service', function ($scope, simulator, data, u, send, events, react, display, $input, api, config, evolve, loading) {
 
     var self = this;
 
@@ -21,8 +21,8 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     var phases = [
     {
         message:"processing", 
-        delay:600,
-        duration:displayParams.fade,
+        delay:300,
+        duration:600,
         phase:function (options) {
             
 
@@ -36,8 +36,8 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     },
     {
         message:"initialize genetic algoirthm", 
-        delay:600,
-        duration:displayParams.fade,
+        delay:300,
+        duration:600,
         phase:function (options) {
 
 
@@ -90,7 +90,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     },
     {
         message:"load environment", 
-        delay:600,
+        delay:300,
         duration:displayParams.fade, 
         phase:function (options) {
             
@@ -109,7 +109,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     },
     {
         message:"load display", 
-        delay:600,
+        delay:300,
         duration:displayParams.fade,
         phase:function (options) {
 
@@ -125,7 +125,7 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     },
     {
         message:"complete", 
-        delay:600,
+        delay:300,
         duration:displayParams.fade, 
         phase:function (options) {
             
@@ -179,15 +179,15 @@ app.controller("feedback.controller", ['$scope', 'feedback-sim', 'data', 'utilit
     var load = function () {
 
 
-        display.waitForElem("#loadingtoggle", function () {
+        display.waitForElem({elems:"#loadingtoggle"}, function (options) {
 
             console.log("load controller", self.name);
 
-            $scope.initLoading(phases);
+            loading.init($scope, phases);
 
             u.toggle("show", "loading", {fade:displayParams.fade});
 
-            $scope.runPhase(0);
+            loading.runPhase(0);
         })
     }
 

@@ -111,7 +111,7 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 			}
 
 
-			display.waitForElem("#arena", function () {
+			display.waitForElem({elems:"#arena"}, function (options) {
 
 
 				react.push({
@@ -128,8 +128,7 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 					factor:0.5, 
 					aspect:2, 
 					width:$(window).width(), 
-					height:$(window).height(),
-					// window:true
+					height:$(window).height()
 				})
 
 				$("#arena").css({width:ed.width, height:ed.height});
