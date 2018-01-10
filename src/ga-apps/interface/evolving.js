@@ -4,7 +4,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/common/ga-apps/interface/evolving.html",		
+        templateUrl:"assets/views/common/interface/evolving.html",		
 		link:function ($scope, element, attr) {
 
 			var self = this;

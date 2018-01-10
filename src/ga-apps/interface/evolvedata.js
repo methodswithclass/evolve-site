@@ -4,7 +4,7 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/evolvedata.html",	
+        templateUrl:"assets/views/common/interface/evolvedata.html",	
 		link:function ($scope, element, attr) {
 			
 

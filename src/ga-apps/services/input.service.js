@@ -22,17 +22,17 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	}
 
 
-	var sendVars = function () {
+	// var sendVars = function () {
 
-		react.push({
-			name:"evolve.vars",
-			state:{
-				crossoverMethods:crossoverMethods,
-				reproductionTypes:reproductionTypes
-			}
-		})
+	// 	react.push({
+	// 		name:"evolve.vars",
+	// 		state:{
+	// 			crossoverMethods:crossoverMethods,
+	// 			reproductionTypes:reproductionTypes
+	// 		}
+	// 	})
 
-	}
+	// }
 
 
 	var getValue = function ($value) {
@@ -263,7 +263,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
     var resetInput = function () {
 
-    	sendVars();
+    	// sendVars();
 
 		setInput($$initial);	
 	}

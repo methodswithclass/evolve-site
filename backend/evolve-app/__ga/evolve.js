@@ -962,7 +962,7 @@ var obj = {};
 							break;
 						}
 
-						// console.log("parents", num_parents, standard, parents.length);
+						// console.log("parents", num_parents, standard, parents.length, parents);
 
 						male = parents[0];
 						mates = parents.slice(1);

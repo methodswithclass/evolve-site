@@ -186,7 +186,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             running(false, $scope);
             $("#breakfeedback").hide();
 
-            
+
             u.toggle("show", "settings", {fade:600});
 
             if (self.name == "feedback") {
@@ -323,6 +323,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
             display.forceEvolveHeight();
 
+            
             
             u.toggle("hide", "run", {fade:300});
             u.toggle("disable", "refresh", {fade:300});

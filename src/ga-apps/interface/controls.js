@@ -4,7 +4,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/controls.html",		
+		templateUrl:"assets/views/common/interface/controls.html",		
 		link:function ($scope, $element, attr) {
 
 

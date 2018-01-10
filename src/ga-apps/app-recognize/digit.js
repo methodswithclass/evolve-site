@@ -4,14 +4,8 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 		restrict:"E",
 		scope:false,
 		replace:true,
-        template:"<div ng-include='getContentUrl()'></div>",		
+        templateUrl:"assets/views/common/ga-apps/recognize/digit.html",		
 		link:function ($scope, element, attr) {
-
-
-			$scope.getContentUrl = function() {
-
-		        return "assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/recognize/digit.html";
-		    }
 
 
 			var imageSize = 28;
@@ -169,17 +163,21 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 
 		    	display.setElemScrollTop("#loadingtoggle");
 
+		    	u.toggle("disable", "refresh", {fade:displayParams.fade});
+		    	u.toggle("hide", "settings", {fade:displayParams.fade});
 		    	u.toggle("show", "loading", {fade:displayParams.fade});
 
 		        api.simulate.digit(i, function (res) {
 
 		        	u.toggle("hide", "loading", {fade:displayParams.fade});
+		        	u.toggle("show", "settings", {fade:displayParams.fade});
+		        	u.toggle("enable", "refresh", {fade:displayParams.fade});
+		        	u.toggle("enable", "play", {fade:displayParams.fade, delay:displayParams.delay})
 
 		        	display.setElemScrollTop("#loadingtoggle", 0);
 
 		        	makeImage(res.data.image, {}, res.data.label);
 
-		        	u.toggle("enable", "play", {fade:displayParams.fade, delay:displayParams.delay})
 		        })
 
 		    }

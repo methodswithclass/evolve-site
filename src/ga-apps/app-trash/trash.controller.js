@@ -211,10 +211,10 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
             $scope.programInputChange();
 
-            react.push({
-                name:"programInput" + self.name,
-                state:$scope.programInput
-            })
+            // react.push({
+            //     name:"programInput" + self.name,
+            //     state:$scope.programInput
+            // })
 
             display.isBuilt(self.name);
 

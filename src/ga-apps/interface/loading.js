@@ -4,7 +4,7 @@ app.directive("loading", ['global.service', 'loading.service', function (g, load
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/loading.html",	
+        templateUrl:"assets/views/common/interface/loading.html",	
 		link:function ($scope, element, attr) {
 
 

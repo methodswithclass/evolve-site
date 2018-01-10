@@ -1,10 +1,10 @@
-app.directive("settings", ['global.service', "events.service", "react.service", 'input.service', function (g, events, react, $input) {
+app.directive("settings", ['global.service', "events.service", "react.service", 'input.service', "config.service", function (g, events, react, $input, config) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/interface/settings.html",	
+        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/settings.html",	
 		link:function ($scope, element, attr) {
 
 
@@ -16,47 +16,51 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			var width = 0.6;
 
 			var manual;
-			var crossoverMethods;
-			var reproductionTypes;
 			var programInput;
+
+			var crossoverMethods = config.get("types.crossoverMethods");
+			var reproductionTypes = config.get("types.reproductionTypes");
 
 
 			$scope.goals;
-			$scope.methods;
 			$scope.settings;
+
+
+			$scope.methods = [
+    		{
+    			method:crossoverMethods.multiParent
+    		},
+    		{
+    			method:crossoverMethods.multiOffspring
+    		}
+    		]
+
 
 
 
 			// console.log("register evolve.vars");
-			react.subscribe({
-				name:"evolve.vars",
-				callback:function (x) {
+			// react.subscribe({
+			// 	name:"evolve.vars",
+			// 	callback:function (x) {
 
-					crossoverMethods = x.crossoverMethods;
-					reproductionTypes = x.reproductionTypes;
+			// 		crossoverMethods = x.crossoverMethods;
+			// 		reproductionTypes = x.reproductionTypes;
 
-					$scope.methods = [
-		    		{
-		    			method:crossoverMethods.multiParent
-		    		},
-		    		{
-		    			method:crossoverMethods.multiOffspring
-		    		}
-		    		]
+					
 
-				}
-			})
+			// 	}
+			// })
 
-			react.subscribe({
-				name:"programInput" + $scope.name,
-				callback:function (x) {
+			// react.subscribe({
+			// 	name:"programInput" + $scope.name,
+			// 	callback:function (x) {
 
-					// console.log("receive program input settings");
-					programInput = x;
+			// 		// console.log("receive program input settings");
+			// 		programInput = x;
 
-					// $scope.goals = x.goals;
-				}
-			})
+			// 		// $scope.goals = x.goals;
+			// 	}
+			// })
 
 
 
