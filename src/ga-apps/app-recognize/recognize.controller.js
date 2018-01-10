@@ -210,9 +210,16 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
             loading.init($scope, phases);
 
-            u.toggle("show", "loading", {fade:displayParams.fade});
+            u.toggle("show", "loading", {
+                fade:displayParams.fade,
+                complete:function () {
 
-            loading.runPhase(0);
+                    
+                    loading.runPhase(0);
+                }
+            });
+
+            
         })
     }
 

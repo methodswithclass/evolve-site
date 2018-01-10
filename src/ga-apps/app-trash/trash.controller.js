@@ -239,9 +239,14 @@ app.controller("trash.controller", ['$scope', 'trash-sim', 'utility', 'global.se
 
             loading.init($scope, phases);
 
-            u.toggle("show", "loading", {fade:displayParams.fade});
+            u.toggle("show", "loading", {
+                fade:displayParams.fade,
+                complete:function () {
 
-            loading.runPhase(0);
+                    
+                    loading.runPhase(0);
+                }
+            });
         })
     }
     

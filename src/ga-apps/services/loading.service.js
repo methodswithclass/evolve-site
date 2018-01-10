@@ -13,11 +13,6 @@ app.factory("loading.service", ["utility", "events.service", "global.service", f
 		$$scope.$apply();
 	}
 
-	// var getMessage = function () {
-
-	// 	return message;
-	// }
-
 	var runPhase = function (index) {
 
     	// console.log("run complete index", index);
@@ -53,23 +48,6 @@ app.factory("loading.service", ["utility", "events.service", "global.service", f
 		$$scope = $scope;
 
     }
-
-    // var start = function () {
-
-    // 	console.log("no start");
-    // }
-
-    // var stop = function () {
-
-    // 	console.log("no stop");
-    // }
-
-
-    // var controlLoading = function ($start, $stop) {
-
-    // 	start = $start;
-    // 	stop = $stop;
-    // }
 
 
 

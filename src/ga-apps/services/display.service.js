@@ -235,14 +235,17 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
         		// console.log("@@@@@@@@@@@@@@@@\n\n\n\n\n\n\n\n\array is single\n\n\n\n\n\n@@@@@@@@@@@@@@")
 
-        		if (!$(array)[0]) {
+        		if ($(array)[0]) {
         			// console.log("element does not exist");
+        			result = true;
+        		}
+        		else {
         			result = false;
         		}
 
         		// console.log("element exists");
         		
-        		result = true;
+        		// result = true;
 
         	}
 
@@ -401,25 +404,6 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}	
 
 
-	// var initLoading = function (_phases) {
-
-	// 	console.log("no loading");
-	// }
-
-	// var runPhase = function (index) {
-
-	// 	console.log("no run phase");
-	// }
-
-	// var setCallbacks = function (x) {
-
-	// 	console.log("set callbacks");
-
-	// 	initLoading = x.initLoading;
-	// 	runPhase = x.runPhase;
-	// }
-
-
 	return {
 		waitForElem:waitForElem,
 		setElemScrollTop:setElemScrollTop,
@@ -430,9 +414,6 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 		elementsToggle:elementsToggle,
 		beenBuilt:beenBuilt,
 		isBuilt:isBuilt
-		// initLoading:initLoading,
-		// runPhase:runPhase,
-		// setCallbacks:setCallbacks
 	}
 
 
