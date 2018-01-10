@@ -6,6 +6,8 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 
 	console.log("open " + sobj.program);
 
+	var active = config.get("activePages");
+
 	self.overview = dd.get("overview");
 
 	self.doc = dd.get(sobj.program);
@@ -15,6 +17,6 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 		states.go(state);
 	}
 
-	$scope.isActive = config.get("activePages");
+	$scope.isActive = active;
 
 }]);

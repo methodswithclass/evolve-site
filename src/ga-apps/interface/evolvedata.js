@@ -23,13 +23,14 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 				$evolve = $("#evolvedatatoggle");
 				$hud = $("#hudtoggle");
 				$stage = $("#stagetoggle");
+				$arena = $("#arena");
 
 
 				if (name == "trash" || name == "recognize") {
 					$evolve.css({top:"400px"});
 				}
 				else if (name == "feedback") {
-					$evolve.css({top:($stage.offset().top - $hud.offset().top) + $stage.height() + 50 + "px"});	
+					$evolve.css({top:($stage.offset().top - $hud.offset().top) + $arena.height() + 200 + "px"});	
 				}
 				
 			}

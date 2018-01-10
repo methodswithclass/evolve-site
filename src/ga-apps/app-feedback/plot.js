@@ -12,6 +12,8 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 			var total = pdata.genome;
 			var spread = pdata.spread;
 
+			var pointSize = g.isMobile() ? 4 : 2;
+
 			var $inner = $("#innerplot");
 
 			var plot = [];
@@ -46,9 +48,9 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 
 				var container = document.createElement("div");
 				$(container).addClass("absolute black-back");
-				container.style.width = "2px";
-				container.style.height = "2px";
-				container.style.borderRadius = "1px";
+				container.style.width = pointSize + "px";
+				container.style.height = pointSize + "px";
+				container.style.borderRadius = pointSize/2 + "px";
 				container.style.left = self.coords.x + "px";
 				container.style.top = normalize(self.coords.y) + "px";
 				
