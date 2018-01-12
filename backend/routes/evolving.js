@@ -132,11 +132,13 @@ evolveRouter.post("/instruct", function (req, res, next) {
 
 evolveRouter.post("/stepdata", function (req, res, next) {
 
-	// console.log("get stepdata", req.body, evolution.getstepdata());
+	// console.log("get stepdata", req.body);
 
 	var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
 	var stepdata = program.stepdata();
+
+	// console.log("step data", stepdata);
 
 	res.json({stepdata:stepdata});
 })

@@ -393,6 +393,8 @@ var obj = {};
 				if (crossoverMethod == methodTypes.multiParent) {
 
 
+					// console.log("reproduce multi parent", parents.length);
+
 
 					var offspring = [];
 					var $offspring;
@@ -646,8 +648,15 @@ var obj = {};
 			num_parents = input.parents;
 			pool = input.pool;
 			
-			popThreshold = 10;
-			altPool = 0.25;
+			var tempPool = input.pop*input.pool;
+
+			if (tempPool < num_parents*5) {
+
+				pool = input.pool*5;
+			}
+
+			// popThreshold = 10;
+			// altPool = 0.25;
 		}
 
 		getCrossoverParams(input);
@@ -822,14 +831,16 @@ var obj = {};
 				index:self.index,
 				dna:best.dna,
 				fitness:best.fitness,
-				runs:best.runs
+				runs:best.runs,
+				success:best.success
 			}
 
 			self.worst = {
 				index:self.index,
 				dna:worst.dna,
 				fitness:worst.fitness,
-				runs:worst.runs
+				runs:worst.runs,
+				success:worst.success
 			}
 
 			return {
@@ -839,17 +850,17 @@ var obj = {};
 		}
 			
 
-		var select = function (number, standard) {
+		var select = function (number, _pool) {
 
 
-			var normalStand = standard*self.total/100
+			// var normalStand = _pool*self.total/100
 
-			var pool = self.pop.filter(function (value, index) {
+			var $pool = self.pop.filter(function (value, index) {
 
-				return index < Math.floor(normalStand*self.total);
+				return index < Math.floor(_pool*self.total);
 			})
 
-			if (!pool) {
+			if (!$pool) {
 
 				return;
 			}
@@ -864,7 +875,7 @@ var obj = {};
 
 				return new Promise(function (resolve, reject) {
 
-					index = Math.floor(Math.random()*pool.length);
+					index = Math.floor(Math.random()*$pool.length);
 
 
 					match = indexes.find(function(p) {
@@ -907,7 +918,7 @@ var obj = {};
 
 					do {
 						
-						index = Math.floor(Math.random()*pool.length);
+						index = Math.floor(Math.random()*$pool.length);
 
 						match = indexes.find(function(p) {
 
@@ -925,7 +936,7 @@ var obj = {};
 
 			var parents = indexes.map(function (value, index) {
 
-				return pool[value];
+				return $pool[value];
 			})
 
 			parents.sort(function (a, b) {
@@ -939,7 +950,7 @@ var obj = {};
 
 		}
 
-		var reproduce = function (_parents, standard) {
+		var reproduce = function (_parents, _pool) {
 
 			var parents = [];
 			var mates = [];
@@ -948,6 +959,8 @@ var obj = {};
 
 			var i = 0;
 
+			// console.log("reproduce", _parents, standard);
+
 			if (reproductionType == reproductionTypes.async) {
 
 				if (active) {
@@ -955,7 +968,7 @@ var obj = {};
 					while (i < self.total) {
 
 
-						parents = select(_parents, standard);
+						parents = select(_parents, _pool);
 
 						if (parents.length == 0) {
 
@@ -967,6 +980,7 @@ var obj = {};
 						male = parents[0];
 						mates = parents.slice(1);
 
+						// console.log("male", male);
 
 						childrenPromise = male.reproduceAsync(mates)
 						.then(function (offspring) {
@@ -980,6 +994,7 @@ var obj = {};
 
 							children = children.concat(offspring);
 
+							// console.log("children", children.length);
 
 							return children.length;
 
@@ -1018,7 +1033,7 @@ var obj = {};
 					do {
 
 
-						parents = select(_parents, standard);
+						parents = select(_parents, _pool);
 
 						if (parents.length == 0) {
 
@@ -1068,13 +1083,11 @@ var obj = {};
 
 			var runPopComplete = function () {
 
+				// console.log("run pop complete");
 
 				var ext = rank();
 
-				var standard = self.total <= popThreshold ? altPool : pool;
-
-				// console.log("number of parents", num_parents, standard);
-
+				console.log("best", ext.best.fitness);
 
 				var onComplete = function ($children) {
 
@@ -1103,7 +1116,7 @@ var obj = {};
 
 				if (reproductionType == reproductionTypes.async) {
 
-					reproduce(num_parents, standard)
+					reproduce(num_parents, pool)
 					.then(function ($children) {
 
 						onComplete($children);
@@ -1117,7 +1130,7 @@ var obj = {};
 				}
 				else if (reproductionType == reproductionTypes.sync) {
 
-					var $children = reproduce(num_parents, standard);
+					var $children = reproduce(num_parents, pool);
 
 					onComplete($children);
 
@@ -1135,7 +1148,7 @@ var obj = {};
 			}
 			else if (type == types.async) {
 
-				runPopAsync(runPopComplete)
+				runPopAsync(runPopComplete);
 
 			}
 
@@ -1212,24 +1225,21 @@ var obj = {};
 					now++;
 
 					previous = x.previous;
+
+					// console.log("best", previous.best.fitness);
 						
 					if (x.next) {
 						era[index(now)] = x.next;
 					
 						// console.log("running evolve", self.input);
 
-						if (self.input && self.input.setEvdata) {
-							self.input.setEvdata({
-								index:now,
-								best:previous.best,
-								worst:previous.worst
-							})
-						}
-
-						if (now <= self.input.gens) {
+						if (now <= self.input.gens && !previous.best.success) {
 							setTimeout(function () {
 								step();
 							}, self.input.programInput.evdelay);
+						}
+						else {
+							self.hardStop(self.input);
 						}
 						
 

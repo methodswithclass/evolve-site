@@ -199,14 +199,10 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
  		for (var i in options) {
 
- 			self.temp[self.name][i] = options[i]
- 		}
-
-
-        for (var i in options) {
-
+            $$initial[i] = options[i];
+ 			self.temp[self.name][i] = options[i];
             self.global[self.name][i] = options[i];
-        }
+ 		}
 
  	}
 

@@ -403,7 +403,8 @@ var trash = function (options) {
 					}
 				}
 
-				var success = count > fits.length*0.8;
+				// var success = count > fits.length*0.8;
+				var success = false;
 
 				complete({
 					runs:fits,
@@ -436,7 +437,8 @@ var trash = function (options) {
 					}
 				}
 
-				var success = count > fits.length*0.8;
+				// var success = count > fits.length*0.8;
+				var success = false;
 
 				complete({
 					runs:fits,
@@ -470,7 +472,8 @@ var trash = function (options) {
 						}
 					}
 
-					var success = count > fits.length*0.8;
+					// var success = count > fits.length*0.8;
+					var success = false;
 
 					complete({
 						runs:fits,
@@ -541,7 +544,8 @@ var trash = function (options) {
 				}
 			}
 
-			success = count > fits.length*0.8;
+			// success = count > fits.length*0.8;
+			success = false;
 
 			complete({
 				runs:fits,

@@ -76,12 +76,6 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 		$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px", height:(g.isMobile() ? "50%" : "80%")})
 	})
 
-	var toggleElem = function (elem, toggle) {
-
-		u.toggle(toggle, elem, {fade:params.fade, delay:params.delay});
-	}
-
-
 	var elementsToggle = function (name, toggle) {
 
 
@@ -407,7 +401,6 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	return {
 		waitForElem:waitForElem,
 		setElemScrollTop:setElemScrollTop,
-		toggleElem:toggleElem,
 		forceEvolveHeight:forceEvolveHeight,
 		load:load,
 		getParams:getParams,

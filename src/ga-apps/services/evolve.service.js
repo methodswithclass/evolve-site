@@ -97,7 +97,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     		genA = stepdata.gen;
 
-    		// console.log("stepdata", res.data.stepdata, stepdata);
+    		// console.log("stepdata", res.data.stepdata, $stepdata);
 
             $stepdata = {
             	gen:stepdata.gen,
@@ -106,12 +106,16 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             	step:stepdata.step
             }
 
+            // console.log("stepdata callback response", update, res.data.stepdata, $stepdata);
+
             sendStepdata($stepdata);
 
             if (genA != genB) {
             	genB = genA;
-            	getBest();
+            	// getBest();
             }
+
+            getBest();
 
             setTimeout(function () {
 
@@ -170,6 +174,10 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
     }
 
 
+    var isEvolving = function () {
+
+        return update;
+    }
 
 
     var completeEvolve = function ($scope) {
@@ -308,15 +316,6 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             u.toggle("disable", "play", {fade:300});
             u.toggle("disable", "refresh", {fade:300});
 
-
-            api.run(function (res) {
-
-                console.log("Run algorithm success", res);
-
-                runEvolveComplete($scope);
-            })
-
-
     	}
     	else {
 
@@ -333,15 +332,15 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             u.toggle("disable", "stop", {fade:300});
 
             u.toggle("show", "evolve", {fade:600, delay:600});
-    		
-            api.run(function (res) {
-
-                console.log("Run algorithm success", res);
-
-                runEvolveComplete($scope);
-            })
 
     	}
+
+        api.run(function (res) {
+
+            console.log("Run algorithm success", res);
+
+            runEvolveComplete($scope);
+        })
 
 
         setTimeout(function () {
@@ -403,6 +402,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 		setup:setup,
 		running:running,
 		evolving:evolving,
+        isEvolving:isEvolving,
 		run:run,
 		breakRun:breakRun,
 		resetgen:resetgen,

@@ -7,68 +7,116 @@ var perceptron = function (params) {
 
 	// console.log("create perceptron", params);
 
-	this.layerIndex = params.index;
-	this.percepIndex = params.perceptronIndex;
-	this.perceptrons = params.numPerceptrons;
-	this.numInputs = params.numInputs;
-	var inputPerceptron = false;
-	if (params.output) {
-		inputPerceptron = true;
-		this.output = params.output;
-	}
-
-	var b = params.bias || 1;
+	var layerIndex = params.index;
+	var nodeIndex = params.nodeIndex;
+	var numInputs = params.numInputs;
+	
 	var inputs = params.inputs || [];
 	var weights = params.weights || [];
 
-	this.setOutput = function (_output) {
-		inputPerceptron = true;
-		this.output = _output;
+	var inputNode = false;
+	var $output;
+	var sum = 0;
+	
+	if (params.output) {
+		inputNode = true;
+		$output = params.output;
 	}
 
-	this.setBias = function (_bias) {
 
-		b = _bias;
+	self.isInput = function () {
+
+		return inputNode;
 	}
 
-	this.setWeights = function (params) {
+	self.getLayerIndex = function () {
 
-		if (params.bias) this.setBias(params.bias);
-		if (params.weights) {
-			weights = params.weights;
-			// this.fire();
+		return layerIndex;
+	}
+
+	self.getIndex = function () {
+
+		return nodeIndex;
+	}
+
+	self.getNumInputs = function () {
+
+		return numInputs;
+	}
+
+	self.setOutput = function (_output) {
+		inputNode = true;
+		$output = _output;
+	}
+
+	self.setWeights = function (_params) {
+
+		// if (params.bias) this.setBias(params.bias);
+		if (_params.weights) {
+			weights = _params.weights;
 		}
-		else if (params.index) weights[index] = params.weight
-	}
-
-	this.setInputs = function (params) {
-
-		if (params.bias) this.setBias(params.bias);
-		if (params.inputs) {
-			inputs = params.inputs;
-			// this.fire();
+		else if (_params.index && _params.weight) {
+			weights[_params.index] = _params.weight
 		}
-		else if (params.index) inputs[index] = params.input;
-	}
-
-	this.fire = function () {
-		
-		var sum = 0;
-
-		for (var i in inputs) {
-
-			if (weights[i]) {
-				sum += inputs[i]*weights[i];
+		else {
+			for (var i = 0; i < self.numInputs; i++) {
+				weights.push(0);
 			}
 		}
 
-		var result = sum + b;
+	}
 
-		if (!inputPerceptron) this.output = 1/(1 + Math.exp(-1*result));
+	self.getWeights = function () {
 
-		// console.log("fire", inputPerceptron, inputs, weights, sum, b, this.output);
+		return weights;
+	}
 
-		return this.output;
+	self.getInputs = function () {
+
+		return inputs;
+	}
+
+	self.getOutput = function () {
+
+		return $output;
+	}
+
+	self.getSum = function () {
+
+		return sum;
+	}
+
+	self.setInputs = function (_params) {
+
+		if (_params.inputs) {
+			inputs = _params.inputs;
+		}
+		else if (_params.index && _params.input) {
+			inputs[_params.index] = _params.input;
+		}
+		else {
+			for (var i = 0; i < self.numInputs; i++) {
+				inputs.push(0);
+			}
+		}
+	}
+
+	self.fire = function () {
+		
+		
+		if (!inputNode) {
+			
+			for (var i in inputs) {
+
+				if (weights[i]) {
+					sum += inputs[i]*weights[i];
+				}
+			}
+			
+			$output = 1/(1 + Math.exp(-1*sum));
+		}
+
+		return $output;
 	}
 
 }

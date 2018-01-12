@@ -19,7 +19,7 @@ recognizeRouter.post("/simulate", function (req, res, next) {
 
 	var recognize = get.getSessionProgram(req.body.input.session, "recognize");
 
-	recognize.simulate(index, function (output) {
+	recognize.simulate(req.body.index, function (output) {
 
 		res.json({output:output});
 	});

@@ -61,6 +61,7 @@
 				"goal":"min"
 			}
 			],
+			"totalSteps":1,
 			"network":{
 				"layers":[
 					{
@@ -77,6 +78,8 @@
 					}
 				]
 			},
+			"genemin":-20,
+			"genemax":20,
 			"function":"threshold"
 		}
 	},

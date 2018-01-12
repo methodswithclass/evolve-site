@@ -11,7 +11,7 @@ var g = require("mc-shared").utility_service;
 var layerFact = require("./neural-network/layer.js");
 
 
-var recognize = function () {
+var recognize = function (options) {
 
 	var self = this;
 
@@ -19,6 +19,7 @@ var recognize = function () {
 	var name = "recognize";
 
 	var inputLength = d.data.length;
+	var network = d.data.network;
 	var dna;
 	var net;
 	var $dna;
@@ -26,6 +27,9 @@ var recognize = function () {
 	var bestDNA;
 
 	var $stepdata;
+
+	var geneoffset = options.genemin
+	var generange = options.genemax - options.genemin;
 
 	var getTrainImageIndex = function () {
 
@@ -35,7 +39,7 @@ var recognize = function () {
 
 	self.gene = function () {
 		
-		return Math.random()*40 - 20;
+		return Math.random()*generange + geneoffset;
 	}
 
 	self.instruct = function ($dna) {
@@ -48,34 +52,64 @@ var recognize = function () {
 
 	}
 
-	var makeGenome = function () {
+	var getLayerFromDNA = function (layer) {
 
-	    var inputs;
-	    var weights = [];
-	    var $dna = [];
-	    $dna.push([]);
+		return $dna[layer]
+	}
 
-	    for (var i = 1; i < d.data.network.length; i++) {
+	var getNodeFromLayerOnDNA = function (layer, node) {
 
-	    	inputs = (i == 1) ? inputLength : d.data.network[i-1].nodes;
-	        $dna.push([]);
+		return $dna[layer][node]
+	}
 
-	        for (var j = 0; j < d.data.network[i].nodes; j++) {
+	var getWeightFromDNA = function (layer, node, input) {
 
+		return $dna[layer][node][input]["weight"];
+	}
 
-	        	weights = [];
-	        	$dna[i].push({});
+	var addLayerToDNA = function (layer) {
 
-	        	for (var k = 0; k < inputs; k++) {
-	           		weights.push(gene());
-	           	}
+		$dna[layer] = {};
+	}
 
-	           	$dna[i][j]["weights"] = weights;
-	        	$dna[i][j]["bias"] = gene();
+	var addNodeToLayerOnDNA = function (layer, node) {
+
+		$dna[layer][node] = {};
+	}
+
+	var addWeightToDNA = function (layer, node, input, weight) {
+
+		$dna[layer][node][input] = {weight:weight};
+	}
+
+	var makeGenome = function (callback) {
+
+	    // var inputs;
+	    // var weights = [];
+
+	    $dna = null;
+	    $dna = {};
+
+	    for (var i = 1; i < network.length; i++) {
+
+	    	addLayerToDNA(i);
+
+	        for (var j = 0; j < network[i].nodes; j++) {
+
+	        	addNodeToLayerOnDNA(i, j);
+
+	        	for (var k = 0; k < network[i-1].nodes; k++) {
+
+	        		var gene = callback();
+	        		// console.log("gene", gene)
+	        		addWeightToDNA(i, j, k, gene);
+	        	}
 
 	        }
 	        
 	    }
+
+	    // console.log("dna", $dna);
 
 	    return $dna;
 	}
@@ -85,145 +119,148 @@ var recognize = function () {
 		var net = [];
 		var layer;
 		var params;
-		var layers;
 
-		params = {
-			index:0,
-			numPerceptrons:inputLength,
-			numInputs:0,
-			output:1
-		}
 
-		layer = new layerFact();
-		layer.init(params);
-		net.push(layer);
-
-		for (var i = 1; i < d.data.network.length; i++) {
+		for (var i = 0; i < network.length; i++) {
 
 			params = {
 				index:i,
-				numPerceptrons:d.data.network[i].nodes,
-				numInputs:d.data.network[i-1].nodes
+				numNodes:network[i].nodes,
+				numInputs:(i > 0 ? network[i-1].nodes : 0)
 			}
 
 			layer = new layerFact();
 			layer.init(params);
+
+			// console.log("make neural net, layer", i, layer.getNodes().length);
 			net.push(layer);
 		}
 
-		// console.log("make neural net", net);
+		// console.log("make neural net", net.length);
 
 		return net;
 	}
 
 
-	var assignWeights = function (net, $dna) {
+	net = makeNeuralNet();
 
-		// console.log("assign weights net", net, "$dna", $dna);
+	var assignDNAWeights = function (net, $dna) {
+
+		// console.log("assign weights net", net);
 		
-		var layerArray = [];
-		var layer = [];
-
-		var dnaSegment = [];
-
-		for (var i = 1; i < net.length; i++) { /* each layer */
-
-			layerArray = net[i];
-			layer = layerArray.getLayer();
-
-			for (var j = 0; j < layer.length; j++) { /* each perceptron in layer */
+		var layer;
+		var inputLayer;
+		var dnaSegment;
+		var node;
 
 
-				perceptron = layer[j];
-				dnaSegment = $dna[i-1][j]["weights"];
+		for (var i = 1; i < net.length; i++) {
 
-				// console.log("dnasegment", dnaSegment);
+			layer = net[i];
 
-				perceptron.setWeights({weights:dnaSegment, bias:$dna[i-1][j]["bias"]});
+			for (var j = 0; j < layer.getNodes().length; j++) {
 
-				layer[j] = perceptron;
+				node = layer.getNode(j);
+				inputLayer = net[i-1];
+
+				dnaSegment = [];
+
+				for (var k = 0; k < inputLayer.getNodes().length; k++) {
+
+					dnaSegment.push(getWeightFromDNA(i, j, k))
+				}
+
+				// console.log("weights", dnaSegment);
+
+				node.setWeights({weights:dnaSegment});
+				layer.setNode(j, node);
 
 			}
 
-			net[i].setLayer(layer);
+			net[i].setLayer(layer.getNodes());
 
 		}
 
-		// console.log("assign weights", net);
+		// console.log("assign weights", net.length);
 
 		return net;
 	}
 
-	var checkImage = function (net, input) {
+	var assignImageInputs = function (net, input) {
 
 
-		var layerArray = [];
-		var layer = [];
-		var perceptron;
+		var prevLayer;
+		var layer;
 
 		var inputs = [];
 
-		var prevLayerArray = [];
-		var prevLayer;
-		var prevPerceptron;
-
+		// console.log("image input", input);
 		
-		var imageLayer = net[0].getLayer();
+		var pixels = net[0].getNodes();
 
-		for (var i in imageLayer) {
+		for (var i in pixels) {
 
 			if (i < input.length) {
-				// console.log("input", input[i]);
-				imageLayer[i].setOutput(input[i]);
+				// console.log("image input", input[i]);
+				pixels[i].setOutput(input[i]);
 			}
 		}
 
-		net[0].setLayer(imageLayer);
+		net[0].setLayer(pixels);
 
 
 		for (var i = 1; i < net.length; i++) { /* each layer */
 
-			prevLayerArray = net[i-1];
-			prevLayer = prevLayerArray.getLayer();
+			prevLayer = net[i-1];
 
 			inputs = [];
 
-			for (var j = 0; j < prevLayer.length; j++) {
+			for (var j = 0; j < prevLayer.getNodes().length; j++) {
 
-	        	prevPerceptron = prevLayer[j];
+	        	node = prevLayer.getNode(j);
 
-	        	// console.log("prev fire", j, prevPerceptron.fire());
+	        	// console.log("input node fire, layer", i-1, "node", j, "output", node.fire());
 
-	        	inputs.push(prevPerceptron.fire());
+	        	inputs.push(node.fire());
 
 	        }
 
-	      	layerArray = net[i];
-			layer = layerArray.getLayer();
+	      	layer = net[i];
 
-			for (var j = 0; j < layer.length; j++) {
+			for (var j = 0; j < layer.getNodes().length; j++) {
 
-				perceptron = layer[j];
+				node = layer.getNode(j);
 
-				perceptron.setInputs({inputs:inputs});
+				node.setInputs({inputs:inputs});
+
+				layer.setNode(j, node);
 			}
 
-			net[i].setLayer(layer);
+			net[i].setLayer(layer.getNodes());
 			
 		}
 
+		// console.log("assign image inputs", net);
 
-		layerArray = net[net.length-1];
-		layer = layerArray.getLayer();
+		return net;
+		
+	}
 
+	var outputFromNeuralNet = function  (net) {
+
+		var node;
 		var result = [];
+		
+		// console.log("output net", net)
 
-		for (var j in layer) {
+		layer = net[net.length-1];
 
-			perceptron = layer[j];
+		for (var j in layer.getNodes()) {
+
+			node = layer.getNode(j);
 
 			result.push({
-				output:perceptron.fire(),
+				output:g.truncate(node.fire(), 4),
 				index:j
 			});
 		}
@@ -231,8 +268,6 @@ var recognize = function () {
 		// console.log("result", result);
 
 		return result;
-
-		
 	}
 
 	self.hardStop = function () {
@@ -242,66 +277,79 @@ var recognize = function () {
 
 	self.simulate = function (index, complete) {
 
-		var net = [];
-		var dna = [];
+		// var net = [];
+		// var dna = [];
 		var output = [];
-		var outputTrun = []
+		// var outputTrun = []
 		var label;
 
-		net = makeNeuralNet();
-		dna = d.recognizeArrayToObject(bestDNA);
-		net = assignWeights(net, dna);
+		var i = 0;
 
-		// var imageIndex = getTrainImageIndex();
+		// net = makeNeuralNet();
+		
+		dna = makeGenome(function () {
 
+			return bestDNA[i++]
+		});
 
+		net = assignDNAWeights(net, dna);
 		var image = d.data.images[index];
-
-
 		label = image.label;
-		output = checkImage(net, image.pixels);
+		net = assignImageInputs(net, image.pixels);
+		output = outputFromNeuralNet(net);
 
-		output = output.sort(function (a, b) {
-
-			return b.output - a.output;
-		})
-
-		for (var i in output) {
-			output[i].outputTrun = g.truncate(output[i].output, 4);
-		}
 
 		complete(output);
 		
 
 	}
 
-	var getFitness = function (output, expect) {
-
-		var fitness = -20;
 
 
-		for (var i in expect) {
+	var getFitness = function (output, label) {
 
-			if (output[i].output > 0.9 && expect[i] == 1) {
+		var penalty = 0;
+		var reward = 0;
 
-				fitness += 40;
+		var correctGuessReward = 40;
+		var incorrectGuessPenalty = -50;
+		var penaltyPoints = 10;
+		var penaltyReversePoints = -20;
 
-				for (var j in expect) {
+		var same = output.find(function (p) {
 
-					if (j != i && output[j].output > 0.9) {
+			return p.index == label
+		})
 
-						fitness -= 2;
-					}
+		// console.log("\n\noutput", label, output, same)
+
+
+		reward = same.output > 0.9 ? correctGuessReward : incorrectGuessPenalty;
+
+
+		if (reward == correctGuessReward) {
+
+			for (var i in output) {
+
+				if (output[i].index != same.index) {
+					penalty += ((output[i].output < 0.01) ? penaltyReversePoints : penaltyPoints);
 				}
-
-				break;
-			
 			}
 
 		}
+		else {
+
+			penalty = (-1)*incorrectGuessPenalty;
+
+		}
+		
 
 
-		return fitness;
+		var fit = reward - penalty;
+
+		// console.log("fit", reward, penalty, fit, "\n\n");
+
+		return fit;
 
 	}
 
@@ -310,40 +358,36 @@ var recognize = function () {
 		return $stepdata;
 	}
 
-	var performRun = function (run, fits, params, check, complete) {
+	var performRun = function ($run, fits, params, complete) {
 
 		// console.log("perform run", run, fits);
 
 		var fit = 0;
 		var label;
 		var output;
-		var expect = [];
 
-		for (var i = 0; i < 10; i++) {
-			expect.push(0);
-		}
 
 		$stepdata = {
-			name:"step." + name,
+			name:"step." + params.input.name,
 			gen:params.gen,
 			org:params.index,
-			run:run
+			run:$run,
+			step:1
 		}
 
 		var imageIndex = getTrainImageIndex();
-
 		var image = d.data.images[imageIndex];
-
 		label = image.label;
-		expect[((label > 0) ? label-1 : Math.abs(label))] = 1;
-		output = checkImage(params.net, image.pixels);
+		net = assignImageInputs(net, image.pixels);
+		output = outputFromNeuralNet(net);
+		fit = getFitness(output, label);
+		fits.push({fitness:fit});
 		
-		fit = getFitness(output, expect);
-		
-		fits.push({fit:fit});
-		
-		if (check(run)) {
-			performRun(run + 1, fits, params, check, complete);
+
+		// console.log("run", params.gen, params.index, $run, fit);
+
+		if ($run < runs) {
+			performRun($run + 1, fits, params, complete);
 		}
 		else {
 			complete(fits);
@@ -357,28 +401,31 @@ var recognize = function () {
 		runs = params.input.runs;
 		var avg;
 		var success;
+		var i = 0;
 
-		net = makeNeuralNet();
-		dna = d.recognizeArrayToObject(params.dna);
-		net = assignWeights(net, dna);
 
-		params.net = net;
+		dna = makeGenome(function () {
 
-		performRun(1, fits, params, function (run) {
+			return params.dna[i++]
+		});
+		net = assignDNAWeights(net, dna);
 
-			return run < runs;
-		},
-		function (fits) {
 
-			avg = g.truncate(g.average(fits, function (value, index, array) {return value.fit;}), 2);
-			success = avg > 0.8;
+		performRun(0, fits, params,
+		           function (fits) {
 
-			complete({
-				runs:fits,
-				avg:avg,
-				success:success
-			});
-		})
+						avg = g.truncate(g.average(fits, function (value, index, array) {return value.fitness;}), 2);
+						// success = Math.abs(avg - 1) <= 0.01;
+						success = false;
+						// console.log("success", avg, success)
+
+						complete({
+							runs:fits,
+							avg:avg,
+							success:success
+						});
+
+					});
 
 	}
 

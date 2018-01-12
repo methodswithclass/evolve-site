@@ -15,7 +15,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
 
     var pageBuilt = display.beenBuilt(self.name);
-
+    var imageIndex;
 
     console.log("\n\n\ncontroller", self.name, "built", pageBuilt, "\n\n\n")
 
@@ -219,7 +219,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
                 }
             });
 
-            
+
         })
     }
 
@@ -228,10 +228,12 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
         // console.log("refresh");
 
+        imageIndex = Math.floor(Math.random()*28000)
+
         react.push({
             name:"indexes",
             state:{
-                index:Math.floor(Math.random()*28000),
+                index:imageIndex,
                 sample:0
             }
         })
@@ -243,7 +245,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
     self.play = function () {
 
-        simulator.simulate();
+        simulator.simulate(imageIndex);
     }
 
 
@@ -252,7 +254,7 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
         
         processTypes = config.get("types.processTypes")
 
-        $scope.programInput = config.get("global.feedback");
+        $scope.programInput = config.get("global.recognize");
 
     }
 
@@ -279,9 +281,9 @@ app.controller("recognize.controller", ['$scope', 'utility', 'react.service', 'e
 
         $input.setInput({
             name:self.name,
-            gens:20,
-            runs:5,
-            pop:20
+            runs:1,
+            pop:20,
+            programInput:$scope.programInput
         });
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));

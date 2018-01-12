@@ -13,21 +13,19 @@ var layer = function () {
 	var i = 0;
 	var perceptron;
 
-	this.init = function (params) {
+	self.init = function (params) {
 
 
 
-		this.perceptrons = params.numPerceptrons;
-		this.index = params.index;
+		self.nodes = params.numNodes;
+		self.index = params.index;
 
 		i = 0;
 
-		while (i < this.perceptrons) {
+		while (i < self.nodes) {
 
-			params.perceptronIndex = i;
-
+			params.nodeIndex = i;
 			perceptron = new perceptronFact(params);
-
 			perceptrons.push(perceptron);
 
 			i++
@@ -35,14 +33,24 @@ var layer = function () {
 
 	}
 
-	this.setLayer = function ($perceptrons) {
+	self.setLayer = function ($perceptrons) {
 
 		perceptrons = $perceptrons;
 	}
 
-	this.getLayer = function () {
+	self.setNode = function (i, node) {
 
-		return perceptrons;
+		perceptrons[i] = node;
+	}
+
+	self.getNodes = function () {
+
+	 	return perceptrons;
+	}
+
+	self.getNode = function (index) {
+
+		return perceptrons[index];
 	}
 
 }

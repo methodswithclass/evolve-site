@@ -165,12 +165,14 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 
 		    	u.toggle("disable", "refresh", {fade:displayParams.fade});
 		    	u.toggle("hide", "settings", {fade:displayParams.fade});
+		    	u.toggle("hide", "controls", {fade:displayParams.fade});
 		    	u.toggle("show", "loading", {fade:displayParams.fade});
 
 		        api.simulate.digit(i, function (res) {
 
 		        	u.toggle("hide", "loading", {fade:displayParams.fade});
 		        	u.toggle("show", "settings", {fade:displayParams.fade});
+		        	u.toggle("show", "controls", {fade:displayParams.fade});
 		        	u.toggle("enable", "refresh", {fade:displayParams.fade});
 		        	u.toggle("enable", "play", {fade:displayParams.fade, delay:displayParams.delay})
 
@@ -184,6 +186,11 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 
 		    var displayOutput = function (output) {
 
+		    	output = output.sort(function (a, b) {
+
+					return b.output - a.output;
+				})
+
 		    	$scope.output = output;
 		    }
 
@@ -194,7 +201,7 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 		    })
 
 
-		    events.on("resetDigits", function () {
+		    events.on("resetDigit", function () {
 
 		    	eraseImage();
 		    })

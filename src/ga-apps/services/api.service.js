@@ -26,6 +26,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
 
     var stepdata = function (callback) {
 
+        // console.log("call setpdata");
       
     	$http({
     		method:"POST",
@@ -33,6 +34,8 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
             data:{input:$input.getInput()}
     	})
     	.then(function (res) {
+
+            // console.log("stepdata raw response", res);
 
             if (typeof callback === "function") callback(res);
 
