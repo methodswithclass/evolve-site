@@ -13,9 +13,9 @@ stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', 'e
 
 			console.log(toState);
 
-			var leaveName = fromState.name;
+			// var leaveName = fromState.name;
 
-			events.dispatch("close" + leaveName);
+			// events.dispatch("close" + leaveName);
 
 			$("#body").scrollTo(0);
 		}
@@ -27,6 +27,7 @@ stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', 'e
 
 	var go = function (state) {
 		console.log("go to state", state);
+		// console.log("states", states);
 		$state.go(state);
 	}
 

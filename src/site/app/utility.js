@@ -125,9 +125,17 @@ app.factory("utility", function () {
 
     }
 
+    var stateName = function (state) {
+
+        var hashIndex = state.indexOf("#");
+
+        return hashIndex > 0 ? state.substr(0, hashIndex) : state;
+    }
+
 	return {
 		toggle:toggle,
-        correctForAspect:makeAspect
+        correctForAspect:makeAspect,
+        stateName:stateName
 	}
 
 })

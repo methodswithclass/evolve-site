@@ -70,7 +70,7 @@
 											grid size
 										</div>
 									</div>
-									<select class="absolute width30 height right0 text-right font-30 black transparent-back nooutline" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="programInput.grid" ng-change="programInputChange()">
+									<select class="absolute width30 height right0 text-right font-30 black transparent-back nooutline" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="main.programInput.grid" ng-change="main.programInputChange()">
 										<option value="{{item}}" ng-repeat="item in grids">{{item.size}}</option> 
 									</select>
 
@@ -87,7 +87,7 @@
 											trash % <br> (1-90)
 										</div>
 									</div>
-									<input class="absolute width30 height right0 text-right font25-rem transparent-back black nooutline" id="trashRateInput" type="text" ng-model="programInput.trashPercent" ng-change="programInputChange()">
+									<input class="absolute width30 height right0 text-right font25-rem transparent-back black nooutline" id="trashRateInput" type="text" ng-model="main.programInput.trashPercent" ng-change="main.programInputChange()">
 
 								</div>
 

@@ -14,7 +14,8 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 	var runPopTypes = config.get("types.runPopTypes");
 	var reproductionTypes = config.get("types.reproductionTypes");
 
-	var $$initial = config.get("global.initial");
+	var $$master_initial = config.get("global.initial");
+    var $$reset_initial = config.get("global.initial");
 
 	var displayTypes = {
 		value:"value",
@@ -192,6 +193,11 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         self.name = name;
     }
 
+    var resolveKeysForInitialInput = function (key) {
+
+        return key != "name" && key != "session" && key != "programInput"
+    }
+
 
  	var setInput = function (options) {
 
@@ -199,7 +205,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
  		for (var i in options) {
 
-            $$initial[i] = options[i];
+            if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];
  			self.temp[self.name][i] = options[i];
             self.global[self.name][i] = options[i];
  		}
@@ -261,8 +267,13 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
     	// sendVars();
 
-		setInput($$initial);	
+		setInput($$reset_initial);	
 	}
+
+    var masterReset = function () {
+
+        setInput($$master_initial);
+    }
 
 
 
@@ -270,6 +281,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         createInput:createInput,
         setName:setName,
 		resetInput:resetInput,
+        masterReset:masterReset,
 		setInput:setInput,
 		getInput:getInput,
 		resendInput:resendInput,

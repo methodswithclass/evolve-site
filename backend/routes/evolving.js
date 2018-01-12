@@ -50,7 +50,7 @@ evolveRouter.get("/instantiate", function (req, res, next) {
 
 evolveRouter.post("/initialize", function (req, res, next) {
 
-	console.log("initialize, input", req.body.input);
+	console.log("initialize");
 
 	var input = addProgram(req.body.input);
 
@@ -80,7 +80,7 @@ evolveRouter.post("/set", function (req, res, next) {
 
 evolveRouter.post("/run", function (req, res, next) {
 
-	console.log("run evolve");
+	console.log("run evolve", req.body.input);
 
 	// var input = addProgram(req);
 

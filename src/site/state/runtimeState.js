@@ -25,11 +25,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         responsive:true
     },
     {
-        name:"overview",
-        url:"/site/page.html",
-        responsive:true
-    },
-    {
         name:"feedback",
         url:"/site/page.html",
         responsive:true
@@ -71,13 +66,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         controllerAs:"main"
     },
     {
-        name:"overview",
-        url:"/p/overview",
-        controller:"main.controller",
-        controllerAs:"main"
-
-    },
-    {
         name:"feedback",
         url:"/p/feedback",
         controller:"main.controller",
@@ -87,7 +75,8 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/p/feedback/demo",
-        controller:'feedback.controller',
+        // controller:'feedback.controller',
+        controller:"app.controller",
         controllerAs:"main"
     },
     {
@@ -99,7 +88,8 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"trash#demo",
         url:"/p/trash/demo",
-        controller:'trash.controller',
+        // controller:'trash.controller',
+        controller:"app.controller",
         controllerAs:"main"
     },
     {
@@ -111,14 +101,15 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"recognize#demo",
         url:"/p/recognize/demo",
-        controller:'recognize.controller',
+        // controller:'recognize.controller',
+        controller:"app.controller",
         controllerAs:"main"
     }
     ];
 
     var addTemplateUrl = function (state) {
 
-        var state = states.find(function (p) {
+        var $state = states.find(function (p) {
 
             return p.name == state.name;
         });
@@ -128,9 +119,9 @@ stateModule.provider("runtime.state", function ($stateProvider) {
             return p.name == state.name;
         })
 
-        state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
+        $state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
 
-        return state; 
+        return $state; 
     }
 
     var addState = function(state) { 
@@ -146,6 +137,9 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
         var service = function () {
 
+            return {
+                states:states
+            }
 
         }
 

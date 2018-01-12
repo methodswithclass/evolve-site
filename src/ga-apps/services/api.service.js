@@ -194,10 +194,12 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
 
         $http({
             method:"POST",
-            url:"/trash/environment/refresh/",
+            url:"/trash/environment/refresh",
             data:{input:$input.getInput()}
         })
         .then(function (res) {
+
+            console.log("refresh response", res.data);
 
             if (typeof callback === "function") callback(res);
 

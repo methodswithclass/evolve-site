@@ -162,15 +162,15 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			})
 
 
-		    react.subscribe({
-				name:"create.env",
-				callback:function (x) {
+		 //    react.subscribe({
+			// 	name:"create.env",
+			// 	callback:function (x) {
 
-					environment = x
+			// 		environment = x
 
-					makeBlocks(environment);
-				}
-			})
+			// 		makeBlocks(environment);
+			// 	}
+			// })
 
 		    react.push({
 		    	name:"block.clean",
@@ -195,7 +195,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 				api.refreshEnvironment(function (res) {
 
 
-			    	console.log("Refresh environment");
+			    	console.log("Refresh environment", res.data.env);
 
 		            environment = res.data.env;
 

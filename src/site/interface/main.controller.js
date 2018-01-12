@@ -2,19 +2,24 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 
 	var self = this;
 
-	var sobj = states.split();
+	var state = states.current()
 
-	console.log("open " + sobj.program);
+	console.log("open " + state);
 
 	var active = config.get("activePages");
 
 	self.overview = dd.get("overview");
 
-	self.doc = dd.get(sobj.program);
+	self.doc = dd.get(state);
 
-	self.open = function (state) {
+	self.openDemo = function () {
 
-		states.go(state);
+		states.go(state + "#demo");
+	}
+
+	self.open = function ($state) {
+
+		states.go($state);
 	}
 
 	$scope.isActive = active;
