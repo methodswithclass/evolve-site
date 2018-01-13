@@ -14,11 +14,11 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
     var setupProgramInputConfig = function () {
 
-    	console.log("setup program input config \n\n\n\n\n")
+    	// console.log("setup program input config \n\n\n\n\n")
 
         display.waitForElem({elems:"#programConfig"}, function () {
 
-        	console.log("programConfig elem exists \n\n\n\n\n\n")
+        	// console.log("programConfig elem exists \n\n\n\n\n\n")
 
             programInputConfig();
 
@@ -228,7 +228,7 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
 	var enter = function (self, $scope) {
 
-		console.log("enter \n\n\n\n\n");
+		// console.log("enter \n\n\n\n\n");
 
 		setupProgramInputConfig();
 

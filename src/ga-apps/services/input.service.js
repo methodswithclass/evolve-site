@@ -195,7 +195,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
     var resolveKeysForInitialInput = function (key) {
 
-        return key != "name" && key != "session" && key != "programInput"
+        return key != "gens" && key != "name" && key != "session" && key != "programInput"
     }
 
 
