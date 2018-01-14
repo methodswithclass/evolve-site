@@ -256,10 +256,10 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
             programInput:self.programInput
         })
 
-        react.push({
-        	name:"programInputtrash",
-        	state:self.programInput
-        })
+        // react.push({
+        // 	name:"programInputtrash",
+        // 	state:self.programInput
+        // })
 
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));

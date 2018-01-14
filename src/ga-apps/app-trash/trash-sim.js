@@ -1,4 +1,4 @@
-app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', 'input.service', function ($http, u, events, react, api, input) {
+app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', 'input.service', function ($http, u, events, react, api, $input) {
 
     var i = 1;
     var _score = 0;
@@ -25,13 +25,13 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     }
 
 
-    react.subscribe({
-        name:"programInput" + name,
-        callback:function(x) {
+    // react.subscribe({
+    //     name:"programInput" + name,
+    //     callback:function(x) {
 
-            totalActions = x.totalSteps;
-        }
-    })
+    //         totalActions = x.totalSteps;
+    //     }
+    // })
     
 
     react.subscribe({
@@ -136,17 +136,17 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     }
 
-    var performStep = function (input) {
+    var performStep = function (_input) {
 
         //console.log("simulate " + i);
 
 
-        if (input.step) u.toggle("hide", "step");
+        if (_input.step) u.toggle("hide", "step");
 
-        if (active && input.i <= totalActions) {
+        if (active && _input.i <= totalActions) {
 
 
-            api.simulate.trash({name:name, i:input.i, session:input.session}, function (res) {
+            api.simulate.trash({name:name, i:_input.i, session:_input.session}, function (res) {
 
                 // console.log("run simulation", res.data);
 
@@ -154,11 +154,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
                 animate(result.i, result.after, result.points);
 
-                if (!input.step) {
+                if (!_input.step) {
 
                     setTimeout(function () {
 
-                        performStep({i:input.i + 1, step:false, session:input.session});
+                        performStep({i:_input.i + 1, step:false, session:_input.session});
                     }, anime.predu);
                    
                 }
@@ -180,6 +180,8 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         console.log("sim setup: instruct", evdata);
 
+
+        totalActions = $input.getInput().programInput.totalSteps;
         
         api.instruct(function (res) {
 
