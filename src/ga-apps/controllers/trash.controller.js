@@ -247,7 +247,7 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
         evolve.setup(self.name);
 
-        
+
         $input.masterReset();
         
 
@@ -256,38 +256,43 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
             programInput:self.programInput
         })
 
+        react.push({
+        	name:"programInputtrash",
+        	state:self.programInput
+        })
+
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));
 	}
 
 	var refresh = function (self, $scope) {
 
-        $scope.running(false);
+        evolve.running(false, $scope);
         simulator.refresh();
     }
 
     var restart = function (self, $scope) {
 
         
-        $scope.running(false);
+        evolve.running(false, $scope);
         simulator.reset();
     }
 
     var step = function (self, $scope) {
 
-        $scope.running(true);
+        evolve.running(true, $scope);
         simulator.step($scope.session);
     }
 
     var play = function (self, $scope) {
         
-        $scope.running(true);
+        evolve.running(true, $scope);
         simulator.play($scope.session, false);
     }
 
     var stop = function (self, $scope) {
 
-        $scope.running(false);
+        evolve.running(false, $scope);
         simulator.stop();  
     }
 

@@ -102,7 +102,7 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 				if (name == "trash" || name == "recognize") {
 
-					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px"});
+					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 200 + "px"});
 				}
 				else if (name == "feedback") {
 

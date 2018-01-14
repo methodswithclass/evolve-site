@@ -283,7 +283,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var complete = function () {
 
-        events.dispatch("completeSim");
+        // events.dispatch("completeSim");
 
 
         u.toggle("enable", "refresh", {fade:300, delay:100});
