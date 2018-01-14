@@ -75,7 +75,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/p/feedback/demo",
-        // controller:'feedback.controller',
         controller:"app.controller",
         controllerAs:"main"
     },
@@ -88,7 +87,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"trash#demo",
         url:"/p/trash/demo",
-        // controller:'trash.controller',
         controller:"app.controller",
         controllerAs:"main"
     },
@@ -101,7 +99,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"recognize#demo",
         url:"/p/recognize/demo",
-        // controller:'recognize.controller',
         controller:"app.controller",
         controllerAs:"main"
     }

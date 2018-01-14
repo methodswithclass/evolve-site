@@ -84,15 +84,11 @@ gulp.task('scripts', ['vendor'], function() {
 
 
     var mainSrc = gulp.src([
-	    "src/site/app/app.js",
-	    "src/site/state/stateModule.js",
-	    "src/ga-apps/app-recognize/app/image-processor/pixel.processor.js",
-	    "src/ga-apps/app-recognize/app/image-processor/directread.js",
-	    "src/ga-apps/app-recognize/app/image-processor/filereader.js",
-	    "src/ga-apps/app-recognize/app/image-processor/csvreader.js",
-	    "src/ga-apps/app-recognize/app/image-processor/image.processor.js",
-	    "src/ga-apps/app-feedback/**/*.js",
-	    "src/ga-apps/app-trash/**/*.js",
+	    "src/site-files/app/app.js",
+	    "src/site-files/state/stateModule.js",
+	    "src/project-files/ga-apps/app-recognize/**/*.js",
+	    "src/project-files/ga-apps/app-feedback/**/*.js",
+	    "src/project-files/ga-apps/app-trash/**/*.js",
 	    "src/**/*.js"
     ])
 	.pipe(concat('main.js'))
