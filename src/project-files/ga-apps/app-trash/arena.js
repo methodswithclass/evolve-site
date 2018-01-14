@@ -132,6 +132,10 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			}
 
+			react.push({
+		    	name:"block.clean",
+		    	state:cleanBlock
+		    })
 
 			var setStageSize = function () {
 
@@ -144,40 +148,8 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 				})
 
 				$stage.css({width:ed.width, height:ed.height});
+			    
 			}
-
-
-
-			display.waitForElem({elems:$stage}, function (options) {
-
-
-				setStageSize();
-
-				$(window).resize(function () {
-
-					setStageSize();
-				})
-
-
-			})
-
-
-		 //    react.subscribe({
-			// 	name:"create.env",
-			// 	callback:function (x) {
-
-			// 		environment = x
-
-			// 		makeBlocks(environment);
-			// 	}
-			// })
-
-		    react.push({
-		    	name:"block.clean",
-		    	state:cleanBlock
-		    })
-
-
 
 
 		    events.on("resetenv", function () {
@@ -189,19 +161,31 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			events.on("refreshenv", function () {
 
-
 				console.log("refresh environment");
 
-				api.refreshEnvironment(function (res) {
+				display.waitForElem({elems:$stage}, function (options) {
 
 
-			    	console.log("Refresh environment", res.data.env);
+					setStageSize();
 
-		            environment = res.data.env;
+					api.refreshEnvironment(function (res) {
 
-		            makeBlocks(environment);
 
-			    })
+				    	console.log("Refresh environment", res.data.env);
+
+			            environment = res.data.env;
+
+			            makeBlocks(environment);
+
+				    })
+
+					$(window).resize(function () {
+
+						setStageSize();
+					})
+
+
+				})
 
 			})
 
