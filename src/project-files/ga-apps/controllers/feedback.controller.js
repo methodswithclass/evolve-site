@@ -40,14 +40,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", "events.service",
         processTypes = config.get("types.processTypes")
 
         $scope.programInput = config.get("global.feedback");
-
-
-        react.subscribe({
-            name:"sim." + self.name,
-            callback:function (x) {
-                self.sdata = x;
-            }
-        });
+        
 	}
 
 	var enter = function (self, $scope) {
@@ -84,13 +77,6 @@ app.factory("feedback.controller", ["feedback-sim", "utility", "events.service",
         $scope.resetgen();
     }
 
-    var restart = function (self, $scope) {
-
-        
-        // $scope.running(false);
-        // simulator.reset();
-    }
-
     var step = function (self, $scope, dna) {
 
         simulator.step(dna, 200);
@@ -113,8 +99,6 @@ app.factory("feedback.controller", ["feedback-sim", "utility", "events.service",
 		build:build,
 		enter:enter,
 		refresh:refresh,
-		restart:restart,
-		step:step,
 		play:play,
 		stop:stop
 

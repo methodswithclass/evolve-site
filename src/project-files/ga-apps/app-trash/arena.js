@@ -25,13 +25,18 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				var self = this;
 
+				$stage = $("#arena");
+				$elem = $("#elem");
+
+
 				var container = document.createElement("div");
 				$(container).addClass("absolute border");
-				container.style.width = $(element).width()/cols + "px";
-				container.style.height = $(element).height()/rows + "px";
-				container.style.left = input.x*$(element).width()/cols + "px";
-				container.style.top = input.y*$(element).height()/rows + "px";
-				$(element).append(container);
+				container.style.width = $stage.width()/cols + "px";
+				container.style.height = $stage.height()/rows + "px";
+				container.style.left = input.x*$stage.width()/cols + "px";
+				container.style.top = input.y*$stage.height()/rows + "px";
+				// console.log("append container", $elem[0], "\n\n\n", container);
+				$elem.append(container);
 
 				var outline = document.createElement("div");
 				$(outline).addClass("absolute width40 height40 border center");
@@ -74,6 +79,8 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 			var clear  = function () {
 
+				console.log("clear arena");
+
 				for (var i = 0; i < arena.length; i++) {
 					for (var j = 0; j < arena[i].length; j++) {
 						arena[i][j].remove();
@@ -95,10 +102,12 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 				rows = env.arena.length;
 				cols = env.arena.length;
 
-				// console.log("make blocks, rows,", rows, "cols,", cols);
+				// console.log("make blocks, env", env ? true : false, "rows", rows, "cols", cols);
+
+				// console.log("push man object");
 
 				react.push({
-					name:"man.arena",
+					name:"arena.size",
 					state:{
 						width:env.arena.length,
 						height:env.arena.length
@@ -112,10 +121,14 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				for (var i = 0; i < cols; i++) {
 
+					// console.log("make col", i);
+
 					col = [];
 
 					for (var j = 0; j < rows; j++) {
+
 						square = new block({x:i, y:j});
+						// console.log("make square", i, j);
 
 						//square.addtext(env.arena[i][j].trash);
 
@@ -124,20 +137,25 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 							square.placeTrash();
 						}
 
+						// console.log("is trash", i, j, square.isdirty());
+
 						col[j] = square;
+
+						// console.log("column", col[j]);
 					}
 
 					arena[i] = col;
+
+					// console.log("arena", arena[i]);
 				}
+
+				// console.log("arena", arena);
 
 			}
 
-			react.push({
-		    	name:"block.clean",
-		    	state:cleanBlock
-		    })
-
 			var setStageSize = function () {
+
+				$stage = $("#arena");
 
 				ed = u.correctForAspect({
 					id:"arena",
@@ -147,47 +165,76 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 					height:$(window).height()
 				})
 
+				var elem = document.createElement("div");
+				elem.id = "elem";
+				$(elem).css({width:ed.width, height:ed.height});
+
 				$stage.css({width:ed.width, height:ed.height});
+
+
+				$stage.append(elem);
 			    
 			}
 
 
-		    events.on("resetenv", function () {
-
-				makeBlocks(environment)
-			})
+			var registerEvents = function () {
 
 
+			    events.on("resetenv", function () {
 
-			events.on("refreshenv", function () {
+			    	// console.log("reset environemnt event");
 
-				console.log("refresh environment");
-
-				display.waitForElem({elems:$stage}, function (options) {
-
-
-					setStageSize();
-
-					api.refreshEnvironment(function (res) {
+					makeBlocks(environment)
+				})
 
 
-				    	console.log("Refresh environment", res.data.env);
 
-			            environment = res.data.env;
+				events.on("refreshenv", function () {
 
-			            makeBlocks(environment);
+					// console.log("refresh environment event");
 
-				    })
+					$stage = $("#arena");
 
-					$(window).resize(function () {
+					display.waitForElem({elems:$stage}, function (options) {
+
 
 						setStageSize();
-					})
 
+						api.refreshEnvironment(function (res) {
+
+
+					    	console.log("Refresh environment", res.data.env);
+
+				            environment = res.data.env;
+
+				            makeBlocks(environment);
+
+					    })
+
+						$(window).resize(function () {
+
+							setStageSize();
+						})
+
+
+					})
 
 				})
 
-			})
+			}
+
+
+			console.log("push functions");
+
+			react.push({
+		    	name:"block.clean",
+		    	state:cleanBlock
+		    })
+
+		    react.push({
+		    	name:"register.arena.events",
+		    	state:registerEvents
+		    })
 
 
 		}

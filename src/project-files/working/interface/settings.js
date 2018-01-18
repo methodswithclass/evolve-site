@@ -36,31 +36,15 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
     		]
 
 
+			react.subscribe({
+				name:"programInput" + $scope.name,
+				callback:function (x) {
 
-
-			// console.log("register evolve.vars");
-			// react.subscribe({
-			// 	name:"evolve.vars",
-			// 	callback:function (x) {
-
-			// 		crossoverMethods = x.crossoverMethods;
-			// 		reproductionTypes = x.reproductionTypes;
-
+					console.log("assign programInput in settings");
 					
-
-			// 	}
-			// })
-
-			// react.subscribe({
-			// 	name:"programInput" + $scope.name,
-			// 	callback:function (x) {
-
-			// 		// console.log("receive program input settings");
-			// 		programInput = x;
-
-			// 		// $scope.goals = x.goals;
-			// 	}
-			// })
+					programInput = x;
+				}
+			})
 
 
 
@@ -210,11 +194,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 
 
 
-
-
-
-
-
 			/*
 			############################################
 			Toggle Basic and Advanced Kinds of Settings
@@ -348,12 +327,6 @@ app.directive("settings", ['global.service', "events.service", "react.service", 
 			------------------------------------------
 			##########################################
 			*/
-
-
-
-
-
-
 
 
 

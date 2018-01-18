@@ -102,13 +102,13 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 
 				if (name == "trash" || name == "recognize") {
 
-					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 200 + "px"});
+					$elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + "px", zIndex:100});
 				}
 				else if (name == "feedback") {
 
 					// $elem.css({top:($stage.offset().top - $hudtoggle.offset().top) + $stage.height() + 100 + "px"});
 				
-					$elem.css({top:"50px", zIndex:50});
+					$elem.css({top:"50px", zIndex:100});
 				}
 				
 				controls.forEach(function (value, index) {

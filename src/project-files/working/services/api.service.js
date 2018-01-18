@@ -190,7 +190,7 @@ app.factory("api.service", ["utility", "events.service", "global.service", 'inpu
     var refreshEnvironment = function (callback) {
 
 
-        console.log("refresh environment call get input");
+        // console.log("refresh environment call get input");
 
         $http({
             method:"POST",

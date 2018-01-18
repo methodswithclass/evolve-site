@@ -32,10 +32,40 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
     }
 
+    var arenaEvents = function () {
+
+        console.log("no events");
+    }
+
 
 	var setup = function (self, $scope) {
 
+
 		pageBuilt = display.beenBuilt(self.name);
+
+
+        react.subscribe({
+            name:"sim." + self.name,
+            callback:function (x) {
+                self.sdata = x;
+            }
+        })
+
+        react.subscribe({
+            name:"register.arena.events",
+            callback:function(arenaEvents) {
+
+                if (!pageBuilt) {
+
+                    console.log("register arena events");
+
+                    arenaEvents();
+                }
+                else {
+                    console.log("evevnts not re-registered");
+                }
+            }
+        })
 
 
 		self.outcome = function (outcome) {
@@ -70,7 +100,7 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
 	        }, 1000);
 
-	    }
+	    } 
 
 	}
 
@@ -215,15 +245,7 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
 
         self.programInput.update();
-
-
-
-        react.subscribe({
-            name:"sim." + self.name,
-            callback:function (x) {
-                self.sdata = x;
-            }
-        })
+        
 	}
 
 	var enter = function (self, $scope) {
@@ -256,10 +278,10 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
             programInput:self.programInput
         })
 
-        // react.push({
-        // 	name:"programInputtrash",
-        // 	state:self.programInput
-        // })
+        react.push({
+        	name:"programInput" + self.name,
+        	state:self.programInput
+        })
 
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));
@@ -281,13 +303,15 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
     var step = function (self, $scope) {
 
         evolve.running(true, $scope);
-        simulator.step($scope.session);
+        var input = $input.getInput();
+        simulator.step(input.session);
     }
 
     var play = function (self, $scope) {
         
         evolve.running(true, $scope);
-        simulator.play($scope.session, false);
+        var input = $input.getInput();
+        simulator.play(input.session, false);
     }
 
     var stop = function (self, $scope) {

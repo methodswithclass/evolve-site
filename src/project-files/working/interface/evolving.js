@@ -10,7 +10,7 @@ app.directive("evolving", ['global.service', 'utility', 'events.service', 'react
 			var self = this;
 
 
-			console.log("\n############\ncreate evolveing directive\n\n");
+			// console.log("\n############\ncreate evolveing directive\n\n");
 
 			
 			

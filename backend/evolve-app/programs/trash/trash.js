@@ -3,7 +3,6 @@ var robotFact = require("./robot.js");
 var environmentFact = require("./environment.js");
 var d = require("../../data/programs/trash.js");
 var g = require("mc-shared").utility_service;
-var Worker = require("webworker-threads").Worker;
 
 
 var trash = function (options) {
@@ -294,61 +293,62 @@ var trash = function (options) {
 
 			// console.log("run", params.gen, params.index, $run);
 
-			var $$run = new Worker(function () {
+			// var $$run = new Worker(function () {
 
-				var env;
-				var performStepAsync;
+			// 	var env;
+			// 	var performStepAsync;
 
-				var runScenario = function ($env, $performStepAsync) {
+			// 	var runScenario = function ($env, $performStepAsync) {
 
-					var target = $env['0'].refresh(params.input.programInput);
+			// 		var target = $env['0'].refresh(params.input.programInput);
 
-					$env['0'].instruct(params.dna);
+			// 		$env['0'].instruct(params.dna);
 
-					var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
+			// 		var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
 
-					postMessage({fitness:fit, target:target});
+			// 		postMessage({fitness:fit, target:target});
 				
-				}
+			// 	}
 
-				this.onmessage = function (event) {
+			// 	this.onmessage = function (event) {
 
-					env = event.data.environment
-					performStepAsync = event.data.performStepAsync;
+			// 		env = event.data.environment
+			// 		performStepAsync = event.data.performStepAsync;
 
-					runScenario(env, performStepAsync);					
+			// 		runScenario(env, performStepAsync);					
 
-					postMessage(event);
+			// 		postMessage(event);
 
-				}
+			// 	}
 
 
 				
 
-			})
+			// })
 
-			$$run.postMessage({
-				environment:environment['0'], 
-				performStepAsync:performStepAsync
-			});
+			// $$run.postMessage({
+			// 	environment:environment['0'], 
+			// 	performStepAsync:performStepAsync
+			// });
 
-			$$run.onmessage = function (event) {
+			// $$run.onmessage = function (event) {
 
-				console.log("on message", event.data);
+			// 	console.log("on message", event.data);
 
-				fits.push(event.data);
+			// 	fits.push(event.data);
 
-				// $$run.terminate();
+			// 	// $$run.terminate();
 
-				if (fits.length == runs) {
-					complete(fits);
-				}
-			}
+			// 	if (fits.length == runs) {
+			// 		complete(fits);
+			// 	}
+			// }
 
 			$run++;
 
 		}
 
+		complete(fits);
 
 	}
 

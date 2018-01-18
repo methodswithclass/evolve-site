@@ -14,6 +14,8 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 
 			var makeMan = function () {
 				
+				console.log("create man object");
+
 				$(container).remove();
 
 				var block = {width:$(element).width()/arena.width, height:$(element).width()/arena.height};
@@ -39,12 +41,16 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 
 
 			react.subscribe({
-		 		name:"man.arena",
+		 		name:"arena.size",
 		 		callback:function (x) {
+
+		 			console.log("assign arena size");
 
 		 			arena = {width:x.width, height:x.height};
 
 		 			var man = makeMan();
+
+		 			console.log("push man object")
 
 					react.push({
 						name:"robot",
