@@ -24,7 +24,6 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     var interface_timer;
 
-
     var toggleTimer = function ($toggle, $scope) {
 
         if ($toggle) {
