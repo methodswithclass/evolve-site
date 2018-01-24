@@ -93,8 +93,8 @@ var PORTS = {
 
 app.use(refresh());
 // app.use(forceSSL());
-// if  (process.env.NODE_ENV == "production") app.use(forceSSL());
-// else {console.log("environment development");}
+if  (process.env.NODE_ENV == "production") app.use(forceSSL());
+else {console.log("environment development");}
 
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                     // parse application/json
@@ -110,14 +110,6 @@ app.use("/recognize", recognizeRoutes);
 app.use(require('connect-livereload')({
 	port: PORTS.livereload
 }));
-
-// app.use("/", function (req, res, next) {
-
-// 	get.sessionHardStop();
-
-// 	return express.static(path.join(__dirname, "dist"))
-
-// });
 
 
 app.use("/", express.static(path.join(__dirname, "dist")));
