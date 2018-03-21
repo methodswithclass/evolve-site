@@ -8,6 +8,8 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 
 	var active = config.get("activePages");
 
+	$scope.open = false;
+
 	self.overview = dd.get("overview");
 
 	self.doc = dd.get(state);

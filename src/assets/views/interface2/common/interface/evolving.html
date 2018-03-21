@@ -1,0 +1,121 @@
+<div class="absolute width" id="evolvepage">
+
+	<div class="absolute width60 height-300 hcenter">
+		<div class="absolute width height60 center rounded10 black-back white pointer font-50 shadow opacity0" id="runtoggle" on-tap="run()">
+			<div class="absolute center">
+				evolve
+			</div>
+		</div>
+		<div class="absolute width height60 center rounded10 white-back opacity0 none" id="runtogglecover"></div>
+	</div>
+
+
+
+	<div class="absolute width opacity0" id="evolvetoggle">
+
+		<div class="absolute width height black-back opacity90"></div>
+		
+		<div class="absolute width height30 golden white">
+			
+			<div class="absolute width50 height30 hcenter font-70">
+				<div class="absolute width70 vcenter">
+					<div class="absolute center text-center">evolving</div>
+				</div>
+				<div class="absolute width30 vcenter right0">
+					<div class="absolute center text-center">{{stepdata.gen}}</div>
+				</div>
+			</div>
+			
+			<div class="absolute width80 height30 hcenter center">
+				
+				<div class="absolute width30 height">
+
+					<div class="absolute width height50 hcenter font-30">
+						<div class="absolute center">
+							population
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-40">
+						<div class="absolute center">
+							{{input.pop}}
+						</div>
+					</div>
+
+				</div>
+				
+
+				<!-- <div class="absolute width30 height" style="left:{{1/4*100 + '%'}}">
+
+					<div class="absolute width height50 hcenter font-30">
+						<div class="absolute center">
+							individual
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-40">
+						<div class="absolute center">
+							{{stepdata.org}}
+						</div>
+					</div>
+
+				</div> -->
+
+
+				<div class="absolute width30 height" style="left:{{1/3*100 + '%'}}">
+
+					<div class="absolute width height50 hcenter font-30">
+						<div class="absolute center">
+							best score
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-40">
+						<div class="absolute center">
+							{{evdata.best.fitness}}
+						</div>
+					</div>
+
+				</div>
+
+				<div class="absolute width30 height right0">
+					
+					<div class="absolute width height50 hcenter font-25">
+						<div class="absolute center">
+							generations
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-40">
+						<div class="absolute center">
+							{{input.gens}}
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="absolute width80 height30 hcenter bottom0">
+
+				<div class="absolute width height30 border-white center">
+					<div class="absolute height white-back" id="rundata"></div>
+				</div>
+
+			</div>
+
+			<div class="absolute width height-100 bottom-minus-100">
+				<div class="absolute width-100 height hcenter white-back rounded10 font-40 black pointer" on-tap="breakRun()">
+					<div class="absolute center">
+						<i class="fa fa-times"></i>
+					</div>
+				</div>
+
+				<div class="absolute width-300 left60 height" id="breakfeedback">
+					<div class="absolute width vcenter font-30 white">
+						finishing up....
+					</div>
+				</div>
+				
+			</div>
+
+
+		</div>
+	</div>
+</div>

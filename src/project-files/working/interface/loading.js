@@ -1,12 +1,17 @@
-app.directive("loading", ['global.service', 'loading.service', function (g, loading) {
+app.directive("loading", ['global.service', 'loading.service', 'utility', function (g, loading, u) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/common/interface/loading.html",	
+		template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
 
+
+			$scope.getContentUrl = function () {
+
+				return "assets/views/" + u.getInterface() + "/common/interface/loading.html";
+			}
 
 			var setMessage = function () {
 

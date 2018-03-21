@@ -4,9 +4,14 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/common/ga-apps/recognize/digit.html",		
+		template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
 
+
+			$scope.getContentUrl = function () {
+
+				return "assets/views/" + u.getInterface() + "/common/interface/digit.html";
+			}
 
 			var imageSize = 28;
 		    var imageLength = imageSize*imageSize;

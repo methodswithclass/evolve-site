@@ -4,8 +4,14 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     var g = shared.utility_service;
 
     var _forceMobile = false;
+    var inter;
 
     var provider = {};
+
+    var initInterface = function ($interface) {
+
+        inter = $interface;
+    }
 
     var mobile = function (input) {
 
@@ -14,11 +20,16 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var baseViewUrl = function (responsive) {
 
-        return "assets/views/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
+        return "assets/views/" + inter + "/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
     }
 
 
     var stateViewUrls = [
+    {
+        name:"admin",
+        url:"/admin.html",
+        responsive:false
+    },
     {
         name:"home",
         url:"/site/home.html",
@@ -59,6 +70,12 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     // console.log("runtime provider template html", templateHtml);
 
     var states = [
+    {
+        name:"admin",
+        url:"/admin",
+        controller:"admin.controller",
+        controllerAs:"main"
+    },
     {
         name:"home",
         url:"/home",
@@ -106,17 +123,24 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var addTemplateUrl = function (state) {
 
+
         var $state = states.find(function (p) {
 
             return p.name == state.name;
         });
+
 
         var stateUrl = stateViewUrls.find(function (p) {
 
             return p.name == state.name;
         })
 
-        $state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
+        if ($state.name == "admin") {
+            $state.templateUrl = "assets/views/" + stateUrl.url;
+        }
+        else {
+            $state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
+        }
 
         return $state; 
     }
@@ -130,7 +154,12 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         $stateProvider.state(state);
     }
 
-    provider.$get = function () {
+    provider.$get = ['utility', function (u) {
+
+
+        console.log("set service interface", inter);
+        u.setInterface(inter);
+
 
         var service = function () {
 
@@ -142,8 +171,9 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
         return new service();
     
-    };
+    }];
 
+    provider.initInterface = initInterface;
     provider.addState = addState;
     provider.states = states;
     provider.mobile = mobile;

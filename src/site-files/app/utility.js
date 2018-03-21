@@ -2,6 +2,26 @@
 
 app.factory("utility", function () {
 
+
+    var types = {
+        one:"interface1",
+        two:"interface2",
+        unset:"not set"
+    }
+
+    var interfaces = [
+    {
+        name:types.one
+    },
+    {
+        name:types.two
+    }
+    ]
+
+    var interface = {
+        name:types.unset
+    };
+
     // blanket check for any mobile vs desktop user agent
     var checkMobile = function() {
         var check = false;
@@ -125,6 +145,33 @@ app.factory("utility", function () {
 
     }
 
+    var getInterface = function () {
+
+        return interface.name;
+    }
+
+    var setInterface = function ($interface) {
+
+        var found = interfaces.find((p) => {
+
+            return p.name == $interface;
+        })
+
+        if (found) interface.name = found.name;
+        else console.log("set value:", $interface, "is not an interface");
+    }
+
+    var changeInterface = function () {
+
+        if (interface.name == interfaces[0].name) {
+
+            setInterface(interfaces[1].name);
+        }
+        else {
+            setInterface(interfaces[0].name);
+        }
+    }
+
     var stateName = function (state) {
 
         var hashIndex = state.indexOf("#");
@@ -133,6 +180,9 @@ app.factory("utility", function () {
     }
 
 	return {
+        getInterface:getInterface,
+        setInterface:setInterface,
+        changeInterface:changeInterface,
 		toggle:toggle,
         correctForAspect:makeAspect,
         stateName:stateName

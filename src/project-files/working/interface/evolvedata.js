@@ -4,9 +4,14 @@ app.directive("evolvedata", ['events.service', 'global.service', "utility", func
 		restrict:"E",
 		scope:false,
 		replace:true,
-        templateUrl:"assets/views/common/interface/evolvedata.html",	
+		template:"<div ng-include='getContentUrl()'></div>",
 		link:function ($scope, element, attr) {
 			
+
+			$scope.getContentUrl = function () {
+
+				return "assets/views/" + u.getInterface() + "/common/interface/evolvedata.html";
+			}
 
 			// console.log("\n############\ncreate evolve data directive\n\n");
 

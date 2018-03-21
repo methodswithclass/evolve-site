@@ -10,6 +10,8 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 
 	$locationProvider.html5Mode(true);
 
+	runtimeProvider.initInterface("interface1");
+
 	var states = runtimeProvider.states;
 
 	for (var i = 0; i < states.length; i++) {
@@ -19,7 +21,5 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 
 .run(['states', 'config.service', function (states, config) {
 
-	states.go("home");
-
-	
+	states.go("home")
 }]);

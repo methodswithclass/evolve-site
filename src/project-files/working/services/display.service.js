@@ -190,88 +190,88 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 	}
 
 
-	var waitForElem = function (options, complete) {
+	// var waitForElem = function (options, complete) {
 
-        var count = 0;
-        var result = false;
-        var active = {}
+ //        var count = 0;
+ //        var result = false;
+ //        var active = {}
 
-        var checkElements = function (array) {
+ //        var checkElements = function (array) {
 
-        	result = false;
-        	active = {};
+ //        	result = false;
+ //        	active = {};
 
-        	if (Array.isArray(array)) {
+ //        	if (Array.isArray(array)) {
 
-        		// console.log("###################\n\n\n\n\n\narray is array \n\n\n\n\n\n################")
+ //        		// console.log("###################\n\n\n\n\n\narray is array \n\n\n\n\n\n################")
 
-        		for (var i in array) {
+ //        		for (var i in array) {
 
-        			// console.log("element", array[i], "does not exist");
+ //        			// console.log("element", array[i], "does not exist");
 
-	        		if ($(array[i])[0]) {
-	        			active[i] = true;
-	        		}
+	//         		if ($(array[i])[0]) {
+	//         			active[i] = true;
+	//         		}
 
-        		}
+ //        		}
 
 
-	        	if (Object.keys(active).length == array.length) {
+	//         	if (Object.keys(active).length == array.length) {
 
-	        		result = true;
-	        	}
-	        	else {
-	        		result = false;
-	        	}
+	//         		result = true;
+	//         	}
+	//         	else {
+	//         		result = false;
+	//         	}
 
-        	}
-        	else {
+ //        	}
+ //        	else {
 
-        		// console.log("@@@@@@@@@@@@@@@@\n\n\n\n\n\n\n\n\array is single\n\n\n\n\n\n@@@@@@@@@@@@@@")
+ //        		// console.log("@@@@@@@@@@@@@@@@\n\n\n\n\n\n\n\n\array is single\n\n\n\n\n\n@@@@@@@@@@@@@@")
 
-        		if ($(array)[0]) {
-        			// console.log("element does not exist");
-        			result = true;
-        		}
-        		else {
-        			result = false;
-        		}
+ //        		if ($(array)[0]) {
+ //        			// console.log("element does not exist");
+ //        			result = true;
+ //        		}
+ //        		else {
+ //        			result = false;
+ //        		}
 
-        		// console.log("element exists");
+ //        		// console.log("element exists");
         		
-        		// result = true;
+ //        		// result = true;
 
-        	}
+ //        	}
 
-        	return result;
-        }
+ //        	return result;
+ //        }
 
-        var waitTimer = setInterval(function () {
+ //        var waitTimer = setInterval(function () {
 
-            if (checkElements(options.elems) || count >= 500) {
+ //            if (checkElements(options.elems) || count >= 500) {
 
-            	// console.log("clear interval");
+ //            	// console.log("clear interval");
 
-                clearInterval(waitTimer);
-                waitTimer = null;
+ //                clearInterval(waitTimer);
+ //                waitTimer = null;
 
-                if (count < 500) {
+ //                if (count < 500) {
 
-                	if (typeof complete === "function") complete(options);
-            	}
-                else {
+ //                	if (typeof complete === "function") complete(options);
+ //            	}
+ //                else {
 
-                	// console.log("count limit reached");
-                }
+ //                	// console.log("count limit reached");
+ //                }
                 
-            }
-            else {
+ //            }
+ //            else {
 
-                count++;
-            }
+ //                count++;
+ //            }
 
-        }, 30);
-    }
+ //        }, 30);
+ //    }
 
 
 	var loadPhases = function (phases) {
@@ -399,7 +399,7 @@ app.factory("display.service", ["utility", "events.service", "global.service", f
 
 
 	return {
-		waitForElem:waitForElem,
+		waitForElem:g.waitForElem,
 		setElemScrollTop:setElemScrollTop,
 		forceEvolveHeight:forceEvolveHeight,
 		load:load,

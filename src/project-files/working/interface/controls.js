@@ -4,8 +4,15 @@ app.directive("controls", ["events.service", 'global.service', "utility", functi
 		restrict:"E",
 		scope:false,
 		replace:true,
-		templateUrl:"assets/views/common/interface/controls.html",		
+		template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, $element, attr) {
+
+
+			$scope.getContentUrl = function () {
+
+				return "assets/views/" + u.getInterface() + "/common/interface/controls.html";
+			}
+
 
 
 			// console.log("\n############\ncreate controls directive\n\n");
