@@ -2,7 +2,7 @@
   "name": "evolve",
   "version": "1.0.0",
   "description": "This package is the source code for a site by Methods with Class, LLC about Evolutionary Algorithms",
-  "repository":"https://github.com/methodswithclass/evolve-backend.git",
+  "repository": "https://github.com/methodswithclass/evolve-backend.git",
   "main": "server.js",
   "author": "",
   "license": "ISC",
@@ -43,7 +43,6 @@
     "mc-shared": "^4.1.4",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
-    "morgan": "^1.9.0",
     "private-bower": "*",
     "uid-generator": "^0.1.1",
     "webworker-threads": "^0.7.13"
