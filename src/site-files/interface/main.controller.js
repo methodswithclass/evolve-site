@@ -24,6 +24,11 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'global.servi
 		states.go($state);
 	}
 
+	self.admin = function () {
+
+		states.go("admin");
+	}
+
 	$scope.isActive = active;
 
 }]);

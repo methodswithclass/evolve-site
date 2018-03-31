@@ -1,74 +1,92 @@
-<div class="relative width green6">
+<div class="relative width min-height100 padding-v-50 white black-back">
 
+	<div class="relative width80 hcenter">
 
-	<div class="relative width height-100">
-		<div class="absolute center font-50">
-			Evolutionary Algorithms
-		</div>
+		<div class="relative width padding-v-50">
+			<div class="absolute center font-50">
+				Evolutionary Algorithms
+			</div>
 
-	</div>
-
-
-
-	<div class="relative width-200 height-50 margin-50 border-green6 pointer" ng-click="main.open('feedback')">
-		
-		<div class="relative inline padding-h-10 vcenter font-15">
-			<i class="fas fa-terminal"></i>
-		</div>
-
-		<div class="relative inline padding-h-10 vcenter">
-			feedback
-		</div>
-	</div>
-
-	<div class="relative width-200 height-50 margin-50 border-green6 pointer" ng-click="main.open('trash')">
-		
-		<div class="relative inline padding-h-10 vcenter font-15">
-			<i class="fas fa-terminal"></i>
-		</div>
-
-		<div class="relative inline padding-h-10 vcenter">
-			trash pickup
-		</div>
-	</div>
-
-
-	<div class="relative width-200 height-50 margin-50 border-green6 pointer" ng-click="main.open('recognize')">
-		
-		<div class="relative inline padding-h-10 vcenter font-15">
-			<i class="fas fa-terminal"></i>
 		</div>
 
 
-		<div class="relative inline padding-h-10 vcenter">
-			recognize
-		</div>
-	</div>
+		<!-- <div class="relative width-200 margin-v-50"> -->
 
+			<div class="relative width-250 padding-v-10 margin-v-50 border-left-trans border-bottom-trans border-color-white pointer" ng-click="main.open('feedback')">
+				
+				<div class="relative inline padding-h-10 font-15">
+					<i class="fas fa-terminal"></i>
+				</div>
 
-	<div class="relative width80 margin-50 border-green6 cutoff" ng-class="{'height-50':!open}">
+				<div class="relative inline padding-h-10">
+					feedback
+				</div>
+			</div>
 
+		<!-- </div> -->
 
-		<div class="relative width height-50">
+		<!-- <div class="relative width-200 height-100"> -->
+
+			<div class="relative width-250 padding-v-10 margin-v-50 border-left-trans border-bottom-trans border-color-white pointer" ng-click="main.open('trash')">
 			
-			<div class="absolute left-20 vcenter font-25 pointer" ng-click="open = !open">
-				<i class="fas fa-bars"></i>
+				<div class="relative inline padding-h-10 font-15">
+					<i class="fas fa-terminal"></i>
+				</div>
+
+				<div class="relative inline padding-h-10">
+					trash pickup
+				</div>
 			</div>
 
-			<div class="absolute center font-30">
-				Welcome
+		<!-- </div> -->
+
+
+		<!-- <div class="relative width-200 height-100"> -->
+
+			<div class="relative width-250 padding-v-10 margin-v-50 border-left-trans border-bottom-trans border-color-white pointer" ng-click="main.open('recognize')">
+			
+				<div class="relative inline padding-h-10 font-15">
+					<i class="fas fa-terminal"></i>
+				</div>
+
+
+				<div class="relative inline padding-h-10">
+					recognize
+				</div>
 			</div>
 
-		</div>
+		<!-- </div> -->
 
 
-		<div class="relative width">
-			<div class="relative width60 hcenter padding-v-50">
-				<content data="main.overview.content"/>
+		<!-- <div class="relative width80 height-100"> -->
+
+			<div class="relative width80 padding-v-20 margin-v-50 border-right-trans border-left-trans border-top-trans border-color-white cutoff" ng-class="{'height-0':!open, 'border-bottom-trans':open}" 
+			ng-click="open = !open">
+
+
+				<div class="relative width">
+					
+					<div class="absolute left-20 vcenter font-25 pointer">
+						<i class="fas fa-bars"></i>
+					</div>
+
+					<div class="absolute center font-30">
+						Welcome
+					</div>
+
+				</div>
+
+
+				<div class="relative width">
+					<div class="relative width60 hcenter padding-v-50">
+						<content data="main.overview.content"/>
+					</div>
+				</div>
+
 			</div>
-		</div>
+
+		<!-- </div> -->
 
 	</div>
-
 
 </div>

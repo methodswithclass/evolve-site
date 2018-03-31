@@ -10,18 +10,20 @@
 				</div>
 			</div>
 
-			<div class="relative width-200 height-100 margin-v-20">
+			<div class="relative width-200 height-50 margin-v-20">
 
-				<select class="absolute width height vcenter" ng-model="interfaceType">
-
-
-					<option class="absolute vcenter" ng-value="interface1"> Interface 1 </option>
-
-					<option class="absolute vcenter" ng-value="interface2"> Interface 2 </option> 
-
+				<select class="absolute width height pointer" ng-model="interfaceType">
+					<option class="absolute vcenter" ng-repeat="inter in data" ng-value="inter.id">{{inter.title}}</option>
 				</select>
 
 
+			</div>
+
+
+			<div class="relative width-100 height-30 border rounded5 margin-v-50 pointer" ng-click="main.set()">
+				<div class="absolute center">
+					set
+				</div>
 			</div>
 		</div>
 

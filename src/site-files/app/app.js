@@ -10,7 +10,7 @@ var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule
 
 	$locationProvider.html5Mode(true);
 
-	runtimeProvider.initInterface("interface1");
+	runtimeProvider.initInterface("interface2");
 
 	var states = runtimeProvider.states;
 

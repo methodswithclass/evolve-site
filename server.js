@@ -15,7 +15,8 @@ const get = require("./backend/evolve-app/data/get/get.js");
 
 var refreshPages = [
 "home",
-"p"
+"p",
+"admin"
 ]
 
 var subPages = [

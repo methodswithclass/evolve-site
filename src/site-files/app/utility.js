@@ -145,6 +145,8 @@ app.factory("utility", function () {
 
     }
 
+    var hasChanged = false;
+
     var getInterface = function () {
 
         return interface.name;
@@ -159,6 +161,8 @@ app.factory("utility", function () {
 
         if (found) interface.name = found.name;
         else console.log("set value:", $interface, "is not an interface");
+
+        hasChanged = true;
     }
 
     var changeInterface = function () {
@@ -168,8 +172,19 @@ app.factory("utility", function () {
             setInterface(interfaces[1].name);
         }
         else {
-            setInterface(interfaces[0].name);
+            setInterface(interfaces[0].name)
+
         }
+    }
+
+    var interfaceChanged = function () {
+
+        return hasChanged;
+    }
+
+    var resetChanged = function () {
+
+        hasChanged = false;
     }
 
     var stateName = function (state) {
@@ -183,6 +198,8 @@ app.factory("utility", function () {
         getInterface:getInterface,
         setInterface:setInterface,
         changeInterface:changeInterface,
+        interfaceChanged:interfaceChanged,
+        resetChanged:resetChanged,
 		toggle:toggle,
         correctForAspect:makeAspect,
         stateName:stateName

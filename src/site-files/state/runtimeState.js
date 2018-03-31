@@ -164,6 +164,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         var service = function () {
 
             return {
+                stateViewUrls:stateViewUrls,
                 states:states
             }
 
@@ -175,6 +176,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     provider.initInterface = initInterface;
     provider.addState = addState;
+    provider.stateViewUrls = stateViewUrls;
     provider.states = states;
     provider.mobile = mobile;
 

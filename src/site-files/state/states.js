@@ -1,25 +1,45 @@
-stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', 'events.service', function ($q, runtime, $state, $rootScope, events) {
+stateModule.factory("states", ['$q', 'runtime.state', '$state', '$transitions', 'events.service', 'utility', function ($q, runtime, $state, $transitions, events, u) {
+
+	var _forceMobile = false;
 
 	var prevState;
 
 	var states = runtime.states;
 
-	$rootScope.$on('$stateChangeSuccess', 
-		function(event, toState, toParams, fromState, fromParams) {
+	var baseUrl = function (responsive) {
 
-			//console.log(toState);	  
+		return "assets/views/" + u.getInterface() + "/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
+	}
 
-			prevState = fromState;
 
-			console.log(toState);
+	$transitions.onStart([], function (trans) {
 
-			// var leaveName = fromState.name;
+		prevState = trans.from();
 
-			// events.dispatch("close" + leaveName);
+		console.log("state change start, to state", trans.to());
 
-			$("#body").scrollTo(0);
+
+		if (u.interfaceChanged()) {
+
+			console.log("interface changed", u.getInterface());
+
+			var found = runtime.stateViewUrls.find((p) => {
+
+				return p.name == trans.to().name;
+			})
+
+			var newUrl = baseUrl(found.responsive) + found.url;
+
+			console.log("new url", newUrl);
+
+			trans.to().templateUrl = newUrl;
+
+			u.resetChanged();
 		}
-	);
+
+
+		$("#body").scrollTo(0);
+	});
 
 	var current = function () {
 		return $state.current.name;
