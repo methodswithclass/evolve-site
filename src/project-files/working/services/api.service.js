@@ -1,5 +1,12 @@
-app.factory("api.service", ["utility", "events.service", "global.service", 'input.service', '$http', function (u, events, g, $input, $http) {
+app.factory("api.service", ["utility", 'input.service', '$http', function (u, $input, $http) {
 
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
 
 
 	var getBest = function (callback) {

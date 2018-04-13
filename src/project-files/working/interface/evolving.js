@@ -1,102 +1,49 @@
-app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'input.service', 'evolve.service', function (g, u, events, react, $input, evolve) {
+app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states", function (u, $input, evolve, states) {
 
 	return {
 		restrict:"E",
-		scope:false,
+		scope:{
+			run:"=",
+			break:"="
+		},
 		replace:true,
-        templateUrl:"assets/views/common/interface/evolving.html",		
+		template:"<div ng-include='getContentUrl()'></div>",			
 		link:function ($scope, element, attr) {
 
 			var self = this;
 
 
-			console.log("\n############\ncreate evolveing directive\n\n");
-
-			
-			
-
-    		
-
-		    $scope.input;
-	    	$scope.evdata;
-	    	$scope.stepdata;
-
-	    	var initData = function () {
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
 
 
-	    		$scope.evdata = {
-			        index:0,
-			        best:{},
-			        worst:{}
-			    }
 
-			    $scope.stepdata = {
-			    	gen:0,
-			    	org:0,
-			    	run:0,
-			    	step:0
-			    };
+   	 		self.name = u.stateName(states.current());
 
+			// console.log("run function", $scope.run);
+
+			$scope.getContentUrl = function () {
+
+				return "assets/views/" + u.getInterface() + "/common/interface/evolving.html";
 			}
 
-			initData();
 
-			$("#breakfeedback").hide();
-	        
+			$scope.evdata;
+			$scope.stepdata;
+			$scope.input;
 
-		    
 			react.subscribe({
-		        name:"ev." + $scope.name,
-		        callback:function (x) {
-		            // console.log("set evdata trash", x);
-		            $scope.evdata = x;
-		        }
+				name:"data" + self.name,
+				callback:function (x) {
 
-		    });
-
-		    react.subscribe({
-		        name:"step." + $scope.name,
-		        callback:function (x) {
-		            // console.log("set evdata trash", x);
-		            $scope.stepdata = x;
-		        }
-
-		    });
-
-
-
-		    $scope.resetgen = function () {
-
-		        
-		    	$scope.animateRefresh();
-
-
-		        evolve.resetgen(function (data) {
-
-		        	console.log("Initialize algorithm success", data.res);
-		        	initData();
-		        });
-
-
-		    }
-
-
-
-		    $scope.run = function () {
-
-		    	$scope.input = $input.getInput();
-
-		        evolve.run($scope);
-		    }
-
-
-		    $scope.breakRun = function () {
-
-		        evolve.breakRun($scope);
-
-		    }
-
-
+					$scope.evdata = x.evdata || $scope.evdata;
+					$scope.stepdata = x.stepdata || $scope.stepdata;
+					$scope.input = x.input || $scope.input;
+				}
+			})
 
 		}
 	}

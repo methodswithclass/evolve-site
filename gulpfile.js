@@ -84,6 +84,7 @@ gulp.task('scripts', ['vendor'], function() {
 
 
     var mainSrc = gulp.src([
+	    "src/assets/**/*.js",
 	    "src/site-files/app/app.js",
 	    "src/site-files/state/stateModule.js",
 	    "src/project-files/ga-apps/app-recognize/**/*.js",
@@ -116,17 +117,18 @@ gulp.task('scripts', ['vendor'], function() {
 
 gulp.task("vendor", function () {
 
-	var jsSrc = gulp.src(mainBowerFiles(), { base: __dirname + '/bower_components' })
+	var bowerSrc = gulp.src(mainBowerFiles(), {base: __dirname + "/bower_components"})
 		.pipe(filter("**/*.js"))
-		.pipe(concat("vendor.js"))
+		.pipe(concat("vendor.js"));
 
-	var js = jsSrc
+
+	var js = bowerSrc
 	.pipe(gulp.dest("dist/assets/js"));
 
 	var jsMin;
 
 	if (minify) {
-		jsMin = jsSrc
+		jsMin = bowerSrc
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
 		.pipe(gulp.dest("dist/assets/js"));

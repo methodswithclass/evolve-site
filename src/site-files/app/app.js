@@ -1,25 +1,54 @@
 
 
 
-var app = angular.module("app", ['shared.module', 'stateModule', 'parallaxModule'])
+var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 
 .config(['$locationProvider', 'runtime.stateProvider', function ($locationProvider, runtimeProvider) {
 
-	// runtimeProvider.mobile(forceMobile());
+	
+	runtimeProvider.mobile(forceMobile());
 
 	$locationProvider.html5Mode(true);
 
-	runtimeProvider.initInterface("interface2");
+	runtimeProvider.initInterface("interface1");
 
 	var states = runtimeProvider.states;
 
 	for (var i = 0; i < states.length; i++) {
 	  runtimeProvider.addState(states[i]);
 	}
+
+
 }])
 
-.run(['states', 'config.service', function (states, config) {
+.run(['states', 'config.service', "utility", function (states, config, u) {
 
-	states.go("home")
+
+	var shared = window.shared;
+	var g = shared.utility_service;
+
+
+	g.forceMobile();
+
+
+	var inter = u.getViewTypes();
+
+
+	if (u.getInterface() == inter.object.one) {
+
+		$("#body").removeClass("scroll-Y-white-narrow").addClass("scroll-Y-dark-narrow");
+	}
+	else {
+		$("#body").removeClass("scroll-Y-dark-narrow").addClass("scroll-Y-white-narrow");
+	}
+
+
+
+	states.go("trash#demo")
 }]);
+
+
+
+
+getAngularModules(app);

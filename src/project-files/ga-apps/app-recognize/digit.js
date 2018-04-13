@@ -1,8 +1,8 @@
-app.directive("digit", ['utility', 'events.service', 'react.service', 'global.service', 'api.service', 'display.service', function (u, events, react, g, api, display) {
+app.directive("digit", ['utility', 'api.service', 'display.service', function (u, api, display) {
 
 	return {
 		restrict:"E",
-		scope:false,
+		scope:true,
 		replace:true,
 		template:"<div ng-include='getContentUrl()'></div>",	
 		link:function ($scope, element, attr) {
@@ -12,6 +12,15 @@ app.directive("digit", ['utility', 'events.service', 'react.service', 'global.se
 
 				return "assets/views/" + u.getInterface() + "/common/interface/digit.html";
 			}
+
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+
 
 			var imageSize = 28;
 		    var imageLength = imageSize*imageSize;

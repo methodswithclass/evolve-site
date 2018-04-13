@@ -1,4 +1,4 @@
-app.directive('content', ['global.service', 'utility', function (g, u) {
+app.directive('content', ['utility', function (u) {
 
 	return {
 		restrict:'E',
@@ -8,12 +8,20 @@ app.directive('content', ['global.service', 'utility', function (g, u) {
         template:"<div ng-include='getContentUrl()'></div>",
 		link:function ($scope, element, attr) {
 			
-			$scope.html = g.renderHtml;
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+
+			$scope.html = u.renderHtml;
 
 
 			$scope.getContentUrl = function() {
     
-				console.log("get interface content", u.getInterface());
+				// console.log("get interface content", u.getInterface());
 
 		    	return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/site/content.html";
 		    }

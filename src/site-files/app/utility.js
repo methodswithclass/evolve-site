@@ -1,6 +1,12 @@
 
+var forceMobile = function() {
 
-app.factory("utility", function () {
+    return true;
+}
+
+
+
+app.factory("utility", ["general", function (gen) {
 
 
     var types = {
@@ -21,6 +27,16 @@ app.factory("utility", function () {
     var interface = {
         name:types.unset
     };
+
+
+    var getViewTypes = function () {
+
+        return {
+            object:types,
+            array:interfaces,
+            current:interface
+        }
+    }
 
     // blanket check for any mobile vs desktop user agent
     var checkMobile = function() {
@@ -152,6 +168,11 @@ app.factory("utility", function () {
         return interface.name;
     }
 
+    var isInterface = function (thisOne) {
+
+        return interface.name == thisOne;
+    }
+
     var setInterface = function ($interface) {
 
         var found = interfaces.find((p) => {
@@ -195,14 +216,18 @@ app.factory("utility", function () {
     }
 
 	return {
+        getViewTypes:getViewTypes,
         getInterface:getInterface,
+        isInterface:isInterface,
         setInterface:setInterface,
         changeInterface:changeInterface,
         interfaceChanged:interfaceChanged,
         resetChanged:resetChanged,
 		toggle:toggle,
         correctForAspect:makeAspect,
-        stateName:stateName
+        stateName:stateName,
+        renderHtml:gen.renderHtml
 	}
 
-})
+}]);
+

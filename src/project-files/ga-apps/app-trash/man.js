@@ -1,36 +1,70 @@
-app.directive("trashman", ["$http", 'react.service', function ($http, react) {
+app.directive("trashman", ["$http", 'utility', function ($http, u) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		template:"<div class='absolute width height z-50'></div>",		
+		template:"<div class='absolute width height vcenter z-50 right0'></div>",		
 		link:function ($scope, element, attr) {
 
-			var name = "trash";
-			var arena = {width:0, height:0};
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+
+			var inter = u.getViewTypes();
 			var container;
 
 
+			var name = "trash";
+			var grid;
+			var square;
+
+
+			if (!g.isMobile()) {
+				$(element).css({width:$(element).width()*0.8 + "px", height:$(element).height()*0.8 + "px"});
+			}
 			var makeMan = function () {
-				
+
+				console.log("arena in make man", arena);
+
+				var square = {width:$(element).width()/grid.cols, height:$(element).height()/grid.rows};
+
 				$(container).remove();
 
-				var block = {width:$(element).width()/arena.width, height:$(element).width()/arena.height};
-
 				container = document.createElement("div");
-				$(container).addClass("absolute");
-				container.style.width = block.width + "px";
-				container.style.height = block.height + "px";
+				// container.style.width = block.width + "px";
+				// container.style.height = block.height + "px";
+				// container.style.left = 70 + 20 + "px";
+				$(container).addClass("absolute width height");
 				$(element).append(container);
 
+
+				var block = document.createElement("div");
+				block.style.width = square.width + "px";
+				block.style.height = square.height  + "px";
+				$(block).addClass("absolute");
+				$(container).append(block);
+
+				var man = document.createElement("div");
+				$(man).addClass("absolute width70 height70 center " + (u.getInterface() == inter.object.one ? "black-back" : "white-back"));
+				// $(container).css({left:70 + "px"});
+				$(block).append(man);
+
 				var inner = document.createElement("div");
-				$(inner).addClass("absolute width70 height70 center black-back opacity70 shadow");
-				$(container).append(inner);
+				$(inner).addClass("absolute center font-10 " + (u.getInterface() == inter.object.one ?  "white" : "black"));
+				$(man).append(inner);
+
+				var icon = document.createElement("i");
+				$(icon).addClass("fas fa-user");
+				$(inner).append(icon);
 
 				return { 
-					width:block.width,
-					height:block.height,
+					width:40,
+					height:40,
 					outer:$(container),
 					inner:$(inner)
 				}
@@ -42,7 +76,7 @@ app.directive("trashman", ["$http", 'react.service', function ($http, react) {
 		 		name:"man.arena",
 		 		callback:function (x) {
 
-		 			arena = {width:x.width, height:x.height};
+		 			grid = {cols:x.width, rows:x.height};
 
 		 			var man = makeMan();
 

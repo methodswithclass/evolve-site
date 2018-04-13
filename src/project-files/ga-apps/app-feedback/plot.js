@@ -1,4 +1,4 @@
-app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'react.service', 'global.service', 'display.service', function (data, u, events, send, react, g, display) {
+app.directive("plot", ['data', 'utility', 'display.service', function (data, u, display) {
 
 	return {
 		restrict:"E",
@@ -8,9 +8,17 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 		link:function ($scope, element, attr) {
 
 
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
 			var pdata = data.get("feedback");
 			var total = pdata.genome;
 			var spread = pdata.spread;
+
+			var shared = window.shared.utility_service;
 
 			var pointSize = g.isMobile() ? 4 : 2;
 
@@ -113,7 +121,7 @@ app.directive("plot", ['data', 'utility', 'events.service', 'send.service', 'rea
 			}
 
 
-			display.waitForElem({elems:"#arena"}, function (options) {
+			shared.waitForElem({elems:"#arena"}, function (options) {
 
 
 				react.push({

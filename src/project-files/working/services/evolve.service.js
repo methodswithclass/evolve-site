@@ -1,7 +1,14 @@
-app.factory("evolve.service", ["utility", "events.service", "global.service", 'react.service', 'config.service', 'display.service', 'api.service', 'simulators', 'input.service', function (u, events, g, react, config, display, api, simulators, $input) {
+app.factory("evolve.service", ["utility", 'config.service', 'display.service', 'api.service', 'simulators', 'input.service', function (u, config, display, api, simulators, $input) {
 
 
 	var self = this;
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
 
 
 	var simulator;
@@ -52,21 +59,12 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
     }
 
 
+    var sendData = function (x) {
 
-    var sendEvdata = function (x) {
-
-       	react.push({
-       		name:"ev." + self.name,
-       		state:x
-       	});
-    }
-
-    var sendStepdata = function (x) {
-
-    	react.push({
-       		name:"step." + self.name,
-       		state:x
-       	});
+        react.push({
+            name:"data" + self.name,
+            state:x
+        })
     }
 
     var getBest = function (complete) {
@@ -74,7 +72,8 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     	api.getBest(function (res) {
 
-	    	sendEvdata(res.data.ext);
+	    	// sendEvdata(res.data.ext);
+            sendData({evdata:res.data.ext});
 
 	    	if (typeof complete === "function") complete();
 
@@ -108,7 +107,8 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
             // console.log("stepdata callback response", update, res.data.stepdata, $stepdata);
 
-            sendStepdata($stepdata);
+            // sendStepdata($stepdata);
+            sendData({stepdata:$stepdata})
 
             if (genA != genB) {
             	genB = genA;
@@ -153,7 +153,8 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             percent = 1;
         }
 
-        $("#rundata").css({width:percent*100 + "%"});
+
+        display.updateProgresBar(percent);
 
     }
 
@@ -189,7 +190,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     	getBest(function () {
 
-    		u.toggle("hide", "evolve", {fade:600, delay:300});
+    		// u.toggle("hide", "evolve", {fade:600, delay:300});
 
             running(false, $scope);
             $("#breakfeedback").hide();
@@ -215,7 +216,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
                 if (self.name == "trash") u.toggle("enable", "step", {fade:600});
                 
 
-                u.toggle("show", "run", {fade:600});
+                // u.toggle("show", "run", {fade:600});
 
 
                 simulator.setup(function () {
@@ -331,7 +332,9 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             u.toggle("disable", "play", {fade:300});
             u.toggle("disable", "stop", {fade:300});
 
+
             u.toggle("show", "evolve", {fade:600, delay:600});
+            u.toggle("show", "break", {delay:600});
 
     	}
 
@@ -359,6 +362,8 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
         $("#breakfeedback").show();
 
         // console.log("set input hard stop");
+
+        u.toggle("hide", "evolving");
 
         $input.setInput({
             gens:$stepdata.gen

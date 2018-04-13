@@ -1,11 +1,20 @@
-app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', 'input.service', 'display.service', function ($http, u, g, events, react, api, $input, display) {
+app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'display.service', function ($http, u, api, $input, display) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		template:"<div class='absolute width height'></div>",		
+		template:"<div class='absolute width height vcenter right0'></div>",		
 		link:function ($scope, element, attr) {
+
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+			var inter = u.getViewTypes()
 
 
 			var name = "trash";
@@ -21,26 +30,43 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var col = [];
 			var arena = [];
 
+			if(!g.isMobile()) {
+				$(element).css({width:$(element).width()*0.8 + "px", height:$(element).height()*0.8 + "px"});
+			}
+
 			var block = function (input) {
 
 				var self = this;
 
 				var container = document.createElement("div");
-				$(container).addClass("absolute border");
+				$(container).addClass("absolute " + (u.getInterface() == inter.object.one ? "border " : "border-white ") + (u.getInterface() == inter.object.one ? "white-back" : "black-back"));
 				container.style.width = $(element).width()/cols + "px";
 				container.style.height = $(element).height()/rows + "px";
+
 				container.style.left = input.x*$(element).width()/cols + "px";
 				container.style.top = input.y*$(element).height()/rows + "px";
+				
 				$(element).append(container);
 
 				var outline = document.createElement("div");
-				$(outline).addClass("absolute width40 height40 border center");
+				$(outline).addClass("absolute width50 height50 center " + (u.getInterface() == inter.object.one ? "border" : "border-white"));
 				outline.style.opacity = 0;
 				$(container).append(outline);
 
 				var trash = document.createElement("div");
 				$(trash).addClass("absolute width height red-back");
 				$(outline).append(trash);
+
+
+				var trashInner = document.createElement("div");
+				$(trashInner).addClass("absolute center white font-10");
+				$(trash).append(trashInner);
+
+
+				var icon = document.createElement("i");
+				$(icon).addClass("fas fa-trash-alt");
+				$(trashInner).append(icon);
+
 
 				self.placeTrash = function () {
 					$(outline).css({opacity:1});
@@ -163,7 +189,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				console.log("refresh environment");
 
-				display.waitForElem({elems:$stage}, function (options) {
+				g.waitForElem({elems:$stage}, function (options) {
 
 
 					setStageSize();

@@ -1,8 +1,15 @@
-app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', 'input.service', function ($http, u, events, react, api, $input) {
+app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', function ($http, u, api, $input) {
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
+
 
     var i = 1;
     var _score = 0;
-    var evdata = {};
     var genome;
     var active = false;
     var running = false;
@@ -40,15 +47,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             man = x;
         }
     })
-
-    react.subscribe({
-        name:"ev.trash",
-        callback:function (x) {
-            // console.log("set evdata trash", x);
-            evdata = x;
-        }
-
-    });
 
 
     react.subscribe({
@@ -178,7 +176,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var setup = function (complete) {
 
-        console.log("sim setup: instruct", evdata);
+        console.log("sim setup");
 
 
         totalActions = $input.getInput().programInput.totalSteps;
@@ -222,7 +220,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
         });
 
 
-        man.outer.css({left:0, top:0});
+        g.waitForElem({elems:man}, () => {
+
+            man.outer.css({left:0, top:0});
+
+        });
 
     }
 
@@ -250,7 +252,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var play = function (session, _colors) {
 
-        console.log("play", evdata.index);
+        console.log("play");
 
         colors = _colors;
 

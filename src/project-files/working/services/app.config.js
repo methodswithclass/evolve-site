@@ -1,10 +1,19 @@
-app.factory("config.service", ["utility", "events.service", "global.service", '$http', function (u, events, g, $http) {
+app.factory("config.service", ["utility", '$http', function (u, $http) {
 
 
 
 	var self = this;
 
 	self.config = {};
+
+
+
+
+	var shared = window.shared;
+	var g = shared.utility_service;
+	var send = shared.send_service;
+	var react = shared.react_service;
+	var events = shared.events_service;
 
 
 	var get = function ($key) {
@@ -74,7 +83,7 @@ app.factory("config.service", ["utility", "events.service", "global.service", '$
         		// var json = JSON.parse(res);
 
 
-        		console.log("config data is", res.data);
+        		// console.log("config data is", res.data);
 
 
                 resolve(res.data)

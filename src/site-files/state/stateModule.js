@@ -1,1 +1,1 @@
-var stateModule = angular.module("stateModule", ["shared.module", "ui.router"]);
+var stateModule = angular.module("stateModule", ["ui.router"]);

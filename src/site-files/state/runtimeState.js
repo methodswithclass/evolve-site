@@ -11,6 +11,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     var initInterface = function ($interface) {
 
         inter = $interface;
+
     }
 
     var mobile = function (input) {
@@ -26,11 +27,6 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var stateViewUrls = [
     {
-        name:"admin",
-        url:"/admin.html",
-        responsive:false
-    },
-    {
         name:"home",
         url:"/site/home.html",
         responsive:true
@@ -43,7 +39,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/ga-apps/feedback/feedback_demo.html",
-        responsive:false
+        responsive:true
     },
     {
         name:"trash",
@@ -53,7 +49,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"trash#demo",
         url:"/ga-apps/trash/trash_demo.html",
-        responsive:false
+        responsive:true
     },
     {
         name:"recognize",
@@ -63,19 +59,13 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"recognize#demo",
         url:"/ga-apps/recognize/recognize_demo.html",
-        responsive:false
+        responsive:true
     }
     ]
 
     // console.log("runtime provider template html", templateHtml);
 
     var states = [
-    {
-        name:"admin",
-        url:"/admin",
-        controller:"admin.controller",
-        controllerAs:"main"
-    },
     {
         name:"home",
         url:"/home",

@@ -40,7 +40,7 @@
     "jshint": "^2.9.4",
     "main-bower-files": "^2.13.1",
     "mc-evolve": "^4.0.2",
-    "mc-shared": "^4.1.4",
+    "mc-shared": "^4.2.3",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
     "private-bower": "*",

@@ -1,7 +1,15 @@
-app.factory("input.service", ["utility", "events.service", "global.service", 'react.service', 'config.service', function (u, events, g, react, config) {
+app.factory("input.service", ["utility", 'config.service', function (u, config) {
 
 
 	var self = this;
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
+
 
 
 	self.global = {};
@@ -152,6 +160,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     		reproductionType: 	input.reproductionType || self.temp[self.name].reproductionType
         }
 
+
         // console.log("set settings", $scope.settings);
 
         return $scope.settings;
@@ -251,6 +260,16 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 		}
 
 		// console.log("get input", update, self.temp[self.name], self.global[self.name]);
+
+
+
+        react.push({
+            name:"data" + self.name,
+            state:{
+                input:self.global[self.name]
+            }
+        })
+
 
         setValues(self.global[self.name]);
 

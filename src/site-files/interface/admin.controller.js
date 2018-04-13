@@ -1,6 +1,16 @@
-app.controller("admin.controller", ['$scope', 'states', 'doc.data', 'global.service', 'config.service', "utility", function ($scope, states, dd, g, config, u) {
+app.controller("admin.controller", ['$scope', 'states', 'doc.data', 'config.service', "utility", function ($scope, states, dd, config, u) {
 
 	var self = this;
+
+
+
+	var shared = window.shared;
+	var g = shared.utility_service;
+	var send = shared.send_service;
+	var react = shared.react_service;
+	var events = shared.events_service;
+
+
 
 	var state = states.current();
 

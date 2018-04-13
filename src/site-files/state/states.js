@@ -1,4 +1,12 @@
-stateModule.factory("states", ['$q', 'runtime.state', '$state', '$transitions', 'events.service', 'utility', function ($q, runtime, $state, $transitions, events, u) {
+stateModule.factory("states", ['$q', 'runtime.state', '$state', '$transitions', 'utility', function ($q, runtime, $state, $transitions, u) {
+
+
+	var shared = window.shared;
+	var g = shared.utility_service;
+	var send = shared.send_service;
+	var react = shared.react_service;
+	var events = shared.events_service;
+
 
 	var _forceMobile = false;
 
@@ -19,23 +27,19 @@ stateModule.factory("states", ['$q', 'runtime.state', '$state', '$transitions', 
 		console.log("state change start, to state", trans.to());
 
 
-		if (u.interfaceChanged()) {
+		// if (u.interfaceChanged()) {
+			
+		// 	var found = runtime.stateViewUrls.find((p) => {
 
-			console.log("interface changed", u.getInterface());
+		// 		return p.name == trans.to().name;
+		// 	})
 
-			var found = runtime.stateViewUrls.find((p) => {
+		// 	var newUrl = baseUrl(found.responsive) + found.url;
 
-				return p.name == trans.to().name;
-			})
+		// 	trans.to().templateUrl = newUrl;
 
-			var newUrl = baseUrl(found.responsive) + found.url;
-
-			console.log("new url", newUrl);
-
-			trans.to().templateUrl = newUrl;
-
-			u.resetChanged();
-		}
+		// 	u.resetChanged();
+		// }
 
 
 		$("#body").scrollTo(0);
