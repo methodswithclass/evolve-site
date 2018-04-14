@@ -24,15 +24,12 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			var effdim;
 			var ed;
 
-			var stageFactor = 0.3;
+			// var stageFactor = 0.25;
 			var $stage = $("#arena");
 
 			var col = [];
 			var arena = [];
 
-			if(!g.isMobile()) {
-				$(element).css({width:$(element).width()*0.8 + "px", height:$(element).height()*0.8 + "px"});
-			}
 
 			var block = function (input) {
 
@@ -167,7 +164,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				ed = u.correctForAspect({
 					id:"arena",
-					factor:stageFactor, 
+					factor:g.isMobile() ? 0.4 : 0.25, 
 					aspect:1, 
 					width:$(window).width(), 
 					height:$(window).height()
@@ -180,7 +177,35 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 		    events.on("resetenv", function () {
 
-				makeBlocks(environment)
+		   //  	var blockSequence = function () {
+
+			  //   	count = 0;
+
+			  //   	var timer = setInterval(() => {
+
+			  //   		if ($(element).height() > 0) {
+
+			  //   			clearInterval(timer);
+			  //   			timer = null;
+
+			  //   			if (count < 500) {
+					// 			makeBlocks(environment)	
+					// 		}
+					// 		else {
+					// 			count = 0;
+					// 			blockSequence();
+					// 		}
+			  //   		}
+			  //   		else {
+			  //   			count++
+			  //   		}
+
+					// }, 30);
+
+		   //  	}
+
+		   		makeBlocks(environment)
+
 			})
 
 

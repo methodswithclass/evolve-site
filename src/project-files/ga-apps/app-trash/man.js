@@ -24,9 +24,14 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 			var square;
 
 
-			if (!g.isMobile()) {
-				$(element).css({width:$(element).width()*0.8 + "px", height:$(element).height()*0.8 + "px"});
+			if (g.isMobile()) {
+
 			}
+			else {
+				// $(element).css({width:$(element).width()*0.8 + "px", height:$(element).height()*0.8 + "px"});
+			}
+
+			
 			var makeMan = function () {
 
 				console.log("arena in make man", arena);

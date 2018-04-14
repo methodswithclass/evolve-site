@@ -146,7 +146,7 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
         
         self.programInput.getTotalSteps = function () {
 
-            return self.programInput.grid.size*self.programInput.grid.size*2;
+            return self.programInput.grid.size*self.programInput.grid.size*50;
         }
 
         self.programInput.convertTrash = function (percentToRate) {
@@ -159,6 +159,19 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
 
         self.programInput.validate = function () {
+
+
+            self.programInput.trashPercent =   (self.programInput.trashPercent == "" ) ?  ""
+                                           : (self.programInput.trashPercent > 90 ? 90 : self.programInput.trashPercent)
+            self.programInput.trashRate =  (self.programInput.trashRate == "") ?  ""
+                                           : (self.programInput.trashRate > 0.9 ? 0.9 : self.programInput.trashRate);
+
+
+            self.programInput.trashPercent = (self.programInput.trashPercent == "") ?  "" 
+                                            : (self.programInput.trashPercent < 5 ? 5 : self.programInput.trashPercent)
+            self.programInput.trashRate = (self.programInput.trashRate == "" ) ? "" 
+                                           :(self.programInput.trashRate < 0.05 ? 0.05 : self.programInput.trashRate)
+
 
             var _temp = {
                 grid:self.programInput.grid.size,

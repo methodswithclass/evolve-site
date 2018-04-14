@@ -79,15 +79,24 @@ app.factory("display.service", ["utility", function (u) {
 		$stage = $("#stagetoggle");
 		$hud = $("#hudtoggle");
 		$evolvedata = $("#evolvedatatoggle");
-
+		$simdata = $("#simdatatoggle");
+		$arena = $("#arena");
 		
 		if (g.isMobile()) {
 
-			$stage.css({top:$(window).height() + 100 + "px", height:"50%"})
+			$stage.css({top:$(window).height() + 100 + "px", height:"50%"});
+
+			g.waitForElem({elems:"#simdatatoggle"}, function () {
+
+				$simdata.css({top:$arena.position().top + $arena.height() + 200 + "px"});
+			})
 		}
 		else {
+
 			$stage.css({top:$(window).height() + 100  + "px", height:"80%"})
-			$("#stageInner").css({top:$("#stagetitle").height() + 100 + "px", left:"50%", marginLeft:"-50%"});
+			$("#stageInner").css({top:$("#stagetitle").height() + 100 + "px"});
+			$arena.css({left:"80px"});
+			$("#programConfig").css({height:"80%"});
 		}
 	});
 
@@ -165,96 +174,222 @@ app.factory("display.service", ["utility", function (u) {
 	}
 
 
+	var cntrlBuffer = 20;
+	var cntrlWidth;
 
 
-	// var cntrlWidth;
+	var setHover = function () {
 
 
-	var setHover = function (i) {
+		var hoverFunction = function(item) {
 
-		$(controls[i].selector).hover(function () {
-			$(controls[i].tool).animate({opacity:1}, 100);
-		},
-		function () {
-			$(controls[i].tool).animate({opacity:0}, 100);
+			$(item.selector).hover(
+			function () {
+				$(item.tool).removeClass("none")
+				$(item.tool).animate({opacity:1}, 100);
+			},
+			function () {
+
+				$(item.tool).animate({opacity:0}, 100, function () {
+
+					$(item.tool).addClass("none")
+				});
+			});
+		}
+
+
+		controls.forEach((value, index) => {
+			
+			hoverFunction(value);
+
 		});
+
+		hoverFunction({selector:"#opensettings", tool:"#opentool"});
+
 	}
 
 
-	var controlsWidth = function (name) {
+	g.waitForElem({elems:"#controlstoggle"}, function () {
+
+		setHover();
+	})
+
+	var orients = {
+		vert:"vertical",
+		hor:"horizontal"
+	}
 
 
-		$elem = $("#controlstoggle");
-		$aren = $("#arena");
+	var automatic = function () {
 
-		if (u.getInterface() == inter.object.one) {
+		if (g.isMobile()) {
 
-			$(runToggle.selector).css({top:$(window).height()/3 - $(runToggle.selector).height() + "px"});
+			return orients.hor;
 		}
+		else {
+			return orients.vert;
+		}
+	}
 
 
+	var wantHorizontal = function () {
 
-		cntrlWidth = u.getInterface() == inter.object.one ? 50 : 50;
-
-
-		g.waitForElem({elems:["#arena"]}, () => {
-
+		return orients.hor;
+	}
 
 
+	var wantVertical = function () {
 
-			if (g.isMobile()) {
+		return orients.vert;
+	}
 
-				var zeroLeft = $arena.position().left;
-				var zeroTop = $arena.position().top + $arena.height();
 
-				$elem.css({left:zeroLeft, top:zeroTop});
+	var positionControlsItems = function (options) {
+
+
+		var controls = options.controls;
+		var cntrlWidth = options.cntrlWidth;
+		var cntrlBuffer = options.cntrlBuffer;
+		var orientation = options.orientation;
+		var $control = options.$control;
+		var $arena = options.$arena;
+		var arenaWidth = options.arenaWidth;
+		var controlWidth = options.controlWidth;
+
+
+		g.waitForElem({elems:"#arena"}, () => {
+
+
+			if (orientation == orients.hor) {	
+
+				zeroLeft = $arena.position().left;
+				zeroTop = $arena.position().top + $arena.height();
+				arenaWidth = $arena.width();
+				controlWidth = (cntrlWidth + cntrlBuffer)*controls.length;
+
+
+				if (arenaWidth > controlWidth) {
+
+					zeroLeft = $arena.position().left + (arenaWidth - controlWidth)/2;
+				}
+				else {
+					zeroLeft = $arena.position().left - (controlWidth - arenaWidth)/2;
+				}
+
+				$control.css({width:controlWidth + "px", height:cntrlWidth + cntrlBuffer + "px", left:zeroLeft + "px", top:zeroTop  + 50 + "px"});
+				$control.removeClass("vcenter");
 			}
 			else {
 
-				$elem.css({top:$arena.position().top + "px", width:(u.getInterface() == inter.object.one ? 70 : 70) + "px"});
-			}
+				zeroLeft = 0;
+				zeroTop = g.isMobile() ? 0 : $arena.position().top;
 
+				$control.css({width:cntrlWidth + cntrlBuffer + "px", height:(cntrlWidth + cntrlBuffer)*controls.length + "px"});
+				// $control.addClass("vcenter");
+			}
 
 		})
 
 
-		
-		
-		
-
-
-		if (name == "feedback") {
-
-			$elem.css({top:"50px", zIndex:50});
-		}
-		
 		controls.forEach(function (value, index, array) {
 
-			if (g.isMobile()) {
 
-				$(value.selector).css({left:index*(cntrlWidth + 10) + "px"});
+
+			var totalLength = cntrlWidth*controls.length;
+			var itemPercent = cntrlWidth/controls.length;
+			var center = 50 - itemPercent/2;
+
+			var positions = [
+			center-itemPercent-itemPercent/2,
+			center-itemPercent,
+			center,
+			center+itemPercent,
+			center+itemPercent + itemPercent/2
+			]
+
+
+			if (orientation == orients.hor) {
+
+				$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px", left:index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2 + "px"});
+				// $(value.selector).addClass("vcenter");
+
 			}
 			else {
 
-				$(value.selector).css({top:index*(cntrlWidth + 10) + "px"})
+				$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px", top:index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2 + "px"});
+				// $(value.selector).addClass("hcenter");
+
 			}
 
-			
 		})
 
+	}
+
+
+	var controlsSetup = {
+
+		interface1:function (name) {
+
+			$control = $("#controlsParent");
+			$elem = $("#controlstoggle");
+			$arena = $("#arena");
+
+
+			var cntrlWidth;
+			var zeroLeft;
+			var zeroTop;
+			var controlWidth;
+			var arenaWidth;
+
+			// orientation = automatic();
+			orientation = wantHorizontal();
+			// orientation = wantVertical();
+
+			if (g.isMobile()) {
+				
+				cntrlWidth = 70;
+				// $(runToggle.selector).css({top:$(window).height()/3 - $(runToggle.selector).height() + "px"});
+			}
+			else {
+				
+				cntrlWidth = 30;
+				$(runToggle.selector).css({top:100 + "px"});
+			}
+
+
+			positionControlsItems({
+				controls:controls,
+				cntrlWidth:cntrlWidth,
+				cntrlBuffer:cntrlBuffer,
+				controlWidth:controlWidth,
+				arenaWidth:arenaWidth,
+				orientation:orientation,
+				$control:$control,
+				$arena:$arena
+			});
+
+		},
+		interface2:function (name) {
+
+
+		}
 	}
 
 
 	// console.log("\nregister event controls display\n\n");
 	events.on("load-display", "controls-trash", function () {
 
-		// g.waitForElem({elems:"#stoptoggle"}, function () {
-			controlsWidth("trash");
-		// });
+		g.waitForElem({elems:"#arena"}, function () {
+			
+
+			controlsSetup[u.getInterface()]();
+		});
 
 		$(window).resize(function () {
 
 			console.log("resize");
+
+			controlsSetup[u.getInterface()]();
 		})
 
 		return "success";
@@ -262,13 +397,17 @@ app.factory("display.service", ["utility", function (u) {
 
 	events.on("load-display", "controls-feedback", function () {
 
-		controlsWidth("feedback");
+		g.waitForElem({elems:"#arena"}, function () {
+			
+			
+			controlsSetup[u.getInterface()]();
+		});
 
 		$(window).resize(function () {
 
 			console.log("resize");
 
-			controlsWidth("feedback");
+			controlsSetup(u.getInterface())();
 		})
 
 		return "success";
@@ -277,26 +416,22 @@ app.factory("display.service", ["utility", function (u) {
 
 	events.on("load-display", "controls-recognize", function () {
 
-		controlsWidth("recognize");
+		g.waitForElem({elems:"#arena"}, function () {
+			
+			
+			controlsSetup[u.getInterface()]();
+		});
 
 		$(window).resize(function () {
 
 			console.log("resize");
 
-			controlsWidth("recognize");
+			controlsSetup[u.getInterface()]();
 		})
 
 		return "success";
 
 	})
-
-	controls.forEach(function (value, index) {
-
-		setHover(index);
-	})
-
-
-
 
 
 
@@ -318,32 +453,36 @@ app.factory("display.service", ["utility", function (u) {
 	var evwidth = 0.8;
 	var width = 0.8;
 	
-	var evolveDataWidth = function (name) {
+	var evolveDataSetup = {
 
-		winW = $(window).width();
-		winH = $(window).height();
+		interface1:function (name) {
 
-		$evolve = $("#evolvedatatoggle");
-		$hud = $("#hudtoggle");
-		$stage = $("#stagetoggle");
-		$arena = $("#arena");
-		$run = $("#runtoggle");
+			winW = $(window).width();
+			winH = $(window).height();
 
+			$evolve = $("#evolvedatatoggle");
+			$hud = $("#hudtoggle");
+			$stage = $("#stagetoggle");
+			$arena = $("#arena");
+			$run = $("#runtoggle");
 
-		console.log("\n\ncontrols modile", g.isMobile());
-
-
-
-		if (name == "trash" || name == "recognize") {
+			if (name == "trash" || name == "recognize") {
 			
-			if (u.getInterface() == inter.object.one) {
-				$evolve.css({top:$(window).height()*2/3 + "px"});
+				// $evolve.css({top:$(window).height()*2/3 + "px"});
 			}
+			else if (name == "feedback") {
+				// $evolve.css({top:($stage.offset().top - $hud.offset().top) + $arena.height() + 200 + "px"});	
+			}
+
+
+		},
+		inerface2:function () {
+
+
+
 		}
-		else if (name == "feedback") {
-			$evolve.css({top:($stage.offset().top - $hud.offset().top) + $arena.height() + 200 + "px"});	
-		}
-		
+
+
 	}
 
 	// console.log("\nregister event evolve-data display\n\n");
@@ -352,11 +491,11 @@ app.factory("display.service", ["utility", function (u) {
 
 		// console.log("\nevolve data load display\n\n");
 
-		evolveDataWidth("trash");
+		evolveDataSetup[u.getInterface()]("trash");
 
 		$(window).resize(function () {
 
-			evolveDataWidth("trash");
+			evolveDataSetup[u.getInterface()]("trash");
 		})
 
 		return "success";
@@ -370,11 +509,13 @@ app.factory("display.service", ["utility", function (u) {
 
 		// console.log("\nevolve data load display\n\n");
 
-		evolveDataWidth("feedback");
+		
+		evolveDataSetup[u.getInterface()]("feedback");
 
 		$(window).resize(function () {
 
-			evolveDataWidth("feedback");
+			
+			evolveDataSetup[u.getInterface()]("feedback");
 		})
 
 		return "success";
@@ -388,11 +529,12 @@ app.factory("display.service", ["utility", function (u) {
 
 		// console.log("\nevolve data load display\n\n");
 
-		evolveDataWidth("recognize");
+		
+		evolveDataSetup[u.getInterface()]("recognize");
 
 		$(window).resize(function () {
-
-			evolveDataWidth("recognize");
+				
+			evolveDataSetup[u.getInterface()]("recognize");
 		})
 
 		return "success";
