@@ -10,7 +10,6 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 
 			var shared = window.shared;
 			var g = shared.utility_service;
-			var send = shared.send_service;
 			var react = shared.react_service;
 			var events = shared.events_service;
 
@@ -23,14 +22,6 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 			var grid;
 			var square;
 
-
-			if (g.isMobile()) {
-
-			}
-			else {
-				// $(element).css({width:$(element).width()*0.8 + "px", height:$(element).height()*0.8 + "px"});
-			}
-
 			
 			var makeMan = function () {
 
@@ -41,9 +32,6 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 				$(container).remove();
 
 				container = document.createElement("div");
-				// container.style.width = block.width + "px";
-				// container.style.height = block.height + "px";
-				// container.style.left = 70 + 20 + "px";
 				$(container).addClass("absolute width height");
 				$(element).append(container);
 
@@ -56,7 +44,6 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 
 				var man = document.createElement("div");
 				$(man).addClass("absolute width70 height70 center " + (u.getInterface() == inter.object.one ? "black-back" : "white-back"));
-				// $(container).css({left:70 + "px"});
 				$(block).append(man);
 
 				var inner = document.createElement("div");

@@ -11,9 +11,7 @@ app.directive("simulation", ["utility", "states", function (u, states) {
 
 			var shared = window.shared;
 			var g = shared.utility_service;
-			var send = shared.send_service;
 			var react = shared.react_service;
-			var events = shared.events_service;
 
 
 			
@@ -21,13 +19,6 @@ app.directive("simulation", ["utility", "states", function (u, states) {
 
 				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/"+$scope.name+"_simulation.html";
 			}
-
-				
-			var shared = window.shared;
-			var g = shared.utility_service;
-			var send = shared.send_service;
-			var react = shared.react_service;
-			var events = shared.events_service;
 
 
    	 		self.name = u.stateName(states.current());

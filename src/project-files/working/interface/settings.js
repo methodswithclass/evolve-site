@@ -12,14 +12,17 @@ app.directive("settings", ["utility",function (u) {
 		link:function ($scope, element, attr) {
 
 
+			
+			
+			var shared = window.shared;
+			var g = shared.utility_service;
+
+
 			$scope.getContentUrl = function () {
 
 				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/settings.html";
 			}
 
-
-			var shared = window.shared;
-			var g = shared.utility_service;
 			
 
 			

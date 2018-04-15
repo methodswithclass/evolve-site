@@ -9,15 +9,16 @@ app.directive("trashsimdata", ["utility", function (u) {
 
 
 
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+
+
+
 			$scope.getContentUrl = function () {
 
 				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/trash/trashsimdata.html";
 			}
-
-
-
-			var shared = window.shared;
-			var g = shared.utility_service;
 
 			
 			

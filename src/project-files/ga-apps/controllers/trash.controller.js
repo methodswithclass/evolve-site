@@ -11,35 +11,6 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
     var events = shared.events_service;
 
 
-	// var programInputConfig = function () {
-
- //        var $parent = $("#programConfig");
-
- //        $parent.css({height:(g.isMobile() ? "80%" : "80%")})
- //    }
-
-
-    // var setupProgramInputConfig = function () {
-
-    // 	// console.log("setup program input config \n\n\n\n\n")
-
-    //     g.waitForElem({elems:"#programConfig"}, function () {
-
-    //     	// console.log("programConfig elem exists \n\n\n\n\n\n")
-
-    //         programInputConfig();
-
-
-    //         $(window).resize(function () {
-
-    //             programInputConfig();
-    //         })
-
-    //     });
-
-    // }
-
-
 	var setup = function (self, $scope) {
 
 		pageBuilt = display.beenBuilt(self.name);
@@ -60,11 +31,8 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
 	    self.programInputChange = function () {
 
-	        // console.log("grid size", programInput.grid.size);
 
 	        self.programInput.update();
-
-	        // console.log("program input change");
 
 	        $input.setInput({
 	            programInput:self.programInput
@@ -235,10 +203,6 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 	}
 
 	var enter = function (self, $scope) {
-
-		// console.log("enter \n\n\n\n\n");
-
-		// setupProgramInputConfig();
 
 
         if (!pageBuilt) {

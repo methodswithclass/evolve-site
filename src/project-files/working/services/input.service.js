@@ -31,19 +31,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 	}
 
 
-	// var sendVars = function () {
-
-	// 	react.push({
-	// 		name:"evolve.vars",
-	// 		state:{
-	// 			crossoverMethods:crossoverMethods,
-	// 			reproductionTypes:reproductionTypes
-	// 		}
-	// 	})
-
-	// }
-
-
 	var getValue = function ($value) {
 
 		var value = parseFloat($value)
@@ -85,11 +72,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     		string:"string"
     	}
 
-    	// console.log("resolve display input", options);
-
 		if (options.type == types.value) {
-
-			// console.log("type value");
 
 			$pool = pool > 1 ? getValue(pool) : pool;
 			$mutate = mutate > 1 ? getValue(mutate) : mutate;
@@ -97,13 +80,9 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 		}
 		else if (options.type == types.string) {
 
-			// console.log("type string");
-
 			$pool = pool < 1 ? getString(pool) : pool;
 			$mutate = mutate < 1 ? getString(mutate) : mutate;
  		}
-
- 		// console.log("resolve display result", {$pool, $mutate});
 
     	return {
     		pool:$pool,
@@ -141,8 +120,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     	})
 
 
-    	// console.log("set settings", input.pool, input.mutate, values.pool, values.mutate);
-
     	$scope.settings = {
         	gens: 				input.gens,
         	runs: 				input.runs,
@@ -160,8 +137,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     		reproductionType: 	input.reproductionType || self.temp[self.name].reproductionType
         }
 
-
-        // console.log("set settings", $scope.settings);
 
         return $scope.settings;
 
@@ -183,7 +158,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         	method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
         }
 
-        // console.log("change input", manual);
 
     	return setSettings($scope, manual);
     }
@@ -259,9 +233,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 			session: 			self.temp[self.name].session || ""
 		}
 
-		// console.log("get input", update, self.temp[self.name], self.global[self.name]);
-
-
 
         react.push({
             name:"data" + self.name,
@@ -283,8 +254,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
 
     var resetInput = function () {
-
-    	// sendVars();
 
 		setInput($$reset_initial);	
 	}
@@ -310,3 +279,5 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
 
 }]);
+
+

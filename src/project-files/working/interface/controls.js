@@ -20,10 +20,6 @@ app.directive("controls", ["utility", "evolve.service", function (u, evolve) {
 			}
 
 
-
-			var shared = window.shared;
-			var g = shared.utility_servic;
-
 		}
 
 	}

@@ -69,9 +69,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var pageBuilt = display.beenBuilt(self.name);
 
 
-    // console.log("\n\n\ncontroller", self.name, "built", pageBuilt, "\n\n\n")
-
-
     controller.setup(self, $scope);
 
 
@@ -295,15 +292,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     var toggleKindType = function (kindValue) {
 
-        // console.log("toggle kind type", kindValue);
-
         toggleKind = kinds.find(function (p) {
 
             return p.value == kindValue;
         });
 
-
-        // console.log("toggle kinid", toggleKind);
 
         kinds = kinds.map(function (value, index) {
 
@@ -323,10 +316,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             return value;
 
         })
-
-        // console.log("kinds", kinds, toggleKind);
-
-
 
         return toggleKind;
     }
@@ -363,24 +352,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
         .addClass(getTabParam(kind, "class"));
 
-        if (kind.value == kinds[0].value) {
-
-            // tabElem(kind).closedSign.css({
-            //     opacity:kind.status ? getTabParam(kind, "opacity") : 0
-            // })
-
-        }
-        else if (kind.value == kinds[1].value) {
-
-            // tabElem(kind).closedSign.removeClass("opacity80");
-
-            // console.log("\n\ntoggle css", kind.status);
-
-            // tabElem(kind).closedSign.css({
-            //     opacity:kind.status ? 0 : 1
-            // })
-        }
-
     }
 
 
@@ -405,26 +376,26 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var controls = [
     {
         name:"open",
-        input:$("#opensettings"),
-        tool:$("#opentool")
+        input:"#opensettings",
+        tool:"#opentool"
     }
     ]
 
     var inputs = [
     {
-        input:$("#gensinput")
+        input:"#gensinput"
     },
     {
-        input:$("#runsinput")
+        input:"#runsinput"
     },
     {
-        input:$("#goalinput")
+        input:"#goalinput"
     },
     {
-        input:$("#popinput")
+        input:"#popinput"
     },
     {
-        input:$("#refreshbtn")
+        input:"#refreshbtn"
     }
     ]
 
@@ -433,26 +404,34 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     var setHover = function (i) {
 
-        controls[i].input.hover(function () {
-            controls[i].tool.animate({opacity:1}, 100);
-        },
-        function () {
-            controls[i].tool.animate({opacity:0}, 100);
-        });
+        controls.forEach(function(value, index) {
+
+            $(value.input).hover(
+                function() {
+                    $(value.tool).animate({opacity:1}, 100);
+                },
+                function () {
+                    $(value.tool).animate({opacity:0}, 100);
+                }
+            );
+
+        })
     }
 
-    for (i in controls) {
-        setHover(i);
-    }
+    setHover();
 
     var isFocus = function () {
 
-        for (i in inputs) {
-            if (inputs[i].input.is(":focus")) {
+       
+        for (var i in inputs) {
+            
+
+            if ($(inputs[i].input).is(":focus")) {
                 return true;
             }
+            
         }
-
+               
         return false;
     }
 
@@ -576,7 +555,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
 
 
-    // textSettings();
 
     /* 
     #_______________________________________

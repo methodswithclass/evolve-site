@@ -10,7 +10,6 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			var shared = window.shared;
 			var g = shared.utility_service;
-			var send = shared.send_service;
 			var react = shared.react_service;
 			var events = shared.events_service;
 
@@ -24,7 +23,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			var effdim;
 			var ed;
 
-			// var stageFactor = 0.25;
+
 			var $stage = $("#arena");
 
 			var col = [];
@@ -115,10 +114,11 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				clear();
 
+
 				rows = env.arena.length;
 				cols = env.arena.length;
 
-				// console.log("make blocks, rows,", rows, "cols,", cols);
+				
 
 				react.push({
 					name:"man.arena",
@@ -127,6 +127,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 						height:env.arena.length
 					}
 				})
+
 
 				var square;
 				arena.length = 0;
@@ -176,33 +177,6 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 
 		    events.on("resetenv", function () {
-
-		   //  	var blockSequence = function () {
-
-			  //   	count = 0;
-
-			  //   	var timer = setInterval(() => {
-
-			  //   		if ($(element).height() > 0) {
-
-			  //   			clearInterval(timer);
-			  //   			timer = null;
-
-			  //   			if (count < 500) {
-					// 			makeBlocks(environment)	
-					// 		}
-					// 		else {
-					// 			count = 0;
-					// 			blockSequence();
-					// 		}
-			  //   		}
-			  //   		else {
-			  //   			count++
-			  //   		}
-
-					// }, 30);
-
-		   //  	}
 
 		   		makeBlocks(environment)
 

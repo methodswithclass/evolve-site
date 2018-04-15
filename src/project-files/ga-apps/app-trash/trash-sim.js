@@ -32,15 +32,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
 
-    // react.subscribe({
-    //     name:"programInput" + name,
-    //     callback:function(x) {
-
-    //         totalActions = x.totalSteps;
-    //     }
-    // })
-    
-
     react.subscribe({
         name:"robot",
         callback:function (x) {
@@ -59,8 +50,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     var output = function (_sout) {
-
-        // console.log("output");
 
         react.push({
             name:"sim.trash",
@@ -128,16 +117,11 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             assessMove();
 
             clean();
-
-            // console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
         });
 
     }
 
     var performStep = function (_input) {
-
-        //console.log("simulate " + i);
-
 
         if (_input.step) u.toggle("hide", "step");
 
@@ -145,8 +129,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
             api.simulate.trash({name:name, i:_input.i, session:_input.session}, function (res) {
-
-                // console.log("run simulation", res.data);
 
                 var result = res.data.result;
 
@@ -178,7 +160,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         console.log("sim setup");
 
-
         totalActions = $input.getInput().programInput.totalSteps;
         
         api.instruct(function (res) {
@@ -191,8 +172,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         i = 1;
         _score = 0;
-
-        // console.log("reset sim");
 
         output({
             score:{
@@ -209,16 +188,12 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
-        // setup();
-
         events.dispatch("resetenv");
-
 
         api.resetEnvironment(function (res) {
 
             console.log("Reset environment success", res);
         });
-
 
         g.waitForElem({elems:man}, () => {
 
@@ -286,9 +261,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
     var complete = function () {
-
-        // events.dispatch("completeSim");
-
 
         u.toggle("enable", "refresh", {fade:300, delay:100});
         u.toggle("enable", "restart", {fade:300, delay:200});
