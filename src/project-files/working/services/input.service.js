@@ -184,8 +184,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
  	var setInput = function (options) {
 
-        console.log("set input", self.name, options);
-
  		for (var i in options) {
 
             if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];

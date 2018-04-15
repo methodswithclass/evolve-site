@@ -61,7 +61,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var processTypes;
     var displayParams = display.getParams();
 
-    console.log("name is", self.name);
+    console.log("loading", self.name, "controller");
 
     var simulator = simulators.get(self.name);
     var controller = controllers.get(self.name);
@@ -100,12 +100,12 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     var phases = [
     {
-        message:"processing", 
-        delay:300,
-        duration:600,
+        message:"begin loading environment for demo", 
+        delay:displayParams.delay,
+        duration:2*displayParams.duration,
         phase:function (options) {
 
-            console.log("processing phase");
+            console.log("initial processing phase");
 
             enter();
 
@@ -116,22 +116,22 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         }
     },
     {
-        message:"initializing evolutionary algoirthm", 
-        delay:300,
-        duration:600,
+        message:"initializing algoirthm", 
+        delay:displayParams.delay,
+        duration:6*displayParams.duration,
         phase:function (options) {
 
-            console.log("initialize algorithm phase");
+            console.log("initializing algorithm");
             
             if (!pageBuilt) {
                
                 api.instantiate(function (res) {
 
-                    console.log("Instantiate session", res);
+                    // console.log("Instantiate session", res);
 
                     $scope.session = res.data.session;
 
-                    console.log("instantiate complete");
+                    // console.log("instantiate complete");
 
                     $input.setInput({
                         session:$scope.session
@@ -162,11 +162,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     },
     {
         message:"loading environment", 
-        delay:300,
-        duration:displayParams.fade, 
+        delay:displayParams.delay,
+        duration:6*displayParams.duration, 
         phase:function (options) {
 
-            console.log("load environment phase");
+            console.log("loading environment");
 
             
             controller.createEnvironment(self, $scope);
@@ -178,11 +178,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     },
     {
         message:"loading display", 
-        delay:300,
-        duration:displayParams.fade,
+        delay:displayParams.delay,
+        duration:2*displayParams.duration,
         phase:function (options) {
 
-            console.log("load display phase");
+            console.log("loading display");
 
             display.load(self.name);
 
@@ -190,12 +190,12 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         }
     },
     {
-        message:"getting things ready", 
-        delay:300,
-        duration:displayParams.fade, 
+        message:"finishing up", 
+        delay:displayParams.delay,
+        duration:2*displayParams.duration, 
         phase:function (options) {
 
-            console.log("getting things ready phase, finish loading");
+            console.log("finishing up");
 
 
             evolve.running(false, $scope);
@@ -218,19 +218,16 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     var load = function () {
 
-        console.log("load page");
-
         g.waitForElem({elems:"#loadingtoggle"}, function (options) {
 
-            console.log("load controller", self.name);
-
             loading.init($scope, phases);
+
+            console.log("begin loading environment for demo")
 
             u.toggle("show", "loading", {
                 fade:displayParams.fade,
                 complete:function () {
 
-                    
                     loading.runPhase(0);
                 }
             });

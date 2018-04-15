@@ -7,15 +7,6 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 	self.config = {};
 
 
-
-
-	var shared = window.shared;
-	var g = shared.utility_service;
-	var send = shared.send_service;
-	var react = shared.react_service;
-	var events = shared.events_service;
-
-
 	var get = function ($key) {
 
 
@@ -34,7 +25,6 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 
 				if (obj.hasOwnProperty(prop)) {
 
-					// console.log("get prop", $i, obj, prop, obj[prop]);
 					return getProp(obj[prop], $i + 1, array);
 				}
 				else {
@@ -58,8 +48,6 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 			value = getProp(self.config, i, keyArray);
 		}
 
-		// console.log("get config return value", value, "\n\n\n");
-
 	    return value || '';
 
 
@@ -79,12 +67,6 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
         		url:"/assets/config/config.json"
         	})
         	.then(function (res) {
-
-        		// var json = JSON.parse(res);
-
-
-        		// console.log("config data is", res.data);
-
 
                 resolve(res.data)
 

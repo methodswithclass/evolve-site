@@ -141,10 +141,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 					for (var j = 0; j < rows; j++) {
 						square = new block({x:i, y:j});
 
-						//square.addtext(env.arena[i][j].trash);
-
 						if (env.arena[i][j].trash) {
-							//console.log(env.arena[i][j].pos);
 							square.placeTrash();
 						}
 
@@ -186,17 +183,12 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			events.on("refreshenv", function () {
 
-				console.log("refresh environment");
-
 				g.waitForElem({elems:$stage}, function (options) {
 
 
 					setStageSize();
 
 					api.refreshEnvironment(function (res) {
-
-
-				    	console.log("Refresh environment", res.data.env);
 
 			            environment = res.data.env;
 

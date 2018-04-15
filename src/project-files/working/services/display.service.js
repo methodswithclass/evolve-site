@@ -20,7 +20,8 @@ app.factory("display.service", ["utility", function (u) {
 
     var params = {
     	delay:100,
-    	fade:800
+    	fade:800,
+    	duration:100
     }
 
 
@@ -84,10 +85,6 @@ app.factory("display.service", ["utility", function (u) {
 		
 		if (g.isMobile()) {
 
-			// $stage.css({top:$(window).height() + 100 + "px", height:"50%"});
-
-			// $stage.css({height:"50%"});
-
 			g.waitForElem({elems:"#simdatatoggle"}, function () {
 
 				$simdata.css({top:$arena.position().top + $arena.height() + 200 + "px"});
@@ -95,11 +92,7 @@ app.factory("display.service", ["utility", function (u) {
 		}
 		else {
 
-			// $stage.css({top:$(window).height() + 100  + "px", height:"80%"})
-			// $stage.css({height:"80%"});
-
 			$("#stageInner").css({top:$("#stagetitle").height() + 100 + "px"});
-			// $arena.css({left:"80px"});
 		}
 	});
 
@@ -341,12 +334,10 @@ app.factory("display.service", ["utility", function (u) {
 			if (g.isMobile()) {
 				
 				cntrlWidth = 70;
-				// $(runToggle.selector).css({top:$(window).height()/3 - $(runToggle.selector).height() + "px"});
 			}
 			else {
 				
 				cntrlWidth = 30;
-				// $(runToggle.selector).css({top:100 + "px"});
 			}
 
 
@@ -459,14 +450,6 @@ app.factory("display.service", ["utility", function (u) {
 			$arena = $("#arena");
 			$run = $("#runtoggle");
 
-			if (name == "trash" || name == "recognize") {
-			
-				// $evolve.css({top:$(window).height()*2/3 + "px"});
-			}
-			else if (name == "feedback") {
-				// $evolve.css({top:($stage.offset().top - $hud.offset().top) + $arena.height() + 200 + "px"});	
-			}
-
 
 		},
 		inerface2:function () {
@@ -481,8 +464,6 @@ app.factory("display.service", ["utility", function (u) {
 	// console.log("\nregister event evolve-data display\n\n");
 	events.on("load-display", "evolve-data-trash", function () {
 
-
-		// console.log("\nevolve data load display\n\n");
 
 		evolveDataSetup[u.getInterface()]("trash");
 
@@ -500,9 +481,6 @@ app.factory("display.service", ["utility", function (u) {
 	events.on("load-display", "evolve-data-feedback", function () {
 
 
-		// console.log("\nevolve data load display\n\n");
-
-		
 		evolveDataSetup[u.getInterface()]("feedback");
 
 		$(window).resize(function () {
@@ -520,9 +498,6 @@ app.factory("display.service", ["utility", function (u) {
 	events.on("load-display", "evolve-data-recognize", function () {
 
 
-		// console.log("\nevolve data load display\n\n");
-
-		
 		evolveDataSetup[u.getInterface()]("recognize");
 
 		$(window).resize(function () {
@@ -634,8 +609,6 @@ app.factory("display.service", ["utility", function (u) {
 
 		winH = winH > $winH ? winH : $winH;
 
-		// console.log("evolve toggle", evolveToggle.input[0]);
-
 		$evolve.css({height:winH + "px"});
 
 	}
@@ -673,37 +646,25 @@ app.factory("display.service", ["utility", function (u) {
 
 	var loadPhases = function (phases) {
 
-
-		// console.log(phases);
-
 		var runPhase = function (i) {
 
-			
 			phases[i].phase();
-
 
 			if (i < phases.length-1) {
 				runPhase(i + 1);
 			}
-			
 		}
 
-		
 		runPhase(0);
-
 	}
 
 
 	var load = function (name) {
 
-		// console.log("display load \n\n\n\n\n\n")
-
 		$mainBack = $("#main-back");
 
 		winH = $mainBack.height();
 		winW = $mainBack.width();
-
-		// events.dispatch("fake-batch-events");
 
 		var phases = {
 			trash:[
@@ -783,9 +744,6 @@ app.factory("display.service", ["utility", function (u) {
 			}
 			]
 		}
-
-		// console.log(name, phases[name]);
-
 
 		loadPhases(phases[name]);
 		

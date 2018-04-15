@@ -62,8 +62,6 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
 	var build = function (self, $scope) {
 
-		console.log("build controller", self.name);
-
 
         $scope.grids = [
         {

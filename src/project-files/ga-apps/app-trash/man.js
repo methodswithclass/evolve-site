@@ -25,7 +25,7 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 			
 			var makeMan = function () {
 
-				console.log("arena in make man", arena);
+				// console.log("arena in make man", arena);
 
 				var square = {width:$(element).width()/grid.cols, height:$(element).height()/grid.rows};
 

@@ -71,8 +71,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
 
     	api.getBest(function (res) {
-
-	    	// sendEvdata(res.data.ext);
+            
             sendData({evdata:res.data.ext});
 
 	    	if (typeof complete === "function") complete();
@@ -90,13 +89,9 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     	api.stepdata(function (res) {
 
-	    	// console.log("get stepdata", res.data.stepdata);
-
     		stepdata = res.data.stepdata ? res.data.stepdata : $stepdata;
 
     		genA = stepdata.gen;
-
-    		// console.log("stepdata", res.data.stepdata, $stepdata);
 
             $stepdata = {
             	gen:stepdata.gen,
@@ -105,14 +100,10 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             	step:stepdata.step
             }
 
-            // console.log("stepdata callback response", update, res.data.stepdata, $stepdata);
-
-            // sendStepdata($stepdata);
             sendData({stepdata:$stepdata})
 
             if (genA != genB) {
             	genB = genA;
-            	// getBest();
             }
 
             getBest();
@@ -183,14 +174,9 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     var completeEvolve = function ($scope) {
 
-    	console.log("complete evolve");
-    	console.log("evolving", update);
-
     	running(false, $scope);
 
     	getBest(function () {
-
-    		// u.toggle("hide", "evolve", {fade:600, delay:300});
 
             running(false, $scope);
             $("#breakfeedback").hide();
@@ -215,10 +201,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
                 if (self.name == "trash") u.toggle("enable", "restart", {fade:600});
                 if (self.name == "trash") u.toggle("enable", "step", {fade:600});
                 
-
-                // u.toggle("show", "run", {fade:600});
-
-
                 simulator.setup(function () {
 
                     simulator.refresh(); 
@@ -276,8 +258,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     var resetgen = function (complete) {
 
-    	console.log("reset gen");
-
         $input.resetInput();
 
         var input = $input.getInput(false);
@@ -299,10 +279,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
     var run = function ($scope) {
 
     	evolving(true, $scope);
-
-
-		// console.log("step progress get input")
-
 
 		input = $input.getInput();
 
@@ -340,8 +316,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
         api.run(function (res) {
 
-            console.log("Run algorithm success", res);
-
             runEvolveComplete($scope);
         })
 
@@ -361,8 +335,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         running(false, $scope);
         $("#breakfeedback").show();
 
-        // console.log("set input hard stop");
-
         u.toggle("hide", "evolving");
 
         $input.setInput({
@@ -381,8 +353,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         // ##
 
         api.hardStop(function (res) {
-
-            console.log("Hard stop algorithm success", res);
 
             completeEvolve($scope);
         })

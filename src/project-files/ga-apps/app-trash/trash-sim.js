@@ -158,7 +158,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var setup = function (complete) {
 
-        console.log("sim setup");
+        // console.log("sim setup");
 
         totalActions = $input.getInput().programInput.totalSteps;
         
@@ -192,7 +192,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         api.resetEnvironment(function (res) {
 
-            console.log("Reset environment success", res);
+            // console.log("Reset environment success", res);
         });
 
         g.waitForElem({elems:man}, () => {
@@ -205,7 +205,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var refresh = function () {
 
-        events.dispatch("refreshenv");
+        // events.dispatch("refreshenv");
         reset();
     }
 
@@ -227,7 +227,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var play = function (session, _colors) {
 
-        console.log("play");
+        // console.log("play");
 
         colors = _colors;
 

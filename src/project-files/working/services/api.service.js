@@ -42,8 +42,6 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     	})
     	.then(function (res) {
 
-            // console.log("stepdata raw response", res);
-
             if (typeof callback === "function") callback(res);
 
         }, function (err) {
@@ -78,7 +76,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var setInput = function (resend, callback) {
 
        
-        console.log("setInput http call get input or resendInput");
+        // console.log("setInput http call get input or resendInput");
 
     	$http({
     		method:"POST",
@@ -122,7 +120,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
    	var initialize = function (callback) {
 
     
-        console.log("initialize http call get input");
+        // console.log("initialize http call get input");
 
         $http({
             method:"POST",
@@ -145,7 +143,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var run = function (callback) {
 
 
-        console.log("run call input", $input.getInput());
+        // console.log("run call input", $input.getInput());
 
     	$http({
     		method:"POST",
@@ -197,7 +195,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var refreshEnvironment = function (callback) {
 
 
-        console.log("refresh environment call get input");
+        // console.log("refresh environment call get input");
 
         $http({
             method:"POST",
@@ -206,7 +204,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
         })
         .then(function (res) {
 
-            console.log("refresh response", res.data);
+            // console.log("refresh response", res.data);
 
             if (typeof callback === "function") callback(res);
 
@@ -302,7 +300,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var hardStop = function (callback) {
 
 
-        console.log("hard stop call get input");
+        // console.log("hard stop call get input");
 
     	$http({
     		method:"POST",
