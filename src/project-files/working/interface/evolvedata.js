@@ -10,12 +10,13 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 
 
 			var shared = window.shared;
+			var g = shared.utility_service;
 			var react = shared.react_service;
 
 
 			$scope.getContentUrl = function () {
 
-				return "assets/views/" + u.getInterface() + "/common/interface/evolvedata.html";
+				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/evolvedata.html";
 			}
 
 			

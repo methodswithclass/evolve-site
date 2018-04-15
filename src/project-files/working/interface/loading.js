@@ -8,26 +8,18 @@ app.directive("loading", ['loading.service', 'utility', function (loading, u) {
 		link:function ($scope, element, attr) {
 
 
-			
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+
 
 			$scope.getContentUrl = function () {
 
-				var url = "assets/views/" + u.getInterface() + "/common/interface/loading.html";
+				var url = "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/loading.html";
 
 				return url;
 			}
 
-
-
-
-			// var setMessage = function () {
-
-			// 	// console.log("set message", message);
-
-		 //        $scope.loadmessage = loading.getMessage();
-
-		 //        $scope.$apply();
-		 //    }
 
     	}
 
