@@ -118,9 +118,7 @@ gulp.task('scripts', ['vendor'], function() {
 gulp.task("vendor", function () {
 
 	var bowerSrc = gulp.src("./bower.json")
-		.pipe(mainBowerFiles({
-
-		}))
+		.pipe(mainBowerFiles({base:"./bower_components"}))
 		.pipe(filter("**/*.js"))
 		.pipe(concat("vendor.js"));
 
