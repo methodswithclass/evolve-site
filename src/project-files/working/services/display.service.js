@@ -272,7 +272,7 @@ app.factory("display.service", ["utility", function (u) {
 				zeroLeft = 0;
 				controlWidth = cntrlWidth + cntrlBuffer;
 
-				$control.css({width:cntrlWidth + cntrlBuffer + "px", height:(cntrlWidth + cntrlBuffer)*controls.length + "px", top:zeroLeft - controlWidth - 50 + "px"});
+				$control.css({width:cntrlWidth + cntrlBuffer + "px", height:(cntrlWidth + cntrlBuffer)*controls.length + "px", left:zeroLeft - controlWidth - 50 + "px"});
 				$control.removeClass("hcenter").addClass("vcenter");
 			}
 
@@ -327,8 +327,8 @@ app.factory("display.service", ["utility", function (u) {
 			var controlWidth;
 			var arenaWidth;
 
-			// orientation = automatic();
-			orientation = wantHorizontal();
+			orientation = automatic();
+			// orientation = wantHorizontal();
 			// orientation = wantVertical();
 
 			if (g.isMobile()) {
