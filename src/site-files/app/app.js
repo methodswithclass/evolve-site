@@ -11,7 +11,7 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 	var g = shared.utility_service;
 
 
-	// g.forceMobile();
+	g.forceMobile();
 
 	
 	$locationProvider.html5Mode(true);
@@ -28,19 +28,6 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 }])
 
 .run(['states', 'config.service', "utility", function (states, config, u) {
-
-
-	var inter = u.getViewTypes();
-
-
-	if (u.getInterface() == inter.object.one) {
-
-		$("#body").removeClass("scroll-Y-white-narrow").addClass("scroll-Y-dark-narrow");
-	}
-	else {
-		$("#body").removeClass("scroll-Y-dark-narrow").addClass("scroll-Y-white-narrow");
-	}
-
 
 
 	states.go("trash#demo")

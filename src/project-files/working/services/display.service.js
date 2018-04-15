@@ -265,30 +265,22 @@ app.factory("display.service", ["utility", function (u) {
 
 			if (orientation == orients.hor) {	
 
-				zeroLeft = $arena.position().left;
-				zeroTop = $arena.position().top + $arena.height();
+
+				zeroTop = $arena.height();
 				arenaWidth = $arena.width();
 				controlWidth = (cntrlWidth + cntrlBuffer)*controls.length;
 
 
-				if (arenaWidth > controlWidth) {
-
-					zeroLeft = $arena.position().left + (arenaWidth - controlWidth)/2;
-				}
-				else {
-					zeroLeft = $arena.position().left - (controlWidth - arenaWidth)/2;
-				}
-
-				$control.css({width:controlWidth + "px", height:cntrlWidth + cntrlBuffer + "px", left:zeroLeft + "px", top:zeroTop  + 50 + "px"});
-				$control.removeClass("vcenter");
+				$control.css({width:controlWidth + "px", height:cntrlWidth + cntrlBuffer + "px", top:zeroTop + 50 + "px"});
+				$control.removeClass("vcenter").addClass("hcenter");
 			}
 			else {
 
 				zeroLeft = 0;
-				zeroTop = g.isMobile() ? 0 : $arena.position().top;
+				controlWidth = cntrlWidth + cntrlBuffer;
 
-				$control.css({width:cntrlWidth + cntrlBuffer + "px", height:(cntrlWidth + cntrlBuffer)*controls.length + "px"});
-				// $control.addClass("vcenter");
+				$control.css({width:cntrlWidth + cntrlBuffer + "px", height:(cntrlWidth + cntrlBuffer)*controls.length + "px", top:zeroLeft - controlWidth - 50 + "px"});
+				$control.removeClass("hcenter").addClass("vcenter");
 			}
 
 		})
@@ -314,13 +306,11 @@ app.factory("display.service", ["utility", function (u) {
 			if (orientation == orients.hor) {
 
 				$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px", left:index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2 + "px"});
-				// $(value.selector).addClass("vcenter");
 
 			}
 			else {
 
 				$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px", top:index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2 + "px"});
-				// $(value.selector).addClass("hcenter");
 
 			}
 
