@@ -429,7 +429,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             if ($(inputs[i].input).is(":focus")) {
                 return true;
             }
-            
+
         }
                
         return false;
@@ -444,7 +444,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     var animateToggle = function (open_up) {
 
-        controls[0].tool.animate({opacity:0}, 200);
+        $(controls[0].tool).animate({opacity:0}, 200);
         $("#settingstoggle").animate({
             
             right:
