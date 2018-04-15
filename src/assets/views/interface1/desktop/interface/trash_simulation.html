@@ -4,7 +4,7 @@
 
 
 
-<div class="absolute width80 hcenter opacity0" id="stagetoggle">
+<div class="absolute width90 height hcenter opacity0" id="stagetoggle">
 
 	<div class="absolute width height-100 hcenter" id="stagetitle">
 		<div class="absolute width height80">
@@ -22,7 +22,7 @@
 	</div>
 
 
-	<div class="absolute width30 vcenter left45" id="programConfig">
+	<!-- <div class="absolute width30 height60 vcenter left45" id="programConfig">
 
 
 		<div class="absolute width80 height80 center">
@@ -112,14 +112,13 @@
 
 		</div>
 
-	</div>
-
+	</div> -->
 
 
 	<div class="absolute width height margin-v-50 vcenter" id="stageInner">
 
 
-		<div class="absolute width-200 height-200 vcenter right0" id="programSimulation_data-outer">
+		<div class="absolute width-200 height-300 vcenter right0" id="programSimulation_data-outer">
 			<trashsimdata></trashsimdata>
 		</div>
 
@@ -139,5 +138,112 @@
 		</div>
 
 	</div>
+
+
+
+	<div class="relative width50 height-200 left30 font-15" id="programConfig">
+
+
+		<div class="absolute width80 height80 center">
+
+			<div class="absolute width50 height40 vcenter" id="programInput_input">
+
+
+				<div class="relative width height-100 margin-v-50 border-bottom border-top">
+
+
+					<div class="absolute width50 height border-right" id="goalinputinner">
+
+						<div class="absolute width80 height80 center font-20">
+							<div class="absolute width vcenter">
+								grid size
+							</div>
+						</div>
+					</div>
+					<div class="absolute width50 height right0">
+
+						<div class="absolute width60 height60 center">
+							<select class="absolute width height transparent-back pointer nooutline font-30" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="main.programInput.grid" ng-change="main.programInputChange()">
+								<option value="{{item}}" ng-repeat="item in grids">{{item.size}}</option> 
+							</select>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="relative width height-100 margin-v-50 border-bottom border-top">
+
+
+					<div class="absolute width50 height border-right" id="goalinputinner">
+
+						<div class="absolute width80 height80 center font-20">
+							<div class="absolute width vcenter">
+								trash % <br> (5-90)
+							</div>
+						</div>
+					</div>
+					<div class="absolute width50 height right0">
+
+						<div class="absolute width60 height60 center">
+							<text-input mw-class="absolute width height transparent-back pointer nooutline font-30" mw-id="trashRateInput" mw-model="main.programInput.trashPercent" mw-keyup="main.programInputChange" validation="integer"></text-input>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+			<div class="absolute width50 right0 vcenter" id="programLegend">
+
+				<div class="absolute width">
+
+					<div class="relative width margin-bottom-50" id="legend_robot">
+
+						<div class="relative width">
+							<div class="relative width80 height-30 margin-v-20 hcenter">
+								<div class="absolute center text-center font-30">
+									robot
+								</div>
+							</div>
+							<div class="relative width-70 height-70 black-back font-30 white shadow hcenter">
+								<div class="absolute center">
+									<i class="fas fa-user"></i>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+					<div class="relative width" id="legend_trash">
+
+
+						<div class="relative width">
+							<div class="relative width80 height-30 margin-v-20 hcenter">
+								<div class="absolute center text-center font-30">
+									trash
+								</div>
+							</div>
+							<div class="relative width-40 height-40 font-20 red-back white border hcenter pointer">
+								<div class="absolute center">
+									<i class="fas fa-trash-alt"></i>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
 
 </div>

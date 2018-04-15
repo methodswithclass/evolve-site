@@ -1,7 +1,7 @@
 stateModule.provider("runtime.state", function ($stateProvider) {
   // runtime dependencies for the service can be injected here, at the provider.$get() function.
 
-    var g = shared.utility_service;
+    var g = window.shared.utility_service;
 
     var _forceMobile = false;
     var inter;
@@ -21,7 +21,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var baseViewUrl = function (responsive) {
 
-        return "assets/views/" + inter + "/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
+        return "assets/views/" + inter + "/" + (responsive ? ((_forceMobile || g.isMobile()) ? "mobile" : "desktop") : "common");
     }
 
 
@@ -125,12 +125,8 @@ stateModule.provider("runtime.state", function ($stateProvider) {
             return p.name == state.name;
         })
 
-        if ($state.name == "admin") {
-            $state.templateUrl = "assets/views/" + stateUrl.url;
-        }
-        else {
-            $state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
-        }
+        
+        $state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
 
         return $state; 
     }

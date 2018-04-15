@@ -27,7 +27,7 @@ app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states
 
 			$scope.getContentUrl = function () {
 
-				return "assets/views/" + u.getInterface() + "/common/interface/evolving.html";
+				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/evolving.html";
 			}
 
 

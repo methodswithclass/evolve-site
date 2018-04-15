@@ -84,7 +84,9 @@ app.factory("display.service", ["utility", function (u) {
 		
 		if (g.isMobile()) {
 
-			$stage.css({top:$(window).height() + 100 + "px", height:"50%"});
+			// $stage.css({top:$(window).height() + 100 + "px", height:"50%"});
+
+			// $stage.css({height:"50%"});
 
 			g.waitForElem({elems:"#simdatatoggle"}, function () {
 
@@ -93,10 +95,11 @@ app.factory("display.service", ["utility", function (u) {
 		}
 		else {
 
-			$stage.css({top:$(window).height() + 100  + "px", height:"80%"})
+			// $stage.css({top:$(window).height() + 100  + "px", height:"80%"})
+			// $stage.css({height:"80%"});
+
 			$("#stageInner").css({top:$("#stagetitle").height() + 100 + "px"});
-			$arena.css({left:"80px"});
-			$("#programConfig").css({height:"80%"});
+			// $arena.css({left:"80px"});
 		}
 	});
 
@@ -353,7 +356,7 @@ app.factory("display.service", ["utility", function (u) {
 			else {
 				
 				cntrlWidth = 30;
-				$(runToggle.selector).css({top:100 + "px"});
+				// $(runToggle.selector).css({top:100 + "px"});
 			}
 
 

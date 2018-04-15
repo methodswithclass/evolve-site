@@ -285,7 +285,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         },
         closed:{
             top:"20px",
-            opacity:0.7,
+            opacity:1,
             zIndex:10,
             class:kindStatus.closed
         }
@@ -341,7 +341,8 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         return {
             main:$("#" + kind.value + "-tab"),
             cover:$("#settings-" + kind.value + "-cover"),
-            settings:$("#settings-" + kind.value)
+            settings:$("#settings-" + kind.value),
+            closedSign:$("settings-" + kind.value + "-inactive-cover")
         }
     }
 
@@ -361,6 +362,24 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         tabElem(kind).settings
         .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
         .addClass(getTabParam(kind, "class"));
+
+        if (kind.value == kinds[0].value) {
+
+            // tabElem(kind).closedSign.css({
+            //     opacity:kind.status ? getTabParam(kind, "opacity") : 0
+            // })
+
+        }
+        else if (kind.value == kinds[1].value) {
+
+            // tabElem(kind).closedSign.removeClass("opacity80");
+
+            // console.log("\n\ntoggle css", kind.status);
+
+            // tabElem(kind).closedSign.css({
+            //     opacity:kind.status ? 0 : 1
+            // })
+        }
 
     }
 

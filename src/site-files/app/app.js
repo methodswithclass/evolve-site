@@ -6,9 +6,14 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 .config(['$locationProvider', 'runtime.stateProvider', function ($locationProvider, runtimeProvider) {
 
-	
-	runtimeProvider.mobile(forceMobile());
 
+	var shared = window.shared;
+	var g = shared.utility_service;
+
+
+	// g.forceMobile();
+
+	
 	$locationProvider.html5Mode(true);
 
 	runtimeProvider.initInterface("interface1");
@@ -23,13 +28,6 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 }])
 
 .run(['states', 'config.service', "utility", function (states, config, u) {
-
-
-	var shared = window.shared;
-	var g = shared.utility_service;
-
-
-	g.forceMobile();
 
 
 	var inter = u.getViewTypes();
