@@ -579,6 +579,9 @@ app.factory("display.service", ["utility", function (u) {
             u.toggle("hide", "settings");
 
 
+			u.toggle("hide", "title");
+
+
             u.toggle("disable", "refresh");
             u.toggle("disable", "restart");
             u.toggle("disable", "step");
@@ -598,6 +601,9 @@ app.factory("display.service", ["utility", function (u) {
 
             u.toggle("show", "run");
             u.toggle("show", "controls");
+
+
+            u.toggle("show", "title");
             
 
             u.toggle("enable", "refresh", {fade:params.fade, delay:params.delay});

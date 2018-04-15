@@ -11,7 +11,7 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 	var g = shared.utility_service;
 
 
-	g.forceMobile();
+	// g.forceMobile();
 
 	
 	$locationProvider.html5Mode(true);
