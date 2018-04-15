@@ -2,11 +2,11 @@ app.factory("display.service", ["utility", function (u) {
 
 
 
-	var shared = window.shared;
-	var g = shared.utility_service;
-	var send = shared.send_service;
-	var react = shared.react_service;
-	var events = shared.events_service;
+	var s = window.shared;
+	var g = s.utility_service;
+	var send = s.send_service;
+	var react = s.react_service;
+	var events = s.events_service;
 
 
 	var inter = u.getViewTypes();
