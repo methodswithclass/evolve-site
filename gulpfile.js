@@ -9,7 +9,7 @@ del = require('del'),
 inject = require('gulp-inject'),
 filter = require("gulp-filter"),
 merge = require("merge-stream"),
-mainBowerFiles = require("main-bower-files"),
+mainBowerFiles = require("gulp-main-bower-files"),
 nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
 
@@ -117,7 +117,10 @@ gulp.task('scripts', ['vendor'], function() {
 
 gulp.task("vendor", function () {
 
-	var bowerSrc = gulp.src(mainBowerFiles(), {base: __dirname + "/bower_components"})
+	var bowerSrc = gulp.src("./bower.json")
+		.pipe(mainBowerFiles({
+
+		}))
 		.pipe(filter("**/*.js"))
 		.pipe(concat("vendor.js"));
 
@@ -134,18 +137,21 @@ gulp.task("vendor", function () {
 		.pipe(gulp.dest("dist/assets/js"));
 	}
 
-	var css = gulp.src(mainBowerFiles())
-	.pipe(filter("**/*.css"))
-	.pipe(concat("vendor.css"))
-	.pipe(gulp.dest("dist/assets/css"));
+	// var css = gulp.src("./bower.json")
+	// .pipe(mainBowerFiles())
+	// .pipe(filter("**/*.css"))
+	// .pipe(concat("vendor.css"))
+	// .pipe(gulp.dest("dist/assets/css"));
 
 
-	if (minify) {
-		return merge(js, jsMin, css);
-	}
-	else {
-		return merge(js, css);
-	}
+	// if (minify) {
+	// 	return merge(js, jsMin, css);
+	// }
+	// else {
+	// 	return merge(js, css);
+	// }
+
+	return js;
 
 });
 
