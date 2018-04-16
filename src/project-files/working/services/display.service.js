@@ -90,7 +90,7 @@ app.factory("display.service", ["utility", function (u) {
 				$simdata.css({top:$arena.position().top + $arena.height() + 200 + "px"});
 			})
 
-			$arena.addClass("hcenter");
+			$arena.addClass("center");
 		}
 		else {
 
@@ -252,8 +252,9 @@ app.factory("display.service", ["utility", function (u) {
 		var $control = options.$control;
 		var $arena = options.$arena;
 		var arenaWidth = options.arenaWidth;
-		var controlWidth = options.controlWidth;
-
+		var controlWidth = cntrlWidth + cntrlBuffer;
+		var controlLength = (cntrlWidth + cntrlBuffer)*controls.length
+		var notch;
 
 		g.waitForElem({elems:"#arena"}, () => {
 
@@ -262,19 +263,16 @@ app.factory("display.service", ["utility", function (u) {
 
 
 				zeroTop = $arena.height();
-				arenaWidth = $arena.width();
-				controlWidth = (cntrlWidth + cntrlBuffer)*controls.length;
 
 
-				$control.css({width:controlWidth + "px", height:cntrlWidth + cntrlBuffer + "px", top:zeroTop + 50 + "px"});
+				$control.css({width:controlLength + "px", height:controlWidth + "px", top:zeroTop + 50 + "px"});
 				$control.removeClass("vcenter").addClass("hcenter");
 			}
 			else {
 
 				zeroLeft = 0;
-				controlWidth = cntrlWidth + cntrlBuffer;
 
-				$control.css({width:cntrlWidth + cntrlBuffer + "px", height:(cntrlWidth + cntrlBuffer)*controls.length + "px", left:zeroLeft - controlWidth - 50 + "px"});
+				$control.css({width:controlWidth + "px", height:controlLength + "px", left:zeroLeft - controlWidth - 50 + "px"});
 				$control.removeClass("hcenter").addClass("vcenter");
 			}
 
@@ -289,24 +287,24 @@ app.factory("display.service", ["utility", function (u) {
 			var itemPercent = cntrlWidth/controls.length;
 			var center = 50 - itemPercent/2;
 
-			var positions = [
-			center-itemPercent-itemPercent/2,
-			center-itemPercent,
-			center,
-			center+itemPercent,
-			center+itemPercent + itemPercent/2
-			]
+			// var positions = [
+			// center-itemPercent-itemPercent/2,
+			// center-itemPercent,
+			// center,
+			// center+itemPercent,
+			// center+itemPercent + itemPercent/2
+			// ]
 
 
+			$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px"});
+
+			notch = index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2;
+			
 			if (orientation == orients.hor) {
-
-				$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px", left:index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2 + "px"});
-
+				$(value.selector).css({left:notch + "px"});
 			}
 			else {
-
-				$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px", top:index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2 + "px"});
-
+				$(value.selector).css({top:notch + "px"});
 			}
 
 		})
@@ -443,14 +441,14 @@ app.factory("display.service", ["utility", function (u) {
 
 		interface1:function (name) {
 
-			winW = $(window).width();
-			winH = $(window).height();
+			// winW = $(window).width();
+			// winH = $(window).height();
 
-			$evolve = $("#evolvedatatoggle");
-			$hud = $("#hudtoggle");
-			$stage = $("#stagetoggle");
-			$arena = $("#arena");
-			$run = $("#runtoggle");
+			// $evolve = $("#evolvedatatoggle");
+			// $hud = $("#hudtoggle");
+			// $stage = $("#stagetoggle");
+			// $arena = $("#arena");
+			// $run = $("#runtoggle");
 
 
 		},
