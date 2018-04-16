@@ -25,6 +25,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 
 			var $stage = $("#arena");
+			
 
 			var col = [];
 			var arena = [];

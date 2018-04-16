@@ -89,6 +89,8 @@ app.factory("display.service", ["utility", function (u) {
 
 				$simdata.css({top:$arena.position().top + $arena.height() + 200 + "px"});
 			})
+
+			$arena.addClass("hcenter");
 		}
 		else {
 

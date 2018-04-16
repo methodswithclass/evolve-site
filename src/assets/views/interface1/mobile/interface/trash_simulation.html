@@ -6,7 +6,7 @@
 	<div class="relative width80 height hcenter opacity0" id="stagetoggle">
 
 
-		<div class="relative width height-100 hcenter" id="stagetitle">
+		<div class="relative width height-100 hcenter margin-v-100" id="stagetitle">
 			<div class="absolute width height80">
 				<div class="relative width height50 text-center font-40">
 					<div class="absolute center">
@@ -23,20 +23,20 @@
 
 
 
-		<div class="relative width60 height60 hcenter margin-bottom-100 font-20" id="programConfig">
+		<div class="relative width80 hcenter margin-v-100" id="programConfig">
 
 
-			<div class="absolute width">
+			<div class="relative width">
 
-				<div class="absolute width50" id="programInput_input">
+				<div class="relative inline width70 font-40" id="programInput_input">
 
 
-					<div class="relative width height-100 margin-v-50 border-bottom border-top">
+					<div class="relative width height-200 margin-v-100 border-bottom border-top">
 
 
 						<div class="absolute width50 height border-right" id="goalinputinner">
 
-							<div class="absolute width60 height60 center">
+							<div class="absolute width80 height80 center">
 								<div class="absolute width vcenter">
 									grid size
 								</div>
@@ -45,7 +45,7 @@
 						<div class="absolute width50 height right0">
 
 							<div class="absolute width60 height60 center">
-								<select class="absolute width height transparent-back pointer nooutline font-40" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="main.programInput.grid" ng-change="main.programInputChange()">
+								<select class="absolute width height transparent-back pointer nooutline font-50" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="main.programInput.grid" ng-change="main.programInputChange()">
 									<option value="{{item}}" ng-repeat="item in grids">{{item.size}}</option> 
 								</select>
 							</div>
@@ -54,21 +54,21 @@
 
 					</div>
 
-					<div class="relative width height-100 margin-v-50 border-bottom border-top">
+					<div class="relative width height-200 margin-v-100 border-bottom border-top">
 
 
 						<div class="absolute width50 height border-right" id="goalinputinner">
 
-							<div class="absolute width60 height60 center">
+							<div class="absolute width80 height80 center">
 								<div class="absolute width vcenter">
-									trash % <br> (1-90)
+									trash % <br> (5-90)
 								</div>
 							</div>
 						</div>
 						<div class="absolute width50 height right0">
 
 							<div class="absolute width60 height60 center">
-								<text-input mw-class="absolute width height transparent-back pointer nooutline font-40" mw-id="trashRateInput" mw-model="main.programInput.trashPercent" mw-keyup="main.programInputChange" validation="integer"></text-input>
+								<text-input mw-class="absolute width height transparent-back pointer nooutline font-50" mw-id="trashRateInput" mw-model="main.programInput.trashPercent" mw-keyup="main.programInputChange" validation="integer"></text-input>
 							</div>
 
 						</div>
@@ -76,9 +76,9 @@
 					</div>
 
 				</div>
-				<div class="absolute width50 right0 font-30" id="programLegend">
+				<div class="relative inline width25 vcenter margin-left-50 font-30 margin-v-100" id="programLegend">
 
-					<div class="absolute width">
+					<div class="relative width">
 
 						<div class="relative width margin-bottom-50" id="legend_robot">
 
@@ -133,10 +133,10 @@
 		</div>
 
 
-		<div class="relative width70 height60 hcenter" id="stageInner">
+		<div class="relative width70 height60 hcenter margin-v-100" id="stageInner">
 			
 
-			<div class="absolute width height hcenter" id="arena">
+			<div class="relative width height" id="arena">
 
 				
 				<arena></arena>
