@@ -80,21 +80,20 @@ app.factory("display.service", ["utility", function (u) {
 		$stage = $("#stagetoggle");
 		$hud = $("#hudtoggle");
 		$evolvedata = $("#evolvedatatoggle");
-		$simdata = $("#simdatatoggle");
+		$simdata = $("#simdataParent");
 		$arena = $("#arena");
 		
 		if (g.isMobile()) {
 
-			g.waitForElem({elems:"#simdatatoggle"}, function () {
+			g.waitForElem({elems:"#simdataParent"}, function () {
 
-				$simdata.css({top:$arena.position().top + $arena.height() + 200 + "px"});
+				// $simdata.css({top:$arena.offset().top + "px"});
+				$simdata.css({top:$arena.offset().top + $arena.height() - $("#simParent").offset().top + 500 + "px"});
 			})
-
-			$arena.addClass("center");
 		}
 		else {
 
-			$("#stageInner").css({top:$("#stagetitle").height() + 100 + "px"});
+			$("#arena").css({top:$("#stagetitle").height() + 100 + "px"});
 		}
 	});
 
@@ -299,7 +298,7 @@ app.factory("display.service", ["utility", function (u) {
 			$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px"});
 
 			notch = index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2;
-			
+
 			if (orientation == orients.hor) {
 				$(value.selector).css({left:notch + "px"});
 			}
@@ -327,17 +326,17 @@ app.factory("display.service", ["utility", function (u) {
 			var controlWidth;
 			var arenaWidth;
 
-			orientation = automatic();
+			// orientation = automatic();
 			// orientation = wantHorizontal();
-			// orientation = wantVertical();
+			orientation = wantVertical();
 
 			if (g.isMobile()) {
 				
-				cntrlWidth = 70;
+				cntrlWidth = 150;
 			}
 			else {
 				
-				cntrlWidth = 30;
+				cntrlWidth = 50;
 			}
 
 

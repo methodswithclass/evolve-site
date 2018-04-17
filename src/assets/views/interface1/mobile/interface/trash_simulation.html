@@ -23,7 +23,7 @@
 
 
 
-		<div class="relative width80 hcenter margin-v-100" id="programConfig">
+		<div class="relative width80 hcenter margin-bottom-200" id="programConfig">
 
 
 			<div class="relative width">
@@ -128,20 +128,21 @@
 		</div>
 
 
-		<div class="absolute width60 height-500 hcenter" id="programSimulation_data-outer">
-			<trashsimdata></trashsimdata>
-		</div>
+
+		<div class="relative width80 height hcenter" id="simParent">
+
+			<div class="absolute width60 height-200 margin-bottom-100 hcenter" id="simdataParent">
+				<trashsimdata></trashsimdata>
+			</div>
 
 
-		<div class="relative width70 height60 hcenter margin-v-100" id="stageInner">
-			
-
-			<div class="relative width height" id="arena">
+			<div class="relative width80 height60 hcenter" id="arena">
 
 				
 				<arena></arena>
 
 				<trashman></trashman>
+			
 
 				<div class="absolute" id="controlsParent">
 					<controls refresh="main.refresh" reset="main.reset" step="main.step" play="main.play" stop="main.stop"></controls>
@@ -149,11 +150,7 @@
 
 			</div>
 
-
 		</div>
-
-
-
 
 
 	</div>
