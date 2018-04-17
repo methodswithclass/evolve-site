@@ -332,7 +332,7 @@ app.factory("display.service", ["utility", function (u) {
 
 			if (g.isMobile()) {
 				
-				cntrlWidth = 150;
+				cntrlWidth = 100;
 			}
 			else {
 				
