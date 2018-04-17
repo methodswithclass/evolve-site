@@ -163,7 +163,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				ed = u.correctForAspect({
 					id:"arena",
-					factor:g.isMobile() ? 0.4 : 0.25, 
+					factor:g.isMobile() ? 0.6 : 0.25, 
 					aspect:1, 
 					width:$(window).width(), 
 					height:$(window).height()
