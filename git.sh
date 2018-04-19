@@ -50,6 +50,8 @@ checkPush() {
 commitAndPush() {
 
 
+	echo "commit and push"
+
 	if [[ -n $branch && -n $message && $operation == $constName1 ]]; 
 	then
 
@@ -63,6 +65,8 @@ commitAndPush() {
 
 pushOnly() {
 
+
+	echo "push only"
 
 	if [[ $operation == $constName2 ]];
 	then
