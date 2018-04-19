@@ -88,12 +88,12 @@ app.factory("display.service", ["utility", function (u) {
 			g.waitForElem({elems:"#simdataParent"}, function () {
 
 				// $simdata.css({top:$arena.offset().top + "px"});
-				$simdata.css({top:$arena.offset().top + $arena.height() - $("#simParent").offset().top + 500 + "px"});
+				$simdata.css({top:$arena.offset().top + $arena.height() - $("#simParent").offset().top + 200 + "px"});
 			})
 		}
 		else {
 
-			// $("#arena").css({top:$("#stagetitle").height() + 100 + "px"});
+
 		}
 	});
 

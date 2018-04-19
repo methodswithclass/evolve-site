@@ -134,9 +134,9 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
 
             self.programInput.trashPercent = (self.programInput.trashPercent == "") ?  "" 
-                                            : (self.programInput.trashPercent < 5 ? 5 : self.programInput.trashPercent)
+                                            : (self.programInput.trashPercent < 1 ? 1 : self.programInput.trashPercent)
             self.programInput.trashRate = (self.programInput.trashRate == "" ) ? "" 
-                                           :(self.programInput.trashRate < 0.05 ? 0.05 : self.programInput.trashRate)
+                                           :(self.programInput.trashRate < 0.01 ? 0.01 : self.programInput.trashRate)
 
 
             var _temp = {
