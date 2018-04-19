@@ -547,13 +547,11 @@ app.factory("display.service", ["utility", function (u) {
 			u.toggle("hide", "break");
             u.toggle("hide", "evolve");
             u.toggle("hide", "hud");
-
             u.toggle("hide", "run");
-
             u.toggle("hide", "settings");
-
-
 			u.toggle("hide", "title");
+       	 	u.toggle("hide", "breakfeedback");
+
 
 
             u.toggle("disable", "refresh");
@@ -567,16 +565,11 @@ app.factory("display.service", ["utility", function (u) {
 
 			                    
             u.toggle("show", "hud", {fade:params.fade, delay:params.delay});
-
             u.toggle("show", "stage", {fade:params.fade, delay:params.delay});
             u.toggle("show", "evolvedata", {fade:params.fade, delay:params.delay});
-
             u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
-
             u.toggle("show", "run");
             u.toggle("show", "controls");
-
-
             u.toggle("show", "title");
             
 

@@ -145,7 +145,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         }
 
 
-        display.updateProgresBar(percent);
+        display.updateProgressBar(percent);
 
     }
 
@@ -179,36 +179,35 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
     	getBest(function () {
 
             running(false, $scope);
-            $("#breakfeedback").hide();
 
-
+            u.toggle("show", "run");
             u.toggle("show", "settings", {fade:600});
+            u.toggle("show", "hud", {fade:600});
+            u.toggle("hide", "breakfeedback", {delay:1000});
+            u.toggle("enable", "refresh", {fade:600});
+            u.toggle("enable", "play", {fade:600});
 
             if (self.name == "feedback") {
                 
                 u.toggle("disable", "stop", {fade:600});
                 u.toggle("enable", "play", {fade:600});
                 u.toggle("enable", "refresh", {fade:600});
-
             }
             else {
 
 
-                u.toggle("show", "hud", {fade:600});
+                if (self.name == "trash")  {
 
-                u.toggle("enable", "refresh", {fade:600});
-                u.toggle("enable", "play", {fade:600});
-                if (self.name == "trash") u.toggle("enable", "restart", {fade:600});
-                if (self.name == "trash") u.toggle("enable", "step", {fade:600});
-                
+                    u.toggle("enable", "restart", {fade:600});
+                    u.toggle("enable", "step", {fade:600});
+                }
+
                 simulator.setup(function () {
 
                     simulator.refresh(); 
                 });
-
             }
-
-
+            
             setTimeout(function () {
                 $("#evolvedata").animate({color:"#000"}, 600);
             }, 300);
@@ -333,9 +332,9 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
 
         running(false, $scope);
-        $("#breakfeedback").show();
-
-        u.toggle("hide", "evolving");
+        
+        u.toggle("show", "breakfeedback");
+        u.toggle("hide", "evolve", {delay:600});
 
         $input.setInput({
             gens:$stepdata.gen
