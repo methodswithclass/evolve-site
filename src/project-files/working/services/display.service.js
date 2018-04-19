@@ -93,7 +93,7 @@ app.factory("display.service", ["utility", function (u) {
 		}
 		else {
 
-			$("#arena").css({top:$("#stagetitle").height() + 100 + "px"});
+			// $("#arena").css({top:$("#stagetitle").height() + 100 + "px"});
 		}
 	});
 
