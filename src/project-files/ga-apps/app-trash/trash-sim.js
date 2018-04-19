@@ -205,7 +205,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var refresh = function () {
 
-        // events.dispatch("refreshenv");
+        events.dispatch("refreshenv");
         reset();
     }
 

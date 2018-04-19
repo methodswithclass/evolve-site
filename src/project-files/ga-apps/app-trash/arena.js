@@ -24,7 +24,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			var ed;
 
 
-			var $stage = $("#arena");
+			var $stage = "#arena";
 			
 
 			var col = [];
@@ -169,7 +169,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 					height:$(window).height()
 				})
 
-				$stage.css({width:ed.width, height:ed.height});
+				$($stage).css({width:ed.width, height:ed.height});
 			    
 			}
 
@@ -186,10 +186,13 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				g.waitForElem({elems:$stage}, function (options) {
 
+					// console.log("stage exists")
 
 					setStageSize();
 
 					api.refreshEnvironment(function (res) {
+
+						// console.log("refreshEnvironment success");
 
 			            environment = res.data.env;
 
