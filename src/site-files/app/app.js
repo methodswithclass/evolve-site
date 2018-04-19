@@ -30,7 +30,8 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 .run(['states', 'config.service', "utility", function (states, config, u) {
 
 
-	states.go("trash#demo")
+	states.go("home");
+	// states.go("trash#demo");
 }]);
 
 
