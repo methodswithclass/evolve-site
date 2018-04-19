@@ -34,7 +34,7 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 		console.log("clicked open page", $state);
 
-		states.go($state + "#demo");
+		states.go($state);
 	}
 
 	self.admin = function () {
