@@ -181,11 +181,12 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             running(false, $scope);
 
             u.toggle("show", "run");
-            u.toggle("show", "settings", {fade:600});
-            u.toggle("show", "hud", {fade:600});
+            u.toggle("show", "settings", {delay:800});
+            u.toggle("show", "hud", {delay:600});
             u.toggle("hide", "breakfeedback", {delay:1000});
-            u.toggle("enable", "refresh", {fade:600});
-            u.toggle("enable", "play", {fade:600});
+            
+            u.toggle("enable", "refresh", {delay:600});
+            u.toggle("enable", "play", {delay:600});
 
             if (self.name == "feedback") {
                 
@@ -207,7 +208,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
                     simulator.refresh(); 
                 });
             }
-            
+
             setTimeout(function () {
                 $("#evolvedata").animate({color:"#000"}, 600);
             }, 300);
@@ -334,7 +335,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         running(false, $scope);
         
         u.toggle("show", "breakfeedback");
-        u.toggle("hide", "evolve", {delay:600});
+        u.toggle("hide", "evolve", {delay:800, fade:600});
 
         $input.setInput({
             gens:$stepdata.gen
