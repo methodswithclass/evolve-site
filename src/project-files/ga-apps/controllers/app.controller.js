@@ -11,6 +11,8 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var events = shared.events_service;
 
 
+    var observable = window.reactCustom;
+
 
     self.name = u.stateName(states.current());
     $scope.name = self.name;
@@ -46,6 +48,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     initData();
 
+    var processTypes;
+    var displayParams;
+    var allParams;
+    var loadSpeeds;
+
 
     react.subscribe({
         name:"data" + self.name,
@@ -57,9 +64,18 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         }
     })
 
+    console.log("setup receiver for display params");
 
-    var processTypes;
-    var displayParams = display.getParams();
+    observable.subscribe({
+        name:"displayParams",
+        callback:function (x) {
+
+            displayParams = x.params;
+            loadSpeeds = x.loadSpeeds;
+            allParams = x.allParams;
+        }
+    })
+
 
     console.log("loading", self.name, "controller");
 

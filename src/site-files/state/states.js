@@ -24,7 +24,7 @@ stateModule.factory("states", ['$q', 'runtime.state', '$state', '$transitions', 
 
 		prevState = trans.from();
 
-		console.log("state change start, to state", trans.to());
+		console.log("state change started: to state", trans.to().name);
 
 
 		// if (u.interfaceChanged()) {

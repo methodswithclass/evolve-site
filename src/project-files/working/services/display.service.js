@@ -24,6 +24,12 @@ app.factory("display.service", ["utility", function (u) {
     	duration:100
     }
 
+    var paramsFast = {
+    	delay:0,
+    	fade:0,
+    	duration:0
+    }
+
 
     var $stage = $("#stagetoggle");
 	var $arena = $("#arena");
@@ -39,7 +45,10 @@ app.factory("display.service", ["utility", function (u) {
 
     var getParams = function () {
 
-    	return params;
+    	return {
+    		normal:params,
+    		fast:paramsFast
+    	}
     }
 
     var hasBeenBuilt = {
@@ -311,9 +320,9 @@ app.factory("display.service", ["utility", function (u) {
 	}
 
 
-	var controlsSetup = {
+	var controlsSetup = function () {
 
-		interface1:function (name) {
+		// interface1:function (name) {
 
 			$control = $("#controlsParent");
 			$elem = $("#controlstoggle");
@@ -351,28 +360,30 @@ app.factory("display.service", ["utility", function (u) {
 				$arena:$arena
 			});
 
-		},
-		interface2:function (name) {
+		// },
+		// interface2:function (name) {
 
 
-		}
+		// }
 	}
 
 
-	// console.log("\nregister event controls display\n\n");
+	// console.log("\nregister event controls \n\n");
 	events.on("load-display", "controls-trash", function () {
 
 		g.waitForElem({elems:"#arena"}, function () {
 			
 
-			controlsSetup[u.getInterface()]();
+			// controlsSetup[u.getInterface()]();
+			controlsSetup();
 		});
 
 		$(window).resize(function () {
 
 			console.log("resize");
 
-			controlsSetup[u.getInterface()]();
+			// controlsSetup[u.getInterface()]();
+			controlsSetup();
 		})
 
 		return "success";
@@ -443,6 +454,12 @@ app.factory("display.service", ["utility", function (u) {
 			// winW = $(window).width();
 			// winH = $(window).height();
 
+			
+
+
+		},
+		interface2:function () {
+
 			// $evolve = $("#evolvedatatoggle");
 			// $hud = $("#hudtoggle");
 			// $stage = $("#stagetoggle");
@@ -450,11 +467,19 @@ app.factory("display.service", ["utility", function (u) {
 			// $run = $("#runtoggle");
 
 
-		},
-		inerface2:function () {
+			// console.log("run", $run.offset().top, $run.height());
 
+			// g.waitForElem({elems:"#runtoggle"}, function () {
 
+			// 	console.log("run element", $run[0]);
 
+			// 	var runRect = $run[0].getBoundingClientRect();
+
+			// 	console.log("run", runRect.top, runRect.bottom);
+
+			// 	$evolve.css({left:$run.offset().left + "px", top:runRect.bottom + 100 + "px"});
+			// })
+			
 		}
 
 

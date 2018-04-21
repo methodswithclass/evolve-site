@@ -1,18 +1,31 @@
 stateModule.provider("runtime.state", function ($stateProvider) {
   // runtime dependencies for the service can be injected here, at the provider.$get() function.
 
-    var g = window.shared.utility_service;
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var react = shared.react_service;
+
 
     var _forceMobile = false;
     var inter;
 
     var provider = {};
 
-    var initInterface = function ($interface) {
 
-        inter = $interface;
+    react.subscribe({
+        name:"interface",
+        callback:function(x) {
 
-    }
+            inter = x;
+        }
+    })
+
+
+    // var initInterface = function ($interface) {
+
+    //     inter = $interface;
+
+    // }
 
     var mobile = function (input) {
 
@@ -160,7 +173,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     
     }];
 
-    provider.initInterface = initInterface;
+    // provider.initInterface = initInterface;
     provider.addState = addState;
     provider.stateViewUrls = stateViewUrls;
     provider.states = states;

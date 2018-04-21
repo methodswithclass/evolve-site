@@ -1,0 +1,140 @@
+
+
+
+
+
+<div class="absolute width height">
+
+
+	<div class="absolute width80 hcenter opacity0" id="stagetoggle">
+
+		<div class="absolute width height-100 hcenter" id="stagetitle">
+			<div class="absolute width height80">
+				<div class="relative width height50 text-center font-30">
+					<div class="absolute center">
+						Simulation
+					</div>
+				</div>
+				<div class="relative width height50 text-center">
+					<div class="absolute center">
+						see the results of the best individual
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="absolute width40 height60 vcenter" id="arena">
+
+			<arena></arena>
+
+			<trashman></trashman>
+
+			<div class="absolute" id="controlsParent">
+				<controls></controls>
+			</div>
+
+		</div>
+
+
+		<div class="absolute width30 vcenter left40" id="programConfig">
+
+
+			<div class="absolute width80 height80 center">
+
+				<div class="absolute width height40" id="programInput_input">
+
+					<div class="relative width60 hcenter height50">
+
+						<div class="absolute width height60 vcenter border-bottom-white white">
+
+							<div class="absolute width70 height" id="goalinputinner">
+								<div class="absolute width vcenter font-15">
+									grid size
+								</div>
+							</div>
+							<select class="absolute width30 height right0 text-right font-15 white black-back pointer nooutline" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="main.programInput.grid" ng-change="main.programInputChange()">
+								<option value="{{item}}" ng-repeat="item in grids">{{item.size}}</option> 
+							</select>
+
+						</div>
+
+					</div>
+
+					<div class="relative width60 hcenter height50">
+
+						<div class="absolute width height70 vcenter border-bottom-white">
+
+							<div class="absolute width50 height white" id="goalinputinner">
+								<div class="absolute width vcenter font-10">
+									trash % <br> (1-90)
+								</div>
+							</div>
+							<text-input mw-class="absolute width30 height right0 text-right font-15 transparent-back white nooutline" mw-id="trashRateInput" mw-model="main.programInput.trashPercent" mw-keyup="main.programInputChange" validation="integer"></text-input>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="absolute width height50 bottom0" id="programLegend">
+
+					<div class="absolute width80 height hcenter">
+
+						<div class="absolute width height40" id="legend_robot">
+
+							<div class="absolute width height60 center">
+								<div class="relative width80 height-30 hcenter white font170-rem">
+									<div class="absolute center text-center">
+										robot
+									</div>
+								</div>
+								<div class="relative width-40 height-40 white-back black font-20 hcenter">
+									<div class="absolute center">
+										<i class="fas fa-user"></i>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+
+						<div class="absolute width height40 bottom0" id="legend_trash">
+
+
+							<div class="absolute width height60 bottom0">
+								<div class="relative width80 height-30 hcenter font170-rem white">
+									<div class="absolute center text-center">
+										trash
+									</div>
+								</div>
+								<div class="relative width-30 height-30 red-back border-white white hcenter font-15 bottom0">
+									<div class="absolute center">
+										<i class="fas fa-trash-alt"></i>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+
+		<div class="absolute width30 height right0" id="programSimulation_data-outer">
+			<trashsimdata></trashsimdata>
+		</div>
+
+	</div>
+
+
+
+</div>

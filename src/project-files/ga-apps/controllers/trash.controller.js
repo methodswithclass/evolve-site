@@ -120,10 +120,6 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
             return percentToRate ? self.programInput.trashPercent/100 : self.programInput.trashRate*100;
         }
 
-        self.programInput.trashRate = self.programInput.convertTrash(true);
-        self.programInput.totalSteps = self.programInput.getTotalSteps();
-
-
         self.programInput.validate = function () {
 
 
@@ -188,9 +184,10 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
         }
 
 
+
         self.programInput.update();
 
-
+        
 
         react.subscribe({
             name:"sim." + self.name,
