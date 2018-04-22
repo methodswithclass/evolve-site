@@ -19,7 +19,7 @@ operation=$commitConst
 
 adjustArguments() {
 
-	echo "__standard__ $message $remote"
+	
 
 	if [[ $first == $standardConst ]];
 	then
