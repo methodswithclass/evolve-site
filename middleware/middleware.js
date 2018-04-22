@@ -1,7 +1,10 @@
 
 
-
-
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
+const sass = require("node-sass");
+const config = require("../config.js");
 
 
 
@@ -82,14 +85,81 @@ var refreshAllBut = function () {
 	}
 }
 
+var file = path.join(config.basedir, "src/assets/scss/classes_local.scss");
+var outputFile = path.join(config.basedir, "src/assets/css/classes_local.css");
+var sourceMap = path.join(config.basedir, "src/assets/css/classes_local.map.css");
 
+var dir = path.join(config.basedir, "src/assets/scss");
+
+
+var compileSass = function () {
+
+
+	if (!fs.existsSync(dir)){
+	    fs.mkdirSync(dir);
+	}
+
+
+	// console.log("base dir", config.basedir);
+
+	var fileStream = fs.createWriteStream(file);
+
+	fileStream.on("open", () => {
+
+		https.get("https://code.methodswithclass.com/api/classes/2.0/classes.scss", (res) => {
+
+
+			res.on('data', (chunk) => {
+
+                fileStream.write(chunk);
+            }).on("end", () => {
+
+            	fileStream.end();
+
+
+            	sass.render({
+					file:file,
+					outFile:outputFile
+					// sourceMap:sourceMap
+				}, (err, result) => { 
+
+					if (err) {
+						console.log("\nError while compiling Sass on server:\n\n", err);
+					}
+					else {
+						console.log("\nSass compilation on server successful:\n\n", result);
+
+						fs.writeFile(outputFile, result.css, (err) => {
+
+							if (err) {
+
+								console.log("\nError writing CSS to file to disk\n\n");
+							}
+							else {
+								console.log("\nCSS file successfully written to disk\n\n");
+							}
+						})
+					}
+				});
+
+            }).on("error", (err) => {
+
+            	console.log("Error in response getting /2.0/classes.scss")
+            })
+
+		});
+
+	});
+
+}
 
 
 
 module.exports = {
 	forceSSl:forceSSL,
 	refresh:refreshOnly,
-	refreshAllBut:refreshAllBut
+	refreshAllBut:refreshAllBut,
+	compileSass:compileSass
 }
 
 

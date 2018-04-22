@@ -14,6 +14,8 @@ nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
 
 
+var middleware = require("./middleware/middleware.js");
+
 const config = require("./config.js");
 
 
@@ -31,7 +33,8 @@ gulp.task("serve", ["build"], function () {
 	var stream = nodemon({ 
 		script: './server.js',
 		ext:"js html css json",
-		watch:["./src", "./backend", "./server.js"],
+		watch:["./src", "./backend"],
+		ignore:["./src/assets/css/classes_local.*"],
 		tasks:["build"]
 	});
 	
@@ -156,6 +159,10 @@ gulp.task("vendor", function () {
 
 gulp.task('styles', function() {
 
+
+	middleware.compileSass();
+
+
 	var cssSrc = gulp.src('src/assets/css/**/*.css', { style: 'expanded' })
 	.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'));
 
@@ -213,7 +220,7 @@ gulp.task("copy", ["data", "misc", "root", "html", "images", "fonts"], function 
 })
 
 gulp.task('clean', function() {
-	return del('dist');
+	return del(['dist', "src/assets/scss"]);
 });
 
 

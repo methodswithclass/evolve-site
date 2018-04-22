@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const sass = require("node-sass");
+
 const config = require("./config.js");
 const middleware = require("./middleware/middleware.js");
 
@@ -28,10 +30,14 @@ var PORTS = {
 
 
 
+
+// middleware.compileSass();
+
+
+
 app.use(middleware.refresh());
 if  (process.env.NODE_ENV == "production") app.use(middleware.forceSSL());
 else {console.log("environment development");}
-
 
 
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded

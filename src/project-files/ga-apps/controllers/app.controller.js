@@ -66,7 +66,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     console.log("setup receiver for display params");
 
-    observable.subscribe({
+    react.subscribe({
         name:"displayParams",
         callback:function (x) {
 

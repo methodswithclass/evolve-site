@@ -33,7 +33,7 @@ var setLoadSpeed = function (display, speed) {
 
 
 	var shared = window.shared;
-	var observable = window.reactCustom;
+	var react = shared.react_service;
 
 	var params = display.getParams();
 	var currentParams;
@@ -59,7 +59,7 @@ var setLoadSpeed = function (display, speed) {
 
     console.log("push displayParams");
 
-    observable.push({
+    react.push({
         name:"displayParams",
         state:{
         	params:currentParams,
