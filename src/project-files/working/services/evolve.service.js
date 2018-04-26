@@ -100,6 +100,8 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             	step:stepdata.step
             }
 
+            // console.log("stetpdata", $stepdata);
+
             sendData({stepdata:$stepdata})
 
             if (genA != genB) {

@@ -19,46 +19,38 @@ operation=$commitConst
 
 adjustArguments() {
 
-	
 
-	if [[ $first == $standardConst ]];
+
+	if [[ -z $second ]];
 	then
 
 		operation=$standardOp
 
-		if [[ -z $third && -z $second && -n $first ]];
+		if [[ -z $third && -z $second && -z $first ]];
 		then
-
 			message="update"
 			remote="origin"
 			branch="master"
-
-		elif [[ -n $second ]];
+		elif [[ -n $first ]];
 		then
-
 			message="update"
 			remote="origin"
-			branch=$second
-
+			branch=$first
 		fi
 	else
 
 		if [[ -z $third && -n $second && -n $first ]]; 
 		then
-
 			operation=$pushConst
 			message=""
 			remote=$first
 			branch=$second
-
 		elif [[ -n $third ]];
 		then
-
 			operation=$commitConst
 			message=$first
 			remote=$second
 			branch=$third
-
 		fi
 	fi
 }

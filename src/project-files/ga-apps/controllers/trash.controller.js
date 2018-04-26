@@ -112,7 +112,7 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
         
         self.programInput.getTotalSteps = function () {
 
-            return self.programInput.grid.size*self.programInput.grid.size*50;
+            return self.programInput.grid.size*self.programInput.grid.size*2;
         }
 
         self.programInput.convertTrash = function (percentToRate) {
@@ -187,7 +187,7 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
         self.programInput.update();
 
-        
+
 
         react.subscribe({
             name:"sim." + self.name,

@@ -1,84 +1,89 @@
-<div class="relative width min-height100 padding-v-50 white black-back">
 
-	<div class="relative width80 hcenter">
+<div class="absolute width height scrollY scroll-vertical-light-narrow cutoff white black-back">
 
-		<div class="relative padding-v-50">
-			<div class="relative margin-v-10 font-30 white">
-				Genetic Algorithms
-			</div>
+	<div class="relative width height">
 
-			<div class="relative width-150 height-10 margin-bottom-30 border-bottom-white"></div>
+		<div class="relative width80 hcenter">
 
-			<div class="relative margin-v-10 font-15 white">
-				Evolution in Real-Time Simulations. Machine Learning and Artificial Intelligence
-			</div>
+			<div class="relative padding-v-50">
+				<div class="relative margin-v-10 font-30 white">
+					Genetic Algorithms
+				</div>
 
-		</div>
+				<div class="relative width-150 height-10 margin-bottom-30 border-bottom-white"></div>
 
+				<div class="relative margin-v-10 font-15 white">
+					Evolution in Real-Time Simulations. Machine Learning and Artificial Intelligence
+				</div>
 
-
-
-		<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.open('feedback')">
-			
-			<div class="relative inline padding-h-10 font-20">
-				<i class="fas fa-cubes"></i>
-			</div>
-
-			<div class="relative inline padding-h-10">
-				feedback
-			</div>
-		</div>
-
-		<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.open('trash')">
-		
-			<div class="relative inline padding-h-10 font-20">
-				<i class="fas fa-cubes"></i>
-			</div>
-
-			<div class="relative inline padding-h-10">
-				trash pickup
-			</div>
-		</div>
-
-
-		<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.open('recognize')">
-		
-			<div class="relative inline padding-h-10 font-20">
-				<i class="fas fa-cubes"></i>
 			</div>
 
 
-			<div class="relative inline padding-h-10">
-				recognize
-			</div>
-		</div>
 
 
-		<div class="relative width80 padding-v-20 margin-v-20 border-right-trans border-left-trans border-top-trans border-color-white cutoff pointer" ng-class="{'height-0':!open, 'border-bottom-trans':open}" 
-		on-tap="open = !open">
-
-
-			<div class="relative width">
+			<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.open('feedback')">
 				
-				<div class="absolute left-20 vcenter font-20">
-					<i class="fas fa-bars"></i>
+				<div class="relative inline padding-h-10 font-20">
+					<i class="fas fa-cubes"></i>
 				</div>
 
-				<div class="absolute center font-15">
-					Welcome
+				<div class="relative inline padding-h-10">
+					feedback
+				</div>
+			</div>
+
+			<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.open('trash')">
+			
+				<div class="relative inline padding-h-10 font-20">
+					<i class="fas fa-cubes"></i>
+				</div>
+
+				<div class="relative inline padding-h-10">
+					trash pickup
+				</div>
+			</div>
+
+
+			<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.open('recognize')">
+			
+				<div class="relative inline padding-h-10 font-20">
+					<i class="fas fa-cubes"></i>
+				</div>
+
+
+				<div class="relative inline padding-h-10">
+					recognize
+				</div>
+			</div>
+
+
+			<div class="relative width80 padding-v-20 margin-v-20 border-right-trans border-left-trans border-top-trans border-color-white cutoff pointer" ng-class="{'height-0':!open, 'border-bottom-trans':open}" 
+			on-tap="open = !open">
+
+
+				<div class="relative width">
+					
+					<div class="absolute left-20 vcenter font-20">
+						<i class="fas fa-bars"></i>
+					</div>
+
+					<div class="absolute center font-15">
+						Welcome
+					</div>
+
+				</div>
+
+
+				<div class="relative width">
+					<div class="relative width60 hcenter padding-v-50">
+						<content data="main.overview.content"/>
+					</div>
 				</div>
 
 			</div>
 
-
-			<div class="relative width">
-				<div class="relative width60 hcenter padding-v-50">
-					<content data="main.overview.content"/>
-				</div>
-			</div>
 
 		</div>
-
 
 	</div>
 

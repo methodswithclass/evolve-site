@@ -87,9 +87,10 @@ gulp.task('scripts', ['vendor'], function() {
 
 
     var mainSrc = gulp.src([
+        "backend/evolve-app/__ga/evolve.js",
 	    "src/assets/**/*.js",
-	    "src/site-files/app/app.js",
 	    "src/site-files/state/stateModule.js",
+        "src/site-files/app/app.js",
 	    "src/project-files/ga-apps/app-recognize/**/*.js",
 	    "src/project-files/ga-apps/app-feedback/**/*.js",
 	    "src/project-files/ga-apps/app-trash/**/*.js",
@@ -119,6 +120,7 @@ gulp.task('scripts', ['vendor'], function() {
 });
 
 gulp.task("vendor", function () {
+	
 
 	var bowerSrc = gulp.src("./bower.json")
 		.pipe(mainBowerFiles({base:"../bower_components"}))
@@ -160,7 +162,7 @@ gulp.task("vendor", function () {
 gulp.task('styles', function() {
 
 
-	middleware.compileSass();
+	// middleware.compileSass();
 
 
 	var cssSrc = gulp.src('src/assets/css/**/*.css', { style: 'expanded' })

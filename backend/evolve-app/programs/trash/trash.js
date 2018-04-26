@@ -1,6 +1,6 @@
 
 var robotFact = require("./robot.js");
-var environmentFact = require("./environment.js");
+var environmentFact = require("./env.js");
 var d = require("../../data/programs/trash.js");
 var g = require("mc-shared").utility_service;
 var Worker = require("webworker-threads").Worker;
@@ -28,7 +28,7 @@ var trash = function (options) {
 
 	var simulation = {};
 
-	var environment = {};
+	var env = {};
 	var envIndex = 0;
 
 
@@ -41,6 +41,8 @@ var trash = function (options) {
 
 	var type = options.processType;
 	var envObj = true;
+
+	// console.log("trash options run type",  type);
 
 	var getPoints = function (result) {
 
@@ -61,36 +63,36 @@ var trash = function (options) {
 
 	var createRunEnvironment = function () {
 
-		var env = function (options) {
+		var env = function ($options) {
 
 			var self = this;
 
 			self.robot = new robotFact();
 			self.environment = new environmentFact();
 			
-			self.setup = function(options) {
+			self.setup = function($options) {
 
-				self.robot.setup(self.environment, options);
+				self.robot.setup(self.env, $options);
 			}
 
 			self.reset = function () {
 
-				self.environment.reset();
+				self.env.reset();
 				self.robot.reset();
 			}
 
 
-			self.refresh = function (options) {
+			self.refresh = function ($options) {
 
-				var target = self.environment.refresh(options);
-				self.setup(options);
+				var target = self.env.refresh($options);
+				self.setup($options);
 
 				return target;
 			}
 
 			self.get = function () {
 
-				return self.environment.get();
+				return self.env.get();
 			}
 
 
@@ -116,9 +118,42 @@ var trash = function (options) {
 			}
 		}
 
-		return new env();
+		return new env(options);
 
 
+	}
+
+
+	var makeEnvironments = function (runs) {
+
+		var envIndex = 0
+
+		while (envIndex <= runs) {
+
+			env[envIndex] = createRunEnvironment();
+
+			console.log("environment", envIndex, "created");
+
+			envIndex++;
+
+		}
+
+	}
+
+	var refreshAllEnvironments = function (runs) {
+
+
+		var envIndex = 0
+
+		while (envIndex <= runs) {
+
+			env[envIndex].refresh();
+
+			console.log("environment", envIndex, "reset");
+
+			envIndex++;
+
+		}
 	}
 
 
@@ -178,12 +213,12 @@ var trash = function (options) {
 			running = true;
 
 
-			target = environment['0'].refresh(params.input.programInput);
+			target = env['0'].refresh(params.input.programInput);
 
-			environment['0'].instruct(params.dna);
+			env['0'].instruct(params.dna);
 
 
-			performStep(0, $run, 0, fits, params, environment['0'],
+			performStep(0, $run, 0, fits, params, env['0'],
 				function (fits, x) {
 
 					fits.push({fitness:x, target:target});
@@ -240,11 +275,11 @@ var trash = function (options) {
 			return new Promise(function (resolve, reject) {
 
 
-				target = environment[$$run.toString()].refresh(params.input.programInput);
+				target = env[$$run.toString()].refresh(params.input.programInput);
 
-				environment[$$run.toString()].instruct(params.dna);
+				env[$$run.toString()].instruct(params.dna);
 
-				var fit = performStepAsync(0, $$run, 0, params, environment[$$run.toString()]);
+				var fit = performStepAsync(0, $$run, 0, params, env[$$run.toString()]);
 
 
 				return resolve({fitness:fit, target:target});
@@ -285,72 +320,72 @@ var trash = function (options) {
 	
 	}
 
-	var performRunWorker = function ($run, params, complete) {
+	// var performRunWorker = function ($run, params, complete) {
 
 
-		var fits = [];
+	// 	var fits = [];
 
-		while ($run <= runs) {
+	// 	while ($run <= runs) {
 
-			// console.log("run", params.gen, params.index, $run);
+	// 		// console.log("run", params.gen, params.index, $run);
 
-			var $$run = new Worker(function () {
+	// 		var $$run = new Worker(function () {
 
-				var env;
-				var performStepAsync;
+	// 			var env;
+	// 			var performStepAsync;
 
-				var runScenario = function ($env, $performStepAsync) {
+	// 			var runScenario = function ($env, $performStepAsync) {
 
-					var target = $env['0'].refresh(params.input.programInput);
+	// 				var target = $env['0'].refresh(params.input.programInput);
 
-					$env['0'].instruct(params.dna);
+	// 				$env['0'].instruct(params.dna);
 
-					var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
+	// 				var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
 
-					postMessage({fitness:fit, target:target});
+	// 				postMessage({fitness:fit, target:target});
 				
-				}
+	// 			}
 
-				this.onmessage = function (event) {
+	// 			this.onmessage = function (event) {
 
-					env = event.data.environment
-					performStepAsync = event.data.performStepAsync;
+	// 				env = event.data.environment
+	// 				performStepAsync = event.data.performStepAsync;
 
-					runScenario(env, performStepAsync);					
+	// 				runScenario(env, performStepAsync);					
 
-					postMessage(event);
+	// 				postMessage(event);
 
-				}
+	// 			}
 
 
 				
 
-			})
+	// 		})
 
-			$$run.postMessage({
-				environment:environment['0'], 
-				performStepAsync:performStepAsync
-			});
+	// 		$$run.postMessage({
+	// 			environment:env['0'], 
+	// 			performStepAsync:performStepAsync
+	// 		});
 
-			$$run.onmessage = function (event) {
+	// 		$$run.onmessage = function (event) {
 
-				console.log("on message", event.data);
+	// 			console.log("on message", event.data);
 
-				fits.push(event.data);
+	// 			fits.push(event.data);
 
-				// $$run.terminate();
+	// 			// $$run.terminate();
 
-				if (fits.length == runs) {
-					complete(fits);
-				}
-			}
+	// 			if (fits.length == runs) {
+	// 				complete(fits);
+	// 			}
+	// 		}
 
-			$run++;
+	// 		$run++;
 
-		}
+	// 	}
 
 
-	}
+	// }
 
 	self.run = function (params, complete) {
 
@@ -367,93 +402,52 @@ var trash = function (options) {
 		fits = [];
 
 
-		while (envIndex <= runs) {
+		if (params.gen == 1) {
 
-
-			environment[envIndex] = createRunEnvironment();
-
-			console.log("environment", envIndex, "created");
-
-			envIndex++;
-
+			makeEnvironments(runs);
 		}
+		else {
+			refreshAllEnvironments(runs);
+		}
+
 
 		// self.instruct(params.dna);
 
-		if (type == types.worker) {
+		if (type == types.recursive) {
 
-			// console.log("perform run \n\n\n\n\n\n\n\n");
+			performRun(0, fits, params,
+				function (fits) {
 
-			performRunWorker(0, params, function (fits) {
-
-				avgfit = g.truncate(
-                    g.average(
-						fits, 
-						function (value, index, array) {
-							return value.fitness;
-						})
-                    , 2
-                    );
+					avgfit = avgArrayForFitnessAndTruncate(fits, "fitness", 2);
 
 
-				var count = 0;
-				for (i in fits) {
-					if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
-						count++;
+					var count = 0;
+					for (i in fits) {
+						if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
+							count++;
+						}
 					}
+
+					console.log("run complete", avgfit);
+
+					// var success = count > fits.length*0.8;
+					var success = false;
+
+					complete({
+						runs:fits,
+						avg:avgfit,
+						success:success
+					});
+
 				}
-
-				// var success = count > fits.length*0.8;
-				var success = false;
-
-				complete({
-					runs:fits,
-					avg:avgfit,
-					success:success
-				});
-
-			});
+			);
 
 		}
 		else if (type == types.async) {
 
 
-			performRunAsync(0, params, function (fits) {
-
-				avgfit = g.truncate(
-                    g.average(
-						fits, 
-						function (value, index, array) {
-							return value.fitness;
-						})
-                    , 2
-                    );
-
-
-				var count = 0;
-				for (i in fits) {
-					if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
-						count++;
-					}
-				}
-
-				// var success = count > fits.length*0.8;
-				var success = false;
-
-				complete({
-					runs:fits,
-					avg:avgfit,
-					success:success
-				});
-
-			})
-
-
-		}
-		else if (type == types.recursive) {
-
-			performRun(0, fits, params,
-				function (fits) {
+			performRunAsync(0, params, 
+			    function (fits) {
 
 					avgfit = g.truncate(
 	                    g.average(
@@ -462,7 +456,7 @@ var trash = function (options) {
 								return value.fitness;
 							})
 	                    , 2
-	                    );
+	                );
 
 
 					var count = 0;
@@ -484,6 +478,7 @@ var trash = function (options) {
 				}
 			);
 
+
 		}
 		else if (type == types.loop) {
 
@@ -491,7 +486,7 @@ var trash = function (options) {
 			// var $robot = new robotFact();
 			// var $environment = new environmentFact()
 
-			var env = createRunEnvironment();
+			// var env = createRunEnvironment();
 
 			do {
 
@@ -554,12 +549,47 @@ var trash = function (options) {
 			});
 
 		}
+		else if (type == types.worker) {
+
+			// console.log("perform run \n\n\n\n\n\n\n\n");
+
+			performRunWorker(0, params, function (fits) {
+
+				avgfit = g.truncate(
+                    g.average(
+						fits, 
+						function (value, index, array) {
+							return value.fitness;
+						})
+                    , 2
+                    );
+
+
+				var count = 0;
+				for (i in fits) {
+					if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
+						count++;
+					}
+				}
+
+				// var success = count > fits.length*0.8;
+				var success = false;
+
+				complete({
+					runs:fits,
+					avg:avgfit,
+					success:success
+				});
+
+			});
+
+		}
 
 	}
 
 	self.reset = function () {
 		
-		// environment.reset();
+		// env.reset();
 		// robot.reset();
 
 		simulation.reset();
@@ -567,8 +597,8 @@ var trash = function (options) {
 
 	self.refresh = function (options) {
 
-		// environment.refresh(options);
-		// robot.setup(environment, options);
+		// env.refresh(options);
+		// robot.setup(env, options);
 
 		simulation.refresh(options);
 		self.reset();

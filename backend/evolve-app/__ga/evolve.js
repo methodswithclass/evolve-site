@@ -2,7 +2,7 @@
 
 Evolutionary Algorithm modules, and supporting packages
 
-2017 Christopher Polito v1.0
+2018 Christopher Polito v5.0.0
 
 Implemented in a Frontend Angular web application, the Events and React Modules come in handy with respect to the web
 application but are not related to the evolutionary algorithm, including them simply reduces dependency requirements
@@ -94,6 +94,7 @@ var obj = {};
 		self.fitness = 0;
 		self.generation = params.gen;
 		self.index = params.index;
+		self.currentGen = params.curentGen;
 		self.parents = [];
 		var input = params.input;
 		var stepdataobj = {

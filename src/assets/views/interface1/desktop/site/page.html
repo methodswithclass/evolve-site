@@ -1,58 +1,62 @@
 <div class="absolute width height">
 
-	<div class="relative width height-600 border-white cutoff" parallax scroll="body" inner="inner" top="true">
+	<div class="absolute width height scrollY scroll-vertical-dark-narrow touch cutoffX" id="page-page">
 
-		<div class="relative width height" id="inner">
+		<div class="relative width height-600 border-white cutoff" parallax scroll="page-page" factor="1" inner="inner" top="true">
 
-			<div class="absolute width80 height60 center border">
-				
-				<div class="absolute width50 top-minus-20 left-minus-50">
-					<div class="absolute width-200 height-50 black-back white font-20 rounded5 shadow">
-						<navbtn name="home" loc="home"/>
-					</div>
-				</div>
+			<div class="relative width height" id="inner">
 
-				<div class="absolute width80 height center">
-					<div class="absolute width50 vcenter right0 font-50">
-						<div class="absolute width vcenter text-right">
-							{{main.doc.title}}
+				<div class="absolute width80 height60 center border">
+					
+					<div class="absolute width50 top-minus-20 left-minus-50">
+						<div class="absolute width-200 height-50 black-back white font-20 rounded5 shadow">
+							<navbtn name="home" loc="home"/>
 						</div>
 					</div>
+
+					<div class="absolute width80 height center">
+						<div class="absolute width50 vcenter right0 font-50">
+							<div class="absolute width vcenter text-right">
+								{{main.doc.title}}
+							</div>
+						</div>
+					</div>
+					
 				</div>
-				
+
 			</div>
 
 		</div>
 
-	</div>
+		<div class="relative width black-back raised min-height100">
 
-	<div class="relative width black-back raised min-height100">
+			<div class="relative width padding-v-100">
 
-		<div class="relative width padding-v-100">
+				<div class="relative width90 hcenter white-back rounded5 lowered">
 
-			<div class="relative width90 hcenter white-back rounded5 lowered">
+					<div class="relative width padding-v-100">
 
-				<div class="relative width padding-v-100">
+						<div class="relative width hcenter">
 
-					<div class="relative width hcenter">
-
-						<div class="relative width40 height-200 hcenter" ng-show="main.doc.demo">
-							<div class="absolute width height60 center black-back white rounded5 shadow font-30 pointer" on-tap="main.openDemo()">
-								<div class="absolute center">
-									demo
+							<div class="relative width40 height-200 hcenter" ng-show="main.doc.demo">
+								<div class="absolute width height60 center black-back white rounded5 shadow font-30 pointer" on-tap="main.openDemo()">
+									<div class="absolute center">
+										demo
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="relative width60 hcenter margin-v-100">
-							<content data="main.doc.content"/>
+							<div class="relative width60 hcenter margin-v-100">
+								<content data="main.doc.content"/>
+							</div>
+
 						</div>
 
 					</div>
 
 				</div>
-
 			</div>
+
 		</div>
 
 	</div>

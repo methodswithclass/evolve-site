@@ -13,6 +13,12 @@ var loadSpeeds = [
 ]
 
 
+var demoLoad = {
+	normal:loadSpeeds[0].name,
+	fast:loadSpeeds[1].name
+}
+
+
 var setInterface = function (inter) {
 
 	// runtimeProvider.initInterface("interface" + inter);
@@ -102,17 +108,26 @@ var appSetup = function (display) {
 	console.log("app setup");
 
 
-	setSpeedIndex = function (index) {
+	setSpeed = function (name) {
 
-		if (index >= 0 && index < loadSpeeds.length) {
-			setLoadSpeed(display, loadSpeeds[index].name);
+
+		var found = loadSpeeds.find((p) => {
+
+			return p.name == name;
+		})
+
+		if (found) {
+			setLoadSpeed(display, name);
+		}
+		else {
+			setLoadSpeed(display, loadSpeeds[0].name);
 		}
 	}
 
 
 	
-	// setSpeedIndex(0);
-	setSpeedIndex(1);
+	// setSpeed(demoLoad.normal);
+	setSpeed(demoLoad.fast);
 
 
 
