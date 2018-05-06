@@ -18,7 +18,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
     var $stepdata;
     var $evdata;
     var params = {
-        delay:600,
+        delay:200,
         fade:2000
     }
 
