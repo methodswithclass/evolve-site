@@ -26,9 +26,9 @@
 				</div>
 			</div>
 			
-			<div class="relative width80 height30 margin-bottom-20 hcenter">
+			<div class="relative width60 height30 margin-bottom-20 hcenter">
 				
-				<div class="absolute width30 height">
+				<!-- <div class="absolute width30 height">
 
 					<div class="absolute width height50 hcenter font-20">
 						<div class="absolute center">
@@ -41,10 +41,25 @@
 						</div>
 					</div>
 
+				</div> -->
+
+				<div class="absolute width30 height right0">
+					
+					<div class="absolute width height50 hcenter font-20">
+						<div class="absolute center">
+							total generations
+						</div>
+					</div>
+					<div class="absolute width height50 hcenter bottom0 font-20">
+						<div class="absolute center">
+							{{input.gens}}
+						</div>
+					</div>
+
 				</div>
 
 
-				<div class="absolute width30 height" style="left:{{1/3*100 + '%'}}">
+				<div class="absolute width30 height right0">
 
 					<div class="absolute width height50 hcenter font-20">
 						<div class="absolute center">
@@ -53,22 +68,7 @@
 					</div>
 					<div class="absolute width height50 hcenter bottom0 font-20">
 						<div class="absolute center">
-							{{evdata.best.fitness}}
-						</div>
-					</div>
-
-				</div>
-
-				<div class="absolute width30 height right0">
-					
-					<div class="absolute width height50 hcenter font-20">
-						<div class="absolute center">
-							generations
-						</div>
-					</div>
-					<div class="absolute width height50 hcenter bottom0 font-20">
-						<div class="absolute center">
-							{{input.gens}}
+							{{fitnessRounded}}
 						</div>
 					</div>
 

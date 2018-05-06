@@ -177,7 +177,6 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 		    events.on("resetenv", function () {
 
 		   		makeBlocks(environment)
-
 			})
 
 

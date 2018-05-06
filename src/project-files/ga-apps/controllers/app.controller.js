@@ -11,21 +11,56 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var events = shared.events_service;
 
 
-    var observable = window.reactCustom;
+    // var observable = window.reactCustom;
 
 
     self.name = u.stateName(states.current());
     $scope.name = self.name;
     self.sdata;
 
-    $scope.settings;
-    $scope.grids;
-    $scope.programInput;
+    $scope.crossoverData = {};
+
+    $scope.settings = {};
+    $scope.grids = [];
+    $scope.programInput = {};
 
 
-    $scope.evdata;
-    $scope.stepdata;
-    $scope.input;
+    $scope.evdata = {}
+    $scope.stepdata = {};
+    $scope.input = {};
+
+
+    var tempcross = config.get("types.crossoverMethods");
+    var k = 0;
+
+    var crossoverMethods = [];
+
+    for (var i in tempcross) {
+
+        if (k > 0) {
+
+            crossoverMethods.push({
+                index:k-1,
+                name:i,
+                method:tempcross[i]
+            })
+        }
+
+        k++;
+    }
+
+    $scope.crossoverMethods = crossoverMethods;
+    $scope.settings.method = crossoverMethods[0].method;
+
+    $scope.crossoverData = {
+        crossoverMethods:crossoverMethods,
+        method:crossoverMethods[0].method
+    }
+
+
+    // $scope.settings.method = $scope.crossoverMethods[0].method;
+
+    // console.log("\n\nmodel $scope.settings.method", $scope.settings.method);
 
 
     var initData = function () {
@@ -64,7 +99,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         }
     })
 
-    console.log("setup receiver for display params");
+    // console.log("setup receiver for display params");
 
     react.subscribe({
         name:"displayParams",
@@ -150,7 +185,8 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
                     // console.log("instantiate complete");
 
                     $input.setInput({
-                        session:$scope.session
+                        session:$scope.session,
+                        method:tempcross.default
                     })
                     
                     api.initialize(function () {
@@ -555,9 +591,10 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     self.changeInput = function () {
 
-        console.log("change input");
+        $scope.settings = $input.changeInput()
 
-        $scope.settings = $input.changeInput($scope)
+
+        console.log("change input", $scope.settings);
 
     }
 
@@ -607,6 +644,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         controller.stop(self, $scope);
     }
 
+    self.resetgen = function  () {
+
+        controller.resetgen(self, $scope);
+    }
+
     self.run = function () {
 
         controller.run(self, $scope);
@@ -654,7 +696,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
                 animateToggle(false);
             });
 
-        }, 500)
+        }, 500);
 
         controller.enter(self, $scope);
 

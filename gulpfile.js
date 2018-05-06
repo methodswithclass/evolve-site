@@ -87,7 +87,7 @@ gulp.task('scripts', ['vendor'], function() {
 
 
     var mainSrc = gulp.src([
-        "backend/evolve-app/__ga/evolve.js",
+        "backend/evolve-app/__ga/**/*.js",
 	    "src/assets/**/*.js",
 	    "src/site-files/state/stateModule.js",
         "src/site-files/app/app.js",

@@ -12,7 +12,7 @@ app.directive("navbtn", ['states', 'utility', 'evolve.service', function (states
 		link:function ($scope, element, attr) {
 
 
-			console.log("nav button", $scope.varClass);
+			// console.log("nav button", $scope.varClass);
 
 			var hideElements = function () {
 

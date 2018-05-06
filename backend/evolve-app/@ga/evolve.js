@@ -738,6 +738,8 @@ var obj = {};
 
 							indi++;
 
+							// console.log("total", indi, self.total);
+
 							if (indi < self.total) {
 								running = true;
 							}
@@ -778,7 +780,7 @@ var obj = {};
 
 			active = true;
 
-			var i = 0;
+			var i = 1;
 
 			var finished = [];
 

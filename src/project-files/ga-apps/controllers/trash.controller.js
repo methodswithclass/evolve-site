@@ -39,11 +39,14 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 	        })
 
 
-	        setTimeout(function () {
+            // events.dispatch("init-settings");
 
-	            simulator.refresh();
 
-	        }, 1000);
+	        // setTimeout(function () {
+
+	        //     simulator.refresh();
+
+	        // }, 1000);
 
 	    }
 
@@ -263,6 +266,18 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
         simulator.stop();  
     }
 
+    var resetgen = function (self, $scope) {
+
+        u.toggle("show", "refreshfeedback", {fade:800});
+        u.toggle("hide", "refreshfeedback", {delay:2000, fade:800});
+
+        evolve.resetgen(function () {
+
+            $scope.stepdata = {}
+            $scope.evdata = {};
+        });
+    }
+
     var run = function (self, $scope) {
 
         evolve.run($scope);
@@ -287,6 +302,7 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 		step:step,
 		play:play,
 		stop:stop,
+        resetgen:resetgen,
         run:run,
         breakRun:breakRun
 	}

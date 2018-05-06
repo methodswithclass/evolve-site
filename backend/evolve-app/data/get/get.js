@@ -1,7 +1,8 @@
 
 
 // var evolveFact = require("mc-evolve");
-var evolveFact = require("../../__ga/evolve.js");
+var evolveFact = require("../../__ga/evolve_async.js");
+var g = require("../../__ga/shared.js").utility_service;
 
 var SESSION_EXPIRY = 3600*24*1000;
 
@@ -14,12 +15,39 @@ var data = function (name) {
 	return require("../programs/" + name + ".js");
 }
 
+var makeProgramString = function ($options) {
 
 
-var programs = function (program, module) {
+	var program = $options.name ? $options.name : undefined;
+	var options = $options.programInput ? $options.programInput : undefined;
 
-	return require("../../programs/" + program + "/" + module + ".js")
+
+	var programExists = g.doesExist(program);
+	var optionsExists = g.doesExist(options);
+
+
+	var programString;
+	var typeString;
+
+
+	if (programExists) {
+		programString = program;
+	}
+
+
+	if (optionsExists) {
+		typeString = "/" + program + "-types/" + program + "_" + options.processType + ".js";
+	}
+
+	
+	programString += ((program == "trash") ? typeString : "");
+
+
+	return programString;
+
+
 }
+
 
 
 var clearSessions = function () {
@@ -41,15 +69,24 @@ var makeEvolve = function () {
 	return new evolveFact.module();
 }
 
-var makeProgram = function (program, options) {
 
-	var module = program;
-	var progArray = program.split("/");
-	module = progArray.length > 1 ? progArray[1] : program;
+var programs = function (input) {
 
-	var prog = programs(program, module);
+	var programString = makeProgramString(input);
 
-	return new prog(options);
+	return require("../../programs/" + programString)
+}
+
+
+var makeProgram = function (options) {
+
+	// var module = options.name;
+	// var progArray = program.split("/");
+	// module = progArray.length > 1 ? progArray[1] : program;
+
+	var prog = programs(options);
+
+	return new prog(options.programInput);
 }
 
 
@@ -70,24 +107,38 @@ var createSessionEvolve = function (session) {
 	return evolve[session].evolve;
 }
 
-var addProgramToSession = function (session, program, options) {
+var addProgramToSession = function (input) {
 
-	console.log("add program to session", session, program);
+	var name = input.name ? input.name : undefined;
+	var session = input.session ? input.session : undefined;
+	
+	var programString = makeProgramString(input);
 
-	if (evolve[session].programs && evolve[session].programs[program]) {
-		console.log("program exists");
+	console.log("add program to session", session, programString);
+
+
+	if (g.doesExist(name) && g.doesExist(session)) {
+
+		if (evolve[session].programs && evolve[session].programs[name]) {
+			console.log("program exists");
+			return {
+				program:evolve[session].programs[name],
+				pdata:data(input.name)
+			}
+		}
+
+
+		evolve[session].programs = {};
+		evolve[session].programs[name] = makeProgram(input);
+
 		return {
-			program:evolve[session].programs[program],
-			pdata:data(program)
+			program:evolve[session].programs[name],
+			pdata:data(input.name)
 		}
 	}
+	else {
 
-	evolve[session].programs = {};
-	evolve[session].programs[program] = makeProgram(program, options);
-	
-	return {
-		program:evolve[session].programs[program],
-		pdata:data(program)
+		return null;
 	}
 }
 

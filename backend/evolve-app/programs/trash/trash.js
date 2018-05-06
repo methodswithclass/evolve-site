@@ -1,8 +1,9 @@
 
 var robotFact = require("./robot.js");
-var environmentFact = require("./env.js");
+var environmentFact = require("./environment.js");
 var d = require("../../data/programs/trash.js");
-var g = require("mc-shared").utility_service;
+// var g = require("mc-shared").utility_service;
+var g = require("../../__ga/shared.js").utility_service;
 var Worker = require("webworker-threads").Worker;
 
 
@@ -72,19 +73,21 @@ var trash = function (options) {
 			
 			self.setup = function($options) {
 
-				self.robot.setup(self.env, $options);
+				self.robot.setup(self.environment, $options);
 			}
 
 			self.reset = function () {
 
-				self.env.reset();
+				self.environment.reset();
 				self.robot.reset();
 			}
 
 
 			self.refresh = function ($options) {
 
-				var target = self.env.refresh($options);
+				console.log("refresh environment");
+
+				var target = self.environment.refresh($options);
 				self.setup($options);
 
 				return target;
@@ -92,7 +95,7 @@ var trash = function (options) {
 
 			self.get = function () {
 
-				return self.env.get();
+				return self.environment.get();
 			}
 
 
@@ -132,7 +135,7 @@ var trash = function (options) {
 
 			env[envIndex] = createRunEnvironment();
 
-			console.log("environment", envIndex, "created");
+			// console.log("environment", envIndex, "created");
 
 			envIndex++;
 
@@ -274,6 +277,7 @@ var trash = function (options) {
 			
 			return new Promise(function (resolve, reject) {
 
+				console.log("async indi", params.index, "run", $run);
 
 				target = env[$$run.toString()].refresh(params.input.programInput);
 
@@ -320,73 +324,6 @@ var trash = function (options) {
 	
 	}
 
-	// var performRunWorker = function ($run, params, complete) {
-
-
-	// 	var fits = [];
-
-	// 	while ($run <= runs) {
-
-	// 		// console.log("run", params.gen, params.index, $run);
-
-	// 		var $$run = new Worker(function () {
-
-	// 			var env;
-	// 			var performStepAsync;
-
-	// 			var runScenario = function ($env, $performStepAsync) {
-
-	// 				var target = $env['0'].refresh(params.input.programInput);
-
-	// 				$env['0'].instruct(params.dna);
-
-	// 				var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
-
-	// 				postMessage({fitness:fit, target:target});
-				
-	// 			}
-
-	// 			this.onmessage = function (event) {
-
-	// 				env = event.data.environment
-	// 				performStepAsync = event.data.performStepAsync;
-
-	// 				runScenario(env, performStepAsync);					
-
-	// 				postMessage(event);
-
-	// 			}
-
-
-				
-
-	// 		})
-
-	// 		$$run.postMessage({
-	// 			environment:env['0'], 
-	// 			performStepAsync:performStepAsync
-	// 		});
-
-	// 		$$run.onmessage = function (event) {
-
-	// 			console.log("on message", event.data);
-
-	// 			fits.push(event.data);
-
-	// 			// $$run.terminate();
-
-	// 			if (fits.length == runs) {
-	// 				complete(fits);
-	// 			}
-	// 		}
-
-	// 		$run++;
-
-	// 	}
-
-
-	// }
-
 	self.run = function (params, complete) {
 
 
@@ -413,12 +350,20 @@ var trash = function (options) {
 
 		// self.instruct(params.dna);
 
+		console.log("run", params.index, "gen", params.gen);
+
 		if (type == types.recursive) {
 
 			performRun(0, fits, params,
 				function (fits) {
 
-					avgfit = avgArrayForFitnessAndTruncate(fits, "fitness", 2);
+					// console.log(fits);
+
+					avgfit = g.avgArray({
+						array:fits,
+						value:"fitness",
+						truncate:2
+					});
 
 
 					var count = 0;
@@ -428,7 +373,7 @@ var trash = function (options) {
 						}
 					}
 
-					console.log("run complete", avgfit);
+					// console.log("run complete", avgfit);
 
 					// var success = count > fits.length*0.8;
 					var success = false;
@@ -449,15 +394,11 @@ var trash = function (options) {
 			performRunAsync(0, params, 
 			    function (fits) {
 
-					avgfit = g.truncate(
-	                    g.average(
-							fits, 
-							function (value, index, array) {
-								return value.fitness;
-							})
-	                    , 2
-	                );
-
+					avgfit = g.avgArray({
+						array:fits,
+						value:"fitness",
+						truncate:2
+					});
 
 					var count = 0;
 					for (i in fits) {
@@ -529,7 +470,11 @@ var trash = function (options) {
 			} while (run < runs);
 
 
-			avgfit = g.truncate(g.average(fits, function (value, index, array) {return value.fitness;}),2)
+			avgfit = g.avgArray({
+				array:fits,
+				value:"fitness",
+				truncate:2
+			});
 
 
 			count = 0;
@@ -555,14 +500,11 @@ var trash = function (options) {
 
 			performRunWorker(0, params, function (fits) {
 
-				avgfit = g.truncate(
-                    g.average(
-						fits, 
-						function (value, index, array) {
-							return value.fitness;
-						})
-                    , 2
-                    );
+				avgfit = g.avgArray({
+					array:fits,
+					value:"fitness",
+					truncate:2
+				});
 
 
 				var count = 0;

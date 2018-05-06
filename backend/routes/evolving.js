@@ -17,9 +17,9 @@ const uidgen = new UIDGenerator();
 var addProgram = function (input) {
 
 
-	console.log("add program input", input);
+	// console.log("add program input", input);
 
-	var result = get.addProgramToSession(input.session, input.name, input.programInput);
+	var result = get.addProgramToSession(input);
 
 	input.program = result.program;
 	input.pdata = result.pdata;
@@ -65,9 +65,21 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 evolveRouter.post("/set", function (req, res, next) {
 
-	console.log("set input", req.body.input);
+	var input = req.body.input
+	// var inputArray = [];
 
-	// var input = addProgram(req);
+	// for (var i in input) {
+
+	// 	var key = {};
+
+	// 	key[i] = input[i]
+
+	// 	inputArray.push(key);
+	// }
+
+
+	console.log("set input\n\n", input, "\n");
+	// console.log("set input\n", inputArray);
 
 	var evolution = get.getSessionEvolve(req.body.input.session);
 

@@ -28,9 +28,13 @@ app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states
 			}
 
 
-			$scope.evdata;
-			$scope.stepdata;
-			$scope.input;
+			var fitnessTruncateValue = 2;
+
+
+			$scope.evdata = {};
+			$scope.stepdata = {};
+			$scope.input = {};
+			$scope.fitnessRounded;
 
 			react.subscribe({
 				name:"data" + self.name,
@@ -39,6 +43,17 @@ app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states
 					$scope.evdata = x.evdata || $scope.evdata;
 					$scope.stepdata = x.stepdata || $scope.stepdata;
 					$scope.input = x.input || $scope.input;
+					// console.log("stepdata", $scope.stepdata);
+
+					// console.log("evdata", $scope.evdata.best.fitness, "truncate", g.truncate($scope.evdata.best.fitness, 0));
+
+					$scope.evdata.best = $scope.evdata.best ? $scope.evdata.best : {};
+					$scope.evdata.best.fitness = $scope.evdata.best.fitness ? $scope.evdata.best.fitness : 0;
+
+		            $scope.fitnessRounded = g.truncate($scope.evdata.best.fitness, fitnessTruncateValue);
+
+		            // console.log("fitnessRounded", $scope.fitnessRounded);
+
 				}
 			})
 

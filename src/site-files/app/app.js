@@ -63,7 +63,7 @@ var setLoadSpeed = function (display, speed) {
     allParams[loadSpeeds[1].name] = params[loadSpeeds[1].name]
 
 
-    console.log("push displayParams");
+    // console.log("push displayParams");
 
     react.push({
         name:"displayParams",

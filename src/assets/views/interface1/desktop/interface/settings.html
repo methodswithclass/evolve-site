@@ -26,13 +26,13 @@
 
 				<div class="absolute width-70 height-70 center">
 
-					<div class="absolute width170 height-30 vcenter top0 white-back rounded5 black opacity0" id="refreshfeedback">
+					<div class="absolute width170 height-30 top-minus-50 hcenter white-back rounded5 black opacity0" id="refreshfeedbacktoggle">
 						<div class="absolute center">
-							refresh
+							reset evolve
 						</div>
 					</div>
 					
-					<div class="absolute width height white-back black font-20 rounded5 pointer" id="refreshbtn" on-tap="resetgen()">
+					<div class="absolute width height white-back black font-20 rounded5 pointer" id="refreshbtn" on-tap="resetGen()">
 						<div class="absolute center">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -182,9 +182,12 @@
 												crossover method
 											</div>
 										</div>
-										<select class="absolute width50 height right0 text-right transparent-back font-30 white nooutline" id="methodinput" ng-model="settings.method" ng-keyup="changeInput()">
-											<option ng-class="black font-30" ng-repeat="item in methods track by item.method" value="{{item.method}}">{{item.method}}</option>
+
+
+										<select class="absolute width50 height right0 text-right black-back white font-30 nooutline" id="methodinput" ng-model="model" ng-change="changeMethod(model)">
+											<option ng-repeat="item in methods" value="{{item.method}}">{{item.method}}</option>
 										</select>
+
 									</div>
 
 								</div>

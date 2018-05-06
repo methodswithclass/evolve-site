@@ -43,7 +43,7 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 				$(container).append(block);
 
 				var man = document.createElement("div");
-				$(man).addClass("absolute width70 height70 center " + (u.getInterface() == inter.object.one ? "black-back" : "white-back"));
+				$(man).addClass("absolute width70 height70 center opacity70 " + (u.getInterface() == inter.object.one ? "black-back" : "white-back"));
 				$(block).append(man);
 
 				var inner = document.createElement("div");
@@ -55,8 +55,8 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 				$(inner).append(icon);
 
 				return { 
-					width:40,
-					height:40,
+					width:$(container).width()/grid.cols,
+					height:$(container).height()/grid.rows,
 					outer:$(container),
 					inner:$(inner)
 				}

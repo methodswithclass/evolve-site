@@ -17,6 +17,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     self.name;
 
+    var _$scope = {};
+
 
 	var crossoverMethods = config.get("types.crossoverMethods");
 	var runPopTypes = config.get("types.runPopTypes");
@@ -111,7 +113,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     }
 
-    var setSettings = function ($scope, input) {
+    var setSettings = function (input) {
 
     	var values = resolveDisplay({
     		pool:input.pool,
@@ -120,7 +122,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     	})
 
 
-    	$scope.settings = {
+    	_$scope.settings = {
         	gens: 				input.gens,
         	runs: 				input.runs,
         	pop:  				input.pop,
@@ -131,20 +133,28 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     		pool: 				values.pool,
     		mutate: 			values.mutate,
             goal:               "max",
-            method:             input.method || self.temp[self.name].method,
+            method:             input.method || crossoverMethods.default,
 
         	runPopType: 		input.runPopType || self.temp[self.name].runPopType,
     		reproductionType: 	input.reproductionType || self.temp[self.name].reproductionType
         }
 
 
-        return $scope.settings;
+        // console.log("set settings", _$scope.settings);
+
+        return _$scope.settings;
 
     }
 
+    var getSettings = function () {
 
-    var changeInput = function ($scope) {
+        return _$scope.settings;
+    }
 
+
+    var changeInput = function (method) {
+
+        console.log("change input", method);
 
     	var manual = {
             gens: 				$("#gensinput").val(),
@@ -155,11 +165,12 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         	splicemax: 			$("#splicemaxinput").val(),
         	pool: 				$("#poolinput").val(),
         	mutate: 			$("#mutateinput").val(),
-        	method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
+        	method: 		    (method ? method 
+                           : (self.global[self.name].method ? self.global[self.name].method : crossoverMethods.default))
         }
 
 
-    	return setSettings($scope, manual);
+    	return setSettings(manual);
     }
 
 
@@ -168,6 +179,14 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         self.name = name;
         self.global[self.name] = {};
         self.temp[self.name] = {};
+
+        react.subscribe({
+            name:"scope" + self.name,
+            callback:function(x) {
+
+                _$scope = x;
+            }
+        })
     }
 
 
@@ -219,7 +238,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 			parents: 			update ? getIntFromId("parents") 					: self.temp[self.name].parents,
 			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp[self.name].splicemin,
 			splicemax: 			update ? getIntFromId("splicemax") 					: self.temp[self.name].splicemax,
-            method:             update ? $method.val()                              : self.temp[self.name].method,
+            method:             update ? $method.val()                              : crossoverMethods.default,
 
             pool:               values.pool,
             mutate:             values.mutate,
@@ -270,6 +289,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         masterReset:masterReset,
 		setInput:setInput,
 		getInput:getInput,
+        getSettings:getSettings,
 		resendInput:resendInput,
 		setSettings:setSettings,
 		changeInput:changeInput

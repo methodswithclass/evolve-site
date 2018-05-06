@@ -40,7 +40,7 @@
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
     "mc-evolve": "^5.0.0",
-    "mc-shared": "^4.4.1",
+    "mc-shared": "^4.5.3",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
     "node-sass": "^4.8.3",
