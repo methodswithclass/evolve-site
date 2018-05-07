@@ -18,7 +18,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
     var $stepdata;
     var $evdata;
     var params = {
-        delay:200,
+        delay:0,
         fade:2000
     }
 
@@ -212,6 +212,8 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     	running(false, _$scope);
 
+        console.log("complete evolve");
+
     	getBest(function () {
 
             running(false, _$scope);
@@ -325,6 +327,8 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
 		input = $input.getInput();
 
+        console.log("run evolve");
+
 
         u.toggle("hide", "settings", {fade:params.fade/4});        
 
@@ -397,10 +401,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         // ## $input.getInput(false);
         // ##
 
-        api.hardStop(function (res) {
-
-            completeEvolve(_$scope);
-        })
+        api.hardStop();
     }
 
 
