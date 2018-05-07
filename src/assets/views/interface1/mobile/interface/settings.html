@@ -178,9 +178,13 @@
 												crossover method
 											</div>
 										</div>
-										<select class="absolute width50 height right0 text-right transparent-back white nooutline" id="methodinput" ng-model="settings.method" ng-keyup="changeInput()">
-											<option ng-class="black font-30" ng-repeat="item in methods track by item.method" value="{{item.method}}">{{item.method}}</option>
+										
+
+										<select class="absolute width50 height right0 text-right black-back white font-40 nooutline" id="methodinput" ng-model="model" ng-change="changeMethod(model)">
+											<option ng-repeat="item in methods" value="{{item.method}}">{{item.method}}</option>
 										</select>
+
+
 									</div>
 
 								</div>
