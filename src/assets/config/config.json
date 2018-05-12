@@ -48,7 +48,7 @@
 				"goal":"diverge"
 			}
 			],
-			"evdelay":300
+			"evdelay":2000
 		},
 		"recognize":{
 			"goals":[

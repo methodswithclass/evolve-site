@@ -46,9 +46,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				return value;
 			}
 
-			var point = function (x) {
+			var point = function (x, $index) {
 
 				var self = this;
+
+				self.index = $index;
 
 				self.coords = {x:x, y:0};
 
@@ -64,11 +66,23 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				
 				$inner.append(container);
 
-				self.changeY = function (y, duration) {
+				self.changeY = function (dna, duration) {
 
-					self.coords.y = y;
+					self.coords.y = dna[self.index];
 
-					$(container).animate({top:normalize(self.coords.y)}, duration);
+					$(container).animate({
+						top:normalize(self.coords.y)
+					}, 
+	                {
+						duration:duration, 
+						complete:function () {
+
+							// if (self.index+1 < plot.length) {
+							// 	plot[self.index+1].changeY(dna, duration)
+							// }
+
+						}
+					});
 				}
 
 				self.destroy = function () {
@@ -104,7 +118,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				console.log("create plot");
 
 				for (var i = 0; i < total; i++) {
-					plot[i] = new point(i*$inner.width()/total);
+					plot[i] = new point(i*$inner.width()/total, i);
 					// console.log("new point", plot[i].coords);
 				}
 			}
@@ -112,8 +126,26 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			var changeplot = function (dna, duration) {
 
 				for (i in plot) {
-					plot[i].changeY((Array.isArray(dna) ? dna[i] : dna), duration);
+				// if (plot.length > 0) {
+					plot[i].changeY(dna, duration);
 				}
+
+				// var i = 0;
+				// var isArray = Array.isArray(dna);
+				// var timer = setInterval(function () {
+
+				// 	if (i < plot.length) {
+				// 		plot[i].changeY((isArray ? dna[i] : dna), duration);
+
+				// 		i++;
+				// 	}
+				// 	else {
+				// 		clearInterval(timer);
+				// 		timer = null;
+				// 		timer = {};
+				// 	}
+
+				// }, 10);
 			}
 
 			var resetPlot = function () {
@@ -121,7 +153,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			}
 
 
-			shared.waitForElem({elems:"#arena"}, function (options) {
+			g.waitForElem({elems:"#arena"}, function (options) {
 
 
 				react.push({

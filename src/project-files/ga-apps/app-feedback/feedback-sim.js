@@ -65,7 +65,7 @@ app.factory("feedback-sim", ['data', function (data) {
 
     var step = function (dna, duration) {
 
-        // console.log("step simulator");
+        // console.log("step simulator", dna);
 
         changeplot(dna, duration);
 

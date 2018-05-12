@@ -14,7 +14,7 @@ nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
 
 
-var middleware = require("./middleware/middleware.js");
+// var middleware = require("./middleware/middleware.js");
 
 const config = require("./config.js");
 

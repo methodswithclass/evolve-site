@@ -113,7 +113,7 @@ app.factory("display.service", ["utility", function (u) {
 		$hud = $("#hudtoggle");
 		$controls = $("#controlstoggle");
 
-		$stage.css({top:($controls.offset().top - $hud.offset().top) + $controls.height() + 100 + "px", height:(g.isMobile() ? "50%" : "50%")})
+		// $stage.css({top:($controls.offset().top - $hud.offset().top) + $controls.height() + 100 + "px", height:(g.isMobile() ? "50%" : "50%")})
 
 	})
 
@@ -320,7 +320,7 @@ app.factory("display.service", ["utility", function (u) {
 	}
 
 
-	var controlsSetup = function () {
+	var controlsSetup = function (name) {
 
 		// interface1:function (name) {
 
@@ -337,7 +337,13 @@ app.factory("display.service", ["utility", function (u) {
 
 			// orientation = automatic();
 			// orientation = wantHorizontal();
-			orientation = wantVertical();
+			
+			// if (name == "trash") {
+				orientation = wantVertical();
+			// }
+			// else if (name == "feedback") {
+			// 	orientation = wantHorizontal();
+			// }
 
 			if (g.isMobile()) {
 				
@@ -375,7 +381,7 @@ app.factory("display.service", ["utility", function (u) {
 			
 
 			// controlsSetup[u.getInterface()]();
-			controlsSetup();
+			controlsSetup("trash");
 		});
 
 		$(window).resize(function () {
@@ -383,7 +389,7 @@ app.factory("display.service", ["utility", function (u) {
 			console.log("resize");
 
 			// controlsSetup[u.getInterface()]();
-			controlsSetup();
+			controlsSetup("trash");
 		})
 
 		return "success";
@@ -394,14 +400,16 @@ app.factory("display.service", ["utility", function (u) {
 		g.waitForElem({elems:"#arena"}, function () {
 			
 			
-			controlsSetup[u.getInterface()]();
+			// controlsSetup[u.getInterface()]();
+			controlsSetup("feedback");
 		});
 
 		$(window).resize(function () {
 
 			console.log("resize");
 
-			controlsSetup(u.getInterface())();
+			// controlsSetup(u.getInterface())();
+			controlsSetup("feedback");
 		})
 
 		return "success";
@@ -413,14 +421,16 @@ app.factory("display.service", ["utility", function (u) {
 		g.waitForElem({elems:"#arena"}, function () {
 			
 			
-			controlsSetup[u.getInterface()]();
+			// controlsSetup[u.getInterface()]();
+			controlsSetup("recognize");
 		});
 
 		$(window).resize(function () {
 
 			console.log("resize");
 
-			controlsSetup[u.getInterface()]();
+			// controlsSetup[u.getInterface()]();
+			controlsSetup("recognize");
 		})
 
 		return "success";

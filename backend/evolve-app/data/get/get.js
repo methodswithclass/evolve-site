@@ -2,7 +2,8 @@
 
 // var evolveFact = require("mc-evolve");
 var evolveFact = require("../../__ga/evolve_async.js");
-var g = require("../../__ga/shared.js").utility_service;
+var g = require("mc-shared").utility_service;
+// var g = require("../../__ga/shared.js").utility_service;
 
 var SESSION_EXPIRY = 3600*24*1000;
 
@@ -23,20 +24,20 @@ var makeProgramString = function ($options) {
 
 
 	var programExists = g.doesExist(program);
-	var optionsExists = g.doesExist(options);
+	var optionsExists = g.doesExist(options.processType);
 
 
 	var programString;
-	var typeString;
+	var typeString = "";
 
 
 	if (programExists) {
-		programString = program;
+		programString = program + "/" + program;
 	}
 
 
 	if (optionsExists) {
-		typeString = "/" + program + "-types/" + program + "_" + options.processType + ".js";
+		typeString += "-types/" + program + "_" + options.processType + ".js";
 	}
 
 	

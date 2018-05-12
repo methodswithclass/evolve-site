@@ -36,10 +36,12 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 		console.log("build controller", self.name);
 
         react.subscribe({
-            name:"ev.feedback",
+            name:"data" + "feedback",
             callback:function (x) {
 
-                step({}, {}, x.best.dna);
+                // console.log("best", x.evdata ? x.evdata.best : [], x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);
+
+                step({}, {}, x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);
             }
 
         });
@@ -101,10 +103,10 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
     var step = function (self, $scope, dna) {
 
-        simulator.step(dna, 200);
+        simulator.step(dna, 300);
     }
 
-    var play = function (self, $scope) {
+    var run = function (self, $scope) {
         
         evolve.run($scope);
     }
@@ -123,7 +125,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 		refresh:refresh,
 		restart:restart,
 		step:step,
-		play:play,
+		run:run,
 		stop:stop
 
 	}

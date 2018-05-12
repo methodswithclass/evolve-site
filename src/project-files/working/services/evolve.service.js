@@ -218,7 +218,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
             running(false, _$scope);
 
-            u.toggle("show", "run", {delay:params.delay, fade:params.fade});
             u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
             u.toggle("show", "hud", {delay:params.delay, fade:params.fade});
             u.toggle("hide", "breakfeedback", {delay:params.delay});
@@ -235,6 +234,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             }
             else {
 
+                u.toggle("show", "run", {delay:params.delay, fade:params.fade});
 
                 if (self.name == "trash")  {
 
