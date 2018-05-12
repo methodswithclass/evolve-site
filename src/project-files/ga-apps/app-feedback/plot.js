@@ -18,14 +18,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			var total = pdata.genome;
 			var spread = pdata.spread;
 
-			var shared = window.shared.utility_service;
-
 			var pointSize = g.isMobile() ? 4 : 2;
 
 			var $inner = $("#innerplot");
 
 			var plot = [];
-
 			var zeros = [];
 
 			for (i in total) {
@@ -37,9 +34,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				var plotHeight = $inner.height();
 				var dataHeight = spread.size;
 				//var zero = dataHeight/2;
-				var plotfactor = plotHeight/dataHeight;
+				var plotfactor = plotHeight/(dataHeight+1);
 
 				var value = plotfactor*y;
+
+				// console.log(plotHeight, dataHeight, plotfactor, value, y);
 
 				//console.log(value);
 
@@ -68,20 +67,30 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				self.changeY = function (dna, duration) {
 
-					self.coords.y = dna[self.index];
+					var currentCoord = normalize($(container).position().top);
+					// console.log("current", currentCoord);
+					self.coords.y = ((typeof dna !== "undefined") 
+					                ? (Array.isArray(dna) 
+					                   ? (typeof dna[self.index] !== "undefined" 
+					                      ? dna[self.index] 
+					                      : self.coords.y) 
+					                   : parseFloat(dna)) 
+					                : self.coords.y);
+					// console.log("newvalue", newValue, dna);
+					var nextCoord = normalize(self.coords.y);
 
-					$(container).animate({
-						top:normalize(self.coords.y)
-					}, 
-	                {
-						duration:duration, 
-						complete:function () {
+					var topProp = {top:nextCoord}
+					var transProp = [
+						{transform:"translateY(currentCoord)"},
+						{transform:"translateY(nextCoord)"}
+					]
 
-							// if (self.index+1 < plot.length) {
-							// 	plot[self.index+1].changeY(dna, duration)
-							// }
+					var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
 
-						}
+					// console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
+
+					$(container).animate(topProp, {
+						duration:duration
 					});
 				}
 
@@ -125,27 +134,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			var changeplot = function (dna, duration) {
 
-				for (i in plot) {
-				// if (plot.length > 0) {
-					plot[i].changeY(dna, duration);
-				}
+				plot.forEach((value, index) => {
 
-				// var i = 0;
-				// var isArray = Array.isArray(dna);
-				// var timer = setInterval(function () {
+					value.changeY(dna, duration);
+				})
 
-				// 	if (i < plot.length) {
-				// 		plot[i].changeY((isArray ? dna[i] : dna), duration);
-
-				// 		i++;
-				// 	}
-				// 	else {
-				// 		clearInterval(timer);
-				// 		timer = null;
-				// 		timer = {};
-				// 	}
-
-				// }, 10);
 			}
 
 			var resetPlot = function () {

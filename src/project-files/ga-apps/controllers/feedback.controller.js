@@ -11,7 +11,6 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     var events = shared.events_service;
 
 
-
 	var setup = function (self, $scope) {
 
 		pageBuilt = display.beenBuilt(self.name);
@@ -35,21 +34,18 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
 		console.log("build controller", self.name);
 
+        processTypes = config.get("types.processTypes")
+
+        $scope.programInput = config.get("global.feedback");
+
         react.subscribe({
             name:"data" + "feedback",
             callback:function (x) {
 
-                // console.log("best", x.evdata ? x.evdata.best : [], x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);
-
-                step({}, {}, x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);
+                step({}, {}, x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);                
             }
 
         });
-
-
-        processTypes = config.get("types.processTypes")
-
-        $scope.programInput = config.get("global.feedback");
 
 
         react.subscribe({
@@ -103,7 +99,13 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
     var step = function (self, $scope, dna) {
 
-        simulator.step(dna, 300);
+        setTimeout(() => {
+
+            var duration = $input.resendInput().programInput.duration;
+
+            simulator.step(dna, duration);
+
+        }, $input.resendInput().programInput.evdelay);
     }
 
     var run = function (self, $scope) {

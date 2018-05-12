@@ -114,6 +114,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     var setStepdata = function () {
 
+        getBest();
 
     	api.stepdata(function (res) {
 
@@ -138,7 +139,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             	genB = genA;
             }
 
-            getBest();
+            
 
             setTimeout(function () {
 
@@ -247,10 +248,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
                     simulator.refresh(); 
                 });
             }
-
-            // setTimeout(function () {
-            //     $("#evolvedata").animate({color:"#000"}, 600);
-            // }, 300);
 
     	});
 
@@ -365,13 +362,6 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
             runEvolveComplete(_$scope);
         })
-
-
-        // setTimeout(function () {
-        //     $("#evolvepage").animate({color:"#fff"}, 600);
-        //     $("#evolvepage").addClass("white-t");
-        // }, 300);
-
 
     }
 
