@@ -156,7 +156,7 @@ var compileSass = function () {
 
 
 module.exports = {
-	forceSSl:forceSSL,
+	forceSSL:forceSSL,
 	refresh:refreshOnly,
 	refreshAllBut:refreshAllBut,
 	compileSass:compileSass
