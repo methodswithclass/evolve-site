@@ -45,6 +45,18 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				return value;
 			}
 
+
+			var makeClass = function (y) {
+
+				var style = document.createElement('style');
+				style.type = 'text/css';
+				var className = ".move-" + g.truncate(y, 0);
+				style.innerHTML = className + " { transform: translate(0, y) }";
+				document.getElementsByTagName('head')[0].appendChild(style);
+
+				return className;
+			}
+
 			var point = function (x, $index) {
 
 				var self = this;
@@ -57,6 +69,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				var container = document.createElement("div");
 				$(container).addClass("absolute black-back");
+				container.style.id = "point-" + self.index;
 				container.style.width = pointSize + "px";
 				container.style.height = pointSize + "px";
 				container.style.borderRadius = pointSize/2 + "px";
@@ -67,8 +80,8 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				self.changeY = function (dna, duration) {
 
-					var currentCoord = normalize($(container).position().top);
-					// console.log("current", currentCoord);
+					// var currentCoord = normalize($(container).position().top);
+					// // console.log("current", currentCoord);
 					self.coords.y = ((typeof dna !== "undefined") 
 					                ? (Array.isArray(dna) 
 					                   ? (typeof dna[self.index] !== "undefined" 
@@ -76,22 +89,28 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 					                      : self.coords.y) 
 					                   : parseFloat(dna)) 
 					                : self.coords.y);
-					// console.log("newvalue", newValue, dna);
+					// // console.log("newvalue", newValue, dna);
 					var nextCoord = normalize(self.coords.y);
 
-					var topProp = {top:nextCoord}
-					var transProp = [
-						{transform:"translateY(currentCoord)"},
-						{transform:"translateY(nextCoord)"}
-					]
+					// var topProp = {top:nextCoord}
+					// var transProp = [
+					// 	{transform:"translateY(currentCoord)"},
+					// 	{transform:"translateY(nextCoord)"}
+					// ]
 
-					var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
+					// var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
 
-					// console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
+					// // console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
 
-					$(container).animate(topProp, {
-						duration:duration
-					});
+					// $(container).animate(topProp, {
+					// 	duration:duration
+					// });
+
+
+					var className = makeClass(nextCoord);
+
+					$(container).addClass(className);
+
 				}
 
 				self.destroy = function () {

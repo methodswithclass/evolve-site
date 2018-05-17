@@ -204,7 +204,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             }
             else {
 
-                $scope.resetgen();
+                self.resetgen();
 
 
                 next(options);
@@ -645,8 +645,15 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     }
 
     self.resetgen = function  () {
+        
+        u.toggle("show", "refreshfeedback", {fade:800});
+        u.toggle("hide", "refreshfeedback", {delay:2000, fade:800});
 
-        controller.resetgen(self, $scope);
+        evolve.resetgen(function () {
+
+            $scope.stepdata = {}
+            $scope.evdata = {};
+        });
     }
 
     self.run = function () {
