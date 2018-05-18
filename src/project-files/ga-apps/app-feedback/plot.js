@@ -92,24 +92,26 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 					// // console.log("newvalue", newValue, dna);
 					var nextCoord = normalize(self.coords.y);
 
-					// var topProp = {top:nextCoord}
-					// var transProp = [
-					// 	{transform:"translateY(currentCoord)"},
-					// 	{transform:"translateY(nextCoord)"}
-					// ]
+					var topProp = {top:nextCoord}
+					var transProp = [
+						{transform:"translateY(currentCoord)"},
+						{transform:"translateY(nextCoord)"}
+					]
 
-					// var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
+					var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
 
-					// // console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
+					// console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
 
 					// $(container).animate(topProp, {
 					// 	duration:duration
 					// });
 
+					$(container).css(topProp);
 
-					var className = makeClass(nextCoord);
 
-					$(container).addClass(className);
+					// var className = makeClass(nextCoord);
+
+					// $(container).addClass(className);
 
 				}
 
