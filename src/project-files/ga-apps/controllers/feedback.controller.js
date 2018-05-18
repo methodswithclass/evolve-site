@@ -90,13 +90,6 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         evolve.resetgen();
     }
 
-    var restart = function (self, $scope) {
-
-        
-        // $scope.running(false);
-        // simulator.reset();
-    }
-
     var step = function (self, $scope, dna) {
 
         setTimeout(() => {
@@ -126,7 +119,6 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 		build:build,
 		enter:enter,
 		refresh:refresh,
-		restart:restart,
 		step:step,
 		run:run,
 		stop:stop

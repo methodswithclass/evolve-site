@@ -28,13 +28,16 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var cleanBlock = function (x, y) {
 
-
+        console.log("no clean block");
     }
 
 
     react.subscribe({
         name:"robot",
         callback:function (x) {
+
+            console.log("assign man object");
+
             man = x;
         }
     })
@@ -44,6 +47,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         name:"block.clean",
         callback:function (x) {
 
+            console.log("assign clean block function");
+
             cleanBlock = x;
         }
     })
@@ -52,7 +57,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     var output = function (_sout) {
 
         react.push({
-            name:"sim.trash",
+            name:"sim." + name,
             state:_sout
         });
     }
