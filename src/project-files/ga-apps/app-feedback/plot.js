@@ -165,28 +165,40 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			}
 
 
-			g.waitForElem({elems:"#arena"}, function (options) {
+			var setArenaSize = function  () {
+
+				g.waitForElem({elems:"#arena"}, function (options) {
 
 
-				react.push({
-					name:"importplot",
-					state:{
-						changeplot:changeplot,
-						createplot:createPlot,
-						resetplot:resetPlot
-					}
-				});
+					react.push({
+						name:"importplot",
+						state:{
+							changeplot:changeplot,
+							createplot:createPlot,
+							resetplot:resetPlot
+						}
+					});
 
-				var ed = u.correctForAspect({
-					id:"plot",
-					factor:0.5, 
-					aspect:2, 
-					width:$(window).width(), 
-					height:$(window).height()
+					var ed = u.correctForAspect({
+						id:"plot",
+						factor:g.isMobile() ? 0.7 : 0.3, 
+						aspect:2, 
+						width:$(window).width(), 
+						height:$(window).height()
+					})
+
+					$("#arena").css({width:ed.width, height:ed.height});
+
 				})
 
-				$("#arena").css({width:ed.width, height:ed.height});
+			}
 
+
+			setArenaSize();
+
+			$(window).resize(() => {
+
+				setArenaSize();
 			})
 
 		}
