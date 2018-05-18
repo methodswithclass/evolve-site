@@ -1,13 +1,23 @@
-app.factory("input.service", ["utility", "events.service", "global.service", 'react.service', 'config.service', function (u, events, g, react, config) {
+app.factory("input.service", ["utility", 'config.service', function (u, config) {
 
 
 	var self = this;
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
+
 
 
 	self.global = {};
 	self.temp = {};
 
     self.name;
+
+    var _$scope = {};
 
 
 	var crossoverMethods = config.get("types.crossoverMethods");
@@ -21,19 +31,6 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 		value:"value",
 		string:"string"
 	}
-
-
-	// var sendVars = function () {
-
-	// 	react.push({
-	// 		name:"evolve.vars",
-	// 		state:{
-	// 			crossoverMethods:crossoverMethods,
-	// 			reproductionTypes:reproductionTypes
-	// 		}
-	// 	})
-
-	// }
 
 
 	var getValue = function ($value) {
@@ -77,11 +74,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     		string:"string"
     	}
 
-    	// console.log("resolve display input", options);
-
 		if (options.type == types.value) {
-
-			// console.log("type value");
 
 			$pool = pool > 1 ? getValue(pool) : pool;
 			$mutate = mutate > 1 ? getValue(mutate) : mutate;
@@ -89,13 +82,9 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 		}
 		else if (options.type == types.string) {
 
-			// console.log("type string");
-
 			$pool = pool < 1 ? getString(pool) : pool;
 			$mutate = mutate < 1 ? getString(mutate) : mutate;
  		}
-
- 		// console.log("resolve display result", {$pool, $mutate});
 
     	return {
     		pool:$pool,
@@ -124,7 +113,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
     }
 
-    var setSettings = function ($scope, input) {
+    var setSettings = function (input) {
 
     	var values = resolveDisplay({
     		pool:input.pool,
@@ -133,9 +122,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     	})
 
 
-    	// console.log("set settings", input.pool, input.mutate, values.pool, values.mutate);
-
-    	$scope.settings = {
+    	_$scope.settings = {
         	gens: 				input.gens,
         	runs: 				input.runs,
         	pop:  				input.pop,
@@ -146,21 +133,28 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
     		pool: 				values.pool,
     		mutate: 			values.mutate,
             goal:               "max",
-            method:             input.method || self.temp[self.name].method,
+            method:             input.method || crossoverMethods.default,
 
         	runPopType: 		input.runPopType || self.temp[self.name].runPopType,
     		reproductionType: 	input.reproductionType || self.temp[self.name].reproductionType
         }
 
-        // console.log("set settings", $scope.settings);
 
-        return $scope.settings;
+        // console.log("set settings", _$scope.settings);
+
+        return _$scope.settings;
 
     }
 
+    var getSettings = function () {
 
-    var changeInput = function ($scope) {
+        return _$scope.settings;
+    }
 
+
+    var changeInput = function (method) {
+
+        console.log("change input", method);
 
     	var manual = {
             gens: 				$("#gensinput").val(),
@@ -171,12 +165,12 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         	splicemax: 			$("#splicemaxinput").val(),
         	pool: 				$("#poolinput").val(),
         	mutate: 			$("#mutateinput").val(),
-        	method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
+        	method: 		    (method ? method 
+                           : (self.global[self.name].method ? self.global[self.name].method : crossoverMethods.default))
         }
 
-        // console.log("change input", manual);
 
-    	return setSettings($scope, manual);
+    	return setSettings(manual);
     }
 
 
@@ -185,6 +179,14 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         self.name = name;
         self.global[self.name] = {};
         self.temp[self.name] = {};
+
+        react.subscribe({
+            name:"scope" + self.name,
+            callback:function(x) {
+
+                _$scope = x;
+            }
+        })
     }
 
 
@@ -200,8 +202,6 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
 
  	var setInput = function (options) {
-
-        console.log("set input", self.name, options);
 
  		for (var i in options) {
 
@@ -238,7 +238,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			parents: 			update ? getIntFromId("parents") 					: self.temp[self.name].parents,
 			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp[self.name].splicemin,
 			splicemax: 			update ? getIntFromId("splicemax") 					: self.temp[self.name].splicemax,
-            method:             update ? $method.val()                              : self.temp[self.name].method,
+            method:             update ? $method.val()                              : crossoverMethods.default,
 
             pool:               values.pool,
             mutate:             values.mutate,
@@ -250,7 +250,14 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 			session: 			self.temp[self.name].session || ""
 		}
 
-		// console.log("get input", update, self.temp[self.name], self.global[self.name]);
+
+        react.push({
+            name:"data" + self.name,
+            state:{
+                input:self.global[self.name]
+            }
+        })
+
 
         setValues(self.global[self.name]);
 
@@ -264,8 +271,6 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
 
     var resetInput = function () {
-
-    	// sendVars();
 
 		setInput($$reset_initial);	
 	}
@@ -284,6 +289,7 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
         masterReset:masterReset,
 		setInput:setInput,
 		getInput:getInput,
+        getSettings:getSettings,
 		resendInput:resendInput,
 		setSettings:setSettings,
 		changeInput:changeInput
@@ -291,3 +297,5 @@ app.factory("input.service", ["utility", "events.service", "global.service", 're
 
 
 }]);
+
+

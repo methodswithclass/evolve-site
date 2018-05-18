@@ -1,8 +1,15 @@
-app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service', 'api.service', 'input.service', function ($http, u, events, react, api, $input) {
+app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', function ($http, u, api, $input) {
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
+
 
     var i = 1;
     var _score = 0;
-    var evdata = {};
     var genome;
     var active = false;
     var running = false;
@@ -26,17 +33,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
 
     react.subscribe({
-        name:"programInput" + name,
-        callback:function(x) {
-
-            console.log("assign totalActions from programInput in simulator");
-
-            totalActions = x.totalSteps;
-        }
-    })
-    
-
-    react.subscribe({
         name:"robot",
         callback:function (x) {
 
@@ -45,15 +41,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             man = x;
         }
     })
-
-    react.subscribe({
-        name:"ev.trash",
-        callback:function (x) {
-            // console.log("set evdata trash", x);
-            evdata = x;
-        }
-
-    });
 
 
     react.subscribe({
@@ -68,8 +55,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
 
     var output = function (_sout) {
-
-        // console.log("output");
 
         react.push({
             name:"sim." + name,
@@ -137,16 +122,11 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             assessMove();
 
             clean();
-
-            // console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
         });
 
     }
 
     var performStep = function (_input) {
-
-        //console.log("simulate " + i);
-
 
         if (_input.step) u.toggle("hide", "step");
 
@@ -154,8 +134,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
 
             api.simulate.trash({name:name, i:_input.i, session:_input.session}, function (res) {
-
-                // console.log("run simulation", res.data);
 
                 var result = res.data.result;
 
@@ -185,8 +163,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var setup = function (complete) {
 
-        console.log("sim setup: instruct", evdata);
-
+        // console.log("sim setup");
 
         totalActions = $input.getInput().programInput.totalSteps;
         
@@ -200,8 +177,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
         i = 1;
         _score = 0;
-
-        // console.log("reset sim");
 
         output({
             score:{
@@ -218,18 +193,18 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
             }
         });
 
-        // setup();
-
         events.dispatch("resetenv");
-
 
         api.resetEnvironment(function (res) {
 
-            console.log("Reset environment success", res);
+            // console.log("Reset environment success", res);
         });
 
+        g.waitForElem({elems:man}, () => {
 
-        man.outer.css({left:0, top:0});
+            man.outer.css({left:0, top:0});
+
+        });
 
     }
 
@@ -257,7 +232,7 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
 
     var play = function (session, _colors) {
 
-        console.log("play", evdata.index);
+        // console.log("play");
 
         colors = _colors;
 
@@ -291,9 +266,6 @@ app.factory("trash-sim", ['$http', 'utility', 'events.service', 'react.service',
     }
 
     var complete = function () {
-
-        // events.dispatch("completeSim");
-
 
         u.toggle("enable", "refresh", {fade:300, delay:100});
         u.toggle("enable", "restart", {fade:300, delay:200});

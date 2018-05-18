@@ -1,0 +1,25 @@
+<div class="relative width">
+	<div class="relative width hcenter padding-v-50 white" ng-repeat="block in data">
+
+		<div class="relative width text-center font-30 padding-v-20">
+			{{block.title}}
+		</div>
+
+		<div class="relative width hcenter font-15">
+
+			<div class="relative width hcenter margin-v-20" ng-repeat="section in block.text">
+				
+				<div class="relative width hcenter padding-v-20" ng-repeat="paragraph in section">	
+					<div class="relative line-height-30" ng-bind-html="html(paragraph)"></div>
+				</div>
+
+				<div class="relative width60 height-20 hcenter border-bottom border-white"></div>
+
+			</div>
+		</div>
+
+		<!-- <div class="relative width80 height-50 hcenter border-bottom-green6"></div> -->
+
+	</div>
+
+</div>

@@ -1,41 +1,14 @@
-app.factory("trash.controller", ["trash-sim", "utility", "events.service", "global.service", 'react.service', 'api.service', 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, events, g, react, api, config, evolve, $input, display) {
+app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, api, config, evolve, $input, display) {
 
 
 	var pageBuilt;
 
 
-	var programInputConfig = function () {
-
-        var $parent = $("#programConfig");
-
-        $parent.css({height:(g.isMobile() ? "60%" : "80%")})
-    }
-
-
-    var setupProgramInputConfig = function () {
-
-    	// console.log("setup program input config \n\n\n\n\n")
-
-        display.waitForElem({elems:"#programConfig"}, function () {
-
-        	// console.log("programConfig elem exists \n\n\n\n\n\n")
-
-            programInputConfig();
-
-
-            $(window).resize(function () {
-
-                programInputConfig();
-            })
-
-        });
-
-    }
-
-    var arenaEvents = function () {
-
-        console.log("no events");
-    }
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
 
 
 	var setup = function (self, $scope) {
@@ -83,24 +56,24 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
 	    self.programInputChange = function () {
 
-	        // console.log("grid size", programInput.grid.size);
 
 	        self.programInput.update();
-
-	        // console.log("program input change");
 
 	        $input.setInput({
 	            programInput:self.programInput
 	        })
 
 
-	        setTimeout(function () {
+            // events.dispatch("init-settings");
 
-	            simulator.refresh();
 
-	        }, 1000);
+	        // setTimeout(function () {
 
-	    } 
+	        //     simulator.refresh();
+
+	        // }, 1000);
+
+	    }
 
 	}
 
@@ -116,8 +89,6 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 
 
 	var build = function (self, $scope) {
-
-		console.log("build controller", self.name);
 
 
         $scope.grids = [
@@ -177,11 +148,20 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
             return percentToRate ? self.programInput.trashPercent/100 : self.programInput.trashRate*100;
         }
 
-        self.programInput.trashRate = self.programInput.convertTrash(true);
-        self.programInput.totalSteps = self.programInput.getTotalSteps();
-
-
         self.programInput.validate = function () {
+
+
+            self.programInput.trashPercent =   (self.programInput.trashPercent == "" ) ?  ""
+                                           : (self.programInput.trashPercent > 90 ? 90 : self.programInput.trashPercent)
+            self.programInput.trashRate =  (self.programInput.trashRate == "") ?  ""
+                                           : (self.programInput.trashRate > 0.9 ? 0.9 : self.programInput.trashRate);
+
+
+            self.programInput.trashPercent = (self.programInput.trashPercent == "") ?  "" 
+                                            : (self.programInput.trashPercent < 1 ? 1 : self.programInput.trashPercent)
+            self.programInput.trashRate = (self.programInput.trashRate == "" ) ? "" 
+                                           :(self.programInput.trashRate < 0.01 ? 0.01 : self.programInput.trashRate)
+
 
             var _temp = {
                 grid:self.programInput.grid.size,
@@ -190,18 +170,6 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
             }
 
             self.programInput.grid.size = self.programInput.grid.size >= 3 && self.programInput.grid.size <= 15 ? parseInt(self.programInput.grid.size) : 5;
-
-            self.programInput.trashPercent = self.programInput.trashPercent >= 0 
-               && self.programInput.trashPercent <= 90
-               && parseInt(self.programInput.trashPercent) 
-            ? parseInt(self.programInput.trashPercent) : "";
-           
-
-
-            self.programInput.trashRate = self.programInput.trashRate >= 0 
-               && self.programInput.trashRate <= 0.9 
-               && parseFloat(self.programInput.trashRate) 
-            ? parseFloat(self.programInput.trashRate) : 0;
 
 
             if (_temp.grid != self.programInput.grid.size || _temp.percent != self.programInput.trashPercent || _temp.rate != self.programInput.trashRate) {
@@ -244,20 +212,17 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
         }
 
 
+
         self.programInput.update();
         
 	}
 
 	var enter = function (self, $scope) {
 
-		// console.log("enter \n\n\n\n\n");
-
-		setupProgramInputConfig();
-
 
         if (!pageBuilt) {
 
-            $input.createInput(self.name);
+            $input.createInput(self.name)
 
         }
         else {
@@ -279,8 +244,8 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
         })
 
         react.push({
-        	name:"programInput" + self.name,
-        	state:self.programInput
+            name:"data" + self.name,
+            state:{input:$input.getInput()}
         })
 
 
@@ -320,6 +285,18 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
         simulator.stop();  
     }
 
+    var run = function (self, $scope) {
+
+        evolve.run($scope);
+    }
+
+
+    var breakRun = function (self, $scope) {
+
+        evolve.breakRun($scope);
+    }
+
+    
 
 	return {
 		setup:setup,
@@ -331,7 +308,9 @@ app.factory("trash.controller", ["trash-sim", "utility", "events.service", "glob
 		restart:restart,
 		step:step,
 		play:play,
-		stop:stop
+		stop:stop,
+        run:run,
+        breakRun:breakRun
 	}
 
 

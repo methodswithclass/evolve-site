@@ -1,41 +1,25 @@
-app.directive("loading", ['global.service', 'loading.service', function (g, loading) {
+app.directive("loading", ['loading.service', 'utility', function (loading, u) {
 
 	return {
 		restrict:"E",
-		scope:false,
+		scope:true,
 		replace:true,
-        templateUrl:"assets/views/common/interface/loading.html",	
+		template:"<div ng-include='getContentUrl()'></div>",
 		link:function ($scope, element, attr) {
 
 
-			var setMessage = function () {
 
-				// console.log("set message", message);
-
-		        $scope.loadmessage = loading.getMessage();
-
-		        $scope.$apply();
-		    }
+			var shared = window.shared;
+			var g = shared.utility_service;
 
 
-		 //    var start = function () {
+			$scope.getContentUrl = function () {
 
+				var url = "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/loading.html";
 
-			//     var updateTimer = setInterval(function () {
+				return url;
+			}
 
-			//     	setMessage();
-			//     }, 30);
-
-			// }
-
-			// var stop = function () {
-
-			// 	clearInterval(updateTimer);
-			// 	updateTimer = null;
-			// }
-
-
-			// loading.controlLoading(start, stop);
 
     	}
 

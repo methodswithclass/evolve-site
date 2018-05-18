@@ -4,12 +4,15 @@ app.directive("navbtn", ['states', 'utility', 'evolve.service', function (states
 		restrict:"E",
 		scope:{
 			name:'@',
-			loc:'@'
+			loc:'@',
+			varClass:'@'
 		},
-		replace:true,
-		template:"<div class='absolute width height pointer z-50'><div class='absolute center'>{{name}}</div></div>",	
+		replace:true,  
+		template:"<div class='absolute width height rounded10 shadow font-20 pointer z-50' ng-class='varClass'><div class='absolute center'>{{name}}</div></div>",	
 		link:function ($scope, element, attr) {
 
+
+			// console.log("nav button", $scope.varClass);
 
 			var hideElements = function () {
 

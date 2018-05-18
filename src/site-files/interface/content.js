@@ -1,29 +1,29 @@
-app.directive('content', ['global.service', function (g) {
+app.directive('content', ['utility', function (u) {
 
 	return {
 		restrict:'E',
 		scope:{
 			data:'='
 		},
-        templateUrl:"assets/views/" + (g.isMobile() ? "mobile" : "desktop") + "/site/content.html",
+        template:"<div ng-include='getContentUrl()'></div>",
 		link:function ($scope, element, attr) {
 			
-			$scope.html = g.renderHtml;
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+
+			$scope.html = u.renderHtml;
 
 
 			$scope.getContentUrl = function() {
     
-		        var view;
+				// console.log("get interface content", u.getInterface());
 
-		        if (g.isMobile()) {
-
-		            view = "assets/views/mobile/site/content.html";
-		        }
-			    else {
-			        view = "assets/views/desktop/site/content.html";
-			    }
-
-		        return view;
+		    	return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/site/content.html";
 		    }
 
 	    }
