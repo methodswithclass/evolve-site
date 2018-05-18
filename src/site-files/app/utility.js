@@ -1,6 +1,42 @@
 
+var forceMobile = function() {
 
-app.factory("utility", function () {
+    return true;
+}
+
+
+
+app.factory("utility", ["general", function (gen) {
+
+
+    var types = {
+        one:"interface1",
+        two:"interface2",
+        unset:"not set"
+    }
+
+    var interfaces = [
+    {
+        name:types.one
+    },
+    {
+        name:types.two
+    }
+    ]
+
+    var interface = {
+        name:types.unset
+    };
+
+
+    var getViewTypes = function () {
+
+        return {
+            object:types,
+            array:interfaces,
+            current:interface
+        }
+    }
 
     // blanket check for any mobile vs desktop user agent
     var checkMobile = function() {
@@ -125,6 +161,53 @@ app.factory("utility", function () {
 
     }
 
+    var hasChanged = false;
+
+    var getInterface = function () {
+
+        return interface.name;
+    }
+
+    var isInterface = function (thisOne) {
+
+        return interface.name == thisOne;
+    }
+
+    var setInterface = function ($interface) {
+
+        var found = interfaces.find((p) => {
+
+            return p.name == $interface;
+        })
+
+        if (found) interface.name = found.name;
+        else console.log("set value:", $interface, "is not an interface");
+
+        hasChanged = true;
+    }
+
+    var changeInterface = function () {
+
+        if (interface.name == interfaces[0].name) {
+
+            setInterface(interfaces[1].name);
+        }
+        else {
+            setInterface(interfaces[0].name)
+
+        }
+    }
+
+    var interfaceChanged = function () {
+
+        return hasChanged;
+    }
+
+    var resetChanged = function () {
+
+        hasChanged = false;
+    }
+
     var stateName = function (state) {
 
         var hashIndex = state.indexOf("#");
@@ -133,9 +216,18 @@ app.factory("utility", function () {
     }
 
 	return {
+        getViewTypes:getViewTypes,
+        getInterface:getInterface,
+        isInterface:isInterface,
+        setInterface:setInterface,
+        changeInterface:changeInterface,
+        interfaceChanged:interfaceChanged,
+        resetChanged:resetChanged,
 		toggle:toggle,
         correctForAspect:makeAspect,
-        stateName:stateName
+        stateName:stateName,
+        renderHtml:gen.renderHtml
 	}
 
-})
+}]);
+

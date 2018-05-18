@@ -1,11 +1,19 @@
-app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', "react.service", 'api.service', 'input.service', 'display.service', function ($http, u, g, events, react, api, $input, display) {
+app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'display.service', function ($http, u, api, $input, display) {
 
 	return {
 		restrict:"E",
 		scope:false,
 		replace:true,
-		template:"<div class='absolute width height'></div>",		
+		template:"<div class='absolute width height vcenter right0'></div>",		
 		link:function ($scope, element, attr) {
+
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+			var inter = u.getViewTypes()
 
 
 			var name = "trash";
@@ -15,11 +23,13 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 			var effdim;
 			var ed;
 
-			var stageFactor = 0.3;
-			var $stage = $("#arena");
+
+			var $stage = "#arena";
+			
 
 			var col = [];
 			var arena = [];
+
 
 			var block = function (input) {
 
@@ -30,22 +40,34 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 
 				var container = document.createElement("div");
-				$(container).addClass("absolute border");
-				container.style.width = $stage.width()/cols + "px";
-				container.style.height = $stage.height()/rows + "px";
-				container.style.left = input.x*$stage.width()/cols + "px";
-				container.style.top = input.y*$stage.height()/rows + "px";
-				// console.log("append container", $elem[0], "\n\n\n", container);
-				$elem.append(container);
+				$(container).addClass("absolute " + (u.getInterface() == inter.object.one ? "border " : "border-white ") + (u.getInterface() == inter.object.one ? "white-back" : "black-back"));
+				container.style.width = $(element).width()/cols + "px";
+				container.style.height = $(element).height()/rows + "px";
+
+				container.style.left = input.x*$(element).width()/cols + "px";
+				container.style.top = input.y*$(element).height()/rows + "px";
+				
+				$(element).append(container);
 
 				var outline = document.createElement("div");
-				$(outline).addClass("absolute width40 height40 border center");
+				$(outline).addClass("absolute width50 height50 center " + (u.getInterface() == inter.object.one ? "border" : "border-white"));
 				outline.style.opacity = 0;
 				$(container).append(outline);
 
 				var trash = document.createElement("div");
 				$(trash).addClass("absolute width height red-back");
 				$(outline).append(trash);
+
+
+				var trashInner = document.createElement("div");
+				$(trashInner).addClass("absolute center white font-10");
+				$(trash).append(trashInner);
+
+
+				var icon = document.createElement("i");
+				$(icon).addClass("fas fa-trash-alt");
+				$(trashInner).append(icon);
+
 
 				self.placeTrash = function () {
 					$(outline).css({opacity:1});
@@ -99,10 +121,11 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				clear();
 
+
 				rows = env.arena.length;
 				cols = env.arena.length;
 
-				// console.log("make blocks, env", env ? true : false, "rows", rows, "cols", cols);
+				
 
 				// console.log("push man object");
 
@@ -113,6 +136,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 						height:env.arena.length
 					}
 				})
+
 
 				var square;
 				arena.length = 0;
@@ -130,10 +154,7 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 						square = new block({x:i, y:j});
 						// console.log("make square", i, j);
 
-						//square.addtext(env.arena[i][j].trash);
-
 						if (env.arena[i][j].trash) {
-							//console.log(env.arena[i][j].pos);
 							square.placeTrash();
 						}
 
@@ -159,20 +180,13 @@ app.directive("arena", ['$http', 'utility', 'global.service', 'events.service', 
 
 				ed = u.correctForAspect({
 					id:"arena",
-					factor:stageFactor, 
+					factor:g.isMobile() ? 0.6 : 0.25, 
 					aspect:1, 
 					width:$(window).width(), 
 					height:$(window).height()
 				})
 
-				var elem = document.createElement("div");
-				elem.id = "elem";
-				$(elem).css({width:ed.width, height:ed.height});
-
-				$stage.css({width:ed.width, height:ed.height});
-
-
-				$stage.append(elem);
+				$($stage).css({width:ed.width, height:ed.height});
 			    
 			}
 

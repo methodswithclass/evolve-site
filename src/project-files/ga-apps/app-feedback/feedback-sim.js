@@ -1,4 +1,12 @@
-app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.service', function (data, send, events, react) {
+app.factory("feedback-sim", ['data', function (data) {
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
+
 
     var pdata = data.get("feedback");
 
@@ -57,7 +65,7 @@ app.factory("feedback-sim", ['data', 'send.service', 'events.service', 'react.se
 
     var step = function (dna, duration) {
 
-        // console.log("step simulator");
+        // console.log("step simulator", dna);
 
         changeplot(dna, duration);
 

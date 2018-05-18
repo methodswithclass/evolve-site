@@ -1,11 +1,31 @@
 stateModule.provider("runtime.state", function ($stateProvider) {
   // runtime dependencies for the service can be injected here, at the provider.$get() function.
 
+    var shared = window.shared;
     var g = shared.utility_service;
+    var react = shared.react_service;
+
 
     var _forceMobile = false;
+    var inter;
 
     var provider = {};
+
+
+    react.subscribe({
+        name:"interface",
+        callback:function(x) {
+
+            inter = x;
+        }
+    })
+
+
+    // var initInterface = function ($interface) {
+
+    //     inter = $interface;
+
+    // }
 
     var mobile = function (input) {
 
@@ -14,7 +34,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var baseViewUrl = function (responsive) {
 
-        return "assets/views/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
+        return "assets/views/" + inter + "/" + (responsive ? ((_forceMobile || g.isMobile()) ? "mobile" : "desktop") : "common");
     }
 
 
@@ -32,7 +52,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"feedback#demo",
         url:"/ga-apps/feedback/feedback_demo.html",
-        responsive:false
+        responsive:true
     },
     {
         name:"trash",
@@ -42,7 +62,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"trash#demo",
         url:"/ga-apps/trash/trash_demo.html",
-        responsive:false
+        responsive:true
     },
     {
         name:"recognize",
@@ -52,7 +72,7 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     {
         name:"recognize#demo",
         url:"/ga-apps/recognize/recognize_demo.html",
-        responsive:false
+        responsive:true
     }
     ]
 
@@ -106,16 +126,19 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var addTemplateUrl = function (state) {
 
+
         var $state = states.find(function (p) {
 
             return p.name == state.name;
         });
+
 
         var stateUrl = stateViewUrls.find(function (p) {
 
             return p.name == state.name;
         })
 
+        
         $state.templateUrl = baseViewUrl(stateUrl.responsive) + stateUrl.url;
 
         return $state; 
@@ -130,11 +153,17 @@ stateModule.provider("runtime.state", function ($stateProvider) {
         $stateProvider.state(state);
     }
 
-    provider.$get = function () {
+    provider.$get = ['utility', function (u) {
+
+
+        console.log("set service interface", inter);
+        u.setInterface(inter);
+
 
         var service = function () {
 
             return {
+                stateViewUrls:stateViewUrls,
                 states:states
             }
 
@@ -142,9 +171,11 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
         return new service();
     
-    };
+    }];
 
+    // provider.initInterface = initInterface;
     provider.addState = addState;
+    provider.stateViewUrls = stateViewUrls;
     provider.states = states;
     provider.mobile = mobile;
 

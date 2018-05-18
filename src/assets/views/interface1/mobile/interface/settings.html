@@ -1,0 +1,283 @@
+<div class="absolute width-800 height z-500 font-30 opacity0" id="settingstoggle">
+	
+	<div class="absolute width-100 height-100 left-minus-100 top-200 black-back rounded-left-20 white pointer" id="opensettings" on-tap="open()">
+		<div class="absolute width height font-30">
+			<div class="absolute center">
+				<i class="fas fa-bars"></i>
+			</div>
+		</div>
+		<div class="absolute width height white-back opacity0" id="settingstogglecover"></div>
+		<div class="absolute width170 height-30 bottom-minus-40 right-10 opacity0 white font-20 none" id="opentool">
+			<div class="absolute width height rounded5 black-back opacity70"></div>
+			<div class="absolute width height">
+				<div class="absolute center">
+					settings
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="absolute width height black-back white rounded10 scrollY cutoff touch">
+			
+		<div class="absolute width80 height80 center">
+
+			<div class="relative width height-200">
+
+				<div class="absolute width-100 height-100 center">
+
+					<div class="absolute width170 height-30 top-minus-50 hcenter white-back font-20 rounded5 black opacity0" id="refreshfeedbacktoggle">
+						<div class="absolute center">
+							reset evolve
+						</div>
+					</div>
+					
+
+					<div class="absolute width height white-back black font-40 rounded5 pointer" id="refreshbtn" on-tap="resetGen()">
+						<div class="absolute center">
+							<i class="fas fa-undo-alt"></i>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<div class="relative width padding-v-50" id="genssettingsinner">
+
+				<div class="relative width height-100" id="settings-tabs">
+
+					<div class="absolute width50 height pointer"  on-tap="changeKind('basic')">
+						<div class="absolute width height z-20" id="basic-tab">
+							<div class="absolute width height border-white rounded-top-40 white font-30">
+								<div class="absolute width height-50">
+									<div class="absolute center">
+										Basic
+									</div>
+								</div>
+							</div>
+							<div class="absolute width height rounded-top-40 opacity0" id="settings-basic-cover">
+								<div class="absolute width height rounded-top-40 white-back opacity80" id="settings-basic-inactive-cover"></div>
+								<div class="absolute width height border-white transparent-back rounded-top-40 black font-50">
+									<div class="absolute width height-50">
+										<div class="absolute center">
+											change
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="absolute width50 height right0 pointer" on-tap="changeKind('advanced')">
+						<div class="absolute width height z-10 top-20" id="advanced-tab">
+							<div class="absolute width height border-white rounded-top-40 white font-30">
+								<div class="absolute width height-50">
+									<div class="absolute center">
+										Advanced
+									</div>
+								</div>
+							</div>
+							<div class="absolute width height rounded-top-40" id="settings-advanced-cover">
+								<div class="absolute width height rounded-top-40 white-back opacity80" id="settings-advanced-inactive-cover"></div>
+								<div class="absolute width height border-white transparent-back rounded-top-40 black font-50">
+									<div class="absolute width height-50">
+										<div class="absolute center">
+											change
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="relative width height-1000 black-back font-25 white border-white z-100">
+
+					<div class="absolute width height black-back z-80" id="settings-basic">
+
+						<div class="relative width60 hcenter margin-v-100">
+
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="gensinputouter">
+									
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="gensinputinner">
+											<div class="absolute width90 center text-right right0">
+												generations
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="gensinput" mw-model="settings.gens" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="runsinputouter">
+									
+
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="runsinputinner">
+											<div class="absolute width90 center text-right right0">
+												fitness runs
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="runsinput" mw-model="settings.runs" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="relative width80 hcenter border-white rounded10 margin-v-50">
+
+								<div class="relative width80 hcenter height-50 padding-v-20">
+									<div class="absolute center font-15 white text-center" id="resetwarn">
+										changing these will re-start your generation progress
+									</div>
+								</div>
+
+								<div class="relative width80 hcenter height-100">
+									<div class="absolute width height-50 vcenter border-bottom-white" id="popinputouter">
+										
+
+										<div class="absolute width height80 vcenter">
+											<div class="absolute width60 height" id="popinputinner">
+												<div class="absolute width90 center text-right right0">
+													population
+												</div>
+											</div>
+											<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="popinput" mw-model="settings.pop" mw-keyup="changeInput" validation="integer"></text-input>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="absolute width height black-back z-60" id="settings-advanced">
+
+
+						<div class="relative width80 hcenter margin-v-100">
+
+
+							<div class="relative width hcenter height-100">
+								<div class="absolute width height80 vcenter border-bottom-white" id="methodinputouter">
+									
+
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width50 height" id="methodinputinner">
+											<div class="absolute width90 center text-right right0">
+												crossover method
+											</div>
+										</div>
+										
+
+										<select class="absolute width50 height right0 text-right black-back white font-40 nooutline" id="methodinput" ng-model="model" ng-change="changeMethod(model)">
+											<option ng-repeat="item in methods" value="{{item.method}}">{{item.method}}</option>
+										</select>
+
+
+									</div>
+
+								</div>
+							</div>
+
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="parentsinputouter">
+									
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="parentsinputinner">
+											<div class="absolute width90 center text-right right0">
+												# of parents
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="parentsinput" mw-model="settings.parents" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="poolinputouter">
+									
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="poolinputinner">
+											<div class="absolute width90 center text-right right0">
+												top population %
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="poolinput" mw-model="settings.pool" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="splicemininputouter">
+									
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="splicemininputinner">
+											<div class="absolute width90 center text-right right0">
+												min of gene splice
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="splicemininput" mw--model="settings.splicemin" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="splicemaxinputouter">
+									
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="splicemaxinputinner">
+											<div class="absolute width90 center text-right right0">
+												max of gene splice
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="splicemaxinput" mw-model="settings.splicemax" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+
+							<div class="relative width height-100">
+								<div class="absolute width height-50 vcenter border-bottom-white" id="mutateinputouter">
+									
+
+									<div class="absolute width height80 vcenter">
+										<div class="absolute width60 height" id="mutateinputinner">
+											<div class="absolute width90 center text-right right0">
+												mutation %
+											</div>
+										</div>
+										<text-input mw-class="absolute width40 height right0 text-right transparent-back font-40 white nooutline" mw-id="mutateinput" mw-model="settings.mutate" mw-keyup="changeInput" validation="integer"></text-input>
+									</div>
+
+								</div>
+							</div>
+
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
