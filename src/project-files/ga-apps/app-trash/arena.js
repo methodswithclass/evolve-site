@@ -209,7 +209,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 					$stage = $("#arena");
 
-					display.waitForElem({elems:$stage}, function (options) {
+					g.waitForElem({elems:$stage}, function (options) {
 
 
 						setStageSize();

@@ -4,7 +4,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 		restrict:"E",
 		scope:false,
 		replace:true,
-		template:"<div class='absolute width height'><div class='absolute width80 height80 center' id='innerplot'></div></div>",		
+		template:"<div class='absolute width height'><div class='absolute width80 height80 border center' id='innerplot'></div></div>",		
 		link:function ($scope, element, attr) {
 
 
@@ -31,16 +31,14 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			var normalize = function (y) {
 
+				$inner = $("#innerplot");
+
 				var plotHeight = $inner.height();
 				var dataHeight = spread.size;
 				//var zero = dataHeight/2;
 				var plotfactor = plotHeight/(dataHeight+1);
 
 				var value = plotfactor*y;
-
-				// console.log(plotHeight, dataHeight, plotfactor, value, y);
-
-				//console.log(value);
 
 				return value;
 			}
@@ -57,13 +55,13 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				return className;
 			}
 
-			var point = function (x, $index) {
+			var point = function ($index) {
 
 				var self = this;
 
 				self.index = $index;
 
-				self.coords = {x:x, y:0};
+				self.coords = {x:$index*$inner.width()/total, y:0};
 
 				// console.log("create point", self.coords);
 
@@ -78,40 +76,58 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				
 				$inner.append(container);
 
-				self.changeY = function (dna, duration) {
-
-					// var currentCoord = normalize($(container).position().top);
-					// // console.log("current", currentCoord);
-					self.coords.y = ((typeof dna !== "undefined") 
-					                ? (Array.isArray(dna) 
-					                   ? (typeof dna[self.index] !== "undefined" 
-					                      ? dna[self.index] 
-					                      : self.coords.y) 
-					                   : parseFloat(dna)) 
-					                : self.coords.y);
-					// // console.log("newvalue", newValue, dna);
-					var nextCoord = normalize(self.coords.y);
-
-					var topProp = {top:nextCoord}
-					var transProp = [
-						{transform:"translateY(currentCoord)"},
-						{transform:"translateY(nextCoord)"}
-					]
-
-					var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
-
-					// console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
-
-					// $(container).animate(topProp, {
-					// 	duration:duration
-					// });
-
-					$(container).css(topProp);
+				self.changeCoord = function (options) {
 
 
-					// var className = makeClass(nextCoord);
+					if (options.dir == "x") {
 
-					// $(container).addClass(className);
+						$inner = $("#innerplot");
+
+						self.coords.x = options.value*$inner.width()/total;
+
+						$(container).css({left:self.coords.x});
+
+
+						console.log("coord x", self.coords.x);
+
+					}
+					else if (options.dir == "y") {
+
+						var dna = options.dna;
+						var duration = options.duration;
+
+						self.coords.y = ((typeof dna !== "undefined") 
+						                ? (Array.isArray(dna) 
+						                   ? (typeof dna[self.index] !== "undefined" 
+						                      ? dna[self.index] 
+						                      : self.coords.y) 
+						                   : parseFloat(dna)) 
+						                : self.coords.y);
+						// // console.log("newvalue", newValue, dna);
+						var nextCoord = normalize(self.coords.y);
+
+						var topProp = {top:nextCoord}
+						var transProp = [
+							{transform:"translateY(currentCoord)"},
+							{transform:"translateY(nextCoord)"}
+						]
+
+						var transProp2 = {"-webkit-transform":"translate(0,"+nextCoord+"px)"}
+
+						// console.log("currentcoord", currentCoord, "nextcoord", nextCoord);
+
+						$(container).animate(topProp, {
+							duration:duration
+						});
+
+						// $(container).css(topProp);
+
+
+						// var className = makeClass(nextCoord);
+
+						// $(container).addClass(className);
+
+					}
 
 				}
 
@@ -148,7 +164,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				console.log("create plot");
 
 				for (var i = 0; i < total; i++) {
-					plot[i] = new point(i*$inner.width()/total, i);
+					plot[i] = new point(i);
 					// console.log("new point", plot[i].coords);
 				}
 			}
@@ -157,9 +173,26 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				plot.forEach((value, index) => {
 
-					value.changeY(dna, duration);
+					value.changeCoord({
+						dir:"y", 
+						dna:dna, 
+						duration:duration
+					});
 				})
 
+			}
+
+
+			var changeX = function (duration) {
+
+
+				plot.forEach((value, index) => {
+
+					value.changeCoord({
+						dir:"x", 
+						value:index
+					});
+				})
 			}
 
 			var resetPlot = function () {
@@ -169,7 +202,14 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			var setArenaSize = function  () {
 
+				console.log("resize");
+
 				g.waitForElem({elems:"#arena"}, function (options) {
+
+
+					console.log("arena element exists")
+
+					changeX();
 
 
 					react.push({
