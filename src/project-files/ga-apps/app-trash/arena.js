@@ -194,7 +194,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			var registerEvents = function () {
 
 		   		makeBlocks(environment)
-			})
+			
 
 			    events.on("resetenv", function () {
 
@@ -212,27 +212,24 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 					$stage = $("#arena");
 
 						// console.log("refreshEnvironment success");
+						
+
+					api.refreshEnvironment(function (res) {
+
+
+				    	console.log("Refresh environment", res.data.env);
 
 			            environment = res.data.env;
 
-						api.refreshEnvironment(function (res) {
+			            makeBlocks(environment);
 
+				    })
 
-					    	console.log("Refresh environment", res.data.env);
+					$(window).resize(function () {
 
-				            environment = res.data.env;
-
-				            makeBlocks(environment);
-
-					    })
-
-						$(window).resize(function () {
-
-							setStageSize();
-						})
-
-
+						setStageSize();
 					})
+
 
 				})
 
