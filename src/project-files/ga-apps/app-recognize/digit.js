@@ -180,6 +180,7 @@ app.directive("digit", ['utility', 'api.service', 'display.service', function (u
 		    	u.toggle("disable", "refresh", {fade:displayParams.fade});
 		    	u.toggle("hide", "settings", {fade:displayParams.fade});
 		    	u.toggle("hide", "controls", {fade:displayParams.fade});
+		    	u.toggle("hide", "run", {fade:displayParams.fade});
 		    	u.toggle("show", "loading", {fade:displayParams.fade});
 
 		        api.simulate.digit(i, function (res) {
@@ -187,6 +188,7 @@ app.directive("digit", ['utility', 'api.service', 'display.service', function (u
 		        	u.toggle("hide", "loading", {fade:displayParams.fade});
 		        	u.toggle("show", "settings", {fade:displayParams.fade});
 		        	u.toggle("show", "controls", {fade:displayParams.fade});
+		        	u.toggle("show", "run", {fade:displayParams.fade});
 		        	u.toggle("enable", "refresh", {fade:displayParams.fade});
 		        	u.toggle("enable", "play", {fade:displayParams.fade, delay:displayParams.delay})
 

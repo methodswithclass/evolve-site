@@ -65,12 +65,14 @@ app.directive("trashman", ["$http", 'utility', function ($http, u) {
 
 
 			react.subscribe({
-		 		name:"man.arena",
+		 		name:"arena.size",
 		 		callback:function (x) {
 
 		 			grid = {cols:x.width, rows:x.height};
 
 		 			var man = makeMan();
+
+		 			console.log("push man object")
 
 					react.push({
 						name:"robot",

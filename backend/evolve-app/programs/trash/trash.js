@@ -2,9 +2,7 @@
 var robotFact = require("./robot.js");
 var environmentFact = require("./environment.js");
 var d = require("../../data/programs/trash.js");
-// var g = require("mc-shared").utility_service;
-var g = require("../../__ga/shared.js").utility_service;
-var Worker = require("webworker-threads").Worker;
+var g = require("mc-shared").utility_service;
 
 
 var trash = function (options) {
@@ -322,6 +320,74 @@ var trash = function (options) {
 
 		}
 	
+	}
+
+	var performRunWorker = function ($run, params, complete) {
+
+
+		var fits = [];
+
+		while ($run <= runs) {
+
+			// console.log("run", params.gen, params.index, $run);
+
+			// var $$run = new Worker(function () {
+
+			// 	var env;
+			// 	var performStepAsync;
+
+			// 	var runScenario = function ($env, $performStepAsync) {
+
+			// 		var target = $env['0'].refresh(params.input.programInput);
+
+			// 		$env['0'].instruct(params.dna);
+
+			// 		var fit = $performStepAsync(0, $$run, 0, params, $env['0']);
+
+			// 		postMessage({fitness:fit, target:target});
+				
+			// 	}
+
+			// 	this.onmessage = function (event) {
+
+			// 		env = event.data.environment
+			// 		performStepAsync = event.data.performStepAsync;
+
+			// 		runScenario(env, performStepAsync);					
+
+			// 		postMessage(event);
+
+			// 	}
+
+
+				
+
+			// })
+
+			// $$run.postMessage({
+			// 	environment:environment['0'], 
+			// 	performStepAsync:performStepAsync
+			// });
+
+			// $$run.onmessage = function (event) {
+
+			// 	console.log("on message", event.data);
+
+			// 	fits.push(event.data);
+
+			// 	// $$run.terminate();
+
+			// 	if (fits.length == runs) {
+			// 		complete(fits);
+			// 	}
+			// }
+
+			$run++;
+
+		}
+
+		complete(fits);
+
 	}
 
 	self.run = function (params, complete) {

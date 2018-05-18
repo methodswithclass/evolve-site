@@ -39,13 +39,20 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
+<<<<<<< HEAD
     "mc-evolve": "^5.0.0",
     "mc-shared": "^4.5.4",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
     "node-sass": "^4.8.3",
+=======
+    "main-bower-files": "^2.13.1",
+    "mc-evolve": "^5.0.0",
+    "mc-shared": "^4.1.5",
+    "merge-stream": "^1.0.1",
+    "mongoose": "^4.12.5",
+>>>>>>> master_temp
     "private-bower": "*",
-    "uid-generator": "^0.1.1",
-    "webworker-threads": "^0.7.13"
+    "uid-generator": "^0.1.1"
   }
 }

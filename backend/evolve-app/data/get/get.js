@@ -11,7 +11,7 @@ var evolve = {};
 
 var data = function (name) {
 
-	console.log("get data", __dirname);
+	console.log("get data", name, __dirname);
 
 	return require("../programs/" + name + ".js");
 }
