@@ -68,10 +68,10 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
 
 	        // setTimeout(function () {
-
 	        //     simulator.refresh();
-
 	        // }, 1000);
+
+            simulator.refresh();
 
 	    }
 
