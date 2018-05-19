@@ -219,7 +219,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             running(false, _$scope);
 
             u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
-            u.toggle("show", "hud", {delay:params.delay, fade:params.fade});
+            u.toggle("show", "nav", {delay:params.delay, fade:params.fade});
             u.toggle("hide", "breakfeedback", {delay:params.delay});
             u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
             
@@ -343,7 +343,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             display.forceEvolveHeight();
 
             
-            
+            u.toggle("hide", "nav", {fade:params.fade/4});
             u.toggle("hide", "run", {fade:params.fade/4});
             u.toggle("disable", "refresh", {fade:params.fade/4});
             u.toggle("disable", "restart", {fade:params.fade/4});
