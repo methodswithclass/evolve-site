@@ -18,6 +18,11 @@ app.factory("feedback-sim", ['data', function (data) {
 
     }
 
+    var changeX = function  () {
+
+        console.log("no change to plot");
+    }
+
     var createplot = function () {
 
         console.log("plot not created");
@@ -34,6 +39,7 @@ app.factory("feedback-sim", ['data', function (data) {
         callback:function (x) {
 
             changeplot = x.changeplot;
+            changeX = x.changeX;
             createplot = x.createplot;
             resetplot = x.resetplot;
 
@@ -59,6 +65,8 @@ app.factory("feedback-sim", ['data', function (data) {
     }
 
     var refresh = function () {
+
+        changeX(200);
 
         reset();
     }

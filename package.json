@@ -45,6 +45,7 @@
     "mongoose": "^4.12.5",
     "node-sass": "^4.8.3",
     "private-bower": "*",
-    "uid-generator": "^0.1.1"
+    "uid-generator": "^0.1.1",
+    "velocity-animate": "^2.0.2"
   }
 }

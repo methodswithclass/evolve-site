@@ -87,6 +87,7 @@ gulp.task('scripts', ['vendor'], function() {
 
 
     var mainSrc = gulp.src([
+        "node_modules/velocity-animate/velocity.js",
         "backend/evolve-app/__ga/**/*.js",
 	    "src/assets/**/*.js",
 	    "src/site-files/state/stateModule.js",
