@@ -259,11 +259,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				setArenaSize();
 				
-				changeX(200);
+				changeX(100);
 
 				setTimeout(() => {
-					changeY(undefined, 200);
-				}, 300);
+					changeY(undefined, 100);
+				}, 200);
 
 			})
 
