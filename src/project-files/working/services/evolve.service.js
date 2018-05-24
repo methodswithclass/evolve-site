@@ -34,7 +34,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     var params = {
         delay:0,
-        fade:2000
+        fade:300
     }
 
     var _$scope = {};
@@ -229,7 +229,9 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
         console.log("complete evolve");
 
-    	getBest(function () {
+    	getBest()
+
+        // function () {
 
             running(false, _$scope);
 
@@ -238,14 +240,14 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             u.toggle("hide", "breakfeedback", {delay:params.delay});
             u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
             
-            u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade/4});
-            u.toggle("enable", "play", {delay:params.delay, fade:params.fade/4});
+            u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
+            u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
 
             if (self.name == "feedback") {
                 
-                u.toggle("disable", "stop", {delay:params.delay, fade:params.fade/4});
-                u.toggle("enable", "play", {delay:params.delay, fade:params.fade/4});
-                u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade/4});
+                u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
+                u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
+                u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
             }
             else {
 
@@ -263,7 +265,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
                 });
             }
 
-    	});
+    	// });
 
 
     }
@@ -341,15 +343,15 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         console.log("run evolve");
 
 
-        u.toggle("hide", "settings", {fade:params.fade/4});        
+        u.toggle("hide", "settings", {fade:params.fade});        
 
 
         if (self.name == "feedback") {
 
 
-            u.toggle("enable", "stop", {fade:params.fade/4});
-            u.toggle("disable", "play", {fade:params.fade/4});
-            u.toggle("disable", "refresh", {fade:params.fade/4});
+            u.toggle("enable", "stop", {fade:params.fade});
+            u.toggle("disable", "play", {fade:params.fade});
+            u.toggle("disable", "refresh", {fade:params.fade});
 
     	}
     	else {
@@ -358,16 +360,16 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             display.forceEvolveHeight();
 
             
-            u.toggle("hide", "nav", {fade:params.fade/4});
-            u.toggle("hide", "run", {fade:params.fade/4});
-            u.toggle("disable", "refresh", {fade:params.fade/4});
-            u.toggle("disable", "restart", {fade:params.fade/4});
-            u.toggle("disable", "step", {fade:params.fade/4});
-            u.toggle("disable", "play", {fade:params.fade/4});
-            u.toggle("disable", "stop", {fade:params.fade/4});
+            u.toggle("hide", "nav", {fade:params.fade});
+            u.toggle("hide", "run", {fade:params.fade});
+            u.toggle("disable", "refresh", {fade:params.fade});
+            u.toggle("disable", "restart", {fade:params.fade});
+            u.toggle("disable", "step", {fade:params.fade});
+            u.toggle("disable", "play", {fade:params.fade});
+            u.toggle("disable", "stop", {fade:params.fade});
 
 
-            u.toggle("show", "evolve", {fade:params.fade/4});
+            u.toggle("show", "evolve", {fade:params.fade});
             u.toggle("show", "break", {delay:params.delay});
 
     	}
@@ -388,7 +390,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         running(false, _$scope);
         
         u.toggle("show", "breakfeedback");
-        u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade/4});
+        u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
 
         $input.setInput({
             gens:$stepdata.gens
