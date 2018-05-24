@@ -240,7 +240,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 					var ed = u.correctForAspect({
 						id:"plot",
-						factor:g.isMobile() ? 0.7 : 0.35, 
+						factor:g.isMobile() ? 0.5 : 0.35, 
 						aspect:2, 
 						width:$(window).width(), 
 						height:$(window).height()
@@ -264,7 +264,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				setTimeout(() => {
 					changeY(undefined, 200);
 				}, 300);
-				
+
 			})
 
 			var refreshTimer = setInterval(() => {
