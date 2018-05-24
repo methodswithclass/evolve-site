@@ -34,7 +34,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
     var params = {
         delay:0,
-        fade:300
+        fade:200
     }
 
     var _$scope = {};
@@ -229,16 +229,14 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 
         console.log("complete evolve");
 
-    	getBest()
-
-        // function () {
+        // getBest(function () {
 
             running(false, _$scope);
 
             u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
             u.toggle("show", "nav", {delay:params.delay, fade:params.fade});
             u.toggle("hide", "breakfeedback", {delay:params.delay});
-            u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
+            u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade*2});
             
             u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
             u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
@@ -266,6 +264,8 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
             }
 
     	// });
+
+        getBest();
 
 
     }
@@ -390,7 +390,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         running(false, _$scope);
         
         u.toggle("show", "breakfeedback");
-        u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
+        // u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
 
         $input.setInput({
             gens:$stepdata.gens
