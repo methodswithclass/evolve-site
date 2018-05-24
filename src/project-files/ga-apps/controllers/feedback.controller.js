@@ -1,7 +1,14 @@
-app.factory("feedback.controller", ["feedback-sim", "utility", "events.service", "global.service", 'react.service', 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, events, g, react, config, evolve, $input, display) {
+app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, config, evolve, $input, display) {
 
 
 	var pageBuilt;
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
 
 
 	var setup = function (self, $scope) {
@@ -27,20 +34,26 @@ app.factory("feedback.controller", ["feedback-sim", "utility", "events.service",
 
 		console.log("build controller", self.name);
 
+        processTypes = config.get("types.processTypes")
+
+        $scope.programInput = config.get("global.feedback");
+
         react.subscribe({
-            name:"ev.feedback",
+            name:"data" + "feedback",
             callback:function (x) {
 
-                step({}, {}, x.best.dna);
+                step({}, {}, x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);                
             }
 
         });
 
 
-        processTypes = config.get("types.processTypes")
-
-        $scope.programInput = config.get("global.feedback");
-        
+        react.subscribe({
+            name:"sim." + self.name,
+            callback:function (x) {
+                self.sdata = x;
+            }
+        });
 	}
 
 	var enter = function (self, $scope) {
@@ -74,22 +87,29 @@ app.factory("feedback.controller", ["feedback-sim", "utility", "events.service",
 
         evolve.running(false, $scope);
         simulator.refresh();
-        $scope.resetgen();
+        evolve.resetgen();
     }
 
     var step = function (self, $scope, dna) {
 
-        simulator.step(dna, 200);
+        setTimeout(() => {
+
+            var duration = $input.resendInput().programInput.duration;
+
+            simulator.step(dna, duration);
+
+        }, $input.resendInput().programInput.evdelay);
     }
 
-    var play = function (self, $scope) {
+
+    var run = function (self, $scope) {
         
-        $scope.run();
+        evolve.run($scope);
     }
 
     var stop = function (self, $scope) {
 
-        $scope.breakRun(); 
+        evolve.breakRun($scope); 
     }
 
 	return {
@@ -99,7 +119,9 @@ app.factory("feedback.controller", ["feedback-sim", "utility", "events.service",
 		build:build,
 		enter:enter,
 		refresh:refresh,
-		play:play,
+		restart:restart,
+		step:step,
+		run:run,
 		stop:stop
 
 	}

@@ -9,10 +9,12 @@ del = require('del'),
 inject = require('gulp-inject'),
 filter = require("gulp-filter"),
 merge = require("merge-stream"),
-mainBowerFiles = require("main-bower-files"),
+mainBowerFiles = require("gulp-main-bower-files"),
 nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
 
+
+// var middleware = require("./middleware/middleware.js");
 
 const config = require("./config.js");
 
@@ -31,7 +33,8 @@ gulp.task("serve", ["build"], function () {
 	var stream = nodemon({ 
 		script: './server.js',
 		ext:"js html css json",
-		watch:["./src", "./backend", "./server.js"],
+		watch:["./src", "./backend"],
+		ignore:["./src/assets/css/classes_local.*"],
 		tasks:["build"]
 	});
 	
@@ -84,8 +87,10 @@ gulp.task('scripts', ['vendor'], function() {
 
 
     var mainSrc = gulp.src([
-	    "src/site-files/app/app.js",
+        "backend/evolve-app/__ga/**/*.js",
+	    "src/assets/**/*.js",
 	    "src/site-files/state/stateModule.js",
+        "src/site-files/app/app.js",
 	    "src/project-files/ga-apps/app-recognize/**/*.js",
 	    "src/project-files/ga-apps/app-feedback/**/*.js",
 	    "src/project-files/ga-apps/app-trash/**/*.js",
@@ -115,40 +120,50 @@ gulp.task('scripts', ['vendor'], function() {
 });
 
 gulp.task("vendor", function () {
+	
 
-	var jsSrc = gulp.src(mainBowerFiles(), { base: __dirname + '/bower_components' })
+	var bowerSrc = gulp.src("./bower.json")
+		.pipe(mainBowerFiles({base:"../bower_components"}))
 		.pipe(filter("**/*.js"))
-		.pipe(concat("vendor.js"))
+		.pipe(concat("vendor.js"));
 
-	var js = jsSrc
+
+	var js = bowerSrc
 	.pipe(gulp.dest("dist/assets/js"));
 
 	var jsMin;
 
 	if (minify) {
-		jsMin = jsSrc
+		jsMin = bowerSrc
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
 		.pipe(gulp.dest("dist/assets/js"));
 	}
 
-	var css = gulp.src(mainBowerFiles())
-	.pipe(filter("**/*.css"))
-	.pipe(concat("vendor.css"))
-	.pipe(gulp.dest("dist/assets/css"));
+	// var css = gulp.src("./bower.json")
+	// .pipe(mainBowerFiles())
+	// .pipe(filter("**/*.css"))
+	// .pipe(concat("vendor.css"))
+	// .pipe(gulp.dest("dist/assets/css"));
 
 
-	if (minify) {
-		return merge(js, jsMin, css);
-	}
-	else {
-		return merge(js, css);
-	}
+	// if (minify) {
+	// 	return merge(js, jsMin, css);
+	// }
+	// else {
+	// 	return merge(js, css);
+	// }
+
+	return js;
 
 });
 
 
 gulp.task('styles', function() {
+
+
+	// middleware.compileSass();
+
 
 	var cssSrc = gulp.src('src/assets/css/**/*.css', { style: 'expanded' })
 	.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'));
@@ -207,7 +222,7 @@ gulp.task("copy", ["data", "misc", "root", "html", "images", "fonts"], function 
 })
 
 gulp.task('clean', function() {
-	return del('dist');
+	return del(['dist', "src/assets/scss"]);
 });
 
 

@@ -1,0 +1,161 @@
+
+
+<div class="absolute width height">
+
+
+	<div class="relative width80 height hcenter opacity0" id="stagetoggle">
+
+
+		<div class="relative width height-100 hcenter margin-v-100" id="stagetitle">
+			<div class="absolute width height80">
+				<div class="relative width height50 text-center font-40">
+					<div class="absolute center">
+						Simulation
+					</div>
+				</div>
+				<div class="relative width height50 text-center font-20">
+					<div class="absolute center">
+						see the results of the best individual
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="relative width80 hcenter margin-bottom-100" id="programConfig">
+
+
+			<div class="relative width">
+
+				<div class="relative inline width70 font-40" id="programInput_input">
+
+
+					<div class="relative width height-200 margin-v-100 border-bottom border-top">
+
+
+						<div class="absolute width50 height border-right" id="goalinputinner">
+
+							<div class="absolute width80 height80 center">
+								<div class="absolute width vcenter">
+									grid size
+								</div>
+							</div>
+						</div>
+						<div class="absolute width50 height right0">
+
+							<div class="absolute width60 height60 center">
+								<select class="absolute width height transparent-back pointer nooutline font-50" name="gridsizeselect" ng-options="item.size for item in grids track by item.size" id="gridSizeInput" ng-model="main.programInput.grid" ng-change="main.programInputChange()">
+									<option value="{{item}}" ng-repeat="item in grids">{{item.size}}</option> 
+								</select>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="relative width height-200 margin-v-100 border-bottom border-top">
+
+
+						<div class="absolute width50 height border-right" id="goalinputinner">
+
+							<div class="absolute width80 height80 center">
+								<div class="absolute width vcenter">
+									trash % <br> (1-90)
+								</div>
+							</div>
+						</div>
+						<div class="absolute width50 height right0">
+
+							<div class="absolute width60 height60 center">
+								<text-input mw-class="absolute width height transparent-back pointer nooutline font-50" mw-id="trashRateInput" mw-model="main.programInput.trashPercent" mw-keyup="main.programInputChange" validation="integer"></text-input>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+				<div class="relative inline width25 vcenter margin-left-50 font-30 margin-v-100" id="programLegend">
+
+					<div class="relative width">
+
+						<div class="relative width margin-bottom-50" id="legend_robot">
+
+							<div class="relative width">
+								<div class="relative width80 height-30 margin-v-20 hcenter">
+									<div class="absolute center text-center">
+										robot
+									</div>
+								</div>
+								<div class="relative width-70 height-70 black-back white shadow hcenter">
+									<div class="absolute center">
+										<i class="fas fa-user"></i>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+
+						<div class="relative width" id="legend_trash">
+
+
+							<div class="relative width">
+								<div class="relative width80 height-30 margin-v-20 hcenter">
+									<div class="absolute center text-center">
+										trash
+									</div>
+								</div>
+								<div class="relative width-40 height-40 font-20 red-back white border hcenter">
+									<div class="absolute center">
+										<i class="fas fa-trash-alt"></i>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+		<div class="relative width90 height hcenter" id="simParent">
+
+			<div class="absolute width60 height-200 margin-bottom-200 hcenter" id="simdataParent">
+				<trashsimdata></trashsimdata>
+			</div>
+
+
+			<div class="absolute width80 height60 right0" id="arena">
+
+				
+				<arena></arena>
+
+				<trashman></trashman>
+			
+
+				<div class="absolute" id="controlsParent">
+					<controls refresh="main.refresh" reset="main.reset" step="main.step" play="main.play" stop="main.stop"></controls>
+				</div>
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+
+
+
+</div>

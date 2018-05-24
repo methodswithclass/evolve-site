@@ -1,0 +1,55 @@
+<div class="absolute width height cutoff">
+	
+	<div class="absolute width height scrollY scroll-vertical-dark-narrow cutoffX font-30" id="main-back">
+
+
+		<div class="absolute height width">
+			<loading></loading>
+
+			<div class="absolute width height" id="hudtoggle">
+
+				<div class="absolute width-100 height-50 top-20 left-20 black-back white rounded10 shadow font-20">
+					<navbtn name="back" loc="feedback"></navbtn>
+				</div>
+
+				<evolving run="main.run" break="main.breakRun"></evolving>
+
+			</div>
+
+			<div class="absolute width80 hcenter height50 top20" id="stagetoggle">
+
+				<div class="absolute width height-100 hcenter" id="stagetitle">
+					<div class="absolute width height80">
+						<div class="relative width height50 text-center font2-rem">
+							<div class="absolute center">
+								Real-time Evolution
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="absolute hcenter top-50 border" id="arena">
+				
+					<div class="absolute"  id="controlsParent">
+						<controls refresh="main.refresh" play="main.run" stop="main.stop"></controls>
+					</div>
+
+					<plot></plot>
+
+				</div>
+				
+			</div>
+
+
+			<div class="absolute width-400 height-200 hcenter bottom20">
+				<evolvedata></evolvedata>
+			</div>
+
+
+		</div>
+
+	</div>
+	
+	<settings open="main.open" change-kind="main.changeKind" change-input="main.changeInput" methods="crossoverMethods" data="crossoverData" reset-gen="main.resetgen"></settings>
+
+</div>

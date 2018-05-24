@@ -10,15 +10,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "node": "node server.js",
     "build": "gulp build",
-    "start": "gulp serve"
+    "start": "npm install && bower install && gulp serve"
   },
   "engines": {
-    "node": "6.9.2",
-    "npm": "5.5.1"
+    "node": "9.4.0",
+    "npm": "5.8.0"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "bower": "^1.8.2",
+    "bower": "^1.8.4",
     "browser-sync": "^2.19.0",
     "connect-livereload": "^0.6.0",
     "del": "^2.2.2",
@@ -31,6 +31,7 @@
     "gulp-inject": "^4.2.0",
     "gulp-jshint": "^2.0.4",
     "gulp-livereload": "^3.8.1",
+    "gulp-main-bower-files": "^1.6.2",
     "gulp-nodemon": "^2.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-ruby-sass": "^2.1.1",
@@ -38,11 +39,19 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
+<<<<<<< HEAD
+    "mc-evolve": "^5.0.0",
+    "mc-shared": "^4.5.4",
+    "merge-stream": "^1.0.1",
+    "mongoose": "^4.12.5",
+    "node-sass": "^4.8.3",
+=======
     "main-bower-files": "^2.13.1",
     "mc-evolve": "^5.0.0",
     "mc-shared": "^4.1.5",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.12.5",
+>>>>>>> master_temp
     "private-bower": "*",
     "uid-generator": "^0.1.1"
   }

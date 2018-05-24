@@ -1,7 +1,14 @@
-app.factory("evolve.service", ["utility", "events.service", "global.service", 'react.service', 'config.service', 'display.service', 'api.service', 'simulators', 'input.service', function (u, events, g, react, config, display, api, simulators, $input) {
+app.factory("evolve.service", ["utility", 'config.service', 'display.service', 'api.service', 'simulators', 'input.service', function (u, config, display, api, simulators, $input) {
 
 
 	var self = this;
+
+
+    var shared = window.shared;
+    var g = shared.utility_service;
+    var send = shared.send_service;
+    var react = shared.react_service;
+    var events = shared.events_service;
 
 
 	var simulator;
@@ -9,26 +16,25 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
     var ev = false;
 
     var $stepdata;
-
-
-    var initData = function () {
-
-        $stepdata = {
-            gen:0,
-            org:0,
-            run:0,
-            step:0
-        }
-
+    var $evdata;
+    var params = {
+        delay:0,
+        fade:2000
     }
+
+    var _$scope = {};
+
+    self.name = "";
 
     var interface_timer;
 
     var toggleTimer = function ($toggle, $scope) {
 
+        _$scope = $scope;
+
         if ($toggle) {
 
-            ui_updater($scope);
+            ui_updater(_$scope);
         }
         else {
 
@@ -41,39 +47,59 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 	
 	var evolving = function (_evolve, $scope) {
         ev = _evolve;
-        if (_evolve) running(_evolve, $scope);
+        if (_evolve) running(_evolve, _$scope);
     }
     
     var running = function (_run, $scope) {
+        _$scope = $scope;
         update = _run;
-        toggleTimer(_run, $scope);
-        if (!_run) evolving(_run, $scope);
+        toggleTimer(_run, _$scope);
+        if (!_run) evolving(_run, _$scope);
     }
 
 
+    var sendData = function (x) {
 
-    var sendEvdata = function (x) {
-
-       	react.push({
-       		name:"ev." + self.name,
-       		state:x
-       	});
+        react.push({
+            name:"data" + self.name,
+            state:x
+        })
     }
 
-    var sendStepdata = function (x) {
+    var initData = function () {
 
-    	react.push({
-       		name:"step." + self.name,
-       		state:x
-       	});
+        $stepdata = {
+            gen:0,
+            org:0,
+            run:0,
+            step:0
+        }
+
+        $evdata = {
+            best:{
+                fitness:0
+            },
+            worst:{
+                fitness:0
+            }
+        }
+
+
+        sendData({
+            stepdata:$stepdata,
+            evdata:$evdata
+        });
+
     }
 
     var getBest = function (complete) {
 
 
     	api.getBest(function (res) {
-
-	    	sendEvdata(res.data.ext);
+            
+            sendData({
+                evdata:res.data.ext
+            });
 
 	    	if (typeof complete === "function") complete();
 
@@ -87,16 +113,13 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     var setStepdata = function () {
 
+        getBest();
 
     	api.stepdata(function (res) {
-
-	    	// console.log("get stepdata", res.data.stepdata);
 
     		stepdata = res.data.stepdata ? res.data.stepdata : $stepdata;
 
     		genA = stepdata.gen;
-
-    		// console.log("stepdata", res.data.stepdata, $stepdata);
 
             $stepdata = {
             	gen:stepdata.gen,
@@ -105,16 +128,17 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             	step:stepdata.step
             }
 
-            // console.log("stepdata callback response", update, res.data.stepdata, $stepdata);
+            // console.log("stetpdata", $stepdata);
 
-            sendStepdata($stepdata);
+            sendData({
+                stepdata:$stepdata
+            });
 
             if (genA != genB) {
             	genB = genA;
-            	// getBest();
             }
 
-            getBest();
+            
 
             setTimeout(function () {
 
@@ -152,12 +176,15 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
             percent = 1;
         }
 
-        $("#rundata").css({width:percent*100 + "%"});
+
+        display.updateProgressBar(percent);
 
     }
 
 
     var ui_updater = function ($scope) {
+
+        _$scope = $scope;
 
         interface_timer = setInterval(function () {
 
@@ -165,7 +192,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
                 if (ev) {
                     stepprogress();
                 }
-                $scope.$apply();
+                _$scope.$apply();
             }
 
         }, 30);
@@ -181,53 +208,45 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     var completeEvolve = function ($scope) {
 
-    	console.log("complete evolve");
-    	console.log("evolving", update);
+        _$scope = $scope
 
-    	running(false, $scope);
+    	running(false, _$scope);
+
+        console.log("complete evolve");
 
     	getBest(function () {
 
-    		u.toggle("hide", "evolve", {fade:600, delay:300});
+            running(false, _$scope);
 
-            running(false, $scope);
-            $("#breakfeedback").hide();
-
-
-            u.toggle("show", "settings", {fade:600});
+            u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
+            u.toggle("show", "hud", {delay:params.delay, fade:params.fade});
+            u.toggle("hide", "breakfeedback", {delay:params.delay});
+            u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
+            
+            u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade/4});
+            u.toggle("enable", "play", {delay:params.delay, fade:params.fade/4});
 
             if (self.name == "feedback") {
                 
-                u.toggle("disable", "stop", {fade:600});
-                u.toggle("enable", "play", {fade:600});
-                u.toggle("enable", "refresh", {fade:600});
-
+                u.toggle("disable", "stop", {delay:params.delay, fade:params.fade/4});
+                u.toggle("enable", "play", {delay:params.delay, fade:params.fade/4});
+                u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade/4});
             }
             else {
 
+                u.toggle("show", "run", {delay:params.delay, fade:params.fade});
 
-                u.toggle("show", "hud", {fade:600});
+                if (self.name == "trash")  {
 
-                u.toggle("enable", "refresh", {fade:600});
-                u.toggle("enable", "play", {fade:600});
-                if (self.name == "trash") u.toggle("enable", "restart", {fade:600});
-                if (self.name == "trash") u.toggle("enable", "step", {fade:600});
-                
-
-                u.toggle("show", "run", {fade:600});
-
+                    u.toggle("enable", "restart", {delay:params.delay, fade:params.fade});
+                    u.toggle("enable", "step", {delay:params.delay, fade:params.fade});
+                }
 
                 simulator.setup(function () {
 
                     simulator.refresh(); 
                 });
-
             }
-
-
-            setTimeout(function () {
-                $("#evolvedata").animate({color:"#000"}, 600);
-            }, 300);
 
     	});
 
@@ -238,9 +257,11 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     var isRunning = function ($scope) {
 
+        _$scope = $scope;
+
     	api.isRunning(function (res) {
 
-	    	running(res.data.running, $scope);
+	    	running(res.data.running, _$scope);
 
 			setTimeout(function () {
         	
@@ -262,7 +283,9 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     var runEvolveComplete = function ($scope) {
 
-		isRunning($scope);
+        _$scope = $scope
+
+		isRunning(_$scope);
 
 		setStepdata();
 
@@ -273,8 +296,6 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
 
     var resetgen = function (complete) {
-
-    	console.log("reset gen");
 
         $input.resetInput();
 
@@ -296,24 +317,24 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
     var run = function ($scope) {
 
-    	evolving(true, $scope);
+        _$scope = $scope;
 
-
-		// console.log("step progress get input")
-
+    	evolving(true, _$scope);
 
 		input = $input.getInput();
 
+        console.log("run evolve");
 
-        u.toggle("hide", "settings", {fade:300});        
+
+        u.toggle("hide", "settings", {fade:params.fade/4});        
 
 
         if (self.name == "feedback") {
 
 
-            u.toggle("enable", "stop", {fade:300});
-            u.toggle("disable", "play", {fade:300});
-            u.toggle("disable", "refresh", {fade:300});
+            u.toggle("enable", "stop", {fade:params.fade/4});
+            u.toggle("disable", "play", {fade:params.fade/4});
+            u.toggle("disable", "refresh", {fade:params.fade/4});
 
     	}
     	else {
@@ -323,30 +344,23 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
 
             
             
-            u.toggle("hide", "run", {fade:300});
-            u.toggle("disable", "refresh", {fade:300});
-            u.toggle("disable", "restart", {fade:300});
-            u.toggle("disable", "step", {fade:300});
-            u.toggle("disable", "play", {fade:300});
-            u.toggle("disable", "stop", {fade:300});
+            u.toggle("hide", "run", {fade:params.fade/4});
+            u.toggle("disable", "refresh", {fade:params.fade/4});
+            u.toggle("disable", "restart", {fade:params.fade/4});
+            u.toggle("disable", "step", {fade:params.fade/4});
+            u.toggle("disable", "play", {fade:params.fade/4});
+            u.toggle("disable", "stop", {fade:params.fade/4});
 
-            u.toggle("show", "evolve", {fade:600, delay:600});
+
+            u.toggle("show", "evolve", {fade:params.fade/4});
+            u.toggle("show", "break", {delay:params.delay});
 
     	}
 
         api.run(function (res) {
 
-            console.log("Run algorithm success", res);
-
-            runEvolveComplete($scope);
+            runEvolveComplete(_$scope);
         })
-
-
-        setTimeout(function () {
-            $("#evolvepage").animate({color:"#fff"}, 600);
-            $("#evolvepage").addClass("white-t");
-        }, 300);
-
 
     }
 
@@ -354,10 +368,12 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
     var breakRun = function ($scope) {
 
 
-        running(false, $scope);
-        $("#breakfeedback").show();
+        _$scope = $scope;
 
-        // console.log("set input hard stop");
+        running(false, _$scope);
+        
+        u.toggle("show", "breakfeedback");
+        u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade/4});
 
         $input.setInput({
             gens:$stepdata.gen
@@ -374,12 +390,7 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
         // ## $input.getInput(false);
         // ##
 
-        api.hardStop(function (res) {
-
-            console.log("Hard stop algorithm success", res);
-
-            completeEvolve($scope);
-        })
+        api.hardStop();
     }
 
 
@@ -390,6 +401,14 @@ app.factory("evolve.service", ["utility", "events.service", "global.service", 'r
         simulator = simulators.get(self.name);
 
         resetgen();
+
+        react.subscribe({
+            name:"scope" + self.name,
+            callback:function(x) {
+
+                _$scope = x;
+            }
+        })
 
         initData();
 

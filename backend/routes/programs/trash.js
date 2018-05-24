@@ -27,7 +27,7 @@ trashRouter.post("/environment/refresh", function (req, res, next) {
 
 	var input = req.body.input;
 
-	console.log("create environment, input", input.programInput);
+	console.log("refresh environment");
 
 	var trash = get.getSessionProgram(input.session, "trash");
 

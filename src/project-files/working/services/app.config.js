@@ -1,4 +1,4 @@
-app.factory("config.service", ["utility", "events.service", "global.service", '$http', function (u, events, g, $http) {
+app.factory("config.service", ["utility", '$http', function (u, $http) {
 
 
 
@@ -25,7 +25,6 @@ app.factory("config.service", ["utility", "events.service", "global.service", '$
 
 				if (obj.hasOwnProperty(prop)) {
 
-					// console.log("get prop", $i, obj, prop, obj[prop]);
 					return getProp(obj[prop], $i + 1, array);
 				}
 				else {
@@ -49,8 +48,6 @@ app.factory("config.service", ["utility", "events.service", "global.service", '$
 			value = getProp(self.config, i, keyArray);
 		}
 
-		// console.log("get config return value", value, "\n\n\n");
-
 	    return value || '';
 
 
@@ -70,12 +67,6 @@ app.factory("config.service", ["utility", "events.service", "global.service", '$
         		url:"/assets/config/config.json"
         	})
         	.then(function (res) {
-
-        		// var json = JSON.parse(res);
-
-
-        		console.log("config data is", res.data);
-
 
                 resolve(res.data)
 

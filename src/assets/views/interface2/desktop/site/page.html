@@ -1,0 +1,72 @@
+<div class="absolute width height scrollY scroll-vertical-light-narrow cutoff white black-back">
+
+	<div class="relative width height">
+
+		<div class="relative width80 hcenter">
+
+
+			<div class="relative height-30 padding-v-50">
+				<div class="relative width-200 height white-back rounded5 black font-15 pointer"  on-tap="main.open('home')">
+					<div class="absolute center">
+						home
+					</div>
+				</div>
+			</div>
+
+			<div class="relative width height-30 margin-top-50">
+				<div class="absolute font-20 vcenter right0">
+					{{main.doc.title}}
+				</div>
+			</div>
+
+
+			<div class="relative width height-10 margin-bottom-50 ">
+				<div class="absolute width-200 height border-bottom-white right0"></div>
+			</div>
+
+
+
+			<div class="relative width-250 padding-v-5 margin-v-20 border-left-trans border-bottom-trans border-color-white pointer" on-tap="main.openDemo()">
+					
+				<div class="relative inline padding-h-10 font-15">
+					<i class="fas fa-code"></i>
+				</div>
+
+				<div class="relative inline padding-h-10">
+					demo
+				</div>
+			</div>
+
+
+
+
+			<div class="relative width80 padding-v-20 margin-v-20 border-right-trans border-left-trans border-top-trans border-color-white cutoff pointer" ng-class="{'height-0':!open, 'border-bottom-trans':open}" 
+				on-tap="open = !open">
+
+
+				<div class="relative width">
+					
+					<div class="absolute left-20 vcenter font-20">
+						<i class="fas fa-bars"></i>
+					</div>
+
+					<div class="absolute center font-15">
+						Details
+					</div>
+
+				</div>
+
+
+				<div class="relative width">
+					<div class="relative width60 hcenter margin-v-50">
+						<content data="main.doc.content"/>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+					
+
+</div>

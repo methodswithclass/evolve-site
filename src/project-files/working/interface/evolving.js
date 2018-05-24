@@ -1,102 +1,61 @@
-app.directive("evolving", ['global.service', 'utility', 'events.service', 'react.service', 'input.service', 'evolve.service', function (g, u, events, react, $input, evolve) {
+app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states", function (u, $input, evolve, states) {
 
 	return {
 		restrict:"E",
-		scope:false,
+		scope:{
+			run:"=",
+			break:"="
+		},
 		replace:true,
-        templateUrl:"assets/views/common/interface/evolving.html",		
+		template:"<div ng-include='getContentUrl()'></div>",			
 		link:function ($scope, element, attr) {
 
 			var self = this;
 
 
-			// console.log("\n############\ncreate evolveing directive\n\n");
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var react = shared.react_service;
+
+
+
+   	 		self.name = u.stateName(states.current());
 
 			
-			
+			$scope.getContentUrl = function () {
 
-    		
-
-		    $scope.input;
-	    	$scope.evdata;
-	    	$scope.stepdata;
-
-	    	var initData = function () {
-
-
-	    		$scope.evdata = {
-			        index:0,
-			        best:{},
-			        worst:{}
-			    }
-
-			    $scope.stepdata = {
-			    	gen:0,
-			    	org:0,
-			    	run:0,
-			    	step:0
-			    };
-
+				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/evolving.html";
 			}
 
-			initData();
 
-			$("#breakfeedback").hide();
-	        
+			var fitnessTruncateValue = 2;
 
-		    
+
+			$scope.evdata = {};
+			$scope.stepdata = {};
+			$scope.input = {};
+			$scope.fitnessRounded;
+
 			react.subscribe({
-		        name:"ev." + $scope.name,
-		        callback:function (x) {
-		            // console.log("set evdata trash", x);
-		            $scope.evdata = x;
-		        }
+				name:"data" + self.name,
+				callback:function (x) {
 
-		    });
+					$scope.evdata = x.evdata || $scope.evdata;
+					$scope.stepdata = x.stepdata || $scope.stepdata;
+					$scope.input = x.input || $scope.input;
+					// console.log("stepdata", $scope.stepdata);
 
-		    react.subscribe({
-		        name:"step." + $scope.name,
-		        callback:function (x) {
-		            // console.log("set evdata trash", x);
-		            $scope.stepdata = x;
-		        }
+					// console.log("evdata", $scope.evdata.best.fitness, "truncate", g.truncate($scope.evdata.best.fitness, 0));
 
-		    });
+					$scope.evdata.best = $scope.evdata.best ? $scope.evdata.best : {};
+					$scope.evdata.best.fitness = $scope.evdata.best.fitness ? $scope.evdata.best.fitness : 0;
 
+		            $scope.fitnessRounded = g.truncate($scope.evdata.best.fitness, fitnessTruncateValue);
 
+		            // console.log("fitnessRounded", $scope.fitnessRounded);
 
-		    $scope.resetgen = function () {
-
-		        
-		    	$scope.animateRefresh();
-
-
-		        evolve.resetgen(function (data) {
-
-		        	console.log("Initialize algorithm success", data.res);
-		        	initData();
-		        });
-
-
-		    }
-
-
-
-		    $scope.run = function () {
-
-		    	$scope.input = $input.getInput();
-
-		        evolve.run($scope);
-		    }
-
-
-		    $scope.breakRun = function () {
-
-		        evolve.breakRun($scope);
-
-		    }
-
-
+				}
+			})
 
 		}
 	}
