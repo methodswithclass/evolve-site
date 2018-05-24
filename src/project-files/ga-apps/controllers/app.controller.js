@@ -120,9 +120,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var pageBuilt = display.beenBuilt(self.name);
 
 
-    controller.setup(self, $scope);
-
-
     var next = function (options) {
 
 
@@ -157,6 +154,9 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         phase:function (options) {
 
             console.log("initial processing phase");
+
+
+            controller.setup(self, $scope);
 
             enter();
 
@@ -467,7 +467,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         })
     }
 
-    setHover();
+    // setHover();
 
     var isFocus = function () {
 
@@ -705,7 +705,12 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
         }, 500);
 
+
         controller.enter(self, $scope);
+
+        setHover();
+        
+        // evolve.breakRun();
 
     }
 

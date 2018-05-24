@@ -190,52 +190,47 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			    
 			}
 
+			
+		    events.on("resetenv", function () {
 
-			var registerEvents = function () {
+		    	// console.log("reset environemnt event");
 
-
-			    events.on("resetenv", function () {
-
-			    	// console.log("reset environemnt event");
-
-					makeBlocks(environment)
-				})
+				makeBlocks(environment)
+			})
 
 
 
-				events.on("refreshenv", function () {
+			events.on("refreshenv", function () {
 
-					// console.log("refresh environment event");
+				// console.log("refresh environment event");
 
-					$stage = $("#arena");
+				$stage = $("#arena");
 
-					g.waitForElem({elems:$stage}, function (options) {
+				g.waitForElem({elems:$stage}, function (options) {
 
+
+					setStageSize();
+
+					api.refreshEnvironment(function (res) {
+
+
+				    	console.log("Refresh environment", res.data.env);
+
+			            environment = res.data.env;
+
+			            makeBlocks(environment);
+
+				    })
+
+					$(window).resize(function () {
 
 						setStageSize();
-
-						api.refreshEnvironment(function (res) {
-
-
-					    	console.log("Refresh environment", res.data.env);
-
-				            environment = res.data.env;
-
-				            makeBlocks(environment);
-
-					    })
-
-						$(window).resize(function () {
-
-							setStageSize();
-						})
-
-
 					})
+
 
 				})
 
-			}
+			})
 
 
 			console.log("push functions");
@@ -243,11 +238,6 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			react.push({
 		    	name:"block.clean",
 		    	state:cleanBlock
-		    })
-
-		    react.push({
-		    	name:"register.arena.events",
-		    	state:registerEvents
 		    })
 
 

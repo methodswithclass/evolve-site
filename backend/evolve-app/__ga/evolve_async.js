@@ -708,9 +708,11 @@ var obj = {};
 				return new Promise(function (resolve, reject) {
 
 					// console.log("run indi", i);
-					self.pop[i].run()
+					self.pop[i].run(function () {
 
-					return resolve(i);		
+						resolve(i);
+					})
+
 				})
 			}
 
@@ -1020,36 +1022,19 @@ var obj = {};
 
 				var ext = rank();
 
-				var onComplete = function ($children) {
 
-
-					if ($children.length == 0) {
-
-						complete({
-							previous:{
-								best:ext.best,
-								worst:ext.worst
-							},
-							next:null
-						})
-					}
-
-					complete({
-						previous:{
-							best:ext.best,
-							worst:ext.worst
-						},
-						next:new generation({index:self.index + 1, input:input, pop:$children})
-					});
-
-				}
 
 				reproduce(num_parents, pool)
 				.then(function ($children) {
 
-					// console.log("reproduce complete", $children.length);
-
-					onComplete($children);
+					complete({
+						rank:{
+							best:ext.best,
+							worst:ext.worst
+						},
+						previous:self,
+						next:($children.length == 0 ? self : (new generation({index:self.index + 1, input:input, pop:$children})))
+					});
 					
 				})
 				.catch(function (err) {
@@ -1092,7 +1077,7 @@ var obj = {};
 		var self = this;
 
 
-		var era = [];
+		// var era = [];
 		var now = 1;
 		var active = true;
 		
@@ -1110,7 +1095,12 @@ var obj = {};
 			pop:[]
 		}
 
+		var rank;
 		var previous;
+		var current;
+
+		var check = 0;
+		var called = 0;
 
 
 		self.input = {};
@@ -1129,20 +1119,22 @@ var obj = {};
 
 				stepdataobj.gen = now;
 
-				era[index(now)].turnover(self.input, function (x) {
+				current.turnover(self.input, function (x) {
 
 					now++;
 
+					rank = x.rank;
 					previous = x.previous;
 
-					console.log("best", previous.best.fitness);
+					console.log("best", rank.best.fitness);
 						
 					if (x.next) {
-						era[index(now)] = x.next;
+						// era[index(now)] = x.next;
+						current = x.next;
 					
 						// console.log("running evolve", self.input);
 
-						if (now <= self.input.gens && !previous.best.success) {
+						if (now <= self.input.gens && !rank.best.success) {
 							setTimeout(function () {
 								step();
 							}, self.input.programInput.evdelay);
@@ -1165,7 +1157,9 @@ var obj = {};
 
 		self.getstepdata = function () {
 
-			stepdataobj = era[index(now)].getstepdata(stepdataobj);
+			// stepdataobj = era[index(now)].getstepdata(stepdataobj);
+
+			stepdataobj = (typeof currrent !== "undefined") ? current.getstepdata(stepdataobj) : stepdataobj;
 
 			return stepdataobj;
 		}
@@ -1180,14 +1174,14 @@ var obj = {};
 			return {
 				index:self.index,
 				best:{
-					dna:previous.best.dna,
-					runs:previous.best.runs,
-					fitness:previous.best.fitness
+					dna:rank.best.dna,
+					runs:rank.best.runs,
+					fitness:rank.best.fitness
 				},
 				worst:{
-					dna:previous.best.dna,
-					runs:previous.worst.runs,
-					fitness:previous.worst.fitness
+					dna:rank.worst.dna,
+					runs:rank.worst.runs,
+					fitness:rank.worst.fitness
 				}
 			};
 		}
@@ -1203,15 +1197,17 @@ var obj = {};
 
 			self.set(_input);
 
-			era = null;
-			era = [];
+			// era = null;
+			// era = [];
 			now = 1;
 			active = true;
 
 		
-			era[index(now)] = new generation({index:now, input:self.input});
+			// era[index(now)] = new generation({index:now, input:self.input});
+			current = new generation({index:now, input:self.input});
 
-			return era[index(now)].length == self.input.pop;
+			// return era[index(now)].length == self.input.pop;
+			return now == self.input.pop;
 			
 		}
 
@@ -1242,16 +1238,22 @@ var obj = {};
 
 			self.set(_input);
 			active = false;
-			era.forEach((p) => {
+			// era.forEach((p) => {
 
-				p.hardStop();
-			})
+			// 	p.hardStop();
+			// })
+
+
+			current.hardStop();
+
+			previous.hardStop();
+			
 
 			if (self.input && self.input.setEvdata) {
 				self.input.setEvdata({
 					index:now,
-					best:previous.best,
-					worst:previous.worst
+					best:rank.best,
+					worst:rank.worst
 				})
 			}
 

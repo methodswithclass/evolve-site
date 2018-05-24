@@ -215,10 +215,7 @@ app.factory("display.service", ["utility", function (u) {
 	}
 
 
-	g.waitForElem({elems:"#controlstoggle"}, function () {
-
-		setHover();
-	})
+	
 
 	var orients = {
 		vert:"vertical",
@@ -774,6 +771,11 @@ app.factory("display.service", ["utility", function (u) {
 
 		loadPhases(phases[name]);
 		
+
+		g.waitForElem({elems:"#controlstoggle"}, function () {
+
+			setHover();
+		})
 
 		forceEvolveHeight();
 

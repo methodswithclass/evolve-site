@@ -4,7 +4,7 @@ var environmentFact = require("../environment.js");
 var d = require("../../../data/programs/trash.js");
 var g = require("mc-shared").utility_service;
 // var g = require("../../../__ga/shared.js").utility_service;
-var Worker = require("webworker-threads").Worker;
+// var Worker = require("webworker-threads").Worker;
 
 
 var trash = function (options) {
@@ -29,7 +29,7 @@ var trash = function (options) {
 
 	var simulation = {};
 
-	var env = {};
+	var env = [];
 	var envIndex = 0;
 
 
@@ -64,7 +64,7 @@ var trash = function (options) {
 
 	var createRunEnvironment = function () {
 
-		var env = function ($options) {
+		var $env = function () {
 
 			var self = this;
 
@@ -84,6 +84,8 @@ var trash = function (options) {
 
 
 			self.refresh = function ($options) {
+
+				// console.log("refresh environment");
 
 				var target = self.environment.refresh($options);
 				self.setup($options);
@@ -119,24 +121,23 @@ var trash = function (options) {
 			}
 		}
 
-		return new env(options);
+		return new $env();
 
 
 	}
 
 
+
 	var makeEnvironments = function (runs) {
 
-		var envIndex = 0
+		var envIndex = 0;
+		env = [];
 
-		while (envIndex <= runs) {
+		while (envIndex < runs) {
 
-			env[envIndex] = createRunEnvironment();
-
-			// console.log("environment", envIndex, "created");
+			env.push(createRunEnvironment());
 
 			envIndex++;
-
 		}
 
 	}
@@ -144,17 +145,10 @@ var trash = function (options) {
 	var refreshAllEnvironments = function (runs) {
 
 
-		var envIndex = 0
+		env.forEach((p, index) => {
 
-		while (envIndex <= runs) {
-
-			env[envIndex].refresh();
-
-			console.log("environment", envIndex, "reset");
-
-			envIndex++;
-
-		}
+			p.refresh(input.programInput);
+		});
 	}
 
 
@@ -215,11 +209,11 @@ var trash = function (options) {
 			return new Promise(function (resolve, reject) {
 
 
-				target = env[$$run.toString()].refresh(params.input.programInput);
+				target = env[$$run].refresh(params.input.programInput);
 
-				env[$$run.toString()].instruct(params.dna);
+				env[$$run].instruct(params.dna);
 
-				var fit = performStepAsync(0, $$run, 0, params, env[$$run.toString()]);
+				var fit = performStep(0, $$run, 0, params, env[$$run]);
 
 
 				return resolve({fitness:fit, target:target});
@@ -234,7 +228,7 @@ var trash = function (options) {
 
 		running = true;
 
-		while ($run <= runs) {
+		while ($run < runs) {
 
 			doRun($run, params)
 			.then(function (fit) {
@@ -312,9 +306,6 @@ var trash = function (options) {
 
 			}
 		);
-
-
-		
 
 	}
 

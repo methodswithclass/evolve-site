@@ -4,7 +4,7 @@ var environmentFact = require("./environment.js");
 var d = require("../../data/programs/trash.js");
 // var g = require("mc-shared").utility_service;
 var g = require("../../__ga/shared.js").utility_service;
-var Worker = require("webworker-threads").Worker;
+// var Worker = require("webworker-threads").Worker;
 
 
 var trash = function (options) {

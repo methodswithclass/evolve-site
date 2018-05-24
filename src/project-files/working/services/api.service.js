@@ -76,7 +76,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var setInput = function (resend, callback) {
 
        
-        // console.log("setInput http call get input or resendInput");
+        // console.log("setInput", $input.getInput(false, true));
 
     	$http({
     		method:"POST",
@@ -305,7 +305,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     	$http({
     		method:"POST",
     		url:"/evolve/hardStop",
-    		data:{input:$input.getInput()}
+    		data:{input:$input.getInput(false, true)}
     	})
     	.then(function (res) {
 

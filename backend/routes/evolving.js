@@ -14,6 +14,9 @@ const uidgen = new UIDGenerator();
 
 // var evolution;
 
+var called = 0;
+var check = 0;
+
 var addProgram = function (input) {
 
 
@@ -25,6 +28,44 @@ var addProgram = function (input) {
 	input.pdata = result.pdata;
 
 	return input;
+}
+
+var looseEnds = function (req) {
+
+	var sessions = get.getAllSessions()
+	var dataArray = [];
+
+	for (i in sessions) {
+		//get program with this name for each sesssion that is still running
+		dataArray.push({
+			session:sessions[i],
+			program:sessions[i].programs[req.body.input.name]
+		})
+	}
+
+	dataArray.forEach((data) => {
+		//check if it's stepdata function is being called
+
+		check = called++;
+
+		if (check == 10) {
+			check = 0;
+		}
+
+		if (called == 10) {
+			called = 0;
+		}
+
+
+		setTimeout(() => {
+
+			if (check == called) {
+
+				data.program.hardStop(data.session.evolve.input.session);
+			}
+		}, 300)
+
+	})
 }
 
 
@@ -65,17 +106,7 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 evolveRouter.post("/set", function (req, res, next) {
 
-	var input = req.body.input
-	// var inputArray = [];
-
-	// for (var i in input) {
-
-	// 	var key = {};
-
-	// 	key[i] = input[i]
-
-	// 	inputArray.push(key);
-	// }
+	var input = req.body.input;
 
 
 	console.log("set input\n\n", input, "\n");
@@ -108,7 +139,8 @@ evolveRouter.post("/running", function (req, res, next) {
 
 	// console.log("check running", req.body, evolution.running());
 
-	var evolution = get.getSessionEvolve(req.body.input.session)
+
+	var evolution = get.getSessionEvolve(req.body.input.session);
 
 	res.json({running:evolution.running()})
 })
@@ -145,6 +177,8 @@ evolveRouter.post("/instruct", function (req, res, next) {
 evolveRouter.post("/stepdata", function (req, res, next) {
 
 	// console.log("get stepdata", req.body);
+
+	// looseEnds(req);
 
 	var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
 

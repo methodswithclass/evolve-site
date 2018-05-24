@@ -35,7 +35,7 @@
 			},
 			"evdelay":0,
 			"trashPercent":50,
-			"processType":"recursive"
+			"processIndex":0
 		},
 		"feedback":{
 			"goals":[
@@ -49,7 +49,8 @@
 			}
 			],
 			"evdelay":300,
-			"duration":400
+			"duration":400,
+			"processIndex":false
 		},
 		"recognize":{
 			"goals":[
@@ -81,7 +82,8 @@
 			},
 			"genemin":-20,
 			"genemax":20,
-			"function":"threshold"
+			"function":"threshold",
+			"processIndex":false
 		}
 	},
 	"types":{
@@ -100,13 +102,12 @@
 			"sync":"sync",
 			"async":"async"
 		},
-		"processTypes":{
-			"default":"recursive",
-			"recursive":"recursive",
-			"loop":"loop",
-			"async":"async",
-			"worker":"worker"
-		},
+		"processTypes":[
+			"recursive",
+			"loop",
+			"async",
+			"worker"
+		],
 		"functionTypes":{
 			"default":"threshold",
 			"threshold":"threshold",

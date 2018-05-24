@@ -15,8 +15,23 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
 	var update = false;
     var ev = false;
 
-    var $stepdata;
-    var $evdata;
+    var $stepdata = {
+        gen:0,
+        org:0,
+        run:0,
+        step:0
+    }
+
+    var $evdata = {
+        best:{
+            fitness:0
+        },
+        worst:{
+            fitness:0
+        }
+    }
+
+
     var params = {
         delay:0,
         fade:2000
@@ -376,7 +391,7 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade/4});
 
         $input.setInput({
-            gens:$stepdata.gen
+            gens:$stepdata.gens
         });
 
         // uncomment this line to force the gens value to change in the settings panel to the current generation when hardstop was called

@@ -1,4 +1,4 @@
-app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, api, config, evolve, $input, display) {
+app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 'config.service', 'evolve.service', 'input.service', 'display.service', function (data, simulator, u, api, config, evolve, $input, display) {
 
 
 	var pageBuilt;
@@ -9,6 +9,17 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
     var send = shared.send_service;
     var react = shared.react_service;
     var events = shared.events_service;
+
+    var processTypes = config.get("types.processTypes");
+    // console.log("types", processTypes);
+
+    var d = data.get("trash");
+
+    var getProcessType = function (input) {
+
+        // console.log("input in function", input);
+        return (typeof input.processIndex !== "undefinded") ? processTypes[input.processIndex] : undefined;
+    }
 
 
 	var setup = function (self, $scope) {
@@ -21,22 +32,6 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
             name:"sim." + self.name,
             callback:function (x) {
                 self.sdata = x;
-            }
-        })
-
-        react.subscribe({
-            name:"register.arena.events",
-            callback:function(arenaEvents) {
-
-                if (!pageBuilt) {
-
-                    console.log("register arena events");
-
-                    arenaEvents();
-                }
-                else {
-                    console.log("evevnts not re-registered");
-                }
             }
         })
 
@@ -63,14 +58,6 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 	            programInput:self.programInput
 	        })
 
-
-            // events.dispatch("init-settings");
-
-
-	        // setTimeout(function () {
-	        //     simulator.refresh();
-	        // }, 1000);
-
             simulator.refresh();
 
 	    }
@@ -91,53 +78,16 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 	var build = function (self, $scope) {
 
 
-        $scope.grids = [
-        {
-            size:3
-        },
-        {
-            size:4
-        },
-        {
-            size:5
-        },
-        {
-            size:6
-        },
-        {
-            size:7
-        },
-        {
-            size:8
-        },
-        {
-            size:9
-        },
-        {
-            size:10
-        },
-        {
-            size:11
-        },
-        {
-            size:12
-        },
-        {
-            size:13
-        },
-        {
-            size:14
-        },
-        {
-            size:15
-        }
-        ]
-
-
-        processTypes = config.get("types.processTypes")
+        $scope.grids = d.grids;
 
         self.programInput = config.get("global.trash");
+
+        // console.log("input", self.programInput);
+
+        self.programInput.processType = getProcessType(self.programInput);
         
+        // console.log("processType", self.programInput.processType);
+
         self.programInput.getTotalSteps = function () {
 
             return self.programInput.grid.size*self.programInput.grid.size*2;
@@ -236,7 +186,7 @@ app.factory("trash.controller", ["trash-sim", "utility", 'api.service', 'config.
 
 
         $input.masterReset();
-        
+
 
         $input.setInput({
             name:self.name,

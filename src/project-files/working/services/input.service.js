@@ -20,6 +20,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     var _$scope = {};
 
 
+    var processTypes = config.get("types.processTypes")
 	var crossoverMethods = config.get("types.crossoverMethods");
 	var runPopTypes = config.get("types.runPopTypes");
 	var reproductionTypes = config.get("types.reproductionTypes");
@@ -203,17 +204,21 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
  	var setInput = function (options) {
 
- 		for (var i in options) {
+        if (g.doesExist(self.temp[self.name]) && g.doesExist(self.global[self.name])) {
 
-            if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];
- 			self.temp[self.name][i] = options[i];
-            self.global[self.name][i] = options[i];
- 		}
+     		for (var i in options) {
+
+                if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];
+     			self.temp[self.name][i] = options[i];
+                self.global[self.name][i] = options[i];
+     		}
+
+        }
 
  	}
 
 
-    var getInput = function (update) {
+    var getInput = function (update, resend) {
 
     	if (typeof update === "undefined" || typeof update === "null") update = true;
 		
@@ -227,6 +232,9 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     	var $method = $("#methodinput");
 
+        if (resend) {
+            return self.global[self.name];
+        }
 
 		self.global[self.name] = {
 			

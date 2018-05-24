@@ -262,13 +262,13 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			var refreshTimer = setInterval(() => {
 
-				console.log("refresh timer");
+				// console.log("refresh timer");
 
 				if ($("#innerplot")[0]) {
 
-					console.log("plot exists")
+					// console.log("plot exists")
 
-					changeX(500);
+					changeX(200);
 
 				}
 				else {

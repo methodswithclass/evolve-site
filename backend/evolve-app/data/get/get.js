@@ -2,8 +2,8 @@
 
 // var evolveFact = require("mc-evolve");
 var evolveFact = require("../../__ga/evolve_async.js");
-var g = require("mc-shared").utility_service;
-// var g = require("../../__ga/shared.js").utility_service;
+// var g = require("mc-shared").utility_service;
+var g = require("../../__ga/shared.js").utility_service;
 
 var SESSION_EXPIRY = 3600*24*1000;
 
@@ -143,6 +143,11 @@ var addProgramToSession = function (input) {
 	}
 }
 
+var getAllSessions = function () {
+
+	return evolve;
+}
+
 var getSession = function (session) {
 
 	return evolve[session];
@@ -173,6 +178,7 @@ module.exports =  {
 	programs:programs,
 	createSessionEvolve:createSessionEvolve,
 	addProgramToSession:addProgramToSession,
+	getAllSessions:getAllSessions,
 	getSession:getSession,
 	getSessionEvolve:getSessionEvolve,
 	getSessionProgram:getSessionProgram,
