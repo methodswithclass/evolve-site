@@ -576,6 +576,7 @@ app.factory("display.service", ["utility", function (u) {
             $("#settingstoggle").css({right:openStatus.right.closed});
 
 
+            u.toggle("hide", "nav");
 			u.toggle("hide", "break");
             u.toggle("hide", "evolve");
             u.toggle("hide", "hud");
@@ -595,7 +596,7 @@ app.factory("display.service", ["utility", function (u) {
         }
         else if (toggle == "show") {
 
-			                    
+			u.toggle("show", "nav", {fade:params.fade, delay:params.delay});       
             u.toggle("show", "hud", {fade:params.fade, delay:params.delay});
             u.toggle("show", "stage", {fade:params.fade, delay:params.delay});
             u.toggle("show", "evolvedata", {fade:params.fade, delay:params.delay});
