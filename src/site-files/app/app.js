@@ -163,9 +163,9 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 	appSetup(display);
 
-	// states.go("home");
+	states.go("home");
 	// states.go("trash#demo");
-	states.go("feedback#demo");
+	// states.go("feedback#demo");
 }]);
 
 

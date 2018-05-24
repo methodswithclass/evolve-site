@@ -258,6 +258,13 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			$(window).resize(() => {
 
 				setArenaSize();
+				
+				changeX(200);
+
+				setTimeout(() => {
+					changeY(undefined, 200);
+				}, 300);
+				
 			})
 
 			var refreshTimer = setInterval(() => {
