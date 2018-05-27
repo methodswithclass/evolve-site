@@ -4,7 +4,7 @@
   "description": "This package is the source code for a site by Methods with Class, LLC about Evolutionary Algorithms",
   "repository": "https://github.com/methodswithclass/evolve-backend.git",
   "main": "server.js",
-  "author": "",
+  "author": "Christopher Polito",
   "license": "ISC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
