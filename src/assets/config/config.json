@@ -48,9 +48,7 @@
 				"goal":"diverge"
 			}
 			],
-			"evdelay":300,
-			"duration":400,
-			"processIndex":false
+			"evdelay":300
 		},
 		"recognize":{
 			"goals":[
@@ -82,8 +80,7 @@
 			},
 			"genemin":-20,
 			"genemax":20,
-			"function":"threshold",
-			"processIndex":false
+			"function":"threshold"
 		}
 	},
 	"types":{

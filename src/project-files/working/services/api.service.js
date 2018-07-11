@@ -1,13 +1,12 @@
 app.factory("api.service", ["utility", 'input.service', '$http', function (u, $input, $http) {
 
 
-
     var shared = window.shared;
     var g = shared.utility_service;
-    var send = shared.send_service;
-    var react = shared.react_service;
     var events = shared.events_service;
-
+    var react = shared.react_service;
+    var send = shared.send_service;
+    
 
 	var getBest = function (callback) {
 
@@ -41,6 +40,8 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             data:{input:$input.getInput()}
     	})
     	.then(function (res) {
+
+            // console.log("stepdata raw response", res);
 
             if (typeof callback === "function") callback(res);
 
@@ -76,7 +77,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var setInput = function (resend, callback) {
 
        
-        // console.log("setInput", $input.getInput(false, true));
+        console.log("setInput http call get input or resendInput");
 
     	$http({
     		method:"POST",
@@ -120,7 +121,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
    	var initialize = function (callback) {
 
     
-        // console.log("initialize http call get input");
+        console.log("initialize http call get input");
 
         $http({
             method:"POST",
@@ -143,7 +144,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var run = function (callback) {
 
 
-        // console.log("run call input", $input.getInput());
+        console.log("run call input", $input.getInput());
 
     	$http({
     		method:"POST",
@@ -204,7 +205,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
         })
         .then(function (res) {
 
-            // console.log("refresh response", res.data);
+            console.log("refresh response", res.data);
 
             if (typeof callback === "function") callback(res);
 
@@ -300,12 +301,12 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var hardStop = function (callback) {
 
 
-        // console.log("hard stop call get input");
+        console.log("hard stop call get input");
 
     	$http({
     		method:"POST",
     		url:"/evolve/hardStop",
-    		data:{input:$input.getInput(false, true)}
+    		data:{input:$input.getInput()}
     	})
     	.then(function (res) {
 

@@ -3,10 +3,9 @@ app.factory("loading.service", ["utility", function (u) {
 
 	var shared = window.shared;
 	var g = shared.utility_service;
-	var send = shared.send_service;
-	var react = shared.react_service;
 	var events = shared.events_service;
-
+	var react = shared.react_service;
+	var send = shared.send_service;
 
 
 	var $phases;
@@ -23,6 +22,7 @@ app.factory("loading.service", ["utility", function (u) {
 
 	var runPhase = function (index) {
 
+    	// console.log("run complete index", index);
 
     	if (index < $phases.length) {
 
@@ -64,6 +64,4 @@ app.factory("loading.service", ["utility", function (u) {
 	}
 
 
-}]);
-
-
+}])

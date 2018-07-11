@@ -9,7 +9,7 @@ app.factory("doc.data", function () {
 		content:[
 		{
 			id:"welcome",
-			title:"",
+			title:"welcome",
 			text:[
 			[
 				"Welcome to the world of evolutionary programming, or genetic algorithms. This site is about artificial intelligence and the subfield of evolutionary modeling of biological evolution that can be used to solve a variety of real world problems in engineering and computer science. It is used in cases when the optimum parameters of the end product are unknown, but the designers have a way to measure the performance of the end product. That way, they can test a variety of parameters to see if it meets their standard. Genetic algorithms provide a structured way to test a variety of different parameters, while also testing better and better parameters until an optimum set is achieved. This is done over a number of repeated generations, while each set of parameters per cycle can be thought of as the individuals in the generation."

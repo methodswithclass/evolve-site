@@ -1,15 +1,13 @@
 app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, config, evolve, $input, display) {
 
-
-	var pageBuilt;
-
-
-
     var shared = window.shared;
     var g = shared.utility_service;
-    var send = shared.send_service;
-    var react = shared.react_service;
     var events = shared.events_service;
+    var react = shared.react_service;
+    var send = shared.send_service;
+
+
+	var pageBuilt;
 
 
 	var setup = function (self, $scope) {
@@ -101,12 +99,6 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 		  
     }
 
-    var run = function () {
-
-        evolve.run();
-    }
-
-
 
 	return {
 		setup:setup,
@@ -118,8 +110,7 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 		restart:restart,
 		step:step,
 		play:play,
-		stop:stop,
-        run:run
+		stop:stop
 	}
 
 

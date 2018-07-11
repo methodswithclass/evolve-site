@@ -1,5 +1,5 @@
 {
-  "name": "evolve",
+  "name": "evolve-site",
   "version": "1.0.0",
   "description": "This package is the source code for a site by Methods with Class, LLC about Evolutionary Algorithms",
   "repository": "https://github.com/methodswithclass/evolve-backend.git",
@@ -19,33 +19,37 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "bower": "^1.8.4",
-    "browser-sync": "^2.19.0",
+    "browser-sync": "^2.24.4",
     "connect-livereload": "^0.6.0",
     "del": "^2.2.2",
     "express": "^4.15.3",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^4.1.0",
     "gulp-concat": "^2.6.1",
     "gulp-filter": "^5.0.0",
-    "gulp-imagemin": "^3.3.0",
+    "gulp-imagemin": "^4.1.0",
     "gulp-inject": "^4.2.0",
     "gulp-jshint": "^2.0.4",
     "gulp-livereload": "^3.8.1",
     "gulp-main-bower-files": "^1.6.2",
     "gulp-nodemon": "^2.2.1",
     "gulp-rename": "^1.2.2",
-    "gulp-ruby-sass": "^2.1.1",
     "gulp-shell": "^0.6.3",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
-    "mc-evolve": "^5.0.0",
-    "mc-shared": "^4.5.4",
+    "mc-evolve": "^5.1.0",
+    "mc-shared": "^4.5.5",
     "merge-stream": "^1.0.1",
-    "mongoose": "^4.12.5",
-    "node-sass": "^4.8.3",
+    "mongoose": "^4.13.14",
+    "node-sass": "^4.9.2",
     "private-bower": "*",
     "uid-generator": "^0.1.1",
     "velocity-animate": "^2.0.2"
+  },
+  "resolutions": {
+    "gulp-nodemon": {
+      "nodemon": "1.11.0"
+    }
   }
 }

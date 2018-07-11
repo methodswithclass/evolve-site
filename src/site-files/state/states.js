@@ -1,49 +1,30 @@
-stateModule.factory("states", ['$q', 'runtime.state', '$state', '$transitions', 'utility', function ($q, runtime, $state, $transitions, u) {
+stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', function ($q, runtime, $state, $rootScope) {
 
 
 	var shared = window.shared;
-	var g = shared.utility_service;
-	var send = shared.send_service;
-	var react = shared.react_service;
 	var events = shared.events_service;
 
-
-	var _forceMobile = false;
 
 	var prevState;
 
 	var states = runtime.states;
 
-	var baseUrl = function (responsive) {
+	$rootScope.$on('$stateChangeSuccess', 
+		function(event, toState, toParams, fromState, fromParams) {
 
-		return "assets/views/" + u.getInterface() + "/" + (responsive ? ((_forceMobile || checkMobile()) ? "mobile" : "desktop") : "common");
-	}
+			//console.log(toState);	  
 
+			prevState = fromState;
 
-	$transitions.onStart([], function (trans) {
+			console.log(toState);
 
-		prevState = trans.from();
+			// var leaveName = fromState.name;
 
-		console.log("state change started: to state", trans.to().name);
+			// events.dispatch("close" + leaveName);
 
-
-		// if (u.interfaceChanged()) {
-			
-		// 	var found = runtime.stateViewUrls.find((p) => {
-
-		// 		return p.name == trans.to().name;
-		// 	})
-
-		// 	var newUrl = baseUrl(found.responsive) + found.url;
-
-		// 	trans.to().templateUrl = newUrl;
-
-		// 	u.resetChanged();
-		// }
-
-
-		$("#body").scrollTo(0);
-	});
+			$("#body").scrollTo(0);
+		}
+	);
 
 	var current = function () {
 		return $state.current.name;

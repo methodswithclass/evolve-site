@@ -1,12 +1,9 @@
 
 
 
-var livereloadPort = 4020;
-
-var directory = __dirname;
+var livereloadPort = 3050;
 
 
 module.exports = {
-	livereloadPort:livereloadPort,
-	basedir:directory
+	livereloadPort:livereloadPort
 }

@@ -85,81 +85,81 @@ var refreshAllBut = function () {
 	}
 }
 
-var file = path.join(config.basedir, "src/assets/scss/classes_local.scss");
-var outputFile = path.join(config.basedir, "src/assets/css/classes_local.css");
-var sourceMap = path.join(config.basedir, "src/assets/css/classes_local.map.css");
+// var file = path.join(config.basedir, "src/assets/scss/classes_local.scss");
+// var outputFile = path.join(config.basedir, "src/assets/css/classes_local.css");
+// var sourceMap = path.join(config.basedir, "src/assets/css/classes_local.map.css");
 
-var dir = path.join(config.basedir, "src/assets/scss");
-
-
-var compileSass = function () {
+// var dir = path.join(config.basedir, "src/assets/scss");
 
 
-	if (!fs.existsSync(dir)){
-	    fs.mkdirSync(dir);
-	}
+// var compileSass = function () {
 
 
-	// console.log("base dir", config.basedir);
-
-	var fileStream = fs.createWriteStream(file);
-
-	fileStream.on("open", () => {
-
-		https.get("https://code.methodswithclass.com/api/classes/2.0/classes.scss", (res) => {
+// 	if (!fs.existsSync(dir)){
+// 	    fs.mkdirSync(dir);
+// 	}
 
 
-			res.on('data', (chunk) => {
+// 	// console.log("base dir", config.basedir);
 
-                fileStream.write(chunk);
-            }).on("end", () => {
+// 	var fileStream = fs.createWriteStream(file);
 
-            	fileStream.end();
+// 	fileStream.on("open", () => {
+
+// 		https.get("https://code.methodswithclass.com/api/classes/2.0/classes.scss", (res) => {
 
 
-            	sass.render({
-					file:file,
-					outFile:outputFile
-					// sourceMap:sourceMap
-				}, (err, result) => { 
+// 			res.on('data', (chunk) => {
 
-					if (err) {
-						console.log("\nError while compiling Sass on server:\n\n", err);
-					}
-					else {
-						console.log("\nSass compilation on server successful:\n\n", result);
+//                 fileStream.write(chunk);
+//             }).on("end", () => {
 
-						fs.writeFile(outputFile, result.css, (err) => {
+//             	fileStream.end();
 
-							if (err) {
 
-								console.log("\nError writing CSS to file to disk\n\n");
-							}
-							else {
-								console.log("\nCSS file successfully written to disk\n\n");
-							}
-						})
-					}
-				});
+//             	sass.render({
+// 					file:file,
+// 					outFile:outputFile
+// 					// sourceMap:sourceMap
+// 				}, (err, result) => { 
 
-            }).on("error", (err) => {
+// 					if (err) {
+// 						console.log("\nError while compiling Sass on server:\n\n", err);
+// 					}
+// 					else {
+// 						console.log("\nSass compilation on server successful:\n\n", result);
 
-            	console.log("Error in response getting /2.0/classes.scss")
-            })
+// 						fs.writeFile(outputFile, result.css, (err) => {
 
-		});
+// 							if (err) {
 
-	});
+// 								console.log("\nError writing CSS to file to disk\n\n");
+// 							}
+// 							else {
+// 								console.log("\nCSS file successfully written to disk\n\n");
+// 							}
+// 						})
+// 					}
+// 				});
 
-}
+//             }).on("error", (err) => {
+
+//             	console.log("Error in response getting /2.0/classes.scss")
+//             })
+
+// 		});
+
+// 	});
+
+// }
 
 
 
 module.exports = {
 	forceSSL:forceSSL,
 	refresh:refreshOnly,
-	refreshAllBut:refreshAllBut,
-	compileSass:compileSass
+	refreshAllBut:refreshAllBut
+	// compileSass:compileSass
 }
 
 

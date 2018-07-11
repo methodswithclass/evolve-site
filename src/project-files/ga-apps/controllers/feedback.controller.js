@@ -1,7 +1,7 @@
 app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service', 'evolve.service', 'input.service', 'display.service', function (simulator, u, config, evolve, $input, display) {
 
 
-	var pageBuilt;
+    var pageBuilt;
 
 
     var shared = window.shared;
@@ -11,28 +11,28 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     var events = shared.events_service;
 
 
-	var setup = function (self, $scope) {
+    var setup = function (self, $scope) {
 
-		pageBuilt = display.beenBuilt(self.name);
+        pageBuilt = display.beenBuilt(self.name);
 
-	}
+    }
 
 
-	var createEnvironment = function (self, $scope) {
+    var createEnvironment = function (self, $scope) {
 
-		simulator.create();
+        simulator.create();
         simulator.reset();
-	}
+    }
 
 
-	var finish = function (self, $scope) {
+    var finish = function (self, $scope) {
 
 
-	}
+    }
 
-	var build = function (self, $scope) {
+    var build = function (self, $scope) {
 
-		console.log("build controller", self.name);
+        console.log("build controller", self.name);
 
         processTypes = config.get("types.processTypes")
 
@@ -54,11 +54,11 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
                 self.sdata = x;
             }
         });
-	}
+    }
 
-	var enter = function (self, $scope) {
+    var enter = function (self, $scope) {
 
-		console.log("enter controller", self.name);
+        console.log("enter controller", self.name);
 
 
         if (!pageBuilt) {
@@ -80,10 +80,10 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         })
 
         $scope.settings = $input.setSettings($scope, $input.getInput(false));
-	}
+    }
 
 
-	var refresh = function (self, $scope) {
+    var refresh = function (self, $scope) {
 
         evolve.running(false, $scope);
         simulator.refresh();
@@ -112,18 +112,18 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         evolve.breakRun($scope); 
     }
 
-	return {
-		setup:setup,
-		createEnvironment:createEnvironment,
-		finish:finish,
-		build:build,
-		enter:enter,
-		refresh:refresh,
-		step:step,
-		run:run,
-		stop:stop
+    return {
+        setup:setup,
+        createEnvironment:createEnvironment,
+        finish:finish,
+        build:build,
+        enter:enter,
+        refresh:refresh,
+        step:step,
+        run:run,
+        stop:stop
 
-	}
+    }
 
 
 }]);

@@ -3,13 +3,15 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var shared = window.shared;
     var g = shared.utility_service;
-    var send = shared.send_service;
-    var react = shared.react_service;
     var events = shared.events_service;
+    var react = shared.react_service;
+    var send = shared.send_service;
+
 
 
     var i = 1;
     var _score = 0;
+    var evdata = {};
     var genome;
     var active = false;
     var running = false;
@@ -33,6 +35,17 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     react.subscribe({
+        name:"programInput" + name,
+        callback:function(x) {
+
+            console.log("assign totalActions from programInput in simulator");
+
+            totalActions = x.totalSteps;
+        }
+    })
+    
+
+    react.subscribe({
         name:"robot",
         callback:function (x) {
 
@@ -41,6 +54,15 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             man = x;
         }
     })
+
+    react.subscribe({
+        name:"ev.trash",
+        callback:function (x) {
+            // console.log("set evdata trash", x);
+            evdata = x;
+        }
+
+    });
 
 
     react.subscribe({
@@ -55,6 +77,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     var output = function (_sout) {
+
+        // console.log("output");
 
         react.push({
             name:"sim." + name,
@@ -122,11 +146,16 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             assessMove();
 
             clean();
+
+            // console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
         });
 
     }
 
     var performStep = function (_input) {
+
+        //console.log("simulate " + i);
+
 
         if (_input.step) u.toggle("hide", "step");
 
@@ -134,6 +163,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
             api.simulate.trash({name:name, i:_input.i, session:_input.session}, function (res) {
+
+                // console.log("run simulation", res.data);
 
                 var result = res.data.result;
 
@@ -163,7 +194,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var setup = function (complete) {
 
-        // console.log("sim setup");
+        console.log("sim setup: instruct", evdata);
+
 
         totalActions = $input.getInput().programInput.totalSteps;
         
@@ -177,6 +209,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         i = 1;
         _score = 0;
+
+        // console.log("reset sim");
 
         output({
             score:{
@@ -193,18 +227,18 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
+        // setup();
+
         events.dispatch("resetenv");
+
 
         api.resetEnvironment(function (res) {
 
-            // console.log("Reset environment success", res);
+            console.log("Reset environment success", res);
         });
 
-        g.waitForElem({elems:man}, () => {
 
-            man.outer.css({left:0, top:0});
-
-        });
+        man.outer.css({left:0, top:0});
 
     }
 
@@ -232,7 +266,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var play = function (session, _colors) {
 
-        // console.log("play");
+        console.log("play", evdata.index);
 
         colors = _colors;
 
@@ -266,6 +300,9 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
     var complete = function () {
+
+        // events.dispatch("completeSim");
+
 
         u.toggle("enable", "refresh", {fade:300, delay:100});
         u.toggle("enable", "restart", {fade:300, delay:200});

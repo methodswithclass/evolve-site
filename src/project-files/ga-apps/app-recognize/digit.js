@@ -2,24 +2,17 @@ app.directive("digit", ['utility', 'api.service', 'display.service', function (u
 
 	return {
 		restrict:"E",
-		scope:true,
+		scope:false,
 		replace:true,
-		template:"<div ng-include='getContentUrl()'></div>",	
+        templateUrl:"assets/views/common/ga-apps/recognize/digit.html",		
 		link:function ($scope, element, attr) {
-
-
-			$scope.getContentUrl = function () {
-
-				return "assets/views/" + u.getInterface() + "/common/interface/digit.html";
-			}
 
 
 			var shared = window.shared;
 			var g = shared.utility_service;
-			var send = shared.send_service;
-			var react = shared.react_service;
 			var events = shared.events_service;
-
+			var react = shared.react_service;
+			var send = shared.send_service;
 
 
 			var imageSize = 28;

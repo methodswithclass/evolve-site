@@ -6,13 +6,13 @@ var evolveRouter = evolveExpress.Router();
 var db = require("./db.js");
 const UIDGenerator = require('uid-generator');
 
-// var evolve = require("mc-evolve");
-// var evolve = require("../_ga/evolve.js");
+
+
 var get = require("../evolve-app/data/get/get.js");
 
 const uidgen = new UIDGenerator();
 
-// var evolution;
+
 
 var called = 0;
 var check = 0;

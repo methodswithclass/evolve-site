@@ -192,8 +192,6 @@ var environment = function () {
 		index += right*Math.pow(base, 3);
 		index += on*Math.pow(base, 4);
 
-		// console.log("\nenvironment assess", index, "\n\n");
-
 		return index;
 
 	}
