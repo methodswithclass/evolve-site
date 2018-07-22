@@ -102,7 +102,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
                     offset:{
                         run:0,
                         sim:$(window).height()*0.1,
-                        config:$(window).height()*0.1
+                        config:$(window).height()*0.15
                     }
                 }
 
