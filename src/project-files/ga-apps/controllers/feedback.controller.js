@@ -34,9 +34,18 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
         console.log("build controller", self.name);
 
-        processTypes = config.get("types.processTypes")
+        processTypes;
+        $scope.programInput;
 
-        $scope.programInput = config.get("global.feedback");
+        config.get([
+                    "types.processTypes",
+                    "global.feedback"
+                   ])
+        .then((data) => {
+
+            processTypes = data[0];
+            $scope.programInput = data[1];
+        })
 
         react.subscribe({
             name:"data" + "feedback",

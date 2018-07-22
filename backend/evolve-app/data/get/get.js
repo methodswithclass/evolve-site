@@ -1,7 +1,7 @@
 
 
-var evolveFact = require("mc-evolve");
-// var evolveFact = require("../../__.ga/evolve_async.js");
+// var evolveFact = require("mc-evolve");
+var evolveFact = require("../../@.ga/__.ga.js");
 var g = require("mc-shared").utility_service;
 // var g = require("../../__.ga/shared.js").utility_service;
 

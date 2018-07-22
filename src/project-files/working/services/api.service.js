@@ -25,8 +25,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             console.log("Server error: 'getBest'", err.message)
 
         })
-
-
+        
     }
 
 
@@ -59,7 +58,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     	$http({
     		method:"POST",
     		url:"/evolve/running",
-            data:{input:$input.getInput()}
+            data:{input:$input.getInput(true)}
     	})
     	.then(function (res) {
 
@@ -149,7 +148,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     	$http({
     		method:"POST",
     		url:"/evolve/run", 
-    		data:{input:$input.getInput()}
+    		data:{input:$input.getInput(true)}
     	})
     	.then(function (res) {
 

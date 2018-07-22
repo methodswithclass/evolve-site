@@ -10,7 +10,14 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
     var react = shared.react_service;
     var events = shared.events_service;
 
-    var processTypes = config.get("types.processTypes");
+    var processTypes
+
+    config.get("types.processTypes")
+    .then((data) => {
+
+        processTypes = data;
+    })
+
     // console.log("types", processTypes);
 
     var d = data.get("trash");
@@ -75,18 +82,16 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 	}
 
 
-	var build = function (self, $scope) {
+
+    var setupProgramInput = function (self, data) {
 
 
-        $scope.grids = d.grids;
 
-        self.programInput = config.get("global.trash");
+        self.programInput = data;
 
-        // console.log("input", self.programInput);
 
         self.programInput.processType = getProcessType(self.programInput);
-        
-        // console.log("processType", self.programInput.processType);
+
 
         self.programInput.getTotalSteps = function () {
 
@@ -164,6 +169,26 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 
         self.programInput.update();
+
+
+    }
+
+
+
+	var build = function (self, $scope) {
+
+
+        $scope.grids = d.grids;
+
+        self.programInput
+
+        config.get("global.trash")
+        .then((data) => {
+
+
+            setupProgramInput(self, data);
+
+        })
         
 	}
 
@@ -195,7 +220,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         react.push({
             name:"data" + self.name,
-            state:{input:$input.getInput()}
+            state:{input:$input.resendInput()}
         })
 
 

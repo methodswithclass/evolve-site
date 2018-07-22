@@ -1,4 +1,4 @@
-app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states', 'utility', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', 'loading.service', function ($scope, simulators, controllers, states, u, display, api, $input, config, evolve, loading) {
+app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states', 'utility', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', 'loading.service', 'settings.service', function ($scope, simulators, controllers, states, u, display, api, $input, config, evolve, loading, settings) {
 
     var self = this;
 
@@ -30,32 +30,43 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     $scope.input = {};
 
 
-    var tempcross = config.get("types.crossoverMethods");
-    var k = 0;
-
+    var tempcross;
     var crossoverMethods = [];
 
-    for (var i in tempcross) {
+    config.get("types.crossoverMethods")
+    .then((data) => {
 
-        if (k > 0) {
 
-            crossoverMethods.push({
-                index:k-1,
-                name:i,
-                method:tempcross[i]
-            })
+        tempcross = data;
+
+
+        for (var i in tempcross) {
+
+            if (k > 0) {
+
+                crossoverMethods.push({
+                    index:k-1,
+                    name:i,
+                    method:tempcross[i]
+                })
+            }
+
+            k++;
         }
 
-        k++;
-    }
+        $scope.crossoverMethods = crossoverMethods;
+        $scope.settings.method = crossoverMethods[0].method;
 
-    $scope.crossoverMethods = crossoverMethods;
-    $scope.settings.method = crossoverMethods[0].method;
+        $scope.crossoverData = {
+            crossoverMethods:crossoverMethods,
+            method:crossoverMethods[0].method
+        }
 
-    $scope.crossoverData = {
-        crossoverMethods:crossoverMethods,
-        method:crossoverMethods[0].method
-    }
+
+    })
+
+
+    var k = 0;
 
 
     // $scope.settings.method = $scope.crossoverMethods[0].method;
@@ -172,8 +183,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         duration:6*displayParams.duration,
         phase:function (options) {
 
-            console.log("initializing algorithm");
+            console.log("initializing algorithm", pageBuilt);
             
+
+            console.log("input", $input.getInput())
+
             if (!pageBuilt) {
                
                 api.instantiate(function (res) {
@@ -189,9 +203,9 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
                         method:tempcross.default
                     })
                     
-                    api.initialize(function () {
+                    api.setInput(true, function (res) {
 
-                        api.setInput(false, function (res) {
+                        api.initialize(function () {                        
 
                             next(options);
 
@@ -293,238 +307,12 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
 
 
-    /* 
-    #_______________________________________
-    #
-    #
-    #   Settings kind support functions
-    #
-    #
-    #_________________________________________
-    */
-
-
-    var kindStatus = {
-        opened:"z-80",
-        closed:"z-60"
-    }
-
-    var kinds = [
-    {
-        id:0,
-        value:"basic",
-        status:true
-    },
-    {
-        id:1,
-        value:"advanced",
-        status:false
-    }
-    ]
-
-    var tabParams = {
-        opened:{
-            top:0,
-            opacity:0,
-            zIndex:20,
-            class:kindStatus.opened
-        },
-        closed:{
-            top:"20px",
-            opacity:1,
-            zIndex:10,
-            class:kindStatus.closed
-        }
-    }
-
-    var toggleKind = kinds[0];
-
-    var toggleKindType = function (kindValue) {
-
-        toggleKind = kinds.find(function (p) {
-
-            return p.value == kindValue;
-        });
-
-
-        kinds = kinds.map(function (value, index) {
-
-            if (value.value == toggleKind.value) {
-
-                // sets toggle kind status to true (indicates that kindValue tab has been selected opened)
-
-                value.status = true;
-            }
-            else {
-
-                // indicates all other tabs closed
-
-                value.status = false;
-            }
-
-            return value;
-
-        })
-
-        return toggleKind;
-    }
-
-    var getTabParam = function (kind, param) {
-
-        return kind.status ? tabParams.opened[param] : tabParams.closed[param];
-    }
-
-    var tabElem = function (kind) {
-        
-        return {
-            main:$("#" + kind.value + "-tab"),
-            cover:$("#settings-" + kind.value + "-cover"),
-            settings:$("#settings-" + kind.value),
-            closedSign:$("settings-" + kind.value + "-inactive-cover")
-        }
-    }
-
-    var toggleTab = function (kind) {
-
-
-        tabElem(kind).main.css({
-            top:getTabParam(kind, "top"),
-            zIndex:getTabParam(kind, "zIndex")
-        });
-
-        tabElem(kind).cover.css({
-            // top:getTabParam(kind, "top"), 
-            opacity:getTabParam(kind, "opacity")
-        });
-
-        tabElem(kind).settings
-        .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
-        .addClass(getTabParam(kind, "class"));
-
-    }
-
-
-
-    /*_____________________________________________________________________________*/
-
-
-
-
-   /* 
-    #_______________________________________
-    #
-    #
-    #   Settings open/close toggle support functions
-    #
-    #
-    #_________________________________________
-    */
-
-
-
-    var controls = [
-    {
-        name:"open",
-        input:"#opensettings",
-        tool:"#opentool"
-    }
-    ]
-
-    var inputs = [
-    {
-        input:"#gensinput"
-    },
-    {
-        input:"#runsinput"
-    },
-    {
-        input:"#goalinput"
-    },
-    {
-        input:"#popinput"
-    },
-    {
-        input:"#refreshbtn"
-    }
-    ]
-
-    $stage = $("#stage");
-
-
-    var setHover = function (i) {
-
-        controls.forEach(function(value, index) {
-
-            $(value.input).hover(
-                function() {
-                    $(value.tool).animate({opacity:1}, 100);
-                },
-                function () {
-                    $(value.tool).animate({opacity:0}, 100);
-                }
-            );
-
-        })
-    }
-
-    // setHover();
-
-    var isFocus = function () {
-
-       
-        for (var i in inputs) {
-            
-
-            if ($(inputs[i].input).is(":focus")) {
-                return true;
-            }
-
-        }
-               
-        return false;
-    }
-
-    var settingsWidth = 800;
-    var width = 0.6;
-    var toggleOpened = true;
-    var openStatus = {opened:false, right:{opened:-20, closed:(-1)*settingsWidth}};
-            
-
-
-    var animateToggle = function (open_up) {
-
-        $(controls[0].tool).animate({opacity:0}, 200);
-        $("#settingstoggle").animate({
-            
-            right:
-            
-            (
-             (!open_up || openStatus.opened) 
-             ? openStatus.right.closed
-
-             : (
-                (open_up || openStatus.closed) 
-                ? openStatus.right.opened 
-                : openStatus.right.closed
-                )
-             )
-
-        }, 
-        {
-            
-            duration:300, 
-            complete:function () {
-                openStatus.opened = !openStatus.opened;
-            }
-
-        });
-
-    }
+    
 
 
     self.animateRefresh = function (complete) {
 
-        toggleOpened = false;
+        settings.toggleOpened = false;
         $("#refreshfeedback").css({opacity:1});
         $("#refreshfeedback").animate(
         {
@@ -536,7 +324,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             complete:function () { 
                 $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
                 if (complete) complete();
-                toggleOpened = true;
+                settings.toggleOpened = true;
             }
         }
         )
@@ -566,10 +354,10 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     self.open = function () {
 
-        console.log("open settings ", openStatus.opened);
+        // console.log("open settings ", openStatus.opened);
 
-        if (!isFocus() && toggleOpened) {
-            animateToggle(true);
+        if (!settings.isFocus() && settings.toggleOpened) {
+            settings.animateToggle(true);
         }
     }
 
@@ -578,13 +366,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
         console.log("change settings kind", kindValue);
 
-        kinds.map(function (value, index) {
-
-            toggleKindType(kindValue)
-
-            toggleTab(value);
-
-        });
+        settings.changeKind(kindValue);
 
     }
 
@@ -700,7 +482,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
             $("#main-back").click(function () {
 
-                animateToggle(false);
+                settings.animateToggle(false);
             });
 
         }, 500);
@@ -708,7 +490,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
         controller.enter(self, $scope);
 
-        setHover();
+        settings.setHover();
         
         // evolve.breakRun();
 

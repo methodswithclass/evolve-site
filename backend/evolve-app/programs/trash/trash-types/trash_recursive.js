@@ -245,11 +245,11 @@ var trash = function (options) {
 		// console.log("run gen", params.gen);
 
 		if (params.gen == 1) {
-			console.log("make environments");
+			// console.log("make environments");
 			makeEnvironments(runs);
 		}
 		else {
-			if (params.index == 1) console.log("refresh environments");
+			// if (params.index == 1) console.log("refresh environments");
 			refreshEnvironments(input);
 		}
 

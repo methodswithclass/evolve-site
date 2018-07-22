@@ -19,30 +19,41 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     self.name;
 
 
-	var crossoverMethods = config.get("types.crossoverMethods");
-	var runPopTypes = config.get("types.runPopTypes");
-	var reproductionTypes = config.get("types.reproductionTypes");
+	var crossoverMethods;
+    var runPopTypes;
+    var reproductionTypes;
+    var $$master_initial;
+    var $$reset_initial;
 
-	var $$master_initial = config.get("global.initial");
-    var $$reset_initial = config.get("global.initial");
+
+    config.get([
+               "types.crossoverMethods",
+               "types.runPopTypes",
+               "types.reproductionTypes",
+               "global.initial",
+               "global.initial"
+               ])
+    .then((data) => {
+
+        // console.log("data array", data);
+
+        crossoverMethods = data[0];
+        runPopTypes = data[1];
+        reproductionTypes = data[2];
+        $$master_initial = data[3];
+        $$reset_initial = data[4];
+
+        console.log("master", $$master_initial);
+    })
+
+
 
 	var displayTypes = {
 		value:"value",
 		string:"string"
 	}
 
-
-	// var sendVars = function () {
-
-	// 	react.push({
-	// 		name:"evolve.vars",
-	// 		state:{
-	// 			crossoverMethods:crossoverMethods,
-	// 			reproductionTypes:reproductionTypes
-	// 		}
-	// 	})
-
-	// }
+    
 
 
 	var getValue = function ($value) {
@@ -189,14 +200,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     }
 
 
-    var createInput = function (name) {
-
-        self.name = name;
-        self.global[self.name] = {};
-        self.temp[self.name] = {};
-    }
-
-
     var setName = function (name) {
 
         self.name = name;
@@ -224,7 +227,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     var getInput = function (update) {
 
-    	if (typeof update === "undefined" || typeof update === "null") update = true;
+    	if (typeof update === "undefined" || typeof update === "null") update = false;
 		
 
     	var values = resolveDisplay({
@@ -284,6 +287,16 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         setInput($$master_initial);
     }
 
+
+    var createInput = function (name) {
+
+        self.name = name;
+
+        self.global[self.name] = {};
+        self.temp[self.name] = {};
+
+        masterReset();
+    }
 
 
 	return {

@@ -11,7 +11,11 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 	console.log("open " + state);
 
-	var active = config.get("activePages");
+	config.get("activePages")
+	.then((data) => {
+
+		$scope.isActive = data;
+	})
 
 	self.overview = dd.get("overview");
 
@@ -26,7 +30,5 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 		states.go($state);
 	}
-
-	$scope.isActive = active;
 
 }]);

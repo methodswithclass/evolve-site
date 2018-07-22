@@ -1,4 +1,4 @@
-app.factory("evolve.service", ["utility", 'config.service', 'display.service', 'api.service', 'simulators', 'input.service', function (u, config, display, api, simulators, $input) {
+app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'simulators', 'input.service', function (u, display, api, simulators, $input) {
 
 
 	var self = this;
@@ -392,9 +392,9 @@ app.factory("evolve.service", ["utility", 'config.service', 'display.service', '
         u.toggle("show", "breakfeedback");
         // u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
 
-        $input.setInput({
-            gens:$stepdata.gens
-        });
+        // $input.setInput({
+        //     gens:$stepdata.gen
+        // });
 
         // uncomment this line to force the gens value to change in the settings panel to the current generation when hardstop was called
         // so that to continue evolving, the gens value must be increased to the previous or desired value

@@ -28,9 +28,18 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 
 	var build = function (self, $scope) {
 
-		processTypes = config.get("types.processTypes")
+		processTypes;
+        $scope.programInput;
 
-        $scope.programInput = config.get("global.recognize");
+        config.get([
+                    "types.processTypes",
+                    "types.programInput"
+                   ])
+        .then((data) => {
+
+            processTypes = data[0];
+            $scope.programInput = data[1];
+        })
 
 	}
 
