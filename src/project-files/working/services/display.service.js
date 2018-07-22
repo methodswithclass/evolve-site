@@ -129,14 +129,6 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 
 
 
-
-
-
-
-	
-
-
-
 	    /* ______________________________________________________
     #
     #

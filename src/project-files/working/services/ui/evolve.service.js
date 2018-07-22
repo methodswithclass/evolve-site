@@ -4,6 +4,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 	var self = this;
 
 
+    self.name = "";
+
     var shared = window.shared;
     var g = shared.utility_service;
     var send = shared.send_service;
@@ -11,9 +13,14 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var events = shared.events_service;
 
 
+    var _$scope = {};
+    var interface_timer;
 	var simulator;
 	var update = false;
     var ev = false;
+    var genA = 0;
+    var genB = genA;
+    var stepdata;
 
     var $stepdata = {
         gen:0,
@@ -31,17 +38,11 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         }
     }
 
-
     var params = {
         delay:0,
         fade:200
     }
 
-    var _$scope = {};
-
-    self.name = "";
-
-    var interface_timer;
 
     var toggleTimer = function ($toggle, $scope) {
 
@@ -107,6 +108,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
     }
 
+
     var getBest = function (complete) {
 
 
@@ -121,10 +123,6 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 	    })
 
     }
-
-    var genA = 0;
-    var genB = genA;
-    var stepdata;
 
     var setStepdata = function () {
 
@@ -153,8 +151,6 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
             	genB = genA;
             }
 
-            
-
             setTimeout(function () {
 
             	if (update) setStepdata();
@@ -173,17 +169,16 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         var runT = input.runs;
         var stepT = input.programInput.totalSteps;
 
+
         var gen = $stepdata.gen - 1;
         var org = $stepdata.org - 1;
         var step = $stepdata.step || 0;
         var run = $stepdata.run - 1;
 
-        // console.log("percent", gen, org, step, run);
 
         var stepP = (step + run*stepT + org*(runT*stepT) + gen*(orgT*runT*stepT))/(stepT*runT*orgT*genT);
         var runP = (run + org*runT)/runT;
         var orgP = (org + gen*orgT)/orgT;
-        //var genP = gen/genT;
 
         var percent = stepP;
 
@@ -191,9 +186,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
             percent = 1;
         }
 
-
         display.updateProgressBar(percent);
-
     }
 
 
@@ -238,41 +231,35 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
         console.log("complete evolve");
 
-        // getBest(function () {
+        u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
+        u.toggle("show", "nav", {delay:params.delay, fade:params.fade});
+        u.toggle("hide", "breakfeedback", {delay:params.delay});
+        u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade*2});
+        
+        u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
+        u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
 
-            running(false, _$scope);
-
-            u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
-            u.toggle("show", "nav", {delay:params.delay, fade:params.fade});
-            u.toggle("hide", "breakfeedback", {delay:params.delay});
-            u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade*2});
+        if (self.name == "feedback") {
             
-            u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
+            u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
             u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
+            u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
+        }
+        else {
 
-            if (self.name == "feedback") {
-                
-                u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
-                u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
-                u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
-            }
-            else {
+            u.toggle("show", "run", {delay:params.delay, fade:params.fade});
 
-                u.toggle("show", "run", {delay:params.delay, fade:params.fade});
+            if (self.name == "trash")  {
 
-                if (self.name == "trash")  {
-
-                    u.toggle("enable", "restart", {delay:params.delay, fade:params.fade});
-                    u.toggle("enable", "step", {delay:params.delay, fade:params.fade});
-                }
-
-                refreshSimulator(false);
+                u.toggle("enable", "restart", {delay:params.delay, fade:params.fade});
+                u.toggle("enable", "step", {delay:params.delay, fade:params.fade});
             }
 
-    	// });
+            refreshSimulator(false);
+        }
+
 
         getBest();
-
 
     }
 
@@ -404,11 +391,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         running(false, _$scope);
         
         u.toggle("show", "breakfeedback");
-        // u.toggle("hide", "evolve", {delay:params.delay, fade:params.fade});
 
-        // $input.setInput({
-        //     gens:$stepdata.gen
-        // });
 
         // uncomment this line to force the gens value to change in the settings panel to the current generation when hardstop was called
         // so that to continue evolving, the gens value must be increased to the previous or desired value

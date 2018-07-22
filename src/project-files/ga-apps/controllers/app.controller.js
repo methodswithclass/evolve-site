@@ -11,20 +11,14 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var events = shared.events_service;
 
 
-    // var observable = window.reactCustom;
-
-
     self.name = u.stateName(states.current());
     $scope.name = self.name;
     self.sdata;
 
     $scope.crossoverData = {};
-
     $scope.settings = {};
     $scope.grids = [];
     $scope.programInput = {};
-
-
     $scope.evdata = {}
     $scope.stepdata = {};
     $scope.input = {};
@@ -175,8 +169,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             console.log("initializing algorithm", pageBuilt);
             
 
-            console.log("input", $input.getInput())
-
             if (!pageBuilt) {
                
                 api.instantiate(function (res) {
@@ -223,12 +215,9 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
             console.log("loading environment");
 
-            
             controller.createEnvironment(self, $scope);
 
-
             next(options);
-
         }
     },
     {
@@ -253,18 +242,20 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             console.log("finishing up");
 
 
-            evolve.running(false, $scope);
+            controller.finish(self, $scope)
+            .then((result) => {
 
-            u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
+                evolve.running(false, $scope);
 
-            display.elementsToggle(self.name, "show");
+                u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
 
-            controller.finish(self, $scope);
+                display.elementsToggle(self.name, "show");
 
-            display.isBuilt(self.name);
+                display.isBuilt(self.name);
             
-            
-            next(options);
+                next(options);
+
+            });
             
         }
     }
@@ -293,10 +284,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     /*__________________________________________________________________________*/
 
-
-
-
-    
 
 
     self.animateRefresh = function (complete) {
@@ -371,8 +358,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
 
     /*________________________________________________________________________________*/
-
-
 
 
 
@@ -467,10 +452,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     /*________________________________________________________________________________*/
 
-
-
-
-
+    
 
     /* 
     #_______________________________________

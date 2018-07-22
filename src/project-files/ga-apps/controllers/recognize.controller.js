@@ -23,7 +23,14 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 
 	var finish  = function (self, $scope) {
 
-		events.dispatch("imageFunctions");
+		
+        return new Promise((resolve, reject) => {
+
+            events.dispatch("imageFunctions");
+
+            resolve(true);
+        });
+
 	}
 
 	var build = function (self, $scope) {

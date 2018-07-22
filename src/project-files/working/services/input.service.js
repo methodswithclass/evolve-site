@@ -43,7 +43,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         $$master_initial = data[3];
         $$reset_initial = data[4];
 
-        console.log("master", $$master_initial);
+        // console.log("master", $$master_initial);
     })
 
 
@@ -213,7 +213,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
  	var setInput = function (options) {
 
-        console.log("set input", self.name, options);
+        // console.log("set input", self.name, options);
 
  		for (var i in options) {
 

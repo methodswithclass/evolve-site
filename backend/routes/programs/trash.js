@@ -16,7 +16,7 @@ trashRouter.post("/simulate", function (req, res, next) {
 
 	var trash = get.getSessionProgram(req.body.session, "trash");
 
-	var result = trash.simulate(req.body.i);
+	var result = trash.simulate();
 
 	res.json({result:result});
 

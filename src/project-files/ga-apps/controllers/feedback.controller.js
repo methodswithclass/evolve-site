@@ -27,7 +27,10 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
     var finish = function (self, $scope) {
 
-
+        return new Promise((resolve, reject) => {
+            
+            resolve(true);
+        });
     }
 
     var build = function (self, $scope) {

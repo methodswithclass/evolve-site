@@ -76,7 +76,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var setInput = function (resend, callback) {
 
        
-        console.log("setInput http call get input or resendInput");
+        // console.log("setInput http call get input or resendInput");
 
     	$http({
     		method:"POST",

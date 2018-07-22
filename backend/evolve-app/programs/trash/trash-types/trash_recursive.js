@@ -102,18 +102,17 @@ var trash = function (options) {
 			self.instruct = function (genome) {
 
 				self.robot.instruct(genome);
-				self.robot.reset();
+				// self.robot.reset();
 			}
 
 
-			self.update = function(i) {
+			self.update = function() {
 
 				var after = self.robot.update();
 
 				var points = getPoints(after);
 
 				return {
-					i:i,
 					after:after,
 					points:points
 				}
@@ -308,15 +307,15 @@ var trash = function (options) {
 	self.instruct = function (genome) {
 		
 		console.log("instruct robot");
-		
+
 		simulation.instruct(genome);
 	}
 
-	self.simulate = function (i) {
+	self.simulate = function () {
 
 		// console.log("simulate result", result);
 
-		return simulation.update(i);
+		return simulation.update();
 	}
 
 	self.createSimulation = function ($options) {

@@ -10,6 +10,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     var i = 1;
+    // var currentStep = 1;
     var _score = 0;
     var evdata = {};
     var genome;
@@ -106,7 +107,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         part:de + du
     }
 
-    var animate = function (i, after, points) {
+    var animate = function ($i, after, points) {
 
 
         var clean = function () {
@@ -129,7 +130,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
                     total:_score,
                 },
                 move:{
-                    num:i,
+                    num:$i,
                     state:after.state,
                     action:after.action,
                     total:totalActions
@@ -168,14 +169,16 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 var result = res.data.result;
 
-                animate(result.i, result.after, result.points);
+                animate(_input.i, result.after, result.points);
+
+                i = _input.i;
 
                 if (!_input.step) {
 
                     setTimeout(function () {
 
                         performStep({i:_input.i + 1, step:false, session:_input.session});
-                    }, anime.predu);
+                    }, anime.de);
                    
                 }
                 else {
@@ -194,7 +197,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var setup = function (clear, complete) {
 
-        console.log("sim setup: instruct", evdata);
+        console.log("sim setup: instruct", evdata, i);
 
 
         totalActions = $input.getInput().programInput.totalSteps;
@@ -203,6 +206,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         if (!clear) {
             
             api.instruct(clear, function (res) {
+
+                console.log("post instruct", i);
 
                 if (typeof complete === "function") complete();
             });
@@ -214,7 +219,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         i = 1;
         _score = 0;
 
-        // console.log("reset sim");
+        // console.log("\n\n\n\nreset sim", i);
 
         output({
             score:{
@@ -231,8 +236,6 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
-        setup(false);
-
         events.dispatch("resetenv");
 
         man.outer.css({left:0, top:0});
@@ -247,10 +250,12 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var start = function (session) {
 
+        console.log("start", i);
+
         active = true;
         running = true;
 
-        performStep({i:1, step:false, session:session});
+        performStep({i:i, step:false, session:session});
     }
 
     var step = function (session) {
@@ -263,7 +268,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var play = function (session, _colors) {
 
-        console.log("play", evdata.index);
+        console.log("play", i);
 
         colors = _colors;
 
@@ -276,7 +281,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             start(session);
 
             u.toggle("disable", "refresh", {fade:300, delay:500});
-            u.toggle("disbale", "restart", {fade:300, delay:400});
+            u.toggle("disable", "restart", {fade:300, delay:400});
             u.toggle("disable", "step", {fade:300, delay:300});
             u.toggle("disable", "play", {fade:300, delay:200});
             u.toggle("enable", "stop", {fade:300});
@@ -289,6 +294,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
     var stop = function () {
+
+        console.log("stop", i);
 
         active = false;
         running = false;
