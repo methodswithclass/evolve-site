@@ -294,22 +294,23 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
             u.toggle("show", "stage", {fade:params.fade, delay:params.delay});
             u.toggle("show", "evolvedata", {fade:params.fade, delay:params.delay});
             u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
-            u.toggle("show", "run");
             u.toggle("show", "controls");
             u.toggle("show", "title");
             
-
             u.toggle("enable", "refresh", {fade:params.fade, delay:params.delay});
 
 
             if (name == "feedback") {
             	u.toggle("hide", "simdata", {fade:params.fade, delay:params.delay});
-            	u.toggle("hide", "run", {fade:params.fade, delay:params.delay});
+            	// u.toggle("hide", "run", {fade:params.fade, delay:params.delay});
             	u.toggle("enable", "play", {fade:params.fade, delay:params.delay});
             }
             else if (name == "trash") {
 
             	u.toggle("show", "simdata", {fade:params.fade, delay:params.delay});
+            }
+            else {
+            	u.toggle("show", "run", {fade:params.fade, delay:params.delay});
             }
 
         }
