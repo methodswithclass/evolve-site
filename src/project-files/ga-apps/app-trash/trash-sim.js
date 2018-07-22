@@ -171,9 +171,9 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 animate(_input.i, result.after, result.points);
 
-                i = _input.i;
-
                 if (!_input.step) {
+
+                    i = _input.i;
 
                     setTimeout(function () {
 
