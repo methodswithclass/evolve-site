@@ -192,14 +192,14 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
 
-    var setup = function (complete) {
+    var setup = function (clear, complete) {
 
         console.log("sim setup: instruct", evdata);
 
 
         totalActions = $input.getInput().programInput.totalSteps;
         
-        api.instruct(function (res) {
+        api.instruct(clear, function (res) {
 
             if (typeof complete === "function") complete();
         });
@@ -274,7 +274,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         stepper = {};
         stepper = null;
 
-        setup(function () {
+        setup(false, function () {
 
             start(session);
 

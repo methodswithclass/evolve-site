@@ -7,20 +7,35 @@
 			<div class="relative width height" id="inner">
 
 
-				<div class="absolute width80 height60 hcenter bottom-50">
+				<div class="absolute width80 height80 hcenter bottom-50">
+
 
 					<div class="relative width height50">
-						<div class="absolute width text-right top0 font-50">
-							methods with <br> 
-							class
+						<div class="relative width text-right margin-bottom-40 font-25">
+							just another site about
 						</div>
-					</div>
-
-					<div class="relative width height50">
-						<div class="absolute width text-right bottom0 font-30">
+						<div class="relative width text-right font-50">
 							evolutionary algorithms
 						</div>
+						<div class="relative width text-right font-25">
+							and
+						</div>
+						<div class="relative width text-right font-50">
+							machine learning
+						</div>
 					</div>
+
+
+					<div class="relative width height50">
+						<div class="absolute width text-right bottom-30 font-15">
+							by
+						</div>
+						<div class="absolute width text-right bottom0 font-25">
+							methods with class
+						</div>
+					</div>
+
+					
 
 				</div>
 
@@ -36,43 +51,44 @@
 
 					<div class="relative width hcenter padding-v-100">
 
-						<div class="relative width80 hcenter padding-v-50">
+						<div class="relative width80 hcenter margin-v-50">
+
+							<div class="flex flex-row flex-wrap flex-justify-center width">
 
 
-							<div class="relative width45 height-200 right" ng-style="isActive.trash ? {display:'inline-block'} : {display:'none'}">
-								<div class="absolute width80 height80 center black-back white rounded5 shadow font-20 pointer" on-tap="main.open('trash')">
-									<div class="absolute center text-center">
-										trash pickup
+								<div class="width50 height-200" ng-style="isActive.feedback ? {display:'flex'} : {display:'none'}">
+									<div class="relative width80 height60 center black-back white rounded5 shadow font-20 pointer" on-tap="main.open('feedback')">
+										<div class="absolute center text-center">
+											feedback
+										</div>
 									</div>
 								</div>
+
+
+								<div class="width50 height-200" ng-style="isActive.trash ? {display:'flex'} : {display:'none'}">
+									<div class="relative width80 height60 center black-back white rounded5 shadow font-20 pointer" on-tap="main.open('trash')">
+										<div class="absolute center text-center">
+											trash pickup
+										</div>
+									</div>
+								</div>
+
+
+								<div class="width50 height-200" ng-style="isActive.recognize ? {display:'flex'} : {display:'none'}">
+									<div class="relative width80 height60 center black-back white rounded5 shadow font-20 pointer" on-tap="main.open('recognize')">
+										<div class="absolute center text-center">
+											recognize
+										</div>
+									</div>
+								</div>
+
 							</div>
-
-							<div class="relative width45 height-200 right" ng-style="isActive.feedback ? {display:'inline-block'} : {display:'none'}">
-								<div class="absolute width80 height80 center black-back white rounded5 shadow font-20 pointer" on-tap="main.open('feedback')">
-									<div class="absolute center text-center">
-										feedback
-									</div>
-								</div>
-							</div>
-
-
-							<!-- <div class="relative width40 height-200 margin-20" ng-style="isActive.recognize ? {display:'inline-block'} : {display:'none'}">
-								<div class="absolute width80 height80 center black-back white rounded5 shadow font-20 pointer" on-tap="main.open('recognize')">
-									<div class="absolute center text-center">
-										recognize
-									</div>
-								</div>
-							</div> -->
 
 						</div>
 
-						<div class="relative width padding-v-100 font-30 clear-right">
-							<div class="absolute center">
-								Welcome
-							</div>
-						</div>
+						
 
-						<div class="relative width60 hcenter padding-v-50">
+						<div class="relative width60 hcenter margin-v-50">
 							<content data="main.overview.content"/>
 						</div>
 

@@ -161,13 +161,15 @@ evolveRouter.post("/instruct", function (req, res, next) {
 
 	console.log("instruct");
 
+	var clear = req.body.input.clear
+
 	var evolution = get.getSessionEvolve(req.body.input.session)
 	var ext = evolution.getBest();
 	var prog = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
 	// console.log("instruct best dna", best, best.dna);
 
-	prog.instruct(ext.best.dna);
+	prog.instruct(clear ? [] : ext.best.dna);
 
 	res.json({success:"program successfully instructed"});
 })

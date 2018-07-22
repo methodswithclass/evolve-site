@@ -68,20 +68,20 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'api.service', function 
     }
 
 
-    var instruct = function (complete) {
+    var instruct = function (clear, complete) {
 
 
-    	api.instruct(function (res) {
+    	api.instruct(clear, function (res) {
 
     		complete(res);
     	})
 
     }
 
-    var simulate = function (index) {
+    var simulate = function (clear, index) {
 
 
-    	instruct(function (res) {
+    	instruct(clear, function (res) {
 
 
     		api.simulate.recognize(index, function (res) {

@@ -38,7 +38,7 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
-    "mc-evolve": "^5.1.0",
+    "mc-evolve": "^5.1.1",
     "mc-shared": "^4.5.5",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.13.14",

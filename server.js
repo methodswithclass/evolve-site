@@ -15,7 +15,7 @@ const recognizeRoutes = require("./backend/routes/programs/recognize.js");
 
 const get = require("./backend/evolve-app/data/get/get.js");
 
-console.log("livereload", config.livereloadPort);
+// console.log("livereload", config.livereloadPort);
 
 var PORTS = {
 	heroku:8080,
@@ -42,9 +42,11 @@ app.use("/write", writingRoutes);
 app.use("/trash", trashRoutes);
 app.use("/recognize", recognizeRoutes);
 
-app.use(require('connect-livereload')({
-	port: PORTS.livereload
-}));
+if  (process.env.NODE_ENV != "production") {
+	app.use(require('connect-livereload')({
+		port: PORTS.livereload
+	}));
+}
 
 
 app.use("/", express.static(path.join(__dirname, "dist")));

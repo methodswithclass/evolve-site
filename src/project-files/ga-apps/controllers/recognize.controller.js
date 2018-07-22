@@ -101,7 +101,7 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 
     var play = function (self, $scope) {
         
-        simulator.simulate(imageIndex);
+        simulator.simulate(false, imageIndex);
     }
 
     var stop = function (self, $scope) {

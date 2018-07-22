@@ -221,6 +221,15 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     }
 
 
+    var refreshSimulator = function (clear) {
+
+        simulator.setup(clear, function () {
+
+            simulator.refresh(); 
+        });
+    }
+
+
     var completeEvolve = function ($scope) {
 
         _$scope = $scope
@@ -257,10 +266,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
                     u.toggle("enable", "step", {delay:params.delay, fade:params.fade});
                 }
 
-                simulator.setup(function () {
-
-                    simulator.refresh(); 
-                });
+                refreshSimulator(false);
             }
 
     	// });
@@ -317,6 +323,14 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         $input.resetInput();
 
         var input = $input.getInput(false);
+
+
+        refreshSimulator(true);
+
+        u.toggle("disable", "restart", {delay:params.delay, fade:params.fade});
+        u.toggle("disable", "step", {delay:params.delay, fade:params.fade});
+        u.toggle("disable", "play", {delay:params.delay, fade:params.fade});
+        u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
 
         if (input.session) {
 

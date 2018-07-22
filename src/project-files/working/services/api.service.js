@@ -173,12 +173,12 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
     }
 
-    var instruct = function (callback) {
+    var instruct = function (clear, callback) {
 
         $http({
             method:"POST",
             url:"/evolve/instruct",
-            data:{input:$input.getInput()}
+            data:{input:$input.getInput(), clear:clear}
         })
         .then(function (res) {
 

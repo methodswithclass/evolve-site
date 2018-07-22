@@ -222,19 +222,6 @@ var serveFunc = function (done) {
 		stream.emit('restart', 10);
 	})
 
-
-	// // Handle normal exits
-	// stream.on('exit', (code) => {
-	// 	stream.emit('quit');
-	// 	process.exit(code);
-	// })
-
-	// // Handle CTRL+C
-	// stream.on('SIGINT', () => {
-	// 	stream.emit('quit');
-	// 	process.exit(0);
-	// });
-
 	return stream;
 	
 }
