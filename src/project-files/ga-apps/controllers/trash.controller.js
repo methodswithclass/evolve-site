@@ -137,7 +137,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
                 scrollTop = $(main).scrollTop();
 
-                if (scrollTop < 100) {
+                if (scrollTop > 100) {
                     $(run).css({opacity:0});
                 }
                 else {

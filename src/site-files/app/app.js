@@ -84,6 +84,9 @@ var setLoadSpeed = function (display, speed) {
 var appConfiguration = function () {
 
 	
+	var shared = window.shared;
+	var react = shared.react_service;
+	var g = shared.utility_service;
 
 
 	setInterface(1);
