@@ -28,7 +28,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     var finish = function (self, $scope) {
 
         return new Promise((resolve, reject) => {
-            
+
             resolve(true);
         });
     }
@@ -37,17 +37,12 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
         console.log("build controller", self.name);
 
-        processTypes;
         $scope.programInput;
 
-        config.get([
-                    "types.processTypes",
-                    "global.feedback"
-                   ])
+        config.get("global.feedback")
         .then((data) => {
 
-            processTypes = data[0];
-            $scope.programInput = data[1];
+            $scope.programInput = data;
         })
 
         react.subscribe({
