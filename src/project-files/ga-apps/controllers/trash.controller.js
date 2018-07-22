@@ -224,7 +224,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         })
 
 
-        $scope.settings = $input.setSettings($scope, $input.getInput(false));
+        $scope.settings = $input.setSettings($scope, $input.getInput());
 	}
 
 	var refresh = function (self, $scope) {
@@ -235,7 +235,8 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
     var restart = function (self, $scope) {
 
-        
+        console.log("restart simulation");
+
         evolve.running(false, $scope);
         simulator.reset();
     }

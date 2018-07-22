@@ -28,10 +28,13 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     $scope.evdata = {}
     $scope.stepdata = {};
     $scope.input = {};
-
-
     var tempcross;
     var crossoverMethods = [];
+    var displayParams;
+    var allParams;
+    var loadSpeeds;
+    var k = 0;
+
 
     config.get("types.crossoverMethods")
     .then((data) => {
@@ -66,12 +69,26 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     })
 
 
-    var k = 0;
+    react.subscribe({
+        name:"data" + self.name,
+        callback:function (x) {
+
+            $scope.evdata = x.evdata || $scope.evdata;
+            $scope.stepdata = x.stepdata || $scope.stepdata;
+            $scope.input = x.input || $scope.input;
+        }
+    })
 
 
-    // $scope.settings.method = $scope.crossoverMethods[0].method;
+    react.subscribe({
+        name:"displayParams",
+        callback:function (x) {
 
-    // console.log("\n\nmodel $scope.settings.method", $scope.settings.method);
+            displayParams = x.params;
+            loadSpeeds = x.loadSpeeds;
+            allParams = x.allParams;
+        }
+    })
 
 
     var initData = function () {
@@ -94,40 +111,12 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     initData();
 
-    var processTypes;
-    var displayParams;
-    var allParams;
-    var loadSpeeds;
-
-
-    react.subscribe({
-        name:"data" + self.name,
-        callback:function (x) {
-
-            $scope.evdata = x.evdata || $scope.evdata;
-            $scope.stepdata = x.stepdata || $scope.stepdata;
-            $scope.input = x.input || $scope.input;
-        }
-    })
-
-    // console.log("setup receiver for display params");
-
-    react.subscribe({
-        name:"displayParams",
-        callback:function (x) {
-
-            displayParams = x.params;
-            loadSpeeds = x.loadSpeeds;
-            allParams = x.allParams;
-        }
-    })
-
 
     console.log("loading", self.name, "controller");
 
+
     var simulator = simulators.get(self.name);
     var controller = controllers.get(self.name);
-
     var pageBuilt = display.beenBuilt(self.name);
 
 
@@ -399,35 +388,60 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     */
 
 
+    var buttonParams = {
+        delay:200,
+        fade:400
+    }
+
     
     self.refresh = function () {
+
+        u.toggle("hide", "refresh");
+        u.toggle("show", "refresh", {delay:buttonParams.delay, fade:buttonParams.fade});
 
         controller.refresh(self, $scope)
     }
 
     self.restart = function () {
 
+        console.log("restart simulation");
+
+        u.toggle("hide", "restart");
+        u.toggle("show", "restart", {delay:buttonParams.delay, fade:buttonParams.fade});
         
         controller.restart(self, $scope);
     }
 
     self.step = function () {
 
+        // variable depending on step speed
+        // u.toggle("hide", "stop");
+        // u.toggle("show", "stop", {delay:600});
+
         controller.step(self, $scope);
     }
 
     self.play = function () {
+
+        u.toggle("hide", "play");
+        u.toggle("show", "play", {delay:buttonParams.delay, fade:buttonParams.fade});
         
         controller.play(self, $scope);
     }
 
     self.stop = function () {
 
+        u.toggle("hide", "stop");
+        u.toggle("show", "stop", {delay:buttonParams.delay, fade:buttonParams.fade});
+
         controller.stop(self, $scope);
     }
 
     self.resetgen = function  () {
         
+        u.toggle("hide", "refreshbtn");
+        u.toggle("show", "refreshbtn", {delay:buttonParams.delay, fade:buttonParams.fade});
+
         u.toggle("show", "refreshfeedback", {fade:800});
         u.toggle("hide", "refreshfeedback", {delay:2000, fade:800});
 

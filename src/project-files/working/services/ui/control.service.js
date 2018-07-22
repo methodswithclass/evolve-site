@@ -313,7 +313,7 @@ app.factory("control.service", ["utility", function (u) {
 
 
 
-	g.waitForElem({elems:"#controlstoggle"}, function () {
+	g.waitForElem({elems:"#stoptoggle"}, function () {
 
 		setHover();
 	})

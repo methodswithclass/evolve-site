@@ -195,7 +195,21 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 		    	// console.log("reset environemnt event");
 
-				makeBlocks(environment)
+		    	$stage = $("#arena");
+
+				g.waitForElem({elems:$stage}, function (options) {
+
+					api.resetEnvironment(function (res) {
+
+						environment = res.data.env;
+
+						makeBlocks(environment);
+
+			            console.log("Reset environment success", res);
+			        });
+
+				});
+
 			})
 
 

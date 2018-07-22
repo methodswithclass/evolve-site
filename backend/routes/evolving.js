@@ -161,7 +161,7 @@ evolveRouter.post("/instruct", function (req, res, next) {
 
 	console.log("instruct");
 
-	var clear = req.body.input.clear
+	var clear = req.body.clear
 
 	var evolution = get.getSessionEvolve(req.body.input.session)
 	var ext = evolution.getBest();

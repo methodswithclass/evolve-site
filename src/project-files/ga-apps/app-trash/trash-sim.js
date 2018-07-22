@@ -199,10 +199,14 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         totalActions = $input.getInput().programInput.totalSteps;
         
-        api.instruct(clear, function (res) {
 
-            if (typeof complete === "function") complete();
-        });
+        if (!clear) {
+            
+            api.instruct(clear, function (res) {
+
+                if (typeof complete === "function") complete();
+            });
+        }
     }
 
     var reset = function () {
@@ -227,16 +231,9 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
-        // setup();
+        setup(false);
 
         events.dispatch("resetenv");
-
-
-        api.resetEnvironment(function (res) {
-
-            console.log("Reset environment success", res);
-        });
-
 
         man.outer.css({left:0, top:0});
 

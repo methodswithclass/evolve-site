@@ -50,9 +50,9 @@ trashRouter.post("/environment/reset", function (req, res, next) {
 
 	var trash = get.getSessionProgram(req.body.input.session, "trash");
 
-	trash.reset();
+	var env = trash.reset();
 
-	res.json({success:"individual successfully instructed"});
+	res.json({env:env});
 
 })
 

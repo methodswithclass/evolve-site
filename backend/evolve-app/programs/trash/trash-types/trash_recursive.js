@@ -291,17 +291,13 @@ var trash = function (options) {
 	}
 
 	self.reset = function () {
-		
-		// env.reset();
-		// robot.reset();
 
 		simulation.reset();
+
+		return simulation.get();
 	}
 
 	self.refresh = function ($options) {
-
-		// env.refresh(options);
-		// robot.setup(env, options);
 
 		simulation.refresh($options);
 		self.reset();
@@ -312,9 +308,7 @@ var trash = function (options) {
 	self.instruct = function (genome) {
 		
 		console.log("instruct robot");
-		// robot.instruct(genome);
-		// robot.reset();
-
+		
 		simulation.instruct(genome);
 	}
 
