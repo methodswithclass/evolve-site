@@ -91,6 +91,8 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         return new Promise((resolve, reject) => {
 
 
+
+
             var scrollFunc = function () {
 
                 var params = {
@@ -131,21 +133,55 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
                 })
             }
 
+            var mobileFunc = function () {
 
-            g.waitForElem({elems:config}, function () {
+                scrollTop = $(main).scrollTop();
 
-                scrollFunc();
+                if (scrollTop < 100) {
+                    $(run).css({opacity:0});
+                }
+                else {
+                    $(run).css({opacity:1});
+                }
+            }
+
+
+            var scrollCase = function () {
+
+                if (g.isMobile()) {
+                    mobileFunc();
+                }
+                else {
+                    scrollFunc();
+                }
 
                 $(main).scroll(() => {
 
-                    scrollFunc();
+                    if (g.isMobile()) {
+                        mobileFunc();
+                    }
+                    else {
+                        scrollFunc();
+                    }
                 });
 
 
                 $(main).resize(() => {
 
-                    scrollFunc();
+                    if (g.isMobile()) {
+                        mobileFunc();
+                    }
+                    else {
+                        scrollFunc();
+                    }
                 })
+            }
+
+
+            g.waitForElem({elems:config}, function () {
+
+
+                scrollCase();
 
                 resolve(true);
 
