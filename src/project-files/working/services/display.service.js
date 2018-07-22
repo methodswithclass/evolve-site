@@ -296,7 +296,7 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
             u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
             u.toggle("show", "controls");
             u.toggle("show", "title");
-            
+
             u.toggle("enable", "refresh", {fade:params.fade, delay:params.delay});
 
 
@@ -307,11 +307,10 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
             }
             else if (name == "trash") {
 
+            	u.toggle("show", "run", {fade:params.fade, delay:params.delay});
             	u.toggle("show", "simdata", {fade:params.fade, delay:params.delay});
             }
-            else {
-            	u.toggle("show", "run", {fade:params.fade, delay:params.delay});
-            }
+            
 
         }
 
