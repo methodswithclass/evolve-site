@@ -286,7 +286,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             u.toggle("disable", "play", {fade:300, delay:200});
             u.toggle("enable", "stop", {fade:300});
 
-            u.toggle("disable", "run", {fade:300, delay:100});
+            // u.toggle("disable", "run", {fade:300, delay:100});
             u.toggle("disable", "settings", {fade:300});
         })
 
