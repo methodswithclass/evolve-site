@@ -11,6 +11,17 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     var events = shared.events_service;
 
 
+    var programInput;
+
+
+    config.get("global.feedback")
+    .then((data) => {
+
+        programInput = data;
+
+    })
+
+
     var setup = function (self, $scope) {
 
         pageBuilt = display.beenBuilt(self.name);
@@ -101,11 +112,9 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
         setTimeout(() => {
 
-            var duration = $input.resendInput().programInput.duration;
+            simulator.step(dna, programInput.duration);
 
-            simulator.step(dna, duration);
-
-        }, $input.resendInput().programInput.evdelay);
+        }, programInput.evdelay);
     }
 
 
