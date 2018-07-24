@@ -126,6 +126,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     var setValues = function (input) {
 
+        setInput(input);
+
     	var values = resolveDisplay({
     		pool:input.pool,
     		mutate:input.mutate,
@@ -191,7 +193,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         	splicemax: 			$("#splicemaxinput").val(),
         	pool: 				$("#poolinput").val(),
         	mutate: 			$("#mutateinput").val(),
-        	method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
+        	// method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
+            method:             $("methodinput").val()   
         }
 
         // console.log("change input", manual);
@@ -221,6 +224,13 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
  			self.temp[self.name][i] = options[i];
             self.global[self.name][i] = options[i];
  		}
+
+        react.push({
+            name:"data" + self.name,
+            state:{
+                input:self.global[self.name]
+            }
+        })
 
  	}
 

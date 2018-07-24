@@ -349,7 +349,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     self.changeInput = function () {
 
-        $scope.settings = $input.changeInput()
+        $scope.settings = $input.changeInput($scope);
 
 
         console.log("change input", $scope.settings);
@@ -488,7 +488,8 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
         settings.setHover();
         
-        // evolve.breakRun();
+
+        console.log("settings", $scope.settings);
 
     }
 

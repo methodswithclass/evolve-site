@@ -89,7 +89,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     var pre = 100;
-    var de = 300;
+    var de = 200;
     var du = 100;
     var post = 300;
     var feed = 300;

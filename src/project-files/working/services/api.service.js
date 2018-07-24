@@ -143,7 +143,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     var run = function (callback) {
 
 
-        console.log("run call input", $input.getInput());
+        console.log("run call input", $input.getInput(true));
 
     	$http({
     		method:"POST",
