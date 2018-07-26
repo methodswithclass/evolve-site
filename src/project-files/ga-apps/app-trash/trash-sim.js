@@ -88,12 +88,32 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
 
-    var pre = 100;
-    var de = 200;
-    var du = 100;
-    var post = 300;
-    var feed = 300;
-    var loop = 600;
+    var pre;
+    var de;
+    var du;
+    var post;
+    var feed;
+    var loop;
+
+    var slow = false;
+
+
+    if (slow) {
+        pre = 100;
+        de = 200;
+        du = 100;
+        post = 300;
+        feed = 300;
+        loop = 600;
+    }
+    else {
+        pre = 50;
+        de = 100;
+        du = 50;
+        post = 150;
+        feed = 150;
+        loop = 300;
+    }
 
     var anime = {
         pre:pre,
