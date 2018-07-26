@@ -10,7 +10,14 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
     var react = shared.react_service;
     var events = shared.events_service;
 
-    var processTypes = config.get("types.processTypes");
+    var processTypes
+
+    config.get("types.processTypes")
+    .then((data) => {
+
+        processTypes = data;
+    })
+
     // console.log("types", processTypes);
 
     var d = data.get("trash");
@@ -64,9 +71,140 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	}
 
+    var opacityScroll = function () {
+
+        var main = "#main-back";
+        
+        var run = "#runtoggle";
+        var sim = "#simParent";
+        var config = "#programConfig";
+
+
+        var scrollTop = 0;
+        var opacity =  {
+            run:0,
+            sim:0,
+            config:0
+        };
+
+
+        return new Promise((resolve, reject) => {
+
+
+
+
+            var scrollFunc = function () {
+
+                var params = {
+                    factor:{
+                        run:0.4,
+                        sim:0.2,
+                        config:0.2
+                    },
+                    offset:{
+                        run:0,
+                        sim:$(window).height()*0.1,
+                        config:$(window).height()*0.15
+                    }
+                }
+
+                scrollTop = $(main).scrollTop();
+                        
+                opacity = {
+                    run:1 - (scrollTop*params.factor.run - params.offset.run)/100,
+                    sim:(scrollTop*params.factor.sim - params.offset.sim)/100,
+                    config:(scrollTop*params.factor.config - params.offset.config)/100
+                }
+
+
+                for (var i in opacity) {
+
+                    if (opacity[i] <= 0) opacity[i] = 0;
+                    else if (opacity[i] >= 1) opacity[i] = 1;
+                }
+
+
+                g.waitForElem({elems:run}, function () {
+
+                    $(run).css({opacity:opacity.run});
+                    $(sim).css({opacity:opacity.sim});
+                    $(config).css({opacity:opacity.config});
+
+                })
+            }
+
+            var mobileFunc = function () {
+
+                scrollTop = $(main).scrollTop();
+
+                if (scrollTop > 100) {
+                    $(run).css({opacity:0});
+                }
+                else {
+                    $(run).css({opacity:1});
+                }
+            }
+
+
+            var scrollCase = function () {
+
+                if (g.isMobile()) {
+                    mobileFunc();
+                }
+                else {
+                    scrollFunc();
+                }
+
+                $(main).scroll(() => {
+
+                    if (g.isMobile()) {
+                        mobileFunc();
+                    }
+                    else {
+                        scrollFunc();
+                    }
+                });
+
+
+                $(main).resize(() => {
+
+                    if (g.isMobile()) {
+                        mobileFunc();
+                    }
+                    else {
+                        scrollFunc();
+                    }
+                })
+            }
+
+
+            g.waitForElem({elems:config}, function () {
+
+
+                scrollCase();
+
+                resolve(true);
+
+            });
+
+        });
+
+    }
+
 	var finish = function (self, $scope) {
 
-		self.programInputChange();
+        return new Promise((resolve, reject) => {
+
+            self.programInputChange();
+
+            opacityScroll()
+            .then((result) => {
+
+                resolve(result);
+            })
+
+        });
+
 	}
 
 	var createEnvironment = function (self, $scope) {
@@ -75,18 +213,16 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 	}
 
 
-	var build = function (self, $scope) {
+
+    var setupProgramInput = function (self, data) {
 
 
-        $scope.grids = d.grids;
 
-        self.programInput = config.get("global.trash");
+        self.programInput = data;
 
-        // console.log("input", self.programInput);
 
         self.programInput.processType = getProcessType(self.programInput);
-        
-        // console.log("processType", self.programInput.processType);
+
 
         self.programInput.getTotalSteps = function () {
 
@@ -164,6 +300,26 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 
         self.programInput.update();
+
+
+    }
+
+
+
+	var build = function (self, $scope) {
+
+
+        $scope.grids = d.grids;
+
+        self.programInput
+
+        config.get("global.trash")
+        .then((data) => {
+
+
+            setupProgramInput(self, data);
+
+        })
         
 	}
 
@@ -195,11 +351,11 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         react.push({
             name:"data" + self.name,
-            state:{input:$input.getInput()}
+            state:{input:$input.resendInput()}
         })
 
 
-        $scope.settings = $input.setSettings($scope, $input.getInput(false));
+        $scope.settings = $input.setSettings($scope, $input.getInput());
 	}
 
 	var refresh = function (self, $scope) {
@@ -210,7 +366,8 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
     var restart = function (self, $scope) {
 
-        
+        console.log("restart simulation");
+
         evolve.running(false, $scope);
         simulator.reset();
     }

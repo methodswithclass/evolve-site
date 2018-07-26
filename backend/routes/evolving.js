@@ -6,13 +6,13 @@ var evolveRouter = evolveExpress.Router();
 var db = require("./db.js");
 const UIDGenerator = require('uid-generator');
 
-// var evolve = require("mc-evolve");
-// var evolve = require("../_ga/evolve.js");
+
+
 var get = require("../evolve-app/data/get/get.js");
 
 const uidgen = new UIDGenerator();
 
-// var evolution;
+
 
 var called = 0;
 var check = 0;
@@ -161,13 +161,15 @@ evolveRouter.post("/instruct", function (req, res, next) {
 
 	console.log("instruct");
 
+	var clear = req.body.clear
+
 	var evolution = get.getSessionEvolve(req.body.input.session)
 	var ext = evolution.getBest();
 	var prog = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
 	// console.log("instruct best dna", best, best.dna);
 
-	prog.instruct(ext.best.dna);
+	prog.instruct(clear ? [] : ext.best.dna);
 
 	res.json({success:"program successfully instructed"});
 })

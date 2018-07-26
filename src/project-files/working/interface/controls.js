@@ -4,7 +4,7 @@ app.directive("controls", ["utility", "evolve.service", function (u, evolve) {
 		restrict:"E",
 		scope:{
 			refresh:"=",
-			reset:"=",
+			restart:"=",
 			step:"=",
 			play:"=",
 			stop:"="

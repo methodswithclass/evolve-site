@@ -1,15 +1,16 @@
 app.factory("input.service", ["utility", 'config.service', function (u, config) {
 
 
-	var self = this;
-
 
     var shared = window.shared;
     var g = shared.utility_service;
-    var send = shared.send_service;
-    var react = shared.react_service;
     var events = shared.events_service;
+    var react = shared.react_service;
+    var send = shared.send_service;
 
+
+
+	var self = this;
 
 
 	self.global = {};
@@ -17,21 +18,42 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     self.name;
 
-    var _$scope = {};
+
+	var crossoverMethods;
+    var runPopTypes;
+    var reproductionTypes;
+    var $$master_initial;
+    var $$reset_initial;
 
 
-    var processTypes = config.get("types.processTypes")
-	var crossoverMethods = config.get("types.crossoverMethods");
-	var runPopTypes = config.get("types.runPopTypes");
-	var reproductionTypes = config.get("types.reproductionTypes");
+    config.get([
+               "types.crossoverMethods",
+               "types.runPopTypes",
+               "types.reproductionTypes",
+               "global.initial",
+               "global.initial"
+               ])
+    .then((data) => {
 
-	var $$master_initial = config.get("global.initial");
-    var $$reset_initial = config.get("global.initial");
+        // console.log("data array", data);
+
+        crossoverMethods = data[0];
+        runPopTypes = data[1];
+        reproductionTypes = data[2];
+        $$master_initial = data[3];
+        $$reset_initial = data[4];
+
+        // console.log("master", $$master_initial);
+    })
+
+
 
 	var displayTypes = {
 		value:"value",
 		string:"string"
 	}
+
+    
 
 
 	var getValue = function ($value) {
@@ -75,7 +97,11 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     		string:"string"
     	}
 
+    	// console.log("resolve display input", options);
+
 		if (options.type == types.value) {
+
+			// console.log("type value");
 
 			$pool = pool > 1 ? getValue(pool) : pool;
 			$mutate = mutate > 1 ? getValue(mutate) : mutate;
@@ -83,9 +109,13 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 		}
 		else if (options.type == types.string) {
 
+			// console.log("type string");
+
 			$pool = pool < 1 ? getString(pool) : pool;
 			$mutate = mutate < 1 ? getString(mutate) : mutate;
  		}
+
+ 		// console.log("resolve display result", {$pool, $mutate});
 
     	return {
     		pool:$pool,
@@ -95,6 +125,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     }
 
     var setValues = function (input) {
+
+        setInput(input);
 
     	var values = resolveDisplay({
     		pool:input.pool,
@@ -114,7 +146,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     }
 
-    var setSettings = function (input) {
+    var setSettings = function ($scope, input) {
 
     	var values = resolveDisplay({
     		pool:input.pool,
@@ -123,7 +155,9 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     	})
 
 
-    	_$scope.settings = {
+    	// console.log("set settings", input.pool, input.mutate, values.pool, values.mutate);
+
+    	$scope.settings = {
         	gens: 				input.gens,
         	runs: 				input.runs,
         	pop:  				input.pop,
@@ -134,28 +168,21 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     		pool: 				values.pool,
     		mutate: 			values.mutate,
             goal:               "max",
-            method:             input.method || crossoverMethods.default,
+            method:             input.method || self.temp[self.name].method,
 
         	runPopType: 		input.runPopType || self.temp[self.name].runPopType,
     		reproductionType: 	input.reproductionType || self.temp[self.name].reproductionType
         }
 
+        // console.log("set settings", $scope.settings);
 
-        // console.log("set settings", _$scope.settings);
-
-        return _$scope.settings;
+        return $scope.settings;
 
     }
 
-    var getSettings = function () {
 
-        return _$scope.settings;
-    }
+    var changeInput = function ($scope) {
 
-
-    var changeInput = function (method) {
-
-        console.log("change input", method);
 
     	var manual = {
             gens: 				$("#gensinput").val(),
@@ -166,28 +193,13 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         	splicemax: 			$("#splicemaxinput").val(),
         	pool: 				$("#poolinput").val(),
         	mutate: 			$("#mutateinput").val(),
-        	method: 		    (method ? method 
-                           : (self.global[self.name].method ? self.global[self.name].method : crossoverMethods.default))
+        	// method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
+            method:             $("methodinput").val()   
         }
 
+        // console.log("change input", manual);
 
-    	return setSettings(manual);
-    }
-
-
-    var createInput = function (name) {
-
-        self.name = name;
-        self.global[self.name] = {};
-        self.temp[self.name] = {};
-
-        react.subscribe({
-            name:"scope" + self.name,
-            callback:function(x) {
-
-                _$scope = x;
-            }
-        })
+    	return setSettings($scope, manual);
     }
 
 
@@ -204,23 +216,28 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
  	var setInput = function (options) {
 
-        if (g.doesExist(self.temp[self.name]) && g.doesExist(self.global[self.name])) {
+        // console.log("set input", self.name, options);
 
-     		for (var i in options) {
+ 		for (var i in options) {
 
-                if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];
-     			self.temp[self.name][i] = options[i];
-                self.global[self.name][i] = options[i];
-     		}
+            if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];
+ 			self.temp[self.name][i] = options[i];
+            self.global[self.name][i] = options[i];
+ 		}
 
-        }
+        react.push({
+            name:"data" + self.name,
+            state:{
+                input:self.global[self.name]
+            }
+        })
 
  	}
 
 
-    var getInput = function (update, resend) {
+    var getInput = function (update) {
 
-    	if (typeof update === "undefined" || typeof update === "null") update = true;
+    	if (typeof update === "undefined" || typeof update === "null") update = false;
 		
 
     	var values = resolveDisplay({
@@ -232,9 +249,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     	var $method = $("#methodinput");
 
-        if (resend) {
-            return self.global[self.name];
-        }
 
 		self.global[self.name] = {
 			
@@ -246,7 +260,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 			parents: 			update ? getIntFromId("parents") 					: self.temp[self.name].parents,
 			splicemin: 			update ? getIntFromId("splicemin") 					: self.temp[self.name].splicemin,
 			splicemax: 			update ? getIntFromId("splicemax") 					: self.temp[self.name].splicemax,
-            method:             update ? $method.val()                              : crossoverMethods.default,
+            method:             update ? $method.val()                              : self.temp[self.name].method,
 
             pool:               values.pool,
             mutate:             values.mutate,
@@ -258,14 +272,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 			session: 			self.temp[self.name].session || ""
 		}
 
-
-        react.push({
-            name:"data" + self.name,
-            state:{
-                input:self.global[self.name]
-            }
-        })
-
+		// console.log("get input", update, self.temp[self.name], self.global[self.name]);
 
         setValues(self.global[self.name]);
 
@@ -280,6 +287,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     var resetInput = function () {
 
+    	// sendVars();
+
 		setInput($$reset_initial);	
 	}
 
@@ -289,6 +298,16 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     }
 
 
+    var createInput = function (name) {
+
+        self.name = name;
+
+        self.global[self.name] = {};
+        self.temp[self.name] = {};
+
+        masterReset();
+    }
+
 
 	return {
         createInput:createInput,
@@ -297,7 +316,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         masterReset:masterReset,
 		setInput:setInput,
 		getInput:getInput,
-        getSettings:getSettings,
 		resendInput:resendInput,
 		setSettings:setSettings,
 		changeInput:changeInput
@@ -305,5 +323,3 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
 
 }]);
-
-

@@ -1,5 +1,7 @@
 <div class="absolute width height cutoff">
 
+	<loading></loading>
+
 	<div class="absolute width110 height scrollY cutoffX font-30" id="main-back">
 
 		<div class="absolute height" style="width:{{1/1.1*100 + '%'}}">
@@ -36,15 +38,13 @@
 			</div>
 
 
-			<loading></loading>
-
-			<evolving run="main.run" break="main.breakRun"></evolving>
-			
-
 		</div>
 
 	</div>
 
-	<settings open="main.open" change-kind="main.changeKind" change-input="main.changeInput"></settings>
+	<evolving run="main.run" break="main.breakRun"></evolving>
+	
+
+	<settings open="main.open" change-kind="main.changeKind" change-input="main.changeInput" methods="crossoverMethods" data="crossoverData" reset-gen="main.resetgen"></settings>
 
 </div>

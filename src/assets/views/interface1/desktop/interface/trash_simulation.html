@@ -22,11 +22,35 @@
 	</div>
 
 
+	<div class="relative width60 height50 hcenter margin-bottom-200" id="simParent">
 
-	<div class="relative width60 height60 hcenter font-15 margin-bottom-100">
+
+		<div class="absolute width-200 height-300 vcenter right0" id="programSimulation_data-outer">
+			<trashsimdata></trashsimdata>
+		</div>
 
 
-		<div class="absolute width80 height80 center" id="programConfig">
+		<div class="absolute width70 height60 vcenter" id="arena">
+
+			
+			<arena></arena>
+
+			<trashman></trashman>
+
+
+			<div class="absolute" id="controlsParent">
+				<controls refresh="main.refresh" restart="main.restart" step="main.step" play="main.play" stop="main.stop"></controls>
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<div class="relative width60 height40 hcenter font-15 margin-bottom-100" id="programConfig">
+
+
+		<div class="absolute width80 height80 center">
 
 			<div class="absolute width50 height vcenter" id="programInput_input">
 
@@ -88,7 +112,7 @@
 									robot
 								</div>
 							</div>
-							<div class="relative width-70 height-70 black-back opacity70 font-30 white shadow hcenter">
+							<div class="relative width-70 height-70 black-back opacity70 rounded5 font-30 white shadow hcenter">
 								<div class="absolute center">
 									<i class="fas fa-user"></i>
 								</div>
@@ -109,7 +133,7 @@
 									trash
 								</div>
 							</div>
-							<div class="relative width-40 height-40 font-20 red-back white border hcenter">
+							<div class="relative width-40 height-40 font-20 red-back rounded5 white border hcenter">
 								<div class="absolute center">
 									<i class="fas fa-trash-alt"></i>
 								</div>
@@ -121,31 +145,6 @@
 
 				</div>
 
-			</div>
-
-		</div>
-
-	</div>
-
-
-	<div class="relative width60 height hcenter margin-bottom-200" id="stageInner">
-
-
-		<div class="absolute width-200 height-300 vcenter right0" id="programSimulation_data-outer">
-			<trashsimdata></trashsimdata>
-		</div>
-
-
-		<div class="absolute width70 height60 vcenter" id="arena">
-
-			
-			<arena></arena>
-
-			<trashman></trashman>
-
-
-			<div class="absolute" id="controlsParent">
-				<controls refresh="main.refresh" reset="main.reset" step="main.step" play="main.play" stop="main.stop"></controls>
 			</div>
 
 		</div>

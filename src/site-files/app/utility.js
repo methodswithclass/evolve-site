@@ -46,7 +46,7 @@ app.factory("utility", ["general", function (gen) {
         return check;
     }
 
-	var toggle = function (toggle, id, options) {
+    var toggle = function (toggle, id, options) {
 
         if (!options) {
             options = {};
@@ -215,7 +215,7 @@ app.factory("utility", ["general", function (gen) {
         return hashIndex > 0 ? state.substr(0, hashIndex) : state;
     }
 
-	return {
+    return {
         getViewTypes:getViewTypes,
         getInterface:getInterface,
         isInterface:isInterface,
@@ -223,11 +223,11 @@ app.factory("utility", ["general", function (gen) {
         changeInterface:changeInterface,
         interfaceChanged:interfaceChanged,
         resetChanged:resetChanged,
-		toggle:toggle,
+        toggle:toggle,
         correctForAspect:makeAspect,
         stateName:stateName,
         renderHtml:gen.renderHtml
-	}
+    }
 
 }]);
 

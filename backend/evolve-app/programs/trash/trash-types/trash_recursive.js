@@ -2,8 +2,8 @@
 var robotFact = require("../robot.js");
 var environmentFact = require("../environment.js");
 var d = require("../../../data/programs/trash.js");
-// var g = require("mc-shared").utility_service;
-var g = require("../../../__ga/shared.js").utility_service;
+var g = require("mc-shared").utility_service;
+// var g = require("../../../__.ga/shared.js").utility_service;
 // var Worker = require("webworker-threads").Worker;
 
 
@@ -102,18 +102,17 @@ var trash = function (options) {
 			self.instruct = function (genome) {
 
 				self.robot.instruct(genome);
-				self.robot.reset();
+				// self.robot.reset();
 			}
 
 
-			self.update = function(i) {
+			self.update = function() {
 
 				var after = self.robot.update();
 
 				var points = getPoints(after);
 
 				return {
-					i:i,
 					after:after,
 					points:points
 				}
@@ -245,11 +244,11 @@ var trash = function (options) {
 		// console.log("run gen", params.gen);
 
 		if (params.gen == 1) {
-			console.log("make environments");
+			// console.log("make environments");
 			makeEnvironments(runs);
 		}
 		else {
-			if (params.index == 1) console.log("refresh environments");
+			// if (params.index == 1) console.log("refresh environments");
 			refreshEnvironments(input);
 		}
 
@@ -291,17 +290,13 @@ var trash = function (options) {
 	}
 
 	self.reset = function () {
-		
-		// env.reset();
-		// robot.reset();
 
 		simulation.reset();
+
+		return simulation.get();
 	}
 
 	self.refresh = function ($options) {
-
-		// env.refresh(options);
-		// robot.setup(env, options);
 
 		simulation.refresh($options);
 		self.reset();
@@ -312,17 +307,15 @@ var trash = function (options) {
 	self.instruct = function (genome) {
 		
 		console.log("instruct robot");
-		// robot.instruct(genome);
-		// robot.reset();
 
 		simulation.instruct(genome);
 	}
 
-	self.simulate = function (i) {
+	self.simulate = function () {
 
 		// console.log("simulate result", result);
 
-		return simulation.update(i);
+		return simulation.update();
 	}
 
 	self.createSimulation = function ($options) {

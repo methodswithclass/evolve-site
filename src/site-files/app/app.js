@@ -84,6 +84,9 @@ var setLoadSpeed = function (display, speed) {
 var appConfiguration = function () {
 
 	
+	var shared = window.shared;
+	var react = shared.react_service;
+	var g = shared.utility_service;
 
 
 	setInterface(1);
@@ -163,8 +166,8 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 	appSetup(display);
 
-	states.go("home");
-	// states.go("trash#demo");
+	// states.go("home");
+	states.go("trash#demo");
 	// states.go("feedback#demo");
 }]);
 

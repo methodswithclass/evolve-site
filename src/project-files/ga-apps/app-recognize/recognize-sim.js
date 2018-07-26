@@ -1,12 +1,11 @@
 app.factory("recognize-sim", ['$q', '$http', 'utility', 'api.service', function ($q, $http, u, api) {
 	
 
-
 	var shared = window.shared;
 	var g = shared.utility_service;
-	var send = shared.send_service;
-	var react = shared.react_service;
 	var events = shared.events_service;
+	var react = shared.react_service;
+	var send = shared.send_service;
 
 
 	var evdata;
@@ -35,14 +34,14 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'api.service', function 
 		}
 	});
 
-
 	react.subscribe({
-        name:"data" + self.name,
-        callback:function (x) {
-
-            evdata = x.evdata || evdata;
-        }
-    })
+		name:"ev.recognize",
+		callback:function(x) {
+			// console.log("set evdata recognize", x);
+			evdata = x;
+			setup();
+		}
+	})
 
 	var setup = function () {
 
@@ -69,20 +68,20 @@ app.factory("recognize-sim", ['$q', '$http', 'utility', 'api.service', function 
     }
 
 
-    var instruct = function (complete) {
+    var instruct = function (clear, complete) {
 
 
-    	api.instruct(function (res) {
+    	api.instruct(clear, function (res) {
 
     		complete(res);
     	})
 
     }
 
-    var simulate = function (index) {
+    var simulate = function (clear, index) {
 
 
-    	instruct(function (res) {
+    	instruct(clear, function (res) {
 
 
     		api.simulate.recognize(index, function (res) {

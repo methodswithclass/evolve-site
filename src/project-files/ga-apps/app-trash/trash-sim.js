@@ -3,13 +3,16 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var shared = window.shared;
     var g = shared.utility_service;
-    var send = shared.send_service;
-    var react = shared.react_service;
     var events = shared.events_service;
+    var react = shared.react_service;
+    var send = shared.send_service;
+
 
 
     var i = 1;
+    // var currentStep = 1;
     var _score = 0;
+    var evdata = {};
     var genome;
     var active = false;
     var running = false;
@@ -33,6 +36,17 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     react.subscribe({
+        name:"programInput" + name,
+        callback:function(x) {
+
+            console.log("assign totalActions from programInput in simulator");
+
+            totalActions = x.totalSteps;
+        }
+    })
+    
+
+    react.subscribe({
         name:"robot",
         callback:function (x) {
 
@@ -41,6 +55,15 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             man = x;
         }
     })
+
+    react.subscribe({
+        name:"ev.trash",
+        callback:function (x) {
+            // console.log("set evdata trash", x);
+            evdata = x;
+        }
+
+    });
 
 
     react.subscribe({
@@ -56,6 +79,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var output = function (_sout) {
 
+        // console.log("output");
+
         react.push({
             name:"sim." + name,
             state:_sout
@@ -63,12 +88,32 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
 
-    var pre = 100;
-    var de = 300;
-    var du = 100;
-    var post = 300;
-    var feed = 300;
-    var loop = 600;
+    var pre;
+    var de;
+    var du;
+    var post;
+    var feed;
+    var loop;
+
+    var slow = false;
+
+
+    if (slow) {
+        pre = 100;
+        de = 200;
+        du = 100;
+        post = 300;
+        feed = 300;
+        loop = 600;
+    }
+    else {
+        pre = 50;
+        de = 100;
+        du = 50;
+        post = 150;
+        feed = 150;
+        loop = 300;
+    }
 
     var anime = {
         pre:pre,
@@ -82,7 +127,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         part:de + du
     }
 
-    var animate = function (i, after, points) {
+    var animate = function ($i, after, points) {
 
 
         var clean = function () {
@@ -105,7 +150,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
                     total:_score,
                 },
                 move:{
-                    num:i,
+                    num:$i,
                     state:after.state,
                     action:after.action,
                     total:totalActions
@@ -122,11 +167,16 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             assessMove();
 
             clean();
+
+            // console.log("move", i, "action", after.action.name, "pos:", after.move.post, ":", after.success);
         });
 
     }
 
     var performStep = function (_input) {
+
+        //console.log("simulate " + i);
+
 
         if (_input.step) u.toggle("hide", "step");
 
@@ -135,16 +185,20 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
             api.simulate.trash({name:name, i:_input.i, session:_input.session}, function (res) {
 
+                // console.log("run simulation", res.data);
+
                 var result = res.data.result;
 
-                animate(result.i, result.after, result.points);
+                animate(_input.i, result.after, result.points);
 
                 if (!_input.step) {
+
+                    i = _input.i;
 
                     setTimeout(function () {
 
                         performStep({i:_input.i + 1, step:false, session:_input.session});
-                    }, anime.predu);
+                    }, anime.de);
                    
                 }
                 else {
@@ -161,22 +215,31 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
 
-    var setup = function (complete) {
+    var setup = function (clear, complete) {
 
-        // console.log("sim setup");
+        console.log("sim setup: instruct", evdata, i);
+
 
         totalActions = $input.getInput().programInput.totalSteps;
         
-        api.instruct(function (res) {
 
-            if (typeof complete === "function") complete();
-        });
+        if (!clear) {
+            
+            api.instruct(clear, function (res) {
+
+                console.log("post instruct", i);
+
+                if (typeof complete === "function") complete();
+            });
+        }
     }
 
     var reset = function () {
 
         i = 1;
         _score = 0;
+
+        // console.log("\n\n\n\nreset sim", i);
 
         output({
             score:{
@@ -193,18 +256,11 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
+        console.log("check");
+
         events.dispatch("resetenv");
 
-        api.resetEnvironment(function (res) {
-
-            // console.log("Reset environment success", res);
-        });
-
-        g.waitForElem({elems:man}, () => {
-
-            man.outer.css({left:0, top:0});
-
-        });
+        man.outer.css({left:0, top:0});
 
     }
 
@@ -216,10 +272,12 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var start = function (session) {
 
+        console.log("start", i);
+
         active = true;
         running = true;
 
-        performStep({i:1, step:false, session:session});
+        performStep({i:i, step:false, session:session});
     }
 
     var step = function (session) {
@@ -232,7 +290,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var play = function (session, _colors) {
 
-        // console.log("play");
+        console.log("play", i);
 
         colors = _colors;
 
@@ -240,17 +298,17 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         stepper = {};
         stepper = null;
 
-        setup(function () {
+        setup(false, function () {
 
             start(session);
 
             u.toggle("disable", "refresh", {fade:300, delay:500});
-            u.toggle("disbale", "restart", {fade:300, delay:400});
+            u.toggle("disable", "restart", {fade:300, delay:400});
             u.toggle("disable", "step", {fade:300, delay:300});
             u.toggle("disable", "play", {fade:300, delay:200});
             u.toggle("enable", "stop", {fade:300});
 
-            u.toggle("disable", "run", {fade:300, delay:100});
+            // u.toggle("disable", "run", {fade:300, delay:100});
             u.toggle("disable", "settings", {fade:300});
         })
 
@@ -259,6 +317,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var stop = function () {
 
+        console.log("stop", i);
+
         active = false;
         running = false;
 
@@ -266,6 +326,9 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     }
 
     var complete = function () {
+
+        // events.dispatch("completeSim");
+
 
         u.toggle("enable", "refresh", {fade:300, delay:100});
         u.toggle("enable", "restart", {fade:300, delay:200});

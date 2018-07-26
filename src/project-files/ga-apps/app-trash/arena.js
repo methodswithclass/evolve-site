@@ -50,12 +50,12 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 				$(element).append(container);
 
 				var outline = document.createElement("div");
-				$(outline).addClass("absolute width50 height50 center " + (u.getInterface() == inter.object.one ? "border" : "border-white"));
+				$(outline).addClass("absolute width50 height50 center rounded5 " + (u.getInterface() == inter.object.one ? "border" : "border-white"));
 				outline.style.opacity = 0;
 				$(container).append(outline);
 
 				var trash = document.createElement("div");
-				$(trash).addClass("absolute width height red-back");
+				$(trash).addClass("absolute width height red-back rounded5");
 				$(outline).append(trash);
 
 
@@ -193,16 +193,30 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			
 		    events.on("resetenv", function () {
 
-		    	// console.log("reset environemnt event");
+		    	console.log("reset environemnt event");
 
-				makeBlocks(environment)
+		    	$stage = $("#arena");
+
+				g.waitForElem({elems:$stage}, function (options) {
+
+					api.resetEnvironment(function (res) {
+
+						environment = res.data.env;
+
+						makeBlocks(environment);
+
+			            console.log("Reset environment success", res);
+			        });
+
+				});
+
 			})
 
 
 
 			events.on("refreshenv", function () {
 
-				// console.log("refresh environment event");
+				console.log("refresh environment event");
 
 				$stage = $("#arena");
 

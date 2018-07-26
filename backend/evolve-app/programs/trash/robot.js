@@ -79,7 +79,7 @@ var robot = function () {
 		plan = _plan;
 	}
 
-	self.update = function ($step, $run, params) {
+	self.update = function () {
 
 		pre = {x:position.x, y:position.y};
 		state = environment.assess(pre);

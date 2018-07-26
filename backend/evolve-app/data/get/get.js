@@ -1,9 +1,9 @@
 
 
-// var evolveFact = require("mc-evolve");
-var evolveFact = require("../../__ga/evolve_async.js");
-// var g = require("mc-shared").utility_service;
-var g = require("../../__ga/shared.js").utility_service;
+var evolveFact = require("mc-evolve");
+// var evolveFact = require("../../@.ga/__.ga.js");
+var g = require("mc-shared").utility_service;
+// var g = require("../../__.ga/shared.js").utility_service;
 
 var SESSION_EXPIRY = 3600*24*1000;
 

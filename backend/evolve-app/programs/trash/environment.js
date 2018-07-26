@@ -128,6 +128,53 @@ var environment = function () {
 		replace();
 	}
 
+
+	var uniqueSetPairs = function (numPairs, dimension) {
+
+		var $$pairs = [];
+
+		var getPair = function (pairs, range) {
+
+			var j = Math.floor(Math.random()*range.height);
+			var i = Math.floor(Math.random()*range.width);
+
+			// console.log("jay", i, j, numPairs);
+
+			var repeat = false;
+			for (var m in pairs) {
+
+				if (i == pairs[m].x && j == pairs[m].y) {
+					repeat = true;
+					break;
+				}
+			}
+
+			if (repeat) {
+				return getPair(pairs, range);
+			}
+
+			return {x:i, y:j};
+		}
+
+		var addPairs = function ($pairs) {
+
+			for (var k = 0; k < numPairs; k++) {
+
+				$pairs.push(getPair($pairs, dimension));
+
+			}
+
+			return $pairs;
+		}
+
+
+		$$pairs = addPairs($$pairs);
+
+		// console.log("pairs", $$pairs);
+
+		return $$pairs;
+	}
+
 	self.refresh = function (options) {
 
 
@@ -137,19 +184,50 @@ var environment = function () {
 
 		self.make();
 
+		var size = stage.width*stage.height;
+		var onoff = 0;
+		var trashNum = Math.floor(Math.random()+0.1)*onoff + Math.floor(size*trashRate);
+
+
+		// for (var i = 0; i < stage.width; i++) {
+		// 	for (var j = 0; j < stage.height; j++) {
+		// 		if (Math.random() < trashRate) {
+		// 			_trash[k] = {x:i, y:j};
+		// 			k++;
+		// 		}
+		// 	}
+		// }
+
+
 		var _trash = [];
+
+		var i = 0;
+		var j = 0;
 		var k = 0;
 
-		for (var i = 0; i < stage.width; i++) {
-			for (var j = 0; j < stage.height; j++) {
-				if (Math.random() < trashRate) {
-					_trash[k] = {x:i, y:j};
-					k++;
-				}
-			}
-		}
+		// for (var m = 0; m < trashNum; m++) {
 
-		env.trash = _trash;
+		// 	if (Math.random() ) {
+		// 		_trash[k] = {x:i, y:j};
+		// 		k++;
+		// 	}
+
+		// 	i++;
+
+		// 	if (i % stage.width == 0) {
+		// 		i = 0;
+		// 		j++;
+		// 	}
+
+		// }
+
+
+		// env.trash = _trash;
+
+		// console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		// console.log("trash num", trashNum);
+
+		env.trash = uniqueSetPairs(trashNum, stage);
 
 		replace();
 
@@ -191,8 +269,6 @@ var environment = function () {
 		index += left*Math.pow(base, 2);
 		index += right*Math.pow(base, 3);
 		index += on*Math.pow(base, 4);
-
-		// console.log("\nenvironment assess", index, "\n\n");
 
 		return index;
 
