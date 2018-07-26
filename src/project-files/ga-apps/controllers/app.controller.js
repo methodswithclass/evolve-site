@@ -241,6 +241,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
             console.log("finishing up");
 
+            // controller.createEnvironment(self, $scope);
 
             controller.finish(self, $scope)
             .then((result) => {
@@ -430,7 +431,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         u.toggle("show", "refreshfeedback", {fade:800});
         u.toggle("hide", "refreshfeedback", {delay:2000, fade:800});
 
-        evolve.resetgen(function () {
+        evolve.resetgen(true, function () {
 
             $scope.stepdata = {}
             $scope.evdata = {};

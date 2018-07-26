@@ -34,8 +34,16 @@ app.directive("trashman", ["$http", function ($http) {
 				$(element).append(container);
 
 				var inner = document.createElement("div");
-				$(inner).addClass("absolute width70 height70 center black-back opacity70 shadow");
+				$(inner).addClass("absolute width70 height70 center black-back rounded5 opacity70 shadow");
 				$(container).append(inner);
+
+				var outer = document.createElement("div");
+				$(outer).addClass("absolute center font-15 white");
+				$(container).append(outer);
+
+				var user = document.createElement("i");
+				$(user).addClass("fas fa-user");
+				$(outer).append(user);
 
 				return { 
 					width:block.width,

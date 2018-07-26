@@ -7,7 +7,7 @@
 	"global":{
 		"initial":{
 			"gens":500,
-			"runs":20,
+			"runs":40,
 			"goal":"max",
 			"pop":100,
 			"runPopType":"async",

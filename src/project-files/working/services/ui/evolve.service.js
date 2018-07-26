@@ -299,20 +299,20 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
 		setStepdata();
 
-		simulator.reset();
+        
 		simulator.refresh();
     }
 
 
 
-    var resetgen = function (complete) {
+    var resetgen = function (refresh, complete) {
 
         $input.resetInput();
 
         var input = $input.getInput(false);
 
 
-        refreshSimulator(true);
+        if (refresh) refreshSimulator(true);
 
         u.toggle("disable", "restart", {delay:params.delay, fade:params.fade});
         u.toggle("disable", "step", {delay:params.delay, fade:params.fade});

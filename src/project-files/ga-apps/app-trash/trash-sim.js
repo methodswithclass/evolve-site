@@ -236,6 +236,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
+        console.log("check");
+
         events.dispatch("resetenv");
 
         man.outer.css({left:0, top:0});
