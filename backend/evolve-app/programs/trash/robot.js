@@ -86,6 +86,8 @@ var robot = function () {
 		
 		id = plan[state];
 
+		// console.log("update", state, plan.length, id);
+
 		var success = "success";
 
 		if (actions.list[id].name == "clean") {

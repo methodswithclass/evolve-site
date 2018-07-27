@@ -328,7 +328,26 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         if (!pageBuilt) {
 
-            $input.createInput(self.name)
+            $input.createInput(self.name, function () {
+
+
+                evolve.setup(self.name);
+                
+
+                $input.setInput({
+                    name:self.name,
+                    programInput:self.programInput
+                })
+
+                react.push({
+                    name:"data" + self.name,
+                    state:{input:$input.resendInput()}
+                })
+
+
+                $scope.settings = $input.setSettings($scope, $input.getInput());
+
+            })
 
         }
         else {
@@ -337,25 +356,6 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         }
 
-
-        evolve.setup(self.name);
-
-
-        $input.masterReset();
-
-
-        $input.setInput({
-            name:self.name,
-            programInput:self.programInput
-        })
-
-        react.push({
-            name:"data" + self.name,
-            state:{input:$input.resendInput()}
-        })
-
-
-        $scope.settings = $input.setSettings($scope, $input.getInput());
 	}
 
 	var refresh = function (self, $scope) {

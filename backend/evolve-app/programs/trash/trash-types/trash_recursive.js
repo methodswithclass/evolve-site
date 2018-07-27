@@ -151,7 +151,7 @@ var trash = function (options) {
 
 	self.gene = function () {
 		// console.log("get gene");
-		return Math.floor(Math.random()*actions.list.length);
+		return Math.floor(Math.random()*(actions.list.length-1));
 	}
 
 	self.hardStop = function () {

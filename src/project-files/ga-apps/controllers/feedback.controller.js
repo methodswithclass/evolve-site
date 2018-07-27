@@ -81,23 +81,26 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
         if (!pageBuilt) {
 
-            $input.createInput(self.name);
+            $input.createInput(self.name, function () {
+
+
+                evolve.setup(self.name);
+
+                $input.setInput({
+                    name:self.name,
+                    programInput:$scope.programInput
+                })
+
+                $scope.settings = $input.setSettings($scope, $input.getInput(false));
+
+            });
         }
         else {
 
             $input.setName(self.name);
         }
 
-        evolve.setup(self.name);
-
-        $input.masterReset();
-
-        $input.setInput({
-            name:self.name,
-            programInput:$scope.programInput
-        })
-
-        $scope.settings = $input.setSettings($scope, $input.getInput(false));
+        
     }
 
 

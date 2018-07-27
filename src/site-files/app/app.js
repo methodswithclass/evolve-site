@@ -3,6 +3,14 @@
 // var react2 = new reactCustom();
 "use strict";
 
+var page = {
+	home:"home",
+	trash:"trash",
+	feedback:"feedback"
+}
+
+var goto;
+
 var loadSpeeds = [
 {
     name:"normal"
@@ -166,9 +174,32 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 	appSetup(display);
 
-	states.go("home");
-	// states.go("trash#demo");
-	// states.go("feedback#demo");
+	config.get("landingPage")
+	.then((data) => {
+
+		var landingPage = data;
+
+		switch (landingPage) {
+
+			case page.home:
+			states.go("home");
+			break;
+
+			case page.trash:
+			states.go("trash#demo");
+			break;
+
+			case page.feedback:
+			states.go("feedback#demo");
+			break;
+
+			default:
+			states.go("home");
+			break;
+
+		}
+	})
+
 }]);
 
 

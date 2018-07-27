@@ -298,14 +298,35 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     }
 
 
-    var createInput = function (name) {
+    var createInput = function (name, complete) {
 
         self.name = name;
 
-        self.global[self.name] = {};
-        self.temp[self.name] = {};
+        config.get("global." + self.name + ".override")
+        .then((data) => {
 
-        masterReset();
+            console.log(data);
+
+            for (var i in data) {
+
+                var override = data[i];
+
+                if (override) {
+                    $$master_initial[i] = override;
+                    $$reset_initial[i] = override;
+                }
+            }
+
+            self.global[self.name] = {};
+            self.temp[self.name] = {};
+
+            masterReset();
+
+            complete();
+            
+        })
+
+        
     }
 
 

@@ -185,49 +185,11 @@ var environment = function () {
 		self.make();
 
 		var size = stage.width*stage.height;
-		var onoff = 0;
-		var trashNum = Math.floor(Math.random()+0.1)*onoff + Math.floor(size*trashRate);
+		var trashNum = Math.floor(size*trashRate);
 
+		var _trash = uniqueSetPairs(trashNum, stage);
 
-		// for (var i = 0; i < stage.width; i++) {
-		// 	for (var j = 0; j < stage.height; j++) {
-		// 		if (Math.random() < trashRate) {
-		// 			_trash[k] = {x:i, y:j};
-		// 			k++;
-		// 		}
-		// 	}
-		// }
-
-
-		var _trash = [];
-
-		var i = 0;
-		var j = 0;
-		var k = 0;
-
-		// for (var m = 0; m < trashNum; m++) {
-
-		// 	if (Math.random() ) {
-		// 		_trash[k] = {x:i, y:j};
-		// 		k++;
-		// 	}
-
-		// 	i++;
-
-		// 	if (i % stage.width == 0) {
-		// 		i = 0;
-		// 		j++;
-		// 	}
-
-		// }
-
-
-		// env.trash = _trash;
-
-		// console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-		// console.log("trash num", trashNum);
-
-		env.trash = uniqueSetPairs(trashNum, stage);
+		env.trash = _trash;
 
 		replace();
 

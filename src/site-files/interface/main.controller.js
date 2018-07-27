@@ -9,6 +9,8 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 	var state = states.current()
 
+	self.name = state.charAt(0).toUpperCase() + state.slice(1);
+
 	console.log("open " + state);
 
 	config.get("activePages")

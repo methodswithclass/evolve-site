@@ -12,6 +12,8 @@ var power = function () {
 	index += 2*Math.pow(base, 3);
 	index += 2*Math.pow(base, 4);
 
+	// console.log("power is", index);
+
 	return index;
 }
 
@@ -92,18 +94,6 @@ var data = {
 		},
 		{
 			id:4,
-			name:"stay put",
-			change:function () {
-				return {x:0, y:0}
-			},
-			points:{
-				success:0,
-				fail:0
-			},
-			color:"#00ffff"
-		},
-		{
-			id:5,
 			name:"clean",
 			change:function () {
 				return {x:0, y:0}
@@ -123,6 +113,18 @@ var data = {
 				fail:-5
 			},
 			color:"#ffff00"
+		},
+		{
+			id:5,
+			name:"stay put",
+			change:function () {
+				return {x:0, y:0}
+			},
+			points:{
+				success:0,
+				fail:0
+			},
+			color:"#00ffff"
 		}
 		]
 	}
