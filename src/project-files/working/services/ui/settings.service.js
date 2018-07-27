@@ -13,10 +13,6 @@ app.factory("settings.service", [function () {
     */
 
 
-    var kindStatus = {
-        opened:"z-80",
-        closed:"z-60"
-    }
 
     var kinds = [
     {
@@ -36,13 +32,15 @@ app.factory("settings.service", [function () {
             top:0,
             opacity:0,
             zIndex:20,
-            class:kindStatus.opened
+            class:"z-80",
+            color:"black"
         },
         closed:{
             top:"20px",
             opacity:1,
             zIndex:10,
-            class:kindStatus.closed
+            class:"z-60",
+            color:"white"
         }
     }
 
@@ -89,7 +87,7 @@ app.factory("settings.service", [function () {
             main:$("#" + kind.value + "-tab"),
             cover:$("#settings-" + kind.value + "-cover"),
             settings:$("#settings-" + kind.value),
-            closedSign:$("settings-" + kind.value + "-inactive-cover")
+            openedSign:$("#settings-" + kind.value + "-active-cover")
         }
     }
 
@@ -98,18 +96,24 @@ app.factory("settings.service", [function () {
 
         tabElem(kind).main.css({
             top:getTabParam(kind, "top"),
-            zIndex:getTabParam(kind, "zIndex")
+            zIndex:getTabParam(kind, "zIndex"),
+            color:getTabParam(kind, "color")
         });
 
-        tabElem(kind).cover.css({
-            // top:getTabParam(kind, "top"), 
-            opacity:getTabParam(kind, "opacity")
+
+        tabElem(kind).openedSign.css({
+            opacity:1-getTabParam(kind, "opacity")
         });
+
 
         tabElem(kind).settings
         .removeClass(kind.status ? tabParams.closed.class : tabParams.opened.class)
         .addClass(getTabParam(kind, "class"));
 
+
+        // tabElem(kind).openedSign
+        // .removeClass(kind.status ? tabParams.closed.color : tabParams.opened.color)
+        // .addClass(getTabParam(kind, "color"));
     }
 
 
