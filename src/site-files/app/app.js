@@ -174,8 +174,24 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 	appSetup(display);
 
-	config.get("landingPage")
-	.then((data) => {
+	var landing = new Promise((resolve, reject) => {
+
+		resolve({});
+
+	})
+
+	try {
+		
+		landing = config.get("landingPage");
+
+	}
+	catch (e) {
+		console.log("Error in landing page switch:", e.message);
+		states.go("home");
+	}
+
+
+	landing.then((data) => {
 
 		var landingPage = data;
 
@@ -200,7 +216,9 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 		}
 	})
 
+
 }]);
+
 
 
 

@@ -46,19 +46,7 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 		}
 
 
-		
-
-		if (keyArray.length == 1) {
-			key = keyArray[0];
-
-			value = self.config[key];
-		}
-		else {
-
-			value = getProp(self.config, i, keyArray);
-		}
-
-		// console.log("get config return value", value, "\n\n\n");
+		value = getProp(self.config, i, keyArray);
 
 	    return value || '';
 
@@ -97,26 +85,24 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 
 				check = setInterval(function() {
 
-					count++;
-
-					if (self.config || count <= 100) {
+					if (self.config || count >= 100) {
 
 						clearInterval(check);
 						check = null;
 						check = {};
 
 
-						configExists(resolve, reject);
+						if (count < 100) {
+							configExists(resolve, reject);
+						}
+						else {
+							console.log("config check failed: timeout 3 seconds")
+						}
 
 					}
-					else if (count > 100) {
+					else {
 
-
-						clearInterval(check);
-						check = null;
-						check = {};
-
-						console.log("config check failed: timeout 3 seconds")
+						count++;
 					}
 
 				}, 30)
