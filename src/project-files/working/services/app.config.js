@@ -109,7 +109,7 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 						configExists(resolve, reject);
 
 					}
-					else if (count > 1000) {
+					else if (count > 100) {
 
 
 						clearInterval(check);
