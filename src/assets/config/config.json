@@ -4,7 +4,7 @@
 		"trash":true,
 		"recognize":false
 	},
-	"landingPage":"home",
+	"landingPage":"trash",
 	"global":{
 		"initial":{
 			"gens":500,
