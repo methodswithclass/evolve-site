@@ -4,7 +4,7 @@
 		"trash":true,
 		"recognize":false
 	},
-	"landingPage":"home",
+	"landingPage":"trash",
 	"global":{
 		"initial":{
 			"gens":500,
@@ -21,7 +21,10 @@
 			"mutate":0.02
 		},
 		"trash":{
-			"override":{},
+			"override":{
+				"splicemin":2,
+				"splicemax":12
+			},
 			"goals":[
 			{
 				"id":"max",
