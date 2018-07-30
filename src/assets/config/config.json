@@ -8,7 +8,7 @@
 	"global":{
 		"initial":{
 			"gens":500,
-			"runs":20,
+			"runs":10,
 			"goal":"max",
 			"pop":100,
 			"runPopType":"async",
@@ -36,7 +36,7 @@
 			}
 			],
 			"grid":{
-				"size":5
+				"size":10
 			},
 			"evdelay":0,
 			"trashPercent":50,

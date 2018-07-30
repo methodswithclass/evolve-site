@@ -106,6 +106,8 @@ var environment = function () {
 		var ablock;
 		var k = 0;
 
+		// console.log("make stage width", stage.width);
+
 		for (var i = 0; i < stage.width; i++) {
 
 			col = [];
@@ -177,6 +179,7 @@ var environment = function () {
 
 	self.refresh = function (options) {
 
+		// console.log("options", options.grid.size);
 
 		if (options) setInput(options);
 

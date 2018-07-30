@@ -174,84 +174,36 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			}
 
-			var setStageSize = function () {
-
-				$stage = $("#arena");
-
-				ed = u.correctForAspect({
-					id:"arena",
-					factor:g.isMobile() ? 0.6 : 0.25, 
-					aspect:1, 
-					width:$(window).width(), 
-					height:$(window).height()
-				})
-
-				$($stage).css({width:ed.width, height:ed.height});
-			    
-			}
+			
 
 			
-		    events.on("resetenv", function () {
+		 //    events.on("resetenv", function () {
 
-		    	console.log("reset environemnt event");
+		 //    	// console.log("reset environemnt event");
 
-		    	$stage = $("#arena");
+		    	
 
-				g.waitForElem({elems:$stage}, function (options) {
-
-					api.resetEnvironment(function (res) {
-
-						environment = res.data.env;
-
-						makeBlocks(environment);
-
-			            console.log("Reset environment success", res);
-			        });
-
-				});
-
-			})
+			// })
 
 
 
-			events.on("refreshenv", function () {
+			// events.on("refreshenv", function () {
 
-				console.log("refresh environment event");
+			// 	// console.log("refresh environment event");
 
-				$stage = $("#arena");
+				
 
-				g.waitForElem({elems:$stage}, function (options) {
-
-
-					setStageSize();
-
-					api.refreshEnvironment(function (res) {
-
-
-				    	console.log("Refresh environment", res.data.env);
-
-			            environment = res.data.env;
-
-			            makeBlocks(environment);
-
-				    })
-
-					$(window).resize(function () {
-
-						setStageSize();
-					})
-
-
-				})
-
-			})
+			// })
 
 
 			console.log("push functions");
 
 			react.push({
-		    	name:"block.clean",
-		    	state:cleanBlock
+		    	name:"block.functions",
+		    	state:{
+		    		cleanBlock:cleanBlock,
+		    		makeBlocks:makeBlocks
+		    	}
 		    })
 
 

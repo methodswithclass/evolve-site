@@ -299,8 +299,6 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
 		setStepdata();
 
-        
-		simulator.refresh();
     }
 
 
@@ -375,10 +373,17 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
     	}
 
-        api.run(function (res) {
 
-            runEvolveComplete(_$scope);
-        })
+        simulator.refresh(function () {
+
+            api.run(function (res) {
+
+                runEvolveComplete(_$scope);
+            })
+
+        });
+        
+             
 
     }
 

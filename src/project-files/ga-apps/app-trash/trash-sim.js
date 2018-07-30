@@ -34,6 +34,11 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         console.log("no clean block");
     }
 
+    var makeBlocks = function () {
+
+        console.log("no make blocks");
+    }
+
 
     react.subscribe({
         name:"programInput" + name,
@@ -67,12 +72,13 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
 
     react.subscribe({
-        name:"block.clean",
+        name:"block.functions",
         callback:function (x) {
 
             console.log("assign clean block function");
 
-            cleanBlock = x;
+            cleanBlock = x.cleanBlock;
+            makeBlocks = x.makeBlocks;
         }
     })
 
@@ -234,6 +240,75 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         }
     }
 
+
+    var setStageSize = function () {
+
+        $stage = $("#arena");
+
+        ed = u.correctForAspect({
+            id:"arena",
+            factor:g.isMobile() ? 0.6 : 0.25, 
+            aspect:1, 
+            width:$(window).width(), 
+            height:$(window).height()
+        })
+
+        $($stage).css({width:ed.width, height:ed.height});
+        
+    }
+
+
+    var resetenv = function () {
+
+        $stage = $("#arena");
+
+        g.waitForElem({elems:$stage}, function (options) {
+
+            api.resetEnvironment(function (res) {
+
+                environment = res.data.env;
+
+                makeBlocks(environment);
+
+                man.outer.css({left:0, top:0});
+
+                console.log("Reset environment success", res);
+            });
+
+        });
+    }
+
+    var refreshenv = function (complete) {
+
+        $stage = $("#arena");
+
+        g.waitForElem({elems:$stage}, function (options) {
+
+
+            setStageSize();
+
+            api.refreshEnvironment(function (res) {
+
+
+                console.log("Refresh environment", res.data.env);
+
+                environment = res.data.env;
+
+                makeBlocks(environment);
+
+                if (typeof complete == "function") complete();
+
+            })
+
+            $(window).resize(function () {
+
+                setStageSize();
+            })
+
+
+        })
+    }
+
     var reset = function () {
 
         i = 1;
@@ -258,15 +333,16 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         console.log("check");
 
-        events.dispatch("resetenv");
-
-        man.outer.css({left:0, top:0});
+        // events.dispatch("resetenv");
 
     }
 
-    var refresh = function () {
+    var refresh = function (complete) {
 
-        events.dispatch("refreshenv");
+        // events.dispatch("refreshenv");
+
+        refreshenv(complete);
+
         reset();
     }
 
@@ -343,7 +419,9 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     return {
         setup:setup,
+        resetenv:resetenv,
         reset:reset,
+        refreshenv:refreshenv,
         refresh:refresh,
     	step:step,
     	play:play,

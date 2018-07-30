@@ -26,7 +26,7 @@ app.factory("doc.data", function () {
 			text:[
 			[
 				"Genetic Algorithms, or GAs, model themselves after biological evolution. If you are ever faced with a problem with a bunch of things to balance, or you want to improve how well your program runs, granted you have some way to encode it's ability to run, and test it's performance, then a GA might be perfect for you. The GA works like biological evolution, it creates individual copies of your program or problem, and runs all of them against your test, ranking their performance. The best performing are mixed to create new individuals for the next generation. And the cycle is repeated.",
-				"When the process starts, the GA will create a set of randomized parameters that can be called the individuals of the first generation. These individuals are then tested for their performance that obviously fail miserably. But they do score a performance measure of some level, and some score better than others no matter how badly. The 'best' performing individuals have their parameters mixed to create a new set of individuals for the next generation."
+				"When the process starts, the GA will create a set of randomized parameters that can be called the individuals of the first generation. These individuals are then tested for their performance against the problem and they obviously do not perform well. Despite their random parameters, and their terrible performance altogether, there still is a disparity in performance across the whole generation. Some achieve a higher fitness than others no matter how badly. The 'best' performing individuals have their parameters mixed to create a new set of individuals for the next generation, and so forth."
 			],
 			]
 		},

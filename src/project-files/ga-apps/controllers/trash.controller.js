@@ -58,6 +58,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	    self.programInputChange = function () {
 
+            // console.log("program input change", self.programInput, "set input");
 
 	        self.programInput.update();
 
@@ -209,7 +210,9 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	var createEnvironment = function (self, $scope) {
 
-  		events.dispatch("refreshenv");
+  		// events.dispatch("refreshenv");
+
+        simulator.refreshenv();
 	}
 
 

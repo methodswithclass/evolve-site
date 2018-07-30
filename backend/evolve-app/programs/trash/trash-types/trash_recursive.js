@@ -85,7 +85,7 @@ var trash = function (options) {
 
 			self.refresh = function ($options) {
 
-				// console.log("refresh environment");
+				// console.log("refresh environment", $options.grid.size);
 
 				var target = self.environment.refresh($options);
 				self.setup($options);
@@ -234,6 +234,8 @@ var trash = function (options) {
 
 		input = params.input;
 		runs = input.runs;
+
+		// console.log("run size", input.programInput.grid.size);
 
 		run = 0;
 
