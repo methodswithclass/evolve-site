@@ -69,11 +69,13 @@ app.factory("feedback-sim", ['data', function (data) {
         resetplot();
     }
 
-    var refresh = function () {
+    var refresh = function (complete) {
 
         changeX(200);
 
         reset();
+
+        if (typeof complete === "function") complete();
     }
 
     var step = function (dna, duration) {
