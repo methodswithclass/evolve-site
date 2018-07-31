@@ -80,6 +80,10 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         var sim = "#simParent";
         var config = "#programConfig";
 
+        var displays = {
+            block:"block",
+            none:"none"
+        }
 
         var scrollTop = 0;
         var opacity =  {
@@ -87,6 +91,12 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
             sim:0,
             config:0
         };
+
+        var objDisplay = {
+            run:displays.block,
+            sim:displays.block,
+            config:displays.block
+        }
 
 
         return new Promise((resolve, reject) => {
@@ -120,14 +130,23 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
                 for (var i in opacity) {
 
-                    if (opacity[i] <= 0) opacity[i] = 0;
-                    else if (opacity[i] >= 1) opacity[i] = 1;
+                    if (opacity[i] <= 0) {
+                        opacity[i] = 0;
+                        objDisplay[i] = displays.none;
+                    }
+                    else if (opacity[i] >= 1) {
+                        opacity[i] = 1;
+                        objDisplay[i] = displays.block;
+                    }
+                    else {
+                        objDisplay[i] = displays.block;
+                    }
                 }
 
 
                 g.waitForElem({elems:run}, function () {
 
-                    $(run).css({opacity:opacity.run});
+                    $(run).css({opacity:opacity.run, display:objDisplay.run});
                     $(sim).css({opacity:opacity.sim});
                     $(config).css({opacity:opacity.config});
 
