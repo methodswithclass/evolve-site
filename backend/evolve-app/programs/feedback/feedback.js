@@ -79,9 +79,9 @@ var feedback = function () {
 			fit += checkgene(genome[i]);
 		}
 
-		if (fit >= genome.length*threshold.success.points*0.95) {
-			success = true;
-		}
+		// if (fit >= genome.length*threshold.success.points*0.95) {
+		// 	success = true;
+		// }
 
 		fits[0] = {fit:fit};
 
