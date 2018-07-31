@@ -14,26 +14,41 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 			var react = shared.react_service;
 
 
+			self.name = u.stateName(states.current());
+
 			$scope.getContentUrl = function () {
 
-				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/evolvedata.html";
+				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/" + self.name + "/evolvedata.html";
 			}
 
 			
-
-   	 		self.name = u.stateName(states.current());
-
-
-			$scope.evdata;
+			$scope.evdata = [];
 			$scope.stepdata;
 
 
+			var isDuplicate = function (data) {
+
+				for (var i in $scope.evdata) {
+
+					var evolve = $scope.evdata[i];
+
+					if (evolve.index == data.index) {
+
+						return true;
+					}
+				}
+
+				return false;
+			}
+
 			react.subscribe({
-				name:"data" + self.name,
+				name:"evdata" + self.name,
 				callback:function (x) {
 
-					$scope.evdata = x.evdata || $scope.evdata;
-					$scope.stepdata = x.stepdata || $scope.stepdata;
+
+
+					if (x.evdata && !isDuplicate(x.evdata)) $scope.evdata.push(x.evdata);
+					// $scope.stepdata = x.stepdata || $scope.stepdata;
 				}
 			})
 

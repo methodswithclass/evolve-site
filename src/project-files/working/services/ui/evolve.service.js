@@ -30,6 +30,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     }
 
     var $evdata = {
+        index:0,
         best:{
             fitness:0
         },
@@ -82,6 +83,15 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         })
     }
 
+
+    var sendEvdata = function (x) {
+
+        react.push({
+            name:"evdata" + self.name,
+            state:x
+        })
+    }
+
     var initData = function () {
 
         $stepdata = {
@@ -92,6 +102,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         }
 
         $evdata = {
+            index:0,
             best:{
                 fitness:0
             },
@@ -105,6 +116,10 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
             stepdata:$stepdata,
             evdata:$evdata
         });
+
+        sendEvdata({
+            evdata:$evdata
+        })
 
     }
 
@@ -123,6 +138,22 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 	    })
 
     }
+
+
+    var getEvdata = function () {
+
+        api.getBest(function (res) {
+            
+            sendEvdata({
+                evdata:res.data.ext
+            });
+
+            if (typeof complete === "function") complete();
+
+        })
+    }
+
+    // getEvdata();
 
     var setStepdata = function () {
 
@@ -260,6 +291,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
 
         getBest();
+
+        getEvdata();
 
     }
 
@@ -430,6 +463,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         })
 
         initData();
+
+        // getEvdata();
 
     }
 
