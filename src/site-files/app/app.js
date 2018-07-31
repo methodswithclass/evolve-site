@@ -27,6 +27,15 @@ var demoLoad = {
 }
 
 
+var makeMobile = function () {
+
+	var mobile = false;
+
+	// mobile = true;
+
+	return mobile;
+}
+
 var setInterface = function (inter) {
 
 	// runtimeProvider.initInterface("interface" + inter);
@@ -89,7 +98,7 @@ var setLoadSpeed = function (display, speed) {
 
 
 
-var appConfiguration = function () {
+var appConfiguration = function (mobile) {
 
 	
 	var shared = window.shared;
@@ -102,9 +111,9 @@ var appConfiguration = function () {
 
 
 
-
-	// g.forceMobile();
-
+	if (mobile) {
+		g.forceMobile();
+	}
 
 
 }
@@ -113,7 +122,7 @@ var appConfiguration = function () {
 
 
 
-var appSetup = function (display) {
+var appSetup = function (display, force) {
 
 
 	console.log("app setup");
@@ -136,10 +145,13 @@ var appSetup = function (display) {
 	}
 
 
-	
-	setSpeed(demoLoad.normal);
-	// setSpeed(demoLoad.fast);
-
+	if (force) {
+		setSpeed(force);
+	}
+	else {
+		setSpeed(demoLoad.normal);
+		// setSpeed(demoLoad.fast);
+	}
 
 
 }
@@ -152,8 +164,9 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 .config(['$locationProvider', 'runtime.stateProvider', function ($locationProvider, runtimeProvider) {
 
+	
 
-	appConfiguration();
+	appConfiguration(makeMobile());
 
 
 	$locationProvider.html5Mode(true);
@@ -172,17 +185,18 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 	// config service is loaded as a dependency and loads data into application automatically
 	// don't remove this dependency 
 
-	appSetup(display);
+	var configPromise = new Promise((resolve, reject) => {
 
-	var landing = new Promise((resolve, reject) => {
-
-		resolve({});
+		resolve([]);
 
 	})
 
 	try {
 		
-		landing = config.get("landingPage");
+		configPromise = config.get([
+		                    	"config.landingPage", 
+		                    	"config.loadSpeed"
+		                    ]);
 
 	}
 	catch (e) {
@@ -191,9 +205,10 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 	}
 
 
-	landing.then((data) => {
+	configPromise.then((data) => {
 
-		var landingPage = data;
+		var landingPage = data[0];
+		var loadSpeed = data[1];
 
 		switch (landingPage) {
 
@@ -214,6 +229,9 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 			break;
 
 		}
+
+
+		appSetup(display, loadSpeed);
 	})
 
 

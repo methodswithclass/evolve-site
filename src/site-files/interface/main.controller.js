@@ -13,7 +13,7 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 	console.log("open " + state);
 
-	config.get("activePages")
+	config.get("config.activePages")
 	.then((data) => {
 
 		$scope.isActive = data;

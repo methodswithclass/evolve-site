@@ -1,10 +1,13 @@
 {
-	"activePages":{
-		"feedback":true,
-		"trash":true,
-		"recognize":false
+	"config":{
+		"landingPage":"trash",
+		"loadSpeed":"fast",
+		"activePages":{
+			"feedback":true,
+			"trash":true,
+			"recognize":false
+		}
 	},
-	"landingPage":"trash",
 	"global":{
 		"initial":{
 			"gens":500,
@@ -57,7 +60,8 @@
 				"goal":"diverge"
 			}
 			],
-			"evdelay":300
+			"evdelay":300,
+			"duration":70
 		},
 		"recognize":{
 			"override":{},

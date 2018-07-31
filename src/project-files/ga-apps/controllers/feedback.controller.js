@@ -48,13 +48,13 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
         console.log("build controller", self.name);
 
-        $scope.programInput;
+        $scope.programInput = programInput;
 
-        config.get("global.feedback")
-        .then((data) => {
+        // config.get("global.feedback")
+        // .then((data) => {
 
-            $scope.programInput = data;
-        })
+        //     $scope.programInput = data;
+        // })
 
         react.subscribe({
             name:"data" + "feedback",

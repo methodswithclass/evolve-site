@@ -92,6 +92,16 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         })
     }
 
+    var resetEvdata = function  () {
+
+        react.push({
+            name:"setevdata" + self.name,
+            state:{
+                evdata:[$evdata]
+            }
+        })
+    }
+
     var initData = function () {
 
         $stepdata = {
@@ -345,16 +355,24 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
         if (refresh) refreshSimulator(true);
 
-        u.toggle("disable", "restart", {delay:params.delay, fade:params.fade});
-        u.toggle("disable", "step", {delay:params.delay, fade:params.fade});
-        u.toggle("disable", "play", {delay:params.delay, fade:params.fade});
-        u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
+        if (self.name == "feedback") {
+            u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
+        }
+        else {
+            u.toggle("disable", "restart", {delay:params.delay, fade:params.fade});
+            u.toggle("disable", "step", {delay:params.delay, fade:params.fade});
+            u.toggle("disable", "play", {delay:params.delay, fade:params.fade});
+            u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
+
+        }
 
         if (input.session) {
 
             api.initialize(function (res) {
 
                 initData();
+
+                resetEvdata();
 
                 if (typeof complete === "function") complete({res:res});
 

@@ -45,10 +45,16 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 				name:"evdata" + self.name,
 				callback:function (x) {
 
-
-
 					if (x.evdata && !isDuplicate(x.evdata)) $scope.evdata.push(x.evdata);
-					// $scope.stepdata = x.stepdata || $scope.stepdata;
+				}
+			})
+
+
+			react.subscribe({
+				name:"setevdata" + self.name,
+				callback:function (x) {
+					
+					$scope.evdata = x.evdata;
 				}
 			})
 

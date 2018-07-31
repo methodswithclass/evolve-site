@@ -6,47 +6,40 @@
 	<div class="absolute width height scrollY scroll-vertical-dark-narrow cutoffX font-30" id="main-back">
 
 
-		<div class="absolute width height">
-			
+		<div class="flex flex-column flex-align-center">
 
-			<div class="absolute width height" id="hudtoggle">
+			<div class="width height-70 margin-bottom-200 opacity0" id="hudtoggle">
 
-				<div class="absolute width-100 height-50 top-20 left-20 black-back white rounded10 shadow font-20 opacity0" id="navtoggle">
-					<navbtn name="back" loc="feedback"></navbtn>
+				<div class="margin-20" id="navtoggle">
+					<navbtn name="back" loc="feedback" var-class="width-200 height-50 black-back white"></navbtn>
 				</div>
-
-				<evolving run="main.run" break="main.breakRun"></evolving>
 
 			</div>
 
-			<div class="absolute width30 hcenter height50 top30 opacity0" id="stagetoggle">
+			<div class="width height-600 margin-bottom-100 opacity0" id="stagetoggle">
 
-				<div class="absolute width height-100 hcenter" id="stagetitle">
-					<div class="absolute width height80">
-						<div class="relative width height50 text-center font2-rem">
-							<div class="absolute center">
-								Real-time Evolution
-							</div>
-						</div>
+				<div class="relative width height-100 hcenter" id="stagetitle">
+					<div class="relative vcenter text-center font2-rem">
+						Real-time Evolution
 					</div>
 				</div>
 
-				<div class="absolute width hcenter top-50 border" id="arena">
+				<div class="relative width-400 height-400 hcenter" id="arena">
 				
-					<div class="absolute"  id="controlsParent">
+					<div class="absolute width-100 height-600 vcenter left-minus-100"  id="controlsParent">
 						<controls refresh="main.refresh" play="main.run" stop="main.stop"></controls>
 					</div>
-
-
 					
-					<plot></plot>
+					<div class="absolute width height vcenter border">
+						<plot></plot>
+					</div>
 
 				</div>
 				
 			</div>
 
 
-			<div class="absolute width-400 height-100 hcenter bottom20">
+			<div class="width-400 height-100 margin-bottom-200">
 				<evolvedata></evolvedata>
 			</div>
 
@@ -54,6 +47,8 @@
 		</div>
 
 	</div>
+
+	<evolving run="main.run" break="main.breakRun"></evolving>
 	
 	<settings open="main.open" change-kind="main.changeKind" change-input="main.changeInput" methods="crossoverMethods" data="crossoverData" reset-gen="main.resetgen"></settings>
 

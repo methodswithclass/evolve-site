@@ -170,7 +170,8 @@ app.factory("data", function () {
 				}
 			},
 			genome:200,
-			goals:[{goal:"converge"}, {goal:"diverge"}]
+			goals:[{goal:"converge"}, {goal:"diverge"}],
+			duraiton:100
 		},
 		trash:{
 			name:"trash",

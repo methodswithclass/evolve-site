@@ -128,6 +128,8 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 					var value = normalize(self.coords.y);
 
+					// console.log("duration", duration);
+
 					container.velocity({top:value + "px"}, {
 						duration:duration
 					})
@@ -213,7 +215,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 
 			var resetPlot = function () {
-				changeplot(0, 300);
+				changeplot(0, 100);
 			}
 
 

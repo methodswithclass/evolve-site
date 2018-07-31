@@ -84,38 +84,38 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 
 
 
-	events.on("load-display", "stage-trash", function () {
+	// events.on("load-display", "stage-trash", function () {
 
-		$stage = $("#stagetoggle");
-		$hud = $("#hudtoggle");
-		$evolvedata = $("#evolvedatatoggle");
-		$simdata = $("#simdataParent");
-		$arena = $("#arena");
+	// 	$stage = $("#stagetoggle");
+	// 	$hud = $("#hudtoggle");
+	// 	$evolvedata = $("#evolvedatatoggle");
+	// 	$simdata = $("#simdataParent");
+	// 	$arena = $("#arena");
 		
-		if (g.isMobile()) {
+	// 	// if (g.isMobile()) {
 
-			g.waitForElem({elems:"#simdataParent"}, function () {
+	// 	// 	g.waitForElem({elems:"#simdataParent"}, function () {
 
-				// $simdata.css({top:$arena.offset().top + "px"});
-				$simdata.css({top:$arena.offset().top + $arena.height() - $("#simParent").offset().top + 200 + "px"});
-			})
-		}
-		else {
-
-
-		}
-	});
+	// 	// 		// $simdata.css({top:$arena.offset().top + "px"});
+	// 	// 		// $simdata.css({top:$arena.offset().top + $arena.height() - $("#simParent").offset().top + 200 + "px"});
+	// 	// 	})
+	// 	// }
+	// 	// else {
 
 
-	events.on("load-display", "stage-feedback", function () {
+	// 	// }
+	// });
 
-		$stage = $("#stagetoggle");
-		$hud = $("#hudtoggle");
-		$controls = $("#controlstoggle");
 
-		// $stage.css({top:($controls.offset().top - $hud.offset().top) + $controls.height() + 100 + "px", height:(g.isMobile() ? "50%" : "50%")})
+	// events.on("load-display", "stage-feedback", function () {
 
-	})
+	// 	$stage = $("#stagetoggle");
+	// 	$hud = $("#hudtoggle");
+	// 	$controls = $("#controlstoggle");
+
+	// 	// $stage.css({top:($controls.offset().top - $hud.offset().top) + $controls.height() + 100 + "px", height:(g.isMobile() ? "50%" : "50%")})
+
+	// })
 
 
 	events.on("load-display", "stage-recognize", function () {
@@ -186,52 +186,52 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 	}
 
 	// console.log("\nregister event evolve-data display\n\n");
-	events.on("load-display", "evolve-data-trash", function () {
+	// events.on("load-display", "evolve-data-trash", function () {
 
 
-		evolveDataSetup[u.getInterface()]("trash");
+	// 	evolveDataSetup[u.getInterface()]("trash");
 
-		$(window).resize(function () {
+	// 	$(window).resize(function () {
 
-			evolveDataSetup[u.getInterface()]("trash");
-		})
+	// 		evolveDataSetup[u.getInterface()]("trash");
+	// 	})
 
-		return "success";
+	// 	return "success";
 
-	});
+	// });
 
 
 	// console.log("\nregister event evolve-data display\n\n");
-	events.on("load-display", "evolve-data-feedback", function () {
+	// events.on("load-display", "evolve-data-feedback", function () {
 
 
-		evolveDataSetup[u.getInterface()]("feedback");
+	// 	evolveDataSetup[u.getInterface()]("feedback");
 
-		$(window).resize(function () {
+	// 	$(window).resize(function () {
 
 			
-			evolveDataSetup[u.getInterface()]("feedback");
-		})
+	// 		evolveDataSetup[u.getInterface()]("feedback");
+	// 	})
 
-		return "success";
+	// 	return "success";
 
-	});
+	// });
 
 
 	// console.log("\nregister event evolve-data display\n\n");
-	events.on("load-display", "evolve-data-recognize", function () {
+	// events.on("load-display", "evolve-data-recognize", function () {
 
 
-		evolveDataSetup[u.getInterface()]("recognize");
+	// 	evolveDataSetup[u.getInterface()]("recognize");
 
-		$(window).resize(function () {
+	// 	$(window).resize(function () {
 				
-			evolveDataSetup[u.getInterface()]("recognize");
-		})
+	// 		evolveDataSetup[u.getInterface()]("recognize");
+	// 	})
 
-		return "success";
+	// 	return "success";
 
-	});
+	// });
 
 
 
@@ -390,14 +390,14 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 				index:0,
 				phase:function () {
 
-					events.dispatch("load-display", "evolve-data-trash");
+					// events.dispatch("load-display", "evolve-data-trash");
 				}
 			},
 			{
 				index:1,
 				phase:function () {
 
-					events.dispatch("load-display", "stage-trash");
+					// events.dispatch("load-display", "stage-trash");
 				}
 			},
 			{
@@ -421,14 +421,14 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 				phase:function () {
 
 
-					events.dispatch("load-display", "stage-feedback");
+					// events.dispatch("load-display", "stage-feedback");
 				}
 			},
 			{
 				index:2,
 				phase:function () {
 
-					events.dispatch("load-display", "evolve-data-feedback");
+					// events.dispatch("load-display", "evolve-data-feedback");
 				}
 			}
 			],
@@ -437,7 +437,7 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 				index:0,
 				phase:function () {
 
-					events.dispatch("load-display", "evolve-data-recognize");
+					// events.dispatch("load-display", "evolve-data-recognize");
 				}
 			},
 			{

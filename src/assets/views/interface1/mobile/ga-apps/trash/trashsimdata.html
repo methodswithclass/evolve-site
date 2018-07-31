@@ -1,68 +1,56 @@
 <div class="relative width height font-40 opacity0" id="simdatatoggle">
-			
-	<div class="flex flex-row flex-justify-center">
+		
+	<div class="width height" id="simdatainner">
 
-		<div class="width50 height" id="simdatainne">
+		<div class="flex flex-row flex-justify-center">
 
-			<div class="flex flex-column flex-align-center">
-
-				<div class="relative width height50">
-					<div class="relative width height80 vcenter border-top border-bottom">
-						<div class="relative width50 height font-30">
-							<div class="relative vcenter text-center"> step # </div>
-						</div>
-						<div class="relative width50 height right0">
-							<div class="relative vcenter text-center"> {{main.sdata.move.num}}/{{trash.sdata.move.total}} </div>
-						</div>
+			<div class="width-300 height-200">
+				<div class="flex flex-column flex-align-center">
+					<div class="width height-100 font-30 border-bottom">
+						<div class="relative vcenter text-center font-30"> step # </div>
+					</div>
+					<div class="width height-100">
+						<div class="relative vcenter text-center"> {{main.sdata.move.num}}/{{trash.sdata.move.total}} </div>
 					</div>
 				</div>
-
-			
-				<div class="relative width height50">	
-					<div class="relative width height80 vcenter border-bottom">
-						<div class="relative width50 height font-30">
-							<div class="relative vcenter text-center"> action </div>
-						</div>
-						<div class="relative width50 height border-left right0 font-30">
-							<div class="relative vcenter text-center"> {{main.sdata.move.action.name}} </div>
-						</div>
-					</div>
-				</div>
-
 			</div>
 
-		</div>
-
-		<div class="width50 height">
-
-			<div class="flex flex-column flex-align-center">
-
-				<div class="relative width height50">
-					<div class="relative width height80 vcenter border-top border-bottom">
-						<div class="relative width50 height font-30">
-							<div class="relative vcenter text-center"> outcome </div>
-						</div>
-						<div class="relative width50 height border-left right0">
-							<div class="relative width-60 height-60 margin-bottom-20 center">
-								<img class="relative width-auto height" src="{{main.outcome(main.sdata.score.result)}}"</>
-							</div>
-						</div>
+		
+			<div class="width-200 height-200">
+				<div class="flex flex-column flex-align-center">
+					<div class="width height-100 font-30 border-left border-bottom">
+						<div class="relative vcenter text-center"> action </div>
+					</div>
+					<div class="width height-100 border-left font-30">
+						<div class="relative vcenter text-center"> {{main.sdata.move.action.name}} </div>
 					</div>
 				</div>
+			</div>
 
-
-				<div class="relative width height50">
-					<div class="relative width height80 vcenter border-bottom">
-						<div class="relative width50 height font-30">
-							<div class="relative vcenter text-center"> fitness </div>
-						</div>
-						<div class="relative width50 height border-left right0">
-							<div class="relative vcenter text-center"> {{main.sdata.score.total}} </div>
+			<div class="width-300 height-200">
+				<div class="flex flex-column flex-align-center">
+					<div class="width height-100 font-30 border-left border-bottom">
+						<div class="relative vcenter text-center"> outcome </div>
+					</div>
+					<div class="width height-100 border-left">
+						<div class="relative width-60 height-60 center">
+							<img class="relative width-auto height" src="{{main.outcome(main.sdata.score.result)}}"</>
 						</div>
 					</div>
 				</div>
 			</div>
 
+
+			<div class="width-200 height-200">
+				<div class="flex flex-column flex-align-center">
+					<div class="width height-100 font-30 border-left border-bottom">
+						<div class="relative vcenter text-center"> fitness </div>
+					</div>
+					<div class="width height-100 border-left">
+						<div class="relative vcenter text-center"> {{main.sdata.score.total}} </div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	</div>
