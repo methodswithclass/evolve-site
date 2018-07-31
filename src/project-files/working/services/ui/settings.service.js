@@ -2,6 +2,15 @@ app.factory("settings.service", [function () {
 
 
 
+
+    var s = window.shared;
+    var g = s.utility_service;
+    var send = s.send_service;
+    var react = s.react_service;
+    var events = s.events_service;
+
+
+
 	/* 
     #_______________________________________
     #
@@ -206,29 +215,33 @@ app.factory("settings.service", [function () {
 
     var animateToggle = function (open_up) {
 
-        $(controls[0].tool).animate({opacity:0}, 200);
-        $("#settingstoggle").animate({
-            
-            right:
-            
-            (
-             (!open_up || openStatus.opened) 
-             ? openStatus.right.closed
+        g.waitForElem({elems:"#settingstoggle"}, function () {
 
-             : (
-                (open_up || openStatus.closed) 
-                ? openStatus.right.opened 
-                : openStatus.right.closed
-                )
-             )
+            $(controls[0].tool).animate({opacity:0}, 200);
+            $("#settingstoggle").animate({
+                
+                right:
+                
+                (
+                 (!open_up || openStatus.opened) 
+                 ? openStatus.right.closed
 
-        }, 
-        {
-            
-            duration:300, 
-            complete:function () {
-                openStatus.opened = !openStatus.opened;
-            }
+                 : (
+                    (open_up || openStatus.closed) 
+                    ? openStatus.right.opened 
+                    : openStatus.right.closed
+                    )
+                 )
+
+            }, 
+            {
+                
+                duration:300, 
+                complete:function () {
+                    openStatus.opened = !openStatus.opened;
+                }
+
+            });
 
         });
 
