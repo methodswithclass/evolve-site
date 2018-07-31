@@ -5,50 +5,52 @@
 
 	<div class="absolute width height scrollY scroll-vertical-dark-narrow cutoffX font-30" id="main-back">
 
+		<div class="absolute width30 hcenter height50 top-100 opacity0" id="stagetoggle">
 
-		<div class="absolute width height">
-			
+			<div class="flex flex-column flex-align-center">
 
-			<div class="absolute width height" id="hudtoggle">
+				<div class="width height-70 margin-bottom-200 opacity0" id="hudtoggle">
 
-				<div class="absolute width-100 height-50 top-20 left-20 black-back white rounded10 shadow font-20 opacity0" id="navtoggle">
-					<navbtn name="back" loc="feedback"></navbtn>
+					<div class="margin-20" id="navtoggle">
+						<navbtn name="back" loc="feedback" var-class="width-200 height-50 black-back white"></navbtn>
+					</div>
+
 				</div>
 
-			</div>
-
-			<div class="absolute width30 hcenter height50 top-100 opacity0" id="stagetoggle">
-
-				<div class="absolute width height-100 hcenter" id="stagetitle">
-					<div class="absolute width height80">
+				<div class="width height-100" id="stagetitle">
+					<div class="relative width height80">
 						<div class="relative width height50 text-center font2-rem">
-							<div class="absolute center">
+							<div class="relative vcenter text-center">
 								Real-time Evolution
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="absolute width hcenter top-50 border" id="arena">
+				<div class="width80 top-100">
 				
-					<div class="absolute"  id="controlsParent">
-						<controls refresh="main.refresh" play="main.run" stop="main.stop"></controls>
+					<div class="flex flex-row flex-justify-center">
+
+						<div class="width-100 height-400"  id="controlsParent">
+							<controls refresh="main.refresh" play="main.run" stop="main.stop"></controls>
+						</div>
+
+
+						<div class="width-400 height-200" id="arena">
+							<plot></plot>
+						</div>
+
 					</div>
 
-
-					
-					<plot></plot>
-
 				</div>
-				
+
+
+				<div class="width-400">
+					<evolvedata></evolvedata>
+				</div>
+
 			</div>
-
-
-			<div class="absolute width-400 height-100 hcenter bottom-50">
-				<evolvedata></evolvedata>
-			</div>
-
-
+			
 		</div>
 
 	</div>

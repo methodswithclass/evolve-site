@@ -174,27 +174,6 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			}
 
-			
-
-			
-		 //    events.on("resetenv", function () {
-
-		 //    	// console.log("reset environemnt event");
-
-		    	
-
-			// })
-
-
-
-			// events.on("refreshenv", function () {
-
-			// 	// console.log("refresh environment event");
-
-				
-
-			// })
-
 
 			console.log("push functions");
 

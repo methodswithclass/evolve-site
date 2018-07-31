@@ -18,7 +18,7 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 
 			$scope.getContentUrl = function () {
 
-				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/ga-apps/" + self.name + "/evolvedata.html";
+				return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/interface/evolvedata.html";
 			}
 
 			
