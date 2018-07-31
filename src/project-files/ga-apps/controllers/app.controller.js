@@ -475,6 +475,11 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     var enter = function () {
 
+        // g.waitForElem({elems:"#settingstoggle"}, function () {
+
+        //     $("#settingstoggle").removeClass("left100");
+        // })
+
         setTimeout(function () {
 
             $("#main-back").click(function () {
