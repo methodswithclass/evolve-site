@@ -30,7 +30,7 @@ const errorHandler  = function () {
 		if (err || res.statusCode >= 500) {
 			res.status(200).send({error:err});
 		}
-		else {
+		else if (!err && res.statusCode == 200) {
 			next();
 		}
 	}
