@@ -291,7 +291,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
     self.animateRefresh = function (complete) {
 
-        settings.toggleOpened = false;
+
         $("#refreshfeedback").css({opacity:1});
         $("#refreshfeedback").animate(
         {
@@ -303,7 +303,6 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
             complete:function () { 
                 $("#refreshfeedback").css({top:g.isMobile() ? 60 : 20});
                 if (complete) complete();
-                settings.toggleOpened = true;
             }
         }
         )
@@ -336,7 +335,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
         // console.log("open settings ", openStatus.opened);
 
         // if (!settings.isFocus() && settings.toggleOpened) {
-            settings.animateToggle(true);
+            settings.animateToggle();
         // }
     }
 

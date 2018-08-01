@@ -208,7 +208,6 @@ app.factory("settings.service", [function () {
 
     var settingsWidth = 800;
     var width = 0.6;
-    var toggleOpened = true;
     var openStatus = {opened:false, right:{opened:0, closed:(-1)*settingsWidth}};
 
 
@@ -220,15 +219,20 @@ app.factory("settings.service", [function () {
             right:
             
             (
-             (!open_up || openStatus.opened) 
-             ? openStatus.right.closed
 
-             : (
-                (open_up || !openStatus.opened) 
-                ? openStatus.right.opened 
-                : openStatus.right.closed
-                )
-             )
+             open_up ? openStatus.right.closed
+
+             :
+
+             (
+
+              (!openStatus.opened || open_up) 
+              ? openStatus.right.opened 
+              : openStatus.right.closed
+
+              )
+
+            )
 
         }, 
         {
@@ -261,8 +265,7 @@ app.factory("settings.service", [function () {
 		animateToggle:animateToggle,
 		changeKind:changeKind,
 		setHover:setHover,
-		isFocus:isFocus,
-		toggleOpened:toggleOpened
+		isFocus:isFocus
 	}
 
 
