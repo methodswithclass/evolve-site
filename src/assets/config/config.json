@@ -11,7 +11,7 @@
 	"global":{
 		"initial":{
 			"gens":500,
-			"runs":10,
+			"runs":20,
 			"goal":"max",
 			"pop":100,
 			"runPopType":"async",
@@ -39,7 +39,7 @@
 			}
 			],
 			"grid":{
-				"size":10
+				"size":5
 			},
 			"evdelay":0,
 			"trashPercent":50,
