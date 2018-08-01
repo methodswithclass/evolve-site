@@ -217,6 +217,8 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
             controller.createEnvironment(self, $scope);
 
+            settings.animateToggle(false);
+
             next(options);
         }
     },

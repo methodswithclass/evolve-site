@@ -209,7 +209,7 @@ app.factory("settings.service", [function () {
     var settingsWidth = 800;
     var width = 0.6;
     var toggleOpened = true;
-    var openStatus = {opened:false, right:{opened:-20, closed:(-1)*settingsWidth}};
+    var openStatus = {opened:false, right:{opened:0, closed:(-1)*settingsWidth}};
             
 
 
