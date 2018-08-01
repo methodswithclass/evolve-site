@@ -335,9 +335,9 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
         // console.log("open settings ", openStatus.opened);
 
-        if (!settings.isFocus() && settings.toggleOpened) {
+        // if (!settings.isFocus() && settings.toggleOpened) {
             settings.animateToggle(true);
-        }
+        // }
     }
 
 
