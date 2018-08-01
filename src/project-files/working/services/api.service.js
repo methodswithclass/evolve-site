@@ -22,13 +22,13 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'getBest'", err.message)
+            // console.log("Server error: 'getBest'", err)
 
             return $q.reject(err);
         })
         .catch(function (err) {
 
-            console.log("Server error: 'getBest'", err.message)
+            console.log("Server error: 'getBest'", err)
 
         })
         
@@ -52,13 +52,13 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'stepdata'", err.message)
+            // console.log("Server error: 'stepdata'", err)
 
             return $q.reject(err);
         })
         .catch(function (err) {
 
-            console.log("Server error: 'stepdata'", err.message)
+            console.log("Server error: 'stepdata'", err)
 
         })
 
@@ -79,14 +79,14 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
     	}, function (err) {
 
-    		// console.log("Server error: 'isRunning'", err.message)
+    		// console.log("Server error: 'isRunning'", err)
 
             return $q.reject(err);
 
     	})
         .catch(function (err) {
 
-            console.log("Server error: 'isRunning'", err.message)
+            console.log("Server error: 'isRunning'", err)
 
         })
 
@@ -109,14 +109,14 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'setInput'", err.message)
+            // console.log("Server error: 'setInput'", err)
 
             return $q.reject(err);
 
         })
         .catch(function (err) {
 
-            console.log("Server error: 'setInput'", err.message)
+            console.log("Server error: 'setInput'", err)
 
         })
 
@@ -136,14 +136,14 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'instantiate'", err.message)
+            // console.log("Server error: 'instantiate'", err)
 
             return $q.reject(err);
 
         })
         .catch(function (err) {
 
-            console.log("Server error: 'instantiate'", err.message)
+            console.log("Server error: 'instantiate'", err)
 
         })
 
@@ -167,13 +167,13 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'initialize'", err.message)
+            // console.log("Server error: 'initialize'", err)
 
             return $q.reject(err);
         })
         .catch(function (err) {
 
-            console.log("Server error: 'initialize'", err.message)
+            console.log("Server error: 'initialize'", err)
 
         })
 
@@ -209,13 +209,13 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'run'", err.message)
+            // console.log("Server error: 'run'", err)
 
             return $q.reject(err);
         })
         .catch(function (err) {
 
-            console.log("Server error: 'run'", err.message)
+            console.log("Server error: 'run'", err)
 
         })
 
@@ -234,14 +234,14 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'instruct'", err.message);
+            // console.log("Server error: 'instruct'", err);
 
             return $q.reject(err);
 
         })
         .catch(function (err) {
 
-            console.log("Server error: 'instruct'", err.message);
+            console.log("Server error: 'instruct'", err);
 
         })
 
@@ -265,14 +265,14 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'refresh environment'", err.message)
+            // console.log("Server error: 'refresh environment'", err)
 
             return $q.reject(err);
 
         })
         .catch(function (err) {
 
-            console.log("Server error: 'refresh environment'", err.message)
+            console.log("Server error: 'refresh environment'", err)
 
         })
 
@@ -291,14 +291,14 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'reset environment'", err.message)
+            // console.log("Server error: 'reset environment'", err)
 
             return $q.reject(err);
 
         })
         .catch(function (err) {
 
-            console.log("Server error: 'reset environment'", err.message)
+            console.log("Server error: 'reset environment'", err)
 
         })
 
@@ -321,13 +321,13 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
             }, function (err) {
 
-                // console.log("Server error: 'simulate'", err.message);
+                // console.log("Server error: 'simulate'", err);
 
                 return $q.reject(err);
             })
             .catch(function (err) {
 
-                console.log("Server error: 'simulate'", err.message)
+                console.log("Server error: 'simulate'", err)
 
             })
 
@@ -403,13 +403,13 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'hardStop'", err.message)
+            // console.log("Server error: 'hardStop'", err)
 
             return $q.reject(err);
         })
         .catch(function (err) {
 
-            console.log("Server error: 'hardStop'", err.message)
+            console.log("Server error: 'hardStop'", err)
 
         })
 
