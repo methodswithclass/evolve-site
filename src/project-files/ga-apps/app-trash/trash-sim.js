@@ -270,12 +270,13 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 makeBlocks(environment);
 
-                man.outer.css({left:0, top:0});
-
                 console.log("Reset environment success", res);
             });
 
         });
+
+
+        if (man) man.outer.css({left:0, top:0});
     }
 
     var refreshenv = function (complete) {
@@ -332,6 +333,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         });
 
         console.log("check");
+
+        resetenv();
 
         // events.dispatch("resetenv");
 
