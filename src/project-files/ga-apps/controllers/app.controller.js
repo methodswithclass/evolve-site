@@ -475,20 +475,16 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
 
 
     var enter = function () {
-
-        // g.waitForElem({elems:"#settingstoggle"}, function () {
-
-        //     $("#settingstoggle").removeClass("left100");
-        // })
-
-        setTimeout(function () {
-
+        
+       
+        g.waitForElem({elems:"#main-back"}, function () {
+            
             $("#main-back").click(function () {
 
                 settings.animateToggle(false);
             });
 
-        }, 500);
+        });
 
 
         controller.enter(self, $scope);
