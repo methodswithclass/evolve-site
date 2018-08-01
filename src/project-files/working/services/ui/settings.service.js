@@ -228,7 +228,7 @@ app.factory("settings.service", [function () {
 
                  (
 
-                  (!openStatus.opened || open_up) 
+                  ((typeof open_up === "undefined") && (!openStatus.opened || open_up)) 
                   ? openStatus.right.opened 
                   : openStatus.right.closed
 
@@ -241,7 +241,7 @@ app.factory("settings.service", [function () {
                 
                 duration:100, 
                 complete:function () {
-                    openStatus.opened = !openStatus.opened;
+                    openStatus.opened = $("#settingstoggle").offset().left < $(window).width() - 300;
                 }
 
             });
