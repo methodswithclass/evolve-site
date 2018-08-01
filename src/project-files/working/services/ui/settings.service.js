@@ -214,33 +214,29 @@ app.factory("settings.service", [function () {
 
     var animateToggle = function (open_up) {
 
-        g.waitForElem({elems:"#settingstoggle"}, function () {
+        $(controls[0].tool).animate({opacity:0}, 200);
+        $("#settingstoggle").animate({
+            
+            right:
+            
+            (
+             (!open_up || openStatus.opened) 
+             ? openStatus.right.closed
 
-            $(controls[0].tool).animate({opacity:0}, 200);
-            $("#settingstoggle").animate({
-                
-                right:
-                
-                (
-                 (!open_up || openStatus.opened) 
-                 ? openStatus.right.closed
+             : (
+                (open_up || !openStatus.opened) 
+                ? openStatus.right.opened 
+                : openStatus.right.closed
+                )
+             )
 
-                 : (
-                    (open_up || !openStatus.opened) 
-                    ? openStatus.right.opened 
-                    : openStatus.right.closed
-                    )
-                 )
-
-            }, 
-            {
-                
-                duration:300, 
-                complete:function () {
-                    openStatus.opened = !openStatus.opened;
-                }
-
-            });
+        }, 
+        {
+            
+            duration:300, 
+            complete:function () {
+                openStatus.opened = !openStatus.opened;
+            }
 
         });
 
