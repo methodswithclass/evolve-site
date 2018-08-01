@@ -180,9 +180,9 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
     var setStepdata = function () {
 
-        getBest();
-
     	api.stepdata(function (res) {
+
+            getBest();
 
     		stepdata = res.data.stepdata ? res.data.stepdata : $stepdata;
 
