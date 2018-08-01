@@ -226,7 +226,7 @@ app.factory("settings.service", [function () {
                  ? openStatus.right.closed
 
                  : (
-                    (open_up || openStatus.closed) 
+                    (open_up || !openStatus.opened) 
                     ? openStatus.right.opened 
                     : openStatus.right.closed
                     )
