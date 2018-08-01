@@ -44,6 +44,11 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         fade:200
     }
 
+    var updateTime = 20;
+
+    var spinning = true;
+
+    // spinning = false;
 
     var toggleTimer = function ($toggle, $scope) {
 
@@ -63,8 +68,17 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     }
 	
 	var evolving = function (_evolve, $scope) {
-        ev = _evolve;
-        if (_evolve) running(_evolve, _$scope);
+        g.waitForElem({elems:"#spinner"}, function () {
+            ev = _evolve;
+            if (_evolve) {
+                if (spinning) $("#spinner").addClass("spinning");
+                running(_evolve, _$scope);
+            }
+            else {
+                if (spinning) $("#spinner").removeClass("spinning");
+            }
+
+        });
     }
     
     var running = function (_run, $scope) {
@@ -244,7 +258,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
                 _$scope.$apply();
             }
 
-        }, 30);
+        }, updateTime);
 
     }
 
@@ -271,6 +285,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     	running(false, _$scope);
 
         console.log("complete evolve");
+
+
 
         u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
         u.toggle("show", "nav", {delay:params.delay, fade:params.fade});
@@ -495,9 +511,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         isEvolving:isEvolving,
 		run:run,
 		breakRun:breakRun,
-		resetgen:resetgen,
-        running:running,
-        evolving:evolving
+		resetgen:resetgen
 	}
 
 

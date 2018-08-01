@@ -1,6 +1,6 @@
 {
 	"config":{
-		"landingPage":"home",
+		"landingPage":"trash",
 		"loadSpeed":"fast",
 		"activePages":{
 			"feedback":true,
