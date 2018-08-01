@@ -215,6 +215,8 @@ app.factory("settings.service", [function () {
 
         g.waitForElem({elems:"#settingstoggle"}, function () {
 
+            openStatus.opened = $("#settingstoggle").offset().left < $(window).width()/2;
+
             $(controls[0].tool).animate({opacity:0}, 200);
             $("#settingstoggle").animate({
                 
@@ -241,7 +243,7 @@ app.factory("settings.service", [function () {
                 
                 duration:100, 
                 complete:function () {
-                    openStatus.opened = $("#settingstoggle").offset().left < $(window).width() - 300;
+                    openStatus.opened = $("#settingstoggle").offset().left < $(window).width()/2;
                 }
 
             });
