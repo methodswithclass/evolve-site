@@ -1,4 +1,4 @@
-app.factory("api.service", ["utility", 'input.service', '$http', function (u, $input, $http) {
+app.factory("api.service", ["utility", 'input.service', '$http', "$q", function (u, $input, $http, $q) {
 
 
     var shared = window.shared;
@@ -22,8 +22,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'getBest'", err.message)
+            // console.log("Server error: 'getBest'", err.message)
 
+            return $q.reject(err);
         })
         .catch(function (err) {
 
@@ -51,7 +52,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'stepdata'", err.message)
+            // console.log("Server error: 'stepdata'", err.message)
+
+            return $q.reject(err);
         })
         .catch(function (err) {
 
@@ -76,7 +79,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
     	}, function (err) {
 
-    		console.log("Server error: 'isRunning'", err.message)
+    		// console.log("Server error: 'isRunning'", err.message)
+
+            return $q.reject(err);
 
     	})
         .catch(function (err) {
@@ -104,7 +109,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'setInput'", err.message)
+            // console.log("Server error: 'setInput'", err.message)
+
+            return $q.reject(err);
 
         })
         .catch(function (err) {
@@ -129,7 +136,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'instantiate'", err.message)
+            // console.log("Server error: 'instantiate'", err.message)
+
+            return $q.reject(err);
 
         })
         .catch(function (err) {
@@ -158,7 +167,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'initialize'", err.message)
+            // console.log("Server error: 'initialize'", err.message)
+
+            return $q.reject(err);
         })
         .catch(function (err) {
 
@@ -198,7 +209,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'run'", err.message)
+            // console.log("Server error: 'run'", err.message)
+
+            return $q.reject(err);
         })
         .catch(function (err) {
 
@@ -221,7 +234,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'instruct'", err.message);
+            // console.log("Server error: 'instruct'", err.message);
+
+            return $q.reject(err);
 
         })
         .catch(function (err) {
@@ -250,7 +265,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'refresh environment'", err.message)
+            // console.log("Server error: 'refresh environment'", err.message)
+
+            return $q.reject(err);
 
         })
         .catch(function (err) {
@@ -274,7 +291,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'reset environment'", err.message)
+            // console.log("Server error: 'reset environment'", err.message)
+
+            return $q.reject(err);
 
         })
         .catch(function (err) {
@@ -302,7 +321,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
             }, function (err) {
 
-                console.log("Server error: 'simulate'", err.message);
+                // console.log("Server error: 'simulate'", err.message);
+
+                return $q.reject(err);
             })
             .catch(function (err) {
 
@@ -326,7 +347,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
             }, function (err) {
 
-                console.log("Server error while running best individual", err);
+                // console.log("Server error while running best individual", err);
+
+                return $q.reject(err);
 
             })
             .catch(function (err) {
@@ -348,7 +371,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
             }, function (err) {
 
-                console.log("Server error while running best individual", err);
+                // console.log("Server error while running best individual", err);
+
+                return $q.reject(err);
 
             })
             .catch(function (err) {
@@ -378,7 +403,9 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'hardStop'", err.message)
+            // console.log("Server error: 'hardStop'", err.message)
+
+            return $q.reject(err);
         })
         .catch(function (err) {
 
