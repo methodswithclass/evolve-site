@@ -71,139 +71,230 @@ var looseEnds = function (req) {
 
 evolveRouter.post("/data", function (req, res, next) {
 
-	console.log("get data req", req.body.input.name);
+	try {
 
-	res.json({data:get.data(req.body.input.name)});
+		console.log("get data req", req.body.input.name);
+
+		res.status(200).json({data:get.data(req.body.input.name)})
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 })
 
 
 evolveRouter.get("/instantiate", function (req, res, next) {
 
-	console.log("instantiate");
+	try {
 
-	var session = uidgen.generateSync();
 
-	get.createSessionEvolve(session);
+		console.log("instantiate");
 
-	res.json({session:session, success:"success"});
+		var session = uidgen.generateSync();
+
+		get.createSessionEvolve(session);
+
+		res.status(200).json({session:session, success:"success"});
+
+	}
+	catch (err) {
+
+		next(err);
+	}
+
 });
 
 
 evolveRouter.post("/initialize", function (req, res, next) {
 
-	console.log("initialize");
+	try {
 
-	var input = addProgram(req.body.input);
+		console.log("initialize");
 
-	var evolution = get.getSessionEvolve(input.session);
+		var input = addProgram(req.body.input);
 
-	let success = evolution.initialize(input);
+		var evolution = get.getSessionEvolve(input.session);
 
-	res.json({success:success});
+		let success = evolution.initialize(input);
+
+		res.status(200).json({success:success});
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 });
 
 
 
 evolveRouter.post("/set", function (req, res, next) {
 
-	var input = req.body.input;
 
+	try {
 
-	console.log("set input\n\n", input, "\n");
-	// console.log("set input\n", inputArray);
+		var input = req.body.input;
 
-	var evolution = get.getSessionEvolve(req.body.input.session);
+		console.log("set input\n\n", input, "\n");
+		// console.log("set input\n", inputArray);
 
-	evolution.set(req.body.input);
+		var evolution = get.getSessionEvolve(req.body.input.session);
 
-	res.json({success:"success"});
+		evolution.set(req.body.input);
+
+		res.status(200).json({success:"success"});
+
+	}
+	catch (err) {
+
+		next(err);
+	}
+
 });
 
 
 
 evolveRouter.post("/run", function (req, res, next) {
 
-	console.log("run evolve", req.body.input);
 
-	// var input = addProgram(req);
+	try {
 
-	var evolution = get.getSessionEvolve(req.body.input.session)
+		console.log("run evolve", req.body.input);
 
-	let success = evolution.run(req.body.input);
+		// var input = addProgram(req);
 
-	res.json({success:success, running:true});
+		var evolution = get.getSessionEvolve(req.body.input.session)
+
+		let success = evolution.run(req.body.input);
+
+		res.status(200).json({success:success, running:true});
+
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 });
 
 
 evolveRouter.post("/running", function (req, res, next) {
 
-	// console.log("check running", req.body, evolution.running());
+
+	try {
+
+		// console.log("check running", req.body, evolution.running());
 
 
-	var evolution = get.getSessionEvolve(req.body.input.session);
+		var evolution = get.getSessionEvolve(req.body.input.session);
 
-	res.json({running:evolution.running()})
+		res.status(200).json({running:evolution.running()})
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 })
 
 
 evolveRouter.post("/best", function (req, res, next) {
 
-	// console.log("get best");
 
-	var evolution = get.getSessionEvolve(req.body.input.session)
+	try {
 
-	res.json({ext:evolution.getBest()});
+		// console.log("get best");
+
+		var evolution = get.getSessionEvolve(req.body.input.session)
+
+		res.status(200).json({ext:evolution.getBest()})
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 })
 
 
 
 evolveRouter.post("/instruct", function (req, res, next) {
 
-	console.log("instruct");
 
-	var clear = req.body.clear
+	try {
 
-	var evolution = get.getSessionEvolve(req.body.input.session)
-	var ext = evolution.getBest();
-	var prog = get.getSessionProgram(req.body.input.session, req.body.input.name);
+		console.log("instruct");
 
-	// console.log("instruct best dna", best, best.dna);
+		var clear = req.body.clear
 
-	prog.instruct(clear ? [] : ext.best.dna);
+		var evolution = get.getSessionEvolve(req.body.input.session)
+		var ext = evolution.getBest();
+		var prog = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
-	res.json({success:"program successfully instructed"});
+		// console.log("instruct best dna", best, best.dna);
+
+		prog.instruct(clear ? [] : ext.best.dna);
+
+		res.status(200).json({success:"program successfully instructed"});
+
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 })
 
 
 
 evolveRouter.post("/stepdata", function (req, res, next) {
 
-	// console.log("get stepdata", req.body);
 
-	// looseEnds(req);
+	try {
 
-	var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
+		// console.log("get stepdata", req.body);
 
-	var stepdata = program.stepdata();
+		// looseEnds(req);
 
-	// console.log("step data", stepdata);
+		var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
 
-	res.json({stepdata:stepdata});
+		var stepdata = program.stepdata();
+
+		// console.log("step data", stepdata);
+
+		res.status(200).json({stepdata:stepdata})
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 })
 
 
 
 evolveRouter.post("/hardStop", function (req, res, next) {
 
-	console.log("hard stop");
 
-	// var input = addProgram(req);
+	try {
 
-	var evolution = get.getSessionEvolve(req.body.input.session)
+		console.log("hard stop");
 
-	evolution.hardStop(req.body.input);
+		// var input = addProgram(req);
 
-	res.json({success:"success"});
+		var evolution = get.getSessionEvolve(req.body.input.session)
+
+		evolution.hardStop(req.body.input);
+
+		res.status(200).json({success:"success"});
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 });
 
 

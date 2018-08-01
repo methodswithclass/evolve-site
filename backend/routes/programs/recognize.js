@@ -15,14 +15,22 @@ var imageReader = require("../../evolve-app/programs/recognize/image-reader.js")
 recognizeRouter.post("/simulate", function (req, res, next) {
 
 
-	console.log("run best");
+	try {
 
-	var recognize = get.getSessionProgram(req.body.input.session, "recognize");
+		console.log("run best");
 
-	recognize.simulate(req.body.index, function (output) {
+		var recognize = get.getSessionProgram(req.body.input.session, "recognize");
 
-		res.json({output:output});
-	});
+		recognize.simulate(req.body.index, function (output) {
+
+			res.status(200).json({output:output});
+		});
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 
 })
 
@@ -31,31 +39,40 @@ recognizeRouter.post("/simulate", function (req, res, next) {
 recognizeRouter.post("/digit", function (req, res, next) {
 
 
-	console.log("get digit");
-
-	// var recognize = get.getSessionProgram(req.body.input.session, "recognize");
-
-	var data = get.data(req.body.input.name);
-
-	var image;
+	try {
 
 
-	imageReader.readfile(data.data.dataFile, function ($data) {
+		console.log("get digit");
 
-		image = $data.find(function (p) {
+		// var recognize = get.getSessionProgram(req.body.input.session, "recognize");
 
-			return p.index == req.body.index
+		var data = get.data(req.body.input.name);
+
+		var image;
+
+
+		imageReader.readfile(data.data.dataFile, function ($data) {
+
+			image = $data.find(function (p) {
+
+				return p.index == req.body.index
+			})
+
+			res.status(200).json({image:image.pixels, index:image.index, label:image.label});
+
 		})
 
-		res.json({image:image.pixels, index:image.index, label:image.label})
 
-	})
+		// recognize.simulate(function (image, output, label) {
 
+		// 	res.json({image:image, output:output, label:label});
+		// });
 
-	// recognize.simulate(function (image, output, label) {
+	}
+	catch (err) {
 
-	// 	res.json({image:image, output:output, label:label});
-	// });
+		next(err);
+	}
 
 })
 

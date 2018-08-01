@@ -12,33 +12,52 @@ var db = require("../db.js");
 trashRouter.post("/simulate", function (req, res, next) {
 
 
-	console.log("simulate step", req.body);
+	try {
 
-	var trash = get.getSessionProgram(req.body.session, "trash");
+		console.log("simulate step", req.body);
 
-	var result = trash.simulate();
+		var trash = get.getSessionProgram(req.body.session, "trash");
 
-	res.json({result:result});
+		var result = trash.simulate();
+
+		res.json({result:result})
+
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 
 })
 
 
 trashRouter.post("/environment/refresh", function (req, res, next) {
 
-	var input = req.body.input;
 
-	console.log("create environment, input", input.programInput);
+	try {
 
-	var trash = get.getSessionProgram(input.session, "trash");
+		var input = req.body.input;
 
-	// console.log("program", trash ? 1 : 0);
+		console.log("create environment, input", input.programInput);
 
-	var env = trash.refresh(input.programInput);
+		var trash = get.getSessionProgram(input.session, "trash");
 
-	// console.log("env", env);
-	
+		// console.log("program", trash ? 1 : 0);
 
-	res.json({env:env});
+		var env = trash.refresh(input.programInput);
+
+		// console.log("env", env);
+		
+
+		res.status(200).json({env:env});
+
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 
 })
 
@@ -46,13 +65,21 @@ trashRouter.post("/environment/refresh", function (req, res, next) {
 trashRouter.post("/environment/reset", function (req, res, next) {
 
 
-	console.log("reset environment");
+	try {
 
-	var trash = get.getSessionProgram(req.body.input.session, "trash");
+		console.log("reset environment");
 
-	var env = trash.reset();
+		var trash = get.getSessionProgram(req.body.input.session, "trash");
 
-	res.json({env:env});
+		var env = trash.reset();
+
+		res.status(200).json({env:env})
+
+	}
+	catch (err) {
+
+		next(err);
+	}
 
 })
 

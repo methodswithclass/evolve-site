@@ -27,10 +27,12 @@ const errorHandler  = function () {
 
 	return function (err, req, res, next) {
 	  	
+		console.log("error handller");
+
 		if (err || res.statusCode >= 500) {
 			res.status(200).send({error:err});
 		}
-		else if (!err && res.statusCode == 200) {
+		else {
 			next();
 		}
 	}
