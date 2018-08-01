@@ -1,5 +1,10 @@
 {
 	"config":{
+		"debug":{
+			"active":true,
+			"landingPage":"trash",
+			"loadSpeed":"fast"
+		},
 		"landingPage":"home",
 		"loadSpeed":"fast",
 		"activePages":{

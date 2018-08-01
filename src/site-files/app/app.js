@@ -194,9 +194,10 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 	try {
 		
 		configPromise = config.get([
-		                    	"config.landingPage", 
-		                    	"config.loadSpeed"
-		                    ]);
+		                            "config.debug",
+			                    	"config.landingPage", 
+			                    	"config.loadSpeed"
+			                    ]);
 
 	}
 	catch (e) {
@@ -207,8 +208,20 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 	configPromise.then((data) => {
 
-		var landingPage = data[0];
-		var loadSpeed = data[1];
+		var debug = data[0];
+		var landingPage 
+		var loadSpeed;
+
+
+		if (debug.active) {
+
+			landingPage = debug.landingPage
+			loadSpeed = debug.loadSpeed;
+		}
+		else {
+			landingPage = data[1];
+			loadSpeed = data[2];
+		}
 
 		switch (landingPage) {
 

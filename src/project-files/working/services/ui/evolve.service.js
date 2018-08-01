@@ -25,6 +25,12 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var genB = genA;
     var stepdata;
 
+    var timeDivisor = {
+        stepdata:1,
+        ui_updater:8,
+        isRunning:4
+    }
+
     var $stepdata = {
         gen:0,
         org:0,
@@ -209,7 +215,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
             	if (update) setStepdata();
 
-       		}, updateTime);
+       		}, updateTime/timeDivisor.stepdata);
 
 	    })
 
@@ -258,7 +264,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
                 _$scope.$apply();
             }
 
-        }, updateTime);
+        }, updateTime/timeDivisor.ui_update);
 
     }
 
@@ -341,7 +347,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 		    		completeEvolve($scope);
 		    	}
 
-            }, 500)
+            }, updateTime/timeDivisor.isRunning)
 
 	    })
 
