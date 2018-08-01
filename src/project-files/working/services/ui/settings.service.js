@@ -239,7 +239,7 @@ app.factory("settings.service", [function () {
             }, 
             {
                 
-                duration:300, 
+                duration:100, 
                 complete:function () {
                     openStatus.opened = !openStatus.opened;
                 }
