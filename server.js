@@ -48,6 +48,7 @@ if  (process.env.NODE_ENV != "production") {
 	}));
 }
 
+app.use(middleware.errorHandler());
 
 app.use("/", express.static(path.join(__dirname, "dist")));
 

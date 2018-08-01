@@ -23,6 +23,20 @@ var subPages = [
 ]
 
 
+const errorHandler  = function () {
+
+	return function (err, req, res, next) {
+	  	
+		if (res.statusCode >= 500) {
+			res.send({error:err});
+		}
+		else {
+			next();
+		}
+	}
+
+}
+
 
 
 const forceSSL = function() {
@@ -156,6 +170,7 @@ var refreshAllBut = function () {
 
 
 module.exports = {
+	errorHandler:errorHandler,
 	forceSSL:forceSSL,
 	refresh:refreshOnly,
 	refreshAllBut:refreshAllBut
