@@ -25,6 +25,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             console.log("Server error: 'getBest'", err.message)
 
         })
+        .catch(function (err) {
+
+            console.log("Server error: 'getBest'", err.message)
+
+        })
         
     }
 
@@ -48,6 +53,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
             console.log("Server error: 'stepdata'", err.message)
         })
+        .catch(function (err) {
+
+            console.log("Server error: 'stepdata'", err.message)
+
+        })
 
    	}
 
@@ -69,6 +79,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
     		console.log("Server error: 'isRunning'", err.message)
 
     	})
+        .catch(function (err) {
+
+            console.log("Server error: 'isRunning'", err.message)
+
+        })
 
     }
 
@@ -92,6 +107,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             console.log("Server error: 'setInput'", err.message)
 
         })
+        .catch(function (err) {
+
+            console.log("Server error: 'setInput'", err.message)
+
+        })
 
    	}
 
@@ -109,7 +129,12 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
         }, function (err) {
 
-            console.log("Server error: 'instaniate'", err.message)
+            console.log("Server error: 'instantiate'", err.message)
+
+        })
+        .catch(function (err) {
+
+            console.log("Server error: 'instantiate'", err.message)
 
         })
 
@@ -134,6 +159,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
         }, function (err) {
 
             console.log("Server error: 'initialize'", err.message)
+        })
+        .catch(function (err) {
+
+            console.log("Server error: 'initialize'", err.message)
+
         })
 
 
@@ -170,6 +200,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
             console.log("Server error: 'run'", err.message)
         })
+        .catch(function (err) {
+
+            console.log("Server error: 'run'", err.message)
+
+        })
 
     }
 
@@ -185,6 +220,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             if (typeof callback === "function") callback(res);
 
         }, function (err) {
+
+            console.log("Server error: 'instruct'", err.message);
+
+        })
+        .catch(function (err) {
 
             console.log("Server error: 'instruct'", err.message);
 
@@ -213,6 +253,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             console.log("Server error: 'refresh environment'", err.message)
 
         })
+        .catch(function (err) {
+
+            console.log("Server error: 'refresh environment'", err.message)
+
+        })
 
     }
 
@@ -228,6 +273,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
             if (typeof callback === "function") callback(res);
 
         }, function (err) {
+
+            console.log("Server error: 'reset environment'", err.message)
+
+        })
+        .catch(function (err) {
 
             console.log("Server error: 'reset environment'", err.message)
 
@@ -254,6 +304,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
 
                 console.log("Server error: 'simulate'", err.message);
             })
+            .catch(function (err) {
+
+                console.log("Server error: 'simulate'", err.message)
+
+            })
 
         
 
@@ -274,6 +329,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
                 console.log("Server error while running best individual", err);
 
             })
+            .catch(function (err) {
+
+                console.log("Server error while running best individual", err);
+
+            })
         },
         digit:function (index, callback) {
 
@@ -287,6 +347,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
                 if (typeof callback === "function") callback(res);
 
             }, function (err) {
+
+                console.log("Server error while running best individual", err);
+
+            })
+            .catch(function (err) {
 
                 console.log("Server error while running best individual", err);
 
@@ -314,6 +379,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', function (u, $i
         }, function (err) {
 
             console.log("Server error: 'hardStop'", err.message)
+        })
+        .catch(function (err) {
+
+            console.log("Server error: 'hardStop'", err.message)
+
         })
 
     }
