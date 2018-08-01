@@ -208,39 +208,43 @@ app.factory("settings.service", [function () {
 
     var settingsWidth = 800;
     var width = 0.6;
-    var openStatus = {opened:false, right:{opened:0, closed:(-1)*settingsWidth}};
+    var openStatus = {opened:true, right:{opened:0, closed:(-1)*settingsWidth}};
 
 
     var animateToggle = function (open_up) {
 
-        $(controls[0].tool).animate({opacity:0}, 200);
-        $("#settingstoggle").animate({
-            
-            right:
-            
-            (
+        g.waitForElem({elems:"#settingstoggle"}, function () {
 
-             open_up ? openStatus.right.closed
+            $(controls[0].tool).animate({opacity:0}, 200);
+            $("#settingstoggle").animate({
+                
+                right:
+                
+                (
 
-             :
+                 open_up ? openStatus.right.closed
 
-             (
+                 :
 
-              (!openStatus.opened || open_up) 
-              ? openStatus.right.opened 
-              : openStatus.right.closed
+                 (
 
-              )
+                  (!openStatus.opened || open_up) 
+                  ? openStatus.right.opened 
+                  : openStatus.right.closed
 
-            )
+                  )
 
-        }, 
-        {
-            
-            duration:300, 
-            complete:function () {
-                openStatus.opened = !openStatus.opened;
-            }
+                )
+
+            }, 
+            {
+                
+                duration:300, 
+                complete:function () {
+                    openStatus.opened = !openStatus.opened;
+                }
+
+            });
 
         });
 
