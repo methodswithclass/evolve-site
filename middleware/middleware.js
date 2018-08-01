@@ -27,7 +27,7 @@ const errorHandler  = function () {
 
 	return function (err, req, res, next) {
 	  	
-		if (res.statusCode >= 500) {
+		if (err || res.statusCode >= 500) {
 			res.status(200).send({error:err});
 		}
 		else {
