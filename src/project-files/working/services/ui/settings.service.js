@@ -210,8 +210,7 @@ app.factory("settings.service", [function () {
     var width = 0.6;
     var toggleOpened = true;
     var openStatus = {opened:false, right:{opened:0, closed:(-1)*settingsWidth}};
-            
-
+    
 
     var animateToggle = function (open_up) {
 
