@@ -216,6 +216,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
             	if (update) setStepdata();
 
        		}, updateTime/timeDivisor.stepdata);
+            
 
 	    })
 
