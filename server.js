@@ -43,14 +43,9 @@ app.use("/trash", trashRoutes);
 app.use("/recognize", recognizeRoutes);
 
 if  (process.env.NODE_ENV != "production") {
-	try {
-		app.use(require('connect-livereload')({
-			port: PORTS.livereload
-		}));
-	}
-	catch (err) {
-		console.log("cannot livereload at this time", err);
-	}
+	app.use(require('connect-livereload')({
+		port: PORTS.livereload
+	}));
 }
 
 app.use(middleware.errorHandler());

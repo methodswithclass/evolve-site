@@ -209,8 +209,13 @@ var serveFunc = function (done) {
 
 		setTimeout(function () {
 
-			livereload.reload();
-
+			try {
+				livereload.reload();
+			}
+			catch (err) {
+				console.log("cannot livreload at this time", err);
+			}
+			
 			done();
 
 		}, 2000);
