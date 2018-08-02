@@ -65,8 +65,8 @@
 				"goal":"diverge"
 			}
 			],
-			"evdelay":100,
-			"duration":70
+			"evdelay":70,
+			"duration":30
 		},
 		"recognize":{
 			"override":{},
