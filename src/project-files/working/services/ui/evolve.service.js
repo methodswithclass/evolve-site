@@ -16,7 +16,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var _$scope = {};
     var interface_timer;
     var stepTimer;
-    var updateTime = 3000;
+    var updateTime = 500;
+    
     var spinning = true;
 	var simulator;
 	var update = false;
@@ -26,8 +27,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var stepdata;
 
     var timeDivisor = {
-        stepdata:1,
-        ui_updater:8,
+        stepdata:2,
+        ui_updater:10,
         isRunning:4
     }
 
@@ -216,7 +217,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
             	if (update) setStepdata();
 
        		}, updateTime/timeDivisor.stepdata);
-            
+
 
 	    })
 

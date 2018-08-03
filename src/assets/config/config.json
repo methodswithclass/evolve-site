@@ -66,7 +66,7 @@
 			}
 			],
 			"evdelay":300,
-			"duration":30
+			"duration":70
 		},
 		"recognize":{
 			"override":{},

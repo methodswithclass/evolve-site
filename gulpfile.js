@@ -13,6 +13,7 @@ merge = require("merge-stream"),
 mainBowerFiles = require("gulp-main-bower-files"),
 nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
+sass = require("gulp-sass");
 
 
 // var middleware = require("./middleware/middleware.js");
@@ -125,6 +126,12 @@ var vendor = function () {
 
 };
 
+var apiSass = function () {
+  return gulp.src('src/assets/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('temp/'));
+}
+
 
 var styles = function() {
 
@@ -132,7 +139,10 @@ var styles = function() {
 	// middleware.compileSass();
 
 
-	var cssSrc = gulp.src('src/assets/**/*.css', { style: 'expanded' })
+	var cssSrc = gulp.src([
+	                      'temp/**/*.css',
+	                      "node_modules/@fortawesome/fontawesome-free/css/all.css"
+	                      ])
 	.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'));
 
 	
@@ -163,8 +173,13 @@ var data = function() {
 
 var fonts = function () {
 
-	return gulp.src("src/assets/fonts/**/*.*")
+	var mainFonts = gulp.src("src/assets/fonts/**/*.*")
 	.pipe(gulp.dest("dist/assets/fonts"))
+
+	var vendorFonts = gulp.src("node_modules/@fortawesome/fontawesome-free/webfonts/*.*")
+	.pipe(gulp.dest("dist/assets/webfonts"))
+
+	return merge(mainFonts, vendorFonts);
 };
 
 var index = function () {
@@ -183,7 +198,7 @@ var misc = function() {
 
 
 var clean = function() {
-	return del(['dist', "src/assets/scss"]);
+	return del(['dist', "temp"]);
 }
 
 
@@ -215,7 +230,7 @@ var serveFunc = function (done) {
 			catch (err) {
 				console.log("cannot livreload at this time", err);
 			}
-			
+
 			done();
 
 		}, 2000);
@@ -232,11 +247,22 @@ var serveFunc = function (done) {
 }
 
 
+
+// var watcher = gulp.watch('src/assets/**/*.scss', apiSass);
+
+// watcher.on("change", function () {
+
+// 	gulp.task(apiSass);
+
+// 	// done();
+// });
+
+
 var copy = gulp.parallel(data, misc, index, html, images, fonts)
 
 var compile = gulp.parallel(vendor, scripts);
 
-var buildTask = gulp.series(gulp.parallel(compile, styles, copy), injectJS);
+var buildTask = gulp.series(gulp.parallel(compile, gulp.series(apiSass, styles), copy), injectJS);
 
 var serveTask = gulp.series(clean, buildTask, serveFunc);
 
