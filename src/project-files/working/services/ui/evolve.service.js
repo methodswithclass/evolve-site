@@ -16,7 +16,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var _$scope = {};
     var interface_timer;
     var stepTimer;
-    var updateTime = 100;
+    var updateTime = 500;
     var spinning = true;
 	var simulator;
 	var update = false;
@@ -173,6 +173,10 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
         api.getBest(function (res) {
             
+            sendData({
+                evdata:res.data.ext
+            });
+
             sendEvdata({
                 evdata:res.data.ext
             });
