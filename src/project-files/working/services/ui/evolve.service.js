@@ -17,6 +17,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var interface_timer;
     var stepTimer;
     var updateTime = 500;
+    
     var spinning = true;
 	var simulator;
 	var update = false;
