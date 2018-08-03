@@ -88,7 +88,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
                 $input.setInput({
                     name:self.name,
-                    programInput:$scope.programInput
+                    programInput:programInput
                 })
 
                 $scope.settings = $input.setSettings($scope, $input.getInput(false));
