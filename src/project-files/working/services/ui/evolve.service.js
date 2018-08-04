@@ -1,4 +1,4 @@
-app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'simulators', 'input.service', function (u, display, api, simulators, $input) {
+app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'simulators', 'input.service', "config.service", function (u, display, api, simulators, $input, config) {
 
 
 	var self = this;
@@ -16,8 +16,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var _$scope = {};
     var interface_timer;
     var stepTimer;
-    var updateTime = 2000;
-
+    var updateTime;
     var spinning = true;
 	var simulator;
 	var update = false;
@@ -495,6 +494,12 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
     var setup = function (name) {
 
         self.name = name;
+
+        config.get("global." + self.name)
+        .then((data) => {
+
+            updateTime = data.updateTime;
+        })
 
         simulator = simulators.get(self.name);
 

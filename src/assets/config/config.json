@@ -2,7 +2,7 @@
 	"config":{
 		"debug":{
 			"active":true,
-			"landingPage":"feedback",
+			"landingPage":"trash",
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",
@@ -47,6 +47,7 @@
 				"size":5
 			},
 			"evdelay":0,
+			"updateTime":2000,
 			"trashPercent":50,
 			"processIndex":0
 		},
@@ -66,6 +67,7 @@
 			}
 			],
 			"evdelay":500,
+			"updateTime":500,
 			"duration":300
 		},
 		"recognize":{
