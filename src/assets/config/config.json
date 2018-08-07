@@ -24,8 +24,8 @@
 			"reproductionType":"async",
 			"parents":2,
 			"pool":0.1,
-			"splicemin":50,
-			"splicemax":100,
+			"splicemin":10,
+			"splicemax":20,
 			"mutate":0.02
 		},
 		"trash":{

@@ -190,6 +190,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
     var setStepdata = function () {
 
+        // console.log("update time", updateTime);
+
     	api.stepdata(function (res) {
 
             getBest();
