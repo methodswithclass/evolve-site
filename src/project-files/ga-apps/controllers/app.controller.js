@@ -30,7 +30,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var k = 0;
 
 
-    config.get("types.crossoverMethods")
+    config.get("global.types.crossoverMethods")
     .then((data) => {
 
 

@@ -27,10 +27,9 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
 
     config.get([
-               "types.crossoverMethods",
-               "types.runPopTypes",
-               "types.reproductionTypes",
-               "global.initial",
+               "global.types.crossoverMethods",
+               "global.types.runPopTypes",
+               "global.types.reproductionTypes",
                "global.initial"
                ])
     .then((data) => {
@@ -41,7 +40,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         runPopTypes = data[1];
         reproductionTypes = data[2];
         $$master_initial = data[3];
-        $$reset_initial = data[4];
+        $$reset_initial = data[3];
 
         // console.log("master", $$master_initial);
     })

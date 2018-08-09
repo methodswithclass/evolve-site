@@ -13,19 +13,40 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 	console.log("open " + state);
 
-	config.get("config.activePages")
+	var stateParams;
+	$scope.pageParams = {};
+
+
+	config.get([
+	           "config.activePages",
+	           "global.programs"
+	           ])
 	.then((data) => {
 
-		$scope.isActive = data;
+		$scope.isActive = data[0];
+		
+		if (state != "home") {
+			stateParams = data[1][state].meta;
+			$scope.pageColor = stateParams.colors.page;
+			$scope.demoButton = stateParams.colors.demoButton;
+		}
+
+
+		for (var i in data[1]) {
+			$scope.pageParams[i] = data[1][i].meta;
+		}
+
 	})
 
 	self.overview = dd.get("overview");
 
 	self.doc = dd.get(state);
 
-	self.openDemo = function () {
+	self.openDemo = function ($state) {
 
-		states.go(state + "#demo");
+
+
+		states.go(($state ? $state : state) + "#demo");
 	}
 
 	self.open = function ($state) {

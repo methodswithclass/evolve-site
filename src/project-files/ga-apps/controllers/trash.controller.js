@@ -12,7 +12,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
     var processTypes
 
-    config.get("types.processTypes")
+    config.get("global.types.processTypes")
     .then((data) => {
 
         processTypes = data;
@@ -335,7 +335,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         self.programInput
 
-        config.get("global.trash")
+        config.get("global.programs.trash")
         .then((data) => {
 
 

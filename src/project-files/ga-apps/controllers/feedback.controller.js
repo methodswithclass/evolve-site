@@ -14,7 +14,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     var programInput;
 
 
-    config.get("global.feedback")
+    config.get("global.programs.feedback")
     .then((data) => {
 
         programInput = data;
