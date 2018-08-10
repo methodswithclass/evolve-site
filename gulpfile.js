@@ -49,13 +49,10 @@ var scripts = function() {
 	    "src/site-files/state/stateModule.js",
 	    "src/site-files/state/runtimeState.js",
 	    "src/site-files/state/states.js",
-        "src/site-files/app/app.js",
-        "src/site-files/app/utility.js",
-	    "src/site-files/interface/**/*.js",
-	    // "src/project-files/ga-apps/app-recognize/**/*.js",
-	    // "src/project-files/ga-apps/app-feedback/**/*.js",
-	    // "src/project-files/ga-apps/app-trash/**/*.js",
-	    // "src/project-files/working/**/*.js"
+        "src/site-files/app.js",
+        "src/site-files/main.controller.js",
+        "src/site-files/services/**/*.js",
+	    "src/site-files/directives/**/*.js",
 	    "src/project-files/**/*.js"
     ])
 	.pipe(concat('main.js'))
