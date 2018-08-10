@@ -46,17 +46,14 @@ var scripts = function() {
 
     var mainSrc = gulp.src([
 	    "src/assets/**/*.js",
-	    "src/site-files/state/stateModule.js",
-	    "src/site-files/state/runtimeState.js",
-	    "src/site-files/state/states.js",
-        "src/site-files/app/app.js",
-        "src/site-files/app/utility.js",
-	    "src/site-files/interface/**/*.js",
-	    // "src/project-files/ga-apps/app-recognize/**/*.js",
-	    // "src/project-files/ga-apps/app-feedback/**/*.js",
-	    // "src/project-files/ga-apps/app-trash/**/*.js",
-	    // "src/project-files/working/**/*.js"
-	    "src/project-files/**/*.js"
+	    "src/app/state/stateModule.js",
+	    "src/app/state/runtimeState.js",
+	    "src/app/state/states.js",
+        "src/app/app.js",
+        "src/app/main.controller.js",
+        "src/app/services/**/*.js",
+	    "src/app/directives/**/*.js",
+	    "src/evolve-app/**/*.js"
     ])
 	.pipe(concat('main.js'))
 
@@ -156,8 +153,8 @@ var styles = function() {
 
 var html = function () {
 
-	return gulp.src('src/assets/**/*.html')
-	.pipe(gulp.dest("dist/assets/"))
+	return gulp.src('src/**/*.html')
+	.pipe(gulp.dest("dist/assets/views/"))
 };
 
 var images = function() {
