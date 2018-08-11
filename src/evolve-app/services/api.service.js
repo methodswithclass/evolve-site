@@ -10,27 +10,34 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
 	var getBest = function (callback) {
 
+        try {
        
-    	$http({
-    		method:"POST",
-    		url:"/evolve/best",
-            data:{input:$input.getInput()}
-    	})
-    	.then(function (res) {
+        	$http({
+        		method:"POST",
+        		url:"/evolve/best",
+                data:{input:$input.getInput()}
+        	})
+        	.then(function (res) {
 
-            if (typeof callback === "function")callback(res);
+                if (typeof callback === "function")callback(res);
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log("before throw Server error: 'getBest'", err)
+                console.log("before throw Server error: 'getBest'", err)
 
-            throw err;
-        })
-        .catch(function (err) {
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'getBest'", err)
+
+            })
+
+        }
+        catch (err) {
 
             console.log("Server error: 'getBest'", err)
-
-        })
+        }
         
     }
 
@@ -39,29 +46,38 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         // console.log("call setpdata");
       
-    	$http({
-    		method:"POST",
-    		url:"/evolve/stepdata",
-            data:{input:$input.getInput()}
-    	})
-    	.then(function (res) {
+        try {
 
-            // console.log("stepdata raw response", res);
+        	$http({
+        		method:"POST",
+        		url:"/evolve/stepdata",
+                data:{input:$input.getInput()}
+        	})
+        	.then(function (res) {
 
-            if (typeof callback === "function") callback(res);
+                // console.log("stepdata raw response", res);
 
-        }, function (err) {
+                if (typeof callback === "function") callback(res);
 
-            // console.log("Server error: 'stepdata'", err)
+            }, function (err) {
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+                // console.log("Server error: 'stepdata'", err)
 
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'stepdata'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'stepdata'", err)
-
-        })
+        }
 
    	}
 
@@ -69,27 +85,36 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
    	var isRunning = function  (callback) {
 
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/running",
-            data:{input:$input.getInput(true)}
-    	})
-    	.then(function (res) {
+        try {
 
-            if (typeof callback === "function") callback(res);
+        	$http({
+        		method:"POST",
+        		url:"/evolve/running",
+                data:{input:$input.getInput(true)}
+        	})
+        	.then(function (res) {
 
-    	}, function (err) {
+                if (typeof callback === "function") callback(res);
 
-    		// console.log("Server error: 'isRunning'", err)
+        	}, function (err) {
 
-            // return $q.reject(err);
-            throw err;
-    	})
-        .catch(function (err) {
+        		// console.log("Server error: 'isRunning'", err)
 
+                // return $q.reject(err);
+                throw err;
+        	})
+            .catch(function (err) {
+
+                console.log("Server error: 'isRunning'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'isRunning'", err)
-
-        })
+        }
 
     }
 
@@ -99,27 +124,36 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
        
         // console.log("setInput http call get input or resendInput");
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/set",
-    		data:{input:resend ? $input.resendInput() : $input.getInput()}
-    	})
-    	.then(function (res) {
+        try {
 
-            if (typeof callback === "function") callback(res);
+        	$http({
+        		method:"POST",
+        		url:"/evolve/set",
+        		data:{input:resend ? $input.resendInput() : $input.getInput()}
+        	})
+        	.then(function (res) {
 
-        }, function (err) {
+                if (typeof callback === "function") callback(res);
 
-            // console.log("Server error: 'setInput'", err)
+            }, function (err) {
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+                // console.log("Server error: 'setInput'", err)
 
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'setInput'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'setInput'", err)
-
-        })
+        }
 
    	}
 
@@ -127,26 +161,35 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
     var instantiate = function (callback) {
 
 
-        $http({
-            method:"GET",
-            url:"/evolve/instantiate"
-        })
-        .then(function (res) {
+        try {
 
-            if (typeof callback === "function") callback(res);
+            $http({
+                method:"GET",
+                url:"/evolve/instantiate"
+            })
+            .then(function (res) {
 
-        }, function (err) {
+                if (typeof callback === "function") callback(res);
 
-            // console.log("Server error: 'instantiate'", err)
+            }, function (err) {
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+                // console.log("Server error: 'instantiate'", err)
 
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'instantiate'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'instantiate'", err)
-
-        })
+        }
 
 
     }
@@ -157,27 +200,36 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
     
         console.log("initialize http call get input");
 
-        $http({
-            method:"POST",
-            url:"/evolve/initialize",
-            data:{input:$input.getInput()}
-        })
-        .then(function (res) {
+        try {
 
-            if (typeof callback === "function") callback(res);
+            $http({
+                method:"POST",
+                url:"/evolve/initialize",
+                data:{input:$input.getInput()}
+            })
+            .then(function (res) {
 
-        }, function (err) {
+                if (typeof callback === "function") callback(res);
 
-            // console.log("Server error: 'initialize'", err)
+            }, function (err) {
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+                // console.log("Server error: 'initialize'", err)
 
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'initialize'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'initialize'", err)
-
-        })
+        }
 
 
     }
@@ -188,65 +240,85 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         // console.log("run call input", $input.getInput(true));
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/run", 
-    		data:{input:$input.getInput(true)}
-    	})
-    	.then(function (res) {
 
-            if (!res.data.success) {
+        try {
 
-            	initialize(function () {
-            		
-            		run(function  () {
-            			if (typeof callback === "function") callback(res);
-            		})
-            	});
-            }
-            else {
+        	$http({
+        		method:"POST",
+        		url:"/evolve/run", 
+        		data:{input:$input.getInput(true)}
+        	})
+        	.then(function (res) {
 
-            	 if (typeof callback === "function") callback(res);
-            }
+                if (!res.data.success) {
 
-        }, function (err) {
+                	initialize(function () {
+                		
+                		run(function  () {
+                			if (typeof callback === "function") callback(res);
+                		})
+                	});
+                }
+                else {
 
-            // console.log("Server error: 'run'", err)
+                	 if (typeof callback === "function") callback(res);
+                }
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+            }, function (err) {
 
+                // console.log("Server error: 'run'", err)
+
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'run'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'run'", err)
-
-        })
+        }
 
     }
 
     var instruct = function (clear, callback) {
 
-        $http({
-            method:"POST",
-            url:"/evolve/instruct",
-            data:{input:$input.getInput(), clear:clear}
-        })
-        .then(function (res) {
 
-            if (typeof callback === "function") callback(res);
+        try {
 
-        }, function (err) {
+            $http({
+                method:"POST",
+                url:"/evolve/instruct",
+                data:{input:$input.getInput(), clear:clear}
+            })
+            .then(function (res) {
 
-            // console.log("Server error: 'instruct'", err);
+                if (typeof callback === "function") callback(res);
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+            }, function (err) {
 
-            console.log("Server error: 'instruct'", err);
+                // console.log("Server error: 'instruct'", err);
 
-        })
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'instruct'", err);
+
+            })
+
+
+        }
+        catch (err) {
+            
+            console.log("Server error: 'instruct'", err)
+        }
 
     }
 
@@ -255,55 +327,75 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         // console.log("refresh environment call get input");
 
-        $http({
-            method:"POST",
-            url:"/trash/environment/refresh",
-            data:{input:$input.getInput()}
-        })
-        .then(function (res) {
+        try {
 
-            console.log("refresh response", res.data);
 
-            if (typeof callback === "function") callback(res);
+            $http({
+                method:"POST",
+                url:"/trash/environment/refresh",
+                data:{input:$input.getInput()}
+            })
+            .then(function (res) {
 
-        }, function (err) {
+                console.log("refresh response", res.data);
 
-            // console.log("Server error: 'refresh environment'", err)
+                if (typeof callback === "function") callback(res);
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+            }, function (err) {
 
+                // console.log("Server error: 'refresh environment'", err)
+
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'refresh environment'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'refresh environment'", err)
-
-        })
+        }
 
     }
 
     var resetEnvironment = function (callback) {
 
-        $http({
-            method:"POST",
-            url:"/trash/environment/reset",
-            data:{input:$input.getInput()}
-        })
-        .then(function (res) {
 
-            if (typeof callback === "function") callback(res);
+        try {
 
-        }, function (err) {
+            $http({
+                method:"POST",
+                url:"/trash/environment/reset",
+                data:{input:$input.getInput()}
+            })
+            .then(function (res) {
 
-            // console.log("Server error: 'reset environment'", err)
+                if (typeof callback === "function") callback(res);
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+            }, function (err) {
 
+                // console.log("Server error: 'reset environment'", err)
+
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'reset environment'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'reset environment'", err)
-
-        })
+        }
 
     }
 
@@ -313,78 +405,106 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         trash:function ($input, callback) {
 
-            $http({
-                method:"POST",
-                url:"/trash/simulate",
-                data:$input
-            })
-            .then(function (res) {
 
-                if (typeof callback === "function") callback(res);
+            try {
 
-            }, function (err) {
+                $http({
+                    method:"POST",
+                    url:"/trash/simulate",
+                    data:$input
+                })
+                .then(function (res) {
 
-                // console.log("Server error: 'simulate'", err);
+                    if (typeof callback === "function") callback(res);
 
-                // return $q.reject(err);
-                throw err;
-            })
-            .catch(function (err) {
+                }, function (err) {
 
-                console.log("Server error: 'simulate'", err)
+                    // console.log("Server error: 'simulate'", err);
 
-            })
+                    // return $q.reject(err);
+                    throw err;
+                })
+                .catch(function (err) {
 
+                    console.log("Server error: 'simulate'", err)
+
+                })
+
+
+            }
+            catch (err) {
+                
+                console.log("Server error while running best individual", err);
+            }
         
 
         },
         recognize:function (index, callback) {
 
-            $http({
-                method:"POST",
-                url:"/recognize/simulate",
-                data:{index:index, input:$input.getInput()}
-            })
-            .then(function (res) {
+            try {
 
-                if (typeof callback === "function") callback(res);
+                $http({
+                    method:"POST",
+                    url:"/recognize/simulate",
+                    data:{index:index, input:$input.getInput()}
+                })
+                .then(function (res) {
 
-            }, function (err) {
+                    if (typeof callback === "function") callback(res);
 
-                // console.log("Server error while running best individual", err);
+                }, function (err) {
 
-                // return $q.reject(err);
-                throw err;
-            })
-            .catch(function (err) {
+                    // console.log("Server error while running best individual", err);
 
+                    // return $q.reject(err);
+                    throw err;
+                })
+                .catch(function (err) {
+
+                    console.log("Server error while running best individual", err);
+
+                })
+
+
+            }
+            catch (err) {
+                
                 console.log("Server error while running best individual", err);
-
-            })
+            }
         },
         digit:function (index, callback) {
 
-            $http({
-                method:"POST",
-                url:"/recognize/digit",
-                data:{index:index, input:$input.getInput()}
-            })
-            .then(function (res) {
 
-                if (typeof callback === "function") callback(res);
+            try {
 
-            }, function (err) {
+                $http({
+                    method:"POST",
+                    url:"/recognize/digit",
+                    data:{index:index, input:$input.getInput()}
+                })
+                .then(function (res) {
 
-                // console.log("Server error while running best individual", err);
+                    if (typeof callback === "function") callback(res);
 
-                // return $q.reject(err);
-                throw err;
-            })
-            .catch(function (err) {
+                }, function (err) {
+
+                    // console.log("Server error while running best individual", err);
+
+                    // return $q.reject(err);
+                    throw err;
+                })
+                .catch(function (err) {
+
+                    console.log("Server error while running best individual", err);
+
+                })
+
+
+            }
+            catch (err) {
 
                 console.log("Server error while running best individual", err);
-
-            })
+            }
 
         }
 
@@ -396,27 +516,37 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         console.log("hard stop call get input");
 
-    	$http({
-    		method:"POST",
-    		url:"/evolve/hardStop",
-    		data:{input:$input.getInput()}
-    	})
-    	.then(function (res) {
 
-            if (typeof callback === "function") callback(res);
+        try {
 
-        }, function (err) {
+        	$http({
+        		method:"POST",
+        		url:"/evolve/hardStop",
+        		data:{input:$input.getInput()}
+        	})
+        	.then(function (res) {
 
-            // console.log("Server error: 'hardStop'", err)
+                if (typeof callback === "function") callback(res);
 
-            // return $q.reject(err);
-            throw err;
-        })
-        .catch(function (err) {
+            }, function (err) {
 
+                // console.log("Server error: 'hardStop'", err)
+
+                // return $q.reject(err);
+                throw err;
+            })
+            .catch(function (err) {
+
+                console.log("Server error: 'hardStop'", err)
+
+            })
+
+
+        }
+        catch (err) {
+            
             console.log("Server error: 'hardStop'", err)
-
-        })
+        }
 
     }
 
