@@ -30,6 +30,7 @@ const errorHandler  = function () {
 		console.log("error handller");
 
 		if (err || res.statusCode >= 500) {
+			console.log("caught error in handler", err);
 			res.status(200).send({error:err});
 		}
 		else {
