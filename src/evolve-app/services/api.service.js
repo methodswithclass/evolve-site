@@ -22,7 +22,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", function 
 
         }, function (err) {
 
-            // console.log("Server error: 'getBest'", err)
+            console.log("before throw Server error: 'getBest'", err)
 
             throw err;
         })
