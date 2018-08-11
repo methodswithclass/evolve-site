@@ -23,7 +23,7 @@ app.directive('content', ['utility', function (u) {
     
 				// console.log("get interface content", u.getInterface());
 
-		    	return "assets/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/site/content.html";
+		    	return "assets/views/app/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/content.html";
 		    }
 
 	    }

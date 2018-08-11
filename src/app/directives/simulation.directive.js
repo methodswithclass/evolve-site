@@ -17,7 +17,7 @@ app.directive("simulation", ["utility", "states", function (u, states) {
 			
 			$scope.getContentUrl = function () {
 
-				return "assets/views/project-files/ga-apps/app-" + $scope.name + "/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/simulation.html";
+				return "assets/views/evolve-app/demos/app-" + $scope.name + "/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/simulation.html";
 			}
 
 

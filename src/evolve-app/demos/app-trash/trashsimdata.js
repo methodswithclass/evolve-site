@@ -17,7 +17,7 @@ app.directive("trashsimdata", ["utility", function (u) {
 
 			$scope.getContentUrl = function () {
 
-				return "assets/views/project-files/ga-apps/app-trash/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/trashsimdata.html";
+				return "assets/views/evolve-app/demos/app-trash/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/trashsimdata.html";
 			}
 
 			

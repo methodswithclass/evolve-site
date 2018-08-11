@@ -30,6 +30,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
                "global.types.crossoverMethods",
                "global.types.runPopTypes",
                "global.types.reproductionTypes",
+               "global.initial",
                "global.initial"
                ])
     .then((data) => {
@@ -40,7 +41,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         runPopTypes = data[1];
         reproductionTypes = data[2];
         $$master_initial = data[3];
-        $$reset_initial = data[3];
+        $$reset_initial = data[4];
 
         // console.log("master", $$master_initial);
     })
@@ -301,7 +302,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
         self.name = name;
 
-        config.get("global." + self.name + ".override")
+        config.get("global.programs." + self.name + ".override")
         .then((data) => {
 
             console.log(data);

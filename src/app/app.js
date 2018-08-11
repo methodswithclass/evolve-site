@@ -36,6 +36,17 @@ var makeMobile = function () {
 	return mobile;
 }
 
+
+var makeInterface = function () {
+
+	var inter = 1;
+
+	// no interface 2
+	// inter = 2;
+
+	return inter;
+}
+
 var setInterface = function (inter) {
 
 	// runtimeProvider.initInterface("interface" + inter);
@@ -43,12 +54,12 @@ var setInterface = function (inter) {
 	var shared = window.shared;
 	var react = shared.react_service;
 
-
+	
 	react.push({
 		name:"interface",
 		state:"interface" + inter
 	})
-
+	
 }
 
 
@@ -98,7 +109,7 @@ var setLoadSpeed = function (display, speed) {
 
 
 
-var appConfiguration = function (mobile) {
+var appConfiguration = function (mobile, inter) {
 
 	
 	var shared = window.shared;
@@ -106,9 +117,7 @@ var appConfiguration = function (mobile) {
 	var g = shared.utility_service;
 
 
-	setInterface(1);
-	// setInterface(2);
-
+	setInterface(inter);
 
 
 	if (mobile) {
@@ -166,7 +175,7 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 	
 
-	appConfiguration(makeMobile());
+	appConfiguration(makeMobile(), makeInterface());
 
 
 	$locationProvider.html5Mode(true);
