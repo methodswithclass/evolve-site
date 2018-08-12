@@ -12,7 +12,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "getBest";
 
-        try {
+        // try {
        
         	$http({
         		method:"POST",
@@ -31,11 +31,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             })
             .catch(exception.catcher("Server error:" + funcName))
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
 
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
         
     }
 
@@ -46,7 +46,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
       
         var funcName = "stepdata";
 
-        try {
+        // try {
 
         	$http({
         		method:"POST",
@@ -69,11 +69,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
    	}
 
@@ -83,7 +83,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "isRunning";
 
-        try {
+        // try {
 
         	$http({
         		method:"POST",
@@ -104,11 +104,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
     }
 
@@ -120,7 +120,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "setInput";
 
-        try {
+        // try {
 
         	$http({
         		method:"POST",
@@ -141,11 +141,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
    	}
 
@@ -155,7 +155,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "instantiate";
 
-        try {
+        // try {
 
             $http({
                 method:"GET",
@@ -175,11 +175,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
 
     }
@@ -192,7 +192,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "initialize";
 
-        try {
+        // try {
 
             $http({
                 method:"POST",
@@ -213,11 +213,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
 
     }
@@ -230,7 +230,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "run";
 
-        try {
+        // try {
 
         	$http({
         		method:"POST",
@@ -263,11 +263,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
     }
 
@@ -276,7 +276,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "instruct";
 
-        try {
+        // try {
 
             $http({
                 method:"POST",
@@ -297,11 +297,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
     }
 
@@ -313,7 +313,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "refresh environment";
 
-        try {
+        // try {
 
 
             $http({
@@ -337,11 +337,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
     }
 
@@ -350,7 +350,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         var funcName = "reset environment";
 
-        try {
+        // try {
 
             $http({
                 method:"POST",
@@ -371,11 +371,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err)
-        }
+        //     console.log("Server error:", funcName, err)
+        // }
 
     }
 
@@ -388,7 +388,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             var funcName = "simulate";
 
 
-            try {
+            // try {
 
                 $http({
                     method:"POST",
@@ -409,11 +409,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 .catch(exception.catcher(funcName))
 
 
-            }
-            catch (err) {
+            // }
+            // catch (err) {
                 
-                console.log(funcName, err);
-            }
+            //     console.log(funcName, err);
+            // }
         
 
         },
@@ -422,7 +422,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
             var funcName = "simulate";
 
-            try {
+            // try {
 
                 $http({
                     method:"POST",
@@ -443,18 +443,18 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 .catch(exception.catcher(funcName))
 
 
-            }
-            catch (err) {
+            // }
+            // catch (err) {
                 
-                console.log(funcName, err);
-            }
+            //     console.log(funcName, err);
+            // }
         },
         digit:function (index, callback) {
 
 
             var funcName = "simulate";
 
-            try {
+            // try {
 
                 $http({
                     method:"POST",
@@ -475,11 +475,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 .catch(exception.catcher(funcName))
 
 
-            }
-            catch (err) {
+            // }
+            // catch (err) {
 
-                console.log(funcName, err);
-            }
+            //     console.log(funcName, err);
+            // }
 
         }
 
@@ -494,7 +494,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         var funcName = "hardStop";
 
 
-        try {
+        // try {
 
         	$http({
         		method:"POST",
@@ -515,11 +515,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             .catch(exception.catcher("Server error:" + funcName))
 
 
-        }
-        catch (err) {
+        // }
+        // catch (err) {
             
-            console.log("Server error:", funcName, err);
-        }
+        //     console.log("Server error:", funcName, err);
+        // }
 
     }
 
