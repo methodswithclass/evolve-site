@@ -90,7 +90,7 @@ var getAngularModules = function (application) {
 
 	    var catcher = function (message) {
 	        return function(reason) {
-	            logger.error(message, reason);
+	            console.error(message, reason);
 	        };
 	    }
 
