@@ -90,7 +90,7 @@ var getAngularModules = function (application) {
 
 	    var catcher = function (message) {
 	        return function(reason) {
-	            console.error(message, reason);
+	            console.log(message, reason);
 	        };
 	    }
 
@@ -99,6 +99,12 @@ var getAngularModules = function (application) {
 	        catcher: catcher
 	    };
 	}]);
+
+
+	window.addEventListener('error', function (e) {
+	  // var error = e.error;
+	  console.log(e);
+	});
 
 }
 
