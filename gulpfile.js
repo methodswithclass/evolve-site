@@ -126,7 +126,7 @@ var vendor = function () {
 var apiSass = function () {
   return gulp.src('src/assets/**/*.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('src/assets/'));
+    .pipe(gulp.dest('temp/'));
 }
 
 
@@ -137,7 +137,7 @@ var styles = function() {
 
 
 	var cssSrc = gulp.src([
-	                      'src/assets/**/*.css',
+	                      'temp/**/*.css',
 	                      "node_modules/@fortawesome/fontawesome-free/css/all.css"
 	                      ])
 	.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'));

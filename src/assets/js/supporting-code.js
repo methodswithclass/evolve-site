@@ -80,8 +80,25 @@ var getAngularModules = function (application) {
 	    	}
 		}
 
-
 	}])
+
+
+
+	application.factory('exception', ['logger', function (logger) {
+	    
+
+
+	    var catcher = function (message) {
+	        return function(reason) {
+	            logger.error(message, reason);
+	        };
+	    }
+
+
+	    return {
+	        catcher: catcher
+	    };
+	}]);
 
 }
 
