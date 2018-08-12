@@ -84,7 +84,7 @@ var getAngularModules = function (application) {
 
 
 
-	application.factory('exception', ['logger', function (logger) {
+	application.factory('exception', [function () {
 	    
 
 
