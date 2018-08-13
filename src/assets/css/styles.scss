@@ -110,6 +110,36 @@ html, body {
 }
 
 
+@-webkit-keyframes bounce /* Safari and Chrome */ {
+  from {
+    -webkit-transform: translate(-20%,0);
+    -o-transform: translate(-20%,0)
+    transform: translate(-20%,0)
+  }
+  to {
+    -webkit-transform: translate(20%,0)
+    -o-transform: translate(20%,0)
+    transform: translate(20%,0)
+  }
+}
+@keyframes bounce {
+  from {
+    -ms-transform: translate(-20%,0)
+    -moz-transform: translate(-20%,0)
+    -webkit-transform: translate(-20%,0)
+    -o-transform: translate(-20%,0)
+    transform: translate(-20%,0)
+  }
+  to {
+    -ms-transform: translate(20%,0);
+    -moz-transform: translate(20%,0);
+    -webkit-transform: translate(20%,0);
+    -o-transform: translate(20%,0);
+    transform: translate(20%,0);
+  }
+}
+
+
 /*.spinning {
   -webkit-animation: rotating 1s ease-in infinite;
   -moz-animation: rotating 1s ease-in infinite;
@@ -150,7 +180,14 @@ html, body {
 
 
 
-@font-family
+.bouncing {
+
+  -webkit-animation: bouncing 1s ease infinite;
+  -moz-animation: bouncing 1s ease infinite;
+  -ms-animation: bouncing 1s ease infinite;
+  -o-animation: bouncing 1s ease infinite;
+  animation: bouncing 1s ease infinite;
+}
 
 
 

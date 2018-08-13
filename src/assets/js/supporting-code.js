@@ -47,7 +47,27 @@ var whatDevice = function (forceMobile) {
 }
 
 
+var captureError = function (err) {
 
+	console.log(err);
+}
+
+
+var wrapErrors = function (fn) {
+  // don't wrap function more than once
+  if (!fn.__wrapped__) {
+    fn.__wrapped__ = function () {
+      try {
+        return fn.apply(this, arguments);
+      } catch (e) {
+        captureError(e); // report the error
+        // throw e; // re-throw the error
+      }
+    };
+  }
+
+  return fn.__wrapped__;
+}
 
 
 
@@ -101,10 +121,12 @@ var getAngularModules = function (application) {
 	}]);
 
 
-	window.addEventListener('error', function (e) {
+	window.onerror = function (msg, url, lineNo, columnNo, error) {
 	  // var error = e.error;
-	  console.log(e);
-	});
+	  captureError(error);
+
+	  return true;
+	}
 
 }
 

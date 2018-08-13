@@ -169,10 +169,9 @@ var appSetup = function (display, force) {
 
 
 
-var app = angular.module("app", ['stateModule', 'parallaxModule'])
+var app = angular.module("app", ['stateModule', 'parallaxModule']);
 
-.config(['$locationProvider', 'runtime.stateProvider', function ($locationProvider, runtimeProvider) {
-
+app.config(['$locationProvider', 'runtime.stateProvider', '$provide', function ($locationProvider, runtimeProvider, $provide) {
 	
 
 	appConfiguration(makeMobile(), makeInterface());
@@ -189,7 +188,7 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 
 }])
 
-.run(['states', "config.service", "display.service", function (states, config, display) {
+app.run(['states', "config.service", "display.service", wrapErrors(function (states, config, display) {
 
 	// config service is loaded as a dependency and loads data into application automatically
 	// don't remove this dependency 
@@ -256,8 +255,12 @@ var app = angular.module("app", ['stateModule', 'parallaxModule'])
 		appSetup(display, loadSpeed);
 	})
 
+	var foo = {};
 
-}]);
+	foo.bar();
+
+
+})]);
 
 
 
