@@ -1,4 +1,4 @@
-app.factory("display.service", ["utility", 'control.service', 'settings.service', function (u) {
+app.factory("display.service", ["utility", "phases.service", function (u, phases) {
 
 
 
@@ -360,23 +360,6 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 
 	}
 
-	
-
-	var loadPhases = function (phases) {
-
-		var runPhase = function (i) {
-
-			phases[i].phase();
-
-			if (i < phases.length-1) {
-				runPhase(i + 1);
-			}
-		}
-
-		runPhase(0);
-	}
-
-
 	var load = function (name) {
 
 		$mainBack = $("#main-back");
@@ -463,7 +446,7 @@ app.factory("display.service", ["utility", 'control.service', 'settings.service'
 			]
 		}
 
-		loadPhases(phases[name]);
+		phases.loadPhases(phases[name], true);
 		
 
 		forceEvolveHeight();

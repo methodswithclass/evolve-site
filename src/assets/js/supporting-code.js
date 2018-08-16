@@ -50,6 +50,8 @@ var whatDevice = function (forceMobile) {
 var captureError = function (err) {
 
 	console.log(err);
+
+	return true;
 }
 
 

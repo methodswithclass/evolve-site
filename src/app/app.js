@@ -188,7 +188,7 @@ app.config(['$locationProvider', 'runtime.stateProvider', '$provide', function (
 
 }])
 
-app.run(['states', "config.service", "display.service", wrapErrors(function (states, config, display) {
+app.run(['states', "config.service", "display.service", function (states, config, display) {
 
 	// config service is loaded as a dependency and loads data into application automatically
 	// don't remove this dependency 
@@ -255,12 +255,12 @@ app.run(['states', "config.service", "display.service", wrapErrors(function (sta
 		appSetup(display, loadSpeed);
 	})
 
-	var foo = {};
+	// var foo = {};
 
-	foo.bar();
+	// foo.bar();
 
 
-})]);
+}]);
 
 
 

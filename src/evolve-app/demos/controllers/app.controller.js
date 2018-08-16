@@ -10,6 +10,7 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     var react = shared.react_service;
     var events = shared.events_service;
 
+    
 
     self.name = u.stateName(states.current());
     $scope.name = self.name;
