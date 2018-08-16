@@ -1,4 +1,4 @@
-app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'simulators', 'input.service', "config.service", function (u, display, api, simulators, $input, config) {
+app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'input.service', "config.service", function (u, display, api, $input, config) {
 
 
 	var self = this;
@@ -52,6 +52,31 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
         delay:0,
         fade:200
     }
+
+
+    config.get("global.programs." + self.name)
+    .then((data) => {
+
+        updateTime = data.updateTime;
+    })
+
+
+    react.subscribe({
+        name:"scope" + self.name,
+        callback:function(x) {
+
+            _$scope = x;
+        }
+    })
+
+
+    react.subscribe({
+        name:"simulator" + self.name,
+        callback:function (x) {
+
+            simulator = x;
+        }
+    })
 
     // spinning = false;
 
@@ -497,23 +522,9 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'sim
 
         self.name = name;
 
-        config.get("global." + self.name)
-        .then((data) => {
-
-            updateTime = data.updateTime;
-        })
-
-        simulator = simulators.get(self.name);
+        // simulator = assets.get(assets.types.SIMULATOR, self.name);
 
         resetgen();
-
-        react.subscribe({
-            name:"scope" + self.name,
-            callback:function(x) {
-
-                _$scope = x;
-            }
-        })
 
         initData();
 

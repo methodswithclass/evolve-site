@@ -1,4 +1,4 @@
-app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states', 'utility', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', 'loading.service', 'settings.service', function ($scope, simulators, controllers, states, u, display, api, $input, config, evolve, loading, settings) {
+app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility', "display.service", 'api.service', 'input.service', 'config.service', 'evolve.service', 'loading.service', 'settings.service', function ($scope, assets, states, u, display, api, $input, config, evolve, loading, settings) {
 
     var self = this;
 
@@ -110,8 +110,8 @@ app.controller("app.controller", ['$scope', 'simulators', 'controllers', 'states
     console.log("loading", self.name, "controller");
 
 
-    var simulator = simulators.get(self.name);
-    var controller = controllers.get(self.name);
+    var simulator = assets.get(assets.types.SIMULATOR, self.name);
+    var controller = assets.get(assets.types.CONTROLLER, self.name);
     var pageBuilt = display.beenBuilt(self.name);
 
 

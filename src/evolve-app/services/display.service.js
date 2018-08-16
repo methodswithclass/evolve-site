@@ -367,7 +367,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 		winH = $mainBack.height();
 		winW = $mainBack.width();
 
-		var phases = {
+		var $phases = {
 			trash:[
 			{
 				index:0,
@@ -446,7 +446,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 			]
 		}
 
-		phases.loadPhases(phases[name], true);
+		phases.loadPhases($phases[name], true);
 		
 
 		forceEvolveHeight();

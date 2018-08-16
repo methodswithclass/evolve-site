@@ -7,7 +7,6 @@ app.factory("phases.service", [function () {
 	var phases = [];
 
 
-
 	var runPhase = function (i) {
 
 		phases[i].phase();
@@ -20,28 +19,30 @@ app.factory("phases.service", [function () {
 
 	var run = function () {
 
-		runPhases(0);
+		runPhase(0);
 	}
 
 
 
-	var loadPhases = function ($phases, run) {
+	var loadPhases = function ($phases, $run) {
 
-		phases = $phases;
+		phases = [];
 
 
-		for (var i in phases) {
+		for (var j in $phases) {
 
-			if(phases[i].button) {
+			phases[j] = $phases[j];
 
-	 			phases[i].button.addEventListener("click", function () {
+			if(phases[j].meta && phases[j].meta.button) {
 
-					if (phases[i].next) phases[i].next();
+	 			phases[j].button.addEventListener("click", function () {
+
+					if (phases[j].next) phases[j].next();
 				})
  			}
 		}
 
-		if (run) runPhases(0);
+		if ($run) run();
 	}
 
 

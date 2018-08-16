@@ -7,7 +7,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	{
 		index:0,
 		meta:{
-			description:"Click here"
+			description:"Click here",
+			button:""
 		},
 		phase:function () {
 
@@ -21,7 +22,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	{
 		index:0,
 		meta:{
-			description:"Simulate results of 100 generations"
+			description:"Simulate results of 100 generations",
+			button:""
 		},
 		phase:function () {
 
@@ -35,7 +37,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	{
 		index:0,
 		meta:{
-			description:"Press play"
+			description:"Press play",
+			button:""
 		},
 		phase:function () {
 
@@ -49,7 +52,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	{
 		index:0,
 		meta:{
-			description:"Refresh a few times"
+			description:"Refresh a few times",
+			button:""
 		},
 		phase:function () {
 
@@ -63,7 +67,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	{
 		index:0,
 		meta:{
-			description:""
+			description:"",
+			button:""
 		},
 		phase:function () {
 
@@ -77,9 +82,20 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	]
 
 
+
+	var loadPhases = function () {
+
+		phases.loadPhases(phases, false);
+	}
+
+	var run = function () {
+
+		phases.run();
+	}
+
+
 	return {
-
-
+		run:run
 	}
 
 
