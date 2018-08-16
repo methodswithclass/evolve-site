@@ -67,7 +67,6 @@
 					}
 				},
 				"override":{
-					"gens":1000,
 					"splicemin":2,
 					"splicemax":12
 				},
