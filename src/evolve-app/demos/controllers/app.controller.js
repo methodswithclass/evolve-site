@@ -115,6 +115,13 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     var pageBuilt = display.beenBuilt(self.name);
 
 
+
+    react.push({
+        name:"simulator" + self.name,
+        state:simulator
+    })
+
+
     var next = function (options) {
 
 

@@ -4,15 +4,15 @@ app.factory("phases.service", [function () {
 
 
 
-	var phases = [];
+	var $phases = [];
 
 
-	var runPhase = function (i) {
+	var runPhase = function ($i) {
 
-		phases[i].phase();
+		$phases[$i].phase();
 
-		if (!phases[i].next && i < phases.length-1) {
-			runPhase(i + 1);
+		if (!$phases[$i].next && $i < $phases.length-1) {
+			runPhase($i + 1);
 		}
 	}
 
@@ -24,20 +24,20 @@ app.factory("phases.service", [function () {
 
 
 
-	var loadPhases = function ($phases, $run) {
+	var loadPhases = function (_phases, $run) {
 
-		phases = [];
+		$phases = [];
 
 
-		for (var j in $phases) {
+		for (var j in _phases) {
 
-			phases[j] = $phases[j];
+			$phases[j] = _phases[j];
 
-			if(phases[j].meta && phases[j].meta.button) {
+			if($phases[j].meta && $phases[j].meta.button) {
 
-	 			phases[j].button.addEventListener("click", function () {
+	 			$phases[j].button.addEventListener("click", function () {
 
-					if (phases[j].next) phases[j].next();
+					if ($phases[j].next) $phases[j].next();
 				})
  			}
 		}
@@ -49,7 +49,6 @@ app.factory("phases.service", [function () {
 
 	return {
 		loadPhases:loadPhases,
-		runPhase:runPhase,
 		run:run
 	}
 

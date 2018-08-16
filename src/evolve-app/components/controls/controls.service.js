@@ -20,7 +20,19 @@ app.factory("control.service", ["utility", function (u) {
     #________________________________________________________*/
 
 
+    var orient = {
+    	types:{
+    		AUTO:"auto",
+    		HORIZONTAL:"horizontal",
+    		VERTICAL:"vertical"
+    	}
+    }
 
+    var $orients = {
+    	auto:g.isMobile() ? "horizontal" : "vertical",
+    	horizontal:"horizontal",
+    	vertical:"vertical"
+    }
 
 
      var controls = [
@@ -92,35 +104,9 @@ app.factory("control.service", ["utility", function (u) {
 	}
 
 
-	
+	var getOrientation = function ($orientation) {
 
-	var orients = {
-		vert:"vertical",
-		hor:"horizontal"
-	}
-
-
-	var automatic = function () {
-
-		if (g.isMobile()) {
-
-			return orients.hor;
-		}
-		else {
-			return orients.vert;
-		}
-	}
-
-
-	var wantHorizontal = function () {
-
-		return orients.hor;
-	}
-
-
-	var wantVertical = function () {
-
-		return orients.vert;
+		return $orients[$orientation];
 	}
 
 
@@ -134,31 +120,31 @@ app.factory("control.service", ["utility", function (u) {
 		var $control = options.$control;
 		var $arena = options.$arena;
 		var arenaWidth = options.arenaWidth;
+		
+
+
 		var controlWidth = cntrlWidth + cntrlBuffer;
-		var controlLength = (cntrlWidth + cntrlBuffer)*controls.length
+		var controlLength = controlWidth*controls.length
 		var notch;
 
-		g.waitForElem({elems:"#arena"}, () => {
+		console.log("control width", controlWidth);
+
+		if (orientation == getOrientation(orient.types.HORIZONTAL)) {	
 
 
-			if (orientation == orients.hor) {	
+			zeroTop = $arena.height();
 
 
-				zeroTop = $arena.height();
+			$control.css({width:controlLength + "px", height:controlWidth + "px", top:zeroTop + 50 + "px"});
+			$control.removeClass("vcenter").addClass("hcenter");
+		}
+		else {
 
+			zeroLeft = 0;
 
-				$control.css({width:controlLength + "px", height:controlWidth + "px", top:zeroTop + 50 + "px"});
-				$control.removeClass("vcenter").addClass("hcenter");
-			}
-			else {
-
-				zeroLeft = 0;
-
-				$control.css({width:controlWidth + "px", height:controlLength + "px", left:zeroLeft - controlWidth - 50 + "px"});
-				$control.removeClass("hcenter").addClass("vcenter");
-			}
-
-		})
+			$control.css({width:controlWidth + "px", height:controlLength + "px", left:zeroLeft - controlWidth - 50 + "px"});
+			$control.removeClass("hcenter").addClass("vcenter");
+		}
 
 
 		controls.forEach(function (value, index, array) {
@@ -180,9 +166,9 @@ app.factory("control.service", ["utility", function (u) {
 
 			$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px"});
 
-			notch = index*(cntrlWidth + cntrlBuffer) + cntrlBuffer/2;
+			notch = index*controlWidth + cntrlBuffer/2;
 
-			if (orientation == orients.hor) {
+			if (orientation == getOrientation(orient.types.HORIZONTAL)) {
 				$(value.selector).css({left:notch + "px"});
 			}
 			else {
@@ -196,38 +182,43 @@ app.factory("control.service", ["utility", function (u) {
 
 	var controlsSetup = function (name) {
 
-		// interface1:function (name) {
-
-			$control = $("#controlsParent");
-			$elem = $("#controlstoggle");
-			$arena = $("#arena");
 
 
-			var cntrlWidth;
-			var zeroLeft;
-			var zeroTop;
-			var controlWidth;
-			var arenaWidth;
+		$control = $("#controlsParent");
+		$elem = $("#controlstoggle");
+		$arena = $("#arena");
 
-			// orientation = automatic();
-			// orientation = wantHorizontal();
+
+		var cntrlWidth;
+		var zeroLeft;
+		var zeroTop;
+		var controlWidth;
+		var arenaWidth;
+
+		// orientation = getOrientation(orient.types.AUTO);
+		// orientation = getOrientation(orient.types.HORIZONTAL);
+		orientation = getOrientation(orient.types.VERTICAL);
+		
+
+		// if (name == "trash") {
+		//	orientation = wantVertical();
+		// }
+		// else if (name == "feedback") {
+		// 	orientation = wantHorizontal();
+		// }
+
+		if (g.isMobile()) {
 			
-			// if (name == "trash") {
-				orientation = wantVertical();
-			// }
-			// else if (name == "feedback") {
-			// 	orientation = wantHorizontal();
-			// }
+			cntrlWidth = 100;
+		}
+		else {
+			
+			cntrlWidth = 50;
+		}
 
-			if (g.isMobile()) {
-				
-				cntrlWidth = 100;
-			}
-			else {
-				
-				cntrlWidth = 50;
-			}
 
+
+		g.waitForElem({elems:"#arena"}, () => {
 
 			positionControlsItems({
 				controls:controls,
@@ -240,11 +231,14 @@ app.factory("control.service", ["utility", function (u) {
 				$arena:$arena
 			});
 
-		// },
-		// interface2:function (name) {
 
+			g.waitForElem({elems:"#stoptoggle"}, function () {
 
-		// }
+				setHover();
+			})
+
+		});
+
 	}
 
 
@@ -309,13 +303,6 @@ app.factory("control.service", ["utility", function (u) {
 
 		return "success";
 
-	})
-
-
-
-	g.waitForElem({elems:"#stoptoggle"}, function () {
-
-		setHover();
 	})
 
 

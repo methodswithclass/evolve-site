@@ -53,31 +53,6 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         fade:200
     }
 
-
-    config.get("global.programs." + self.name)
-    .then((data) => {
-
-        updateTime = data.updateTime;
-    })
-
-
-    react.subscribe({
-        name:"scope" + self.name,
-        callback:function(x) {
-
-            _$scope = x;
-        }
-    })
-
-
-    react.subscribe({
-        name:"simulator" + self.name,
-        callback:function (x) {
-
-            simulator = x;
-        }
-    })
-
     // spinning = false;
 
     var toggleTimer = function ($toggle, $scope) {
@@ -523,6 +498,33 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         self.name = name;
 
         // simulator = assets.get(assets.types.SIMULATOR, self.name);
+
+
+        config.get("global.programs." + self.name)
+        .then((data) => {
+
+            updateTime = data.updateTime;
+        })
+
+
+        react.subscribe({
+            name:"scope" + self.name,
+            callback:function(x) {
+
+                _$scope = x;
+            }
+        })
+
+
+        react.subscribe({
+            name:"simulator" + self.name,
+            callback:function (x) {
+
+                simulator = x;
+            }
+        })
+
+
 
         resetgen();
 

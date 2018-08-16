@@ -1,5 +1,6 @@
 app.factory("asset.service", ["trash.controller", "feedback.controller", "recognize.controller", "trash-sim", "feedback-sim", "recognize-sim", "trash.walkthrough", "feedback.walkthrough", "recognize.walkthrough", function (trashController, feedbackController, recognizeController, trashSim, feedbackSim, recognizeSim, trashWalkthrough, feedbackWalkthrough, recognizeWalkthrough) {
 
+
 	var constants = {
 		controller:"controller",
 		simulator:"simulator",

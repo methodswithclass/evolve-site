@@ -24,8 +24,9 @@
 
 @font-face {
     font-family: 'museo300';
-    src: url('Museo300-Regular-webfont.eot');
-    src: url('Museo300-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+    src: url('Museo300-Regular-webfont.otf') format("opentype");
+    src: url('Museo300-Regular-webfont.eot'), 
+         url('Museo300-Regular-webfont.eot?#iefix') format('embedded-opentype'),
          url('Museo300-Regular-webfont.woff2') format('woff2'),
          url('Museo300-Regular-webfont.woff') format('woff'),
          url('Museo300-Regular-webfont.ttf') format('truetype'),
