@@ -41,6 +41,13 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 				return false;
 			}
 
+			$scope.trashHasEvolved = function () {
+
+		        console.log("has evolved", self.name, $scope.evdata.length);
+
+		        return self.name == "trash" && $scope.evdata.length > 1;
+		    }
+
 			react.subscribe({
 				name:"evdata" + self.name,
 				callback:function (x) {

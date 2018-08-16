@@ -132,9 +132,6 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     }
 
 
-
-
-
     /* 
     #_______________________________________
     #

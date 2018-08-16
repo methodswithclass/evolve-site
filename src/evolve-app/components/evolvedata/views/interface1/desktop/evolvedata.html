@@ -1,45 +1,50 @@
 <div class="relative width min-height-100 hcenter font-20 opacity0" id="evolvedatatoggle">
-		
-		<div class="relative width border-top-t hcenter">
-			
-			<div class="flex flex-row flex-justify-center">
 
-				<div class="width50 border-right-t">
-					<div class="relative width height-50">
-						<div class="absolute center text-center">
-							current<br>generation
-						</div>
-					</div> 
+	<div class="relative width200 hcenter text-center padding-bottom-50" id="trashHasEvolved" ng-show="trashHasEvolved()">
+		<i class="fas fa-arrow-right padding-right-10"></i>Now you can scroll down to play the simulation of your evolved plan<br><br>
+		<i class="fas fa-arrow-right padding-right-10"></i>evolve more generations to increase performance (maximize trash pick up)<br><br>
+		<i class="fas fa-arrow-right padding-right-10"></i>your evolution history is listed below
+	</div>
 
 
+	<div class="relative width border-top-t">
 
-					<div class="flex-column flex-align-center">
+		<div class="flex flex-row flex-justify-center">
 
-						<div class="width height-70 font-30 text-center" ng-repeat="evolve in evdata track by evolve.index">
-							<div class="relative vcenter">
-								{{evolve.index}}
-							</div>
+			<div class="width50 border-right-t">
+				<div class="relative width height-50">
+					<div class="absolute center text-center">
+						current<br>generation
+					</div>
+				</div> 
+
+
+
+				<div class="flex-column flex-align-center">
+
+					<div class="width height-70 font-30 text-center" ng-repeat="evolve in evdata track by evolve.index">
+						<div class="relative vcenter">
+							{{evolve.index}}
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div class="width50">
-					<div class="relative width height-50">
-						<div class="absolute center">
-							best fitness
-						</div>
-					</div> 
+			<div class="width50">
+				<div class="relative width height-50">
+					<div class="absolute center">
+						best fitness
+					</div>
+				</div> 
 
-					<div class="flex-column flex-align-center">
+				<div class="flex-column flex-align-center">
 
-						<div class="width height-70 font-30 text-center" ng-repeat="evolve in evdata track by evolve.index">
-							<div class="relative vcenter">
-								{{evolve.best.fitness}}
-							</div>
+					<div class="width height-70 font-30 text-center" ng-repeat="evolve in evdata track by evolve.index">
+						<div class="relative vcenter">
+							{{evolve.best.fitness}}
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 		</div>

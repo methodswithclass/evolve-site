@@ -36,26 +36,23 @@
 
 					<div class="relative width padding-v-100">
 
+						<div class="relative width60 hcenter margin-v-100">
+							<content data="main.doc.content"/>
+						</div>
+
+
 						<div class="relative width height-100 font-30">
 							<div class="absolute center">
 								{{main.name}} Demo
 							</div>
 						</div>
 
-						<div class="relative width hcenter">
-
-							<div class="relative width60 height-200 hcenter" ng-show="main.doc.demo">
-								<div class="absolute width height60 center {{demoButton}} white rounded5 shadow font-30 pointer" on-tap="main.openDemo()">
-									<div class="absolute center">
-										try it yourself
-									</div>
+						<div class="relative width60 height-200 hcenter" ng-show="main.doc.demo">
+							<div class="absolute width height60 center {{demoButton}} white rounded5 shadow font-30 pointer" on-tap="main.openDemo()">
+								<div class="absolute center">
+									try it yourself
 								</div>
 							</div>
-
-							<!-- <div class="relative width60 hcenter margin-v-100">
-								<content data="main.doc.content"/>
-							</div> -->
-
 						</div>
 
 					</div>

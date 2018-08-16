@@ -100,6 +100,7 @@ app.factory("control.service", ["utility", function (u) {
 		});
 
 		hoverFunction({selector:"#opensettings", tool:"#opentool"});
+		hoverFunction({selector:"#runtoggle", tool:"#evolvetool"});
 
 	}
 
@@ -127,7 +128,7 @@ app.factory("control.service", ["utility", function (u) {
 		var controlLength = controlWidth*controls.length
 		var notch;
 
-		console.log("control width", controlWidth);
+		// console.log("control width", controlWidth);
 
 		if (orientation == getOrientation(orient.types.HORIZONTAL)) {	
 

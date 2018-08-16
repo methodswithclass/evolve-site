@@ -51,20 +51,24 @@
 
 					<div class="relative width hcenter padding-v-100">
 
-
-						<div class="relative width height-100 font-30">
-							<div class="absolute center">
-								Applications for Genetic Algorithms
-							</div>
+						<div class="relative width60 hcenter margin-v-50">
+							<content data="main.overview.content"/>
 						</div>
 
+
 						<div class="relative width80 hcenter margin-v-50">
+
+							<div class="relative width height-100 font-30">
+								<div class="absolute center">
+									Applications for Genetic Algorithms
+								</div>
+							</div>
 
 							<div class="flex flex-row flex-wrap flex-justify-center width">
 
 
 								<div class="width50 height-200" ng-style="isActive.feedback ? {display:'flex'} : {display:'none'}">
-									<div class="relative width80 height60 center {{pageParams.feedback.colors.page}} white rounded5 shadow font-20 pointer" on-tap="main.openDemo('feedback')">
+									<div class="relative width80 height60 center {{pageParams.feedback.colors.page}} white rounded5 shadow font-20 pointer" on-tap="main.open('feedback')">
 										<div class="absolute center text-center">
 											feedback
 										</div>
@@ -73,7 +77,7 @@
 
 
 								<div class="width50 height-200" ng-style="isActive.trash ? {display:'flex'} : {display:'none'}">
-									<div class="relative width80 height60 center {{pageParams.trash.colors.page}} white rounded5 shadow font-20 pointer" on-tap="main.openDemo('trash')">
+									<div class="relative width80 height60 center {{pageParams.trash.colors.page}} white rounded5 shadow font-20 pointer" on-tap="main.open('trash')">
 										<div class="absolute center text-center">
 											trash pickup
 										</div>
@@ -82,7 +86,7 @@
 
 
 								<div class="width50 height-200" ng-style="isActive.recognize ? {display:'flex'} : {display:'none'}">
-									<div class="relative width80 height60 center {{pageParams.recognize.colors.page}} white rounded5 shadow font-20 pointer" on-tap="main.openDemo('recognize')">
+									<div class="relative width80 height60 center {{pageParams.recognize.colors.page}} white rounded5 shadow font-20 pointer" on-tap="main.open('recognize')">
 										<div class="absolute center text-center">
 											recognize
 										</div>
@@ -92,12 +96,6 @@
 							</div>
 
 						</div>
-
-						
-
-						<!-- <div class="relative width60 hcenter margin-v-50">
-							<content data="main.overview.content"/>
-						</div> -->
 
 					</div>
 
