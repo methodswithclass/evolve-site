@@ -100,7 +100,7 @@ app.factory("control.service", ["utility", function (u) {
 		});
 
 		hoverFunction({selector:"#opensettings", tool:"#opentool"});
-		hoverFunction({selector:"#runtoggle", tool:"#evolvetool"});
+		// hoverFunction({selector:"#runtoggle", tool:"#evolvetool"});
 
 	}
 
