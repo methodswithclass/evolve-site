@@ -43,7 +43,7 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 
 			$scope.trashHasEvolved = function () {
 
-		        console.log("has evolved", self.name, $scope.evdata.length);
+		        // console.log("has evolved", self.name, $scope.evdata.length);
 
 		        return self.name == "trash" && $scope.evdata.length > 1;
 		    }
