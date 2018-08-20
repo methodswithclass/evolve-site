@@ -33,7 +33,7 @@
 				"meta":{
 					"colors":{
 						"page":"blue5-back",
-						"demoButton":"purple-back"
+						"demoButton":"purple4-back"
 					}
 				},
 				"override":{
@@ -62,8 +62,8 @@
 			"feedback":{
 				"meta":{
 					"colors":{
-						"page":"green-back",
-						"demoButton":"purple-back"
+						"page":"green7-back",
+						"demoButton":"purple4-back"
 					}
 				},
 				"override":{
@@ -87,8 +87,8 @@
 			"recognize":{
 				"meta":{
 					"colors":{
-						"page":"pink-back",
-						"demoButton":"purple-back"
+						"page":"orange2-back",
+						"demoButton":"purple4-back"
 					}
 				},
 				"override":{},
