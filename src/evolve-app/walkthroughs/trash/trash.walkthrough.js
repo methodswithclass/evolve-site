@@ -3,7 +3,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 
 
-	var phases = [
+	var $phases = [
 	{
 		index:0,
 		meta:{
@@ -20,7 +20,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		}
 	},
 	{
-		index:0,
+		index:1,
 		meta:{
 			description:"Simulate results of 100 generations",
 			button:""
@@ -35,7 +35,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		}
 	},
 	{
-		index:0,
+		index:2,
 		meta:{
 			description:"Press play",
 			button:""
@@ -50,7 +50,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		}
 	},
 	{
-		index:0,
+		index:3,
 		meta:{
 			description:"Refresh a few times",
 			button:""
@@ -65,9 +65,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		}
 	},
 	{
-		index:0,
+		index:4,
 		meta:{
-			description:"",
+			description:"Scroll up to evolve more generations",
 			button:""
 		},
 		phase:function () {
@@ -79,19 +79,37 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 			
 		}
 	},
+	{
+		index:5,
+		meta:{
+			description:"Click here",
+			button:""
+		},
+		phase:function () {
+
+
+		},
+		next:function () {
+
+			
+		}
+	}
 	]
 
 
 
 	var loadPhases = function () {
 
-		phases.loadPhases(phases, false);
+		phases.loadPhases($phases, false);
 	}
 
 	var run = function () {
 
 		phases.run();
 	}
+
+
+	loadPhases();
 
 
 	return {
