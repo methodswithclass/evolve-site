@@ -323,7 +323,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             })
             .then(function (res) {
 
-                console.log("refresh response", res.data);
+                // console.log("refresh response", res.data);
 
                 if (typeof callback === "function") callback(res);
 
@@ -489,7 +489,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
     var hardStop = function (callback) {
 
 
-        console.log("hard stop call get input");
+        // console.log("hard stop call get input");
 
         var funcName = "hardStop";
 

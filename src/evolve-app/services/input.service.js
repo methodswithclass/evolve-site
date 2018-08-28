@@ -305,7 +305,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         config.get("global.programs." + self.name + ".override")
         .then((data) => {
 
-            console.log(data);
+            // console.log(data);
 
             for (var i in data) {
 

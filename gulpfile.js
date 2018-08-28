@@ -86,6 +86,7 @@ var vendor = function () {
 		.pipe(filter("**/*.js"))
 		.pipe(gulp.src([
 			//npm packages for front end use
+			"node_modules/jquery.scrollto/jquery.scrollTo.js",
 			"node_modules/velocity-animate/velocity.js",
 			"node_modules/mc-shared/shared.js"
 			]), {passthrough:true})
@@ -206,7 +207,7 @@ var serveFunc = function (done) {
 
 	var stream = nodemon({ 
 		script: path.join(__dirname, "server.js"),
-		ext:"js html css json",
+		ext:"js html css scss json",
 		watch:["./src", "./backend"],
 		tasks:["build"]
 	});

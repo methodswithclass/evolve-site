@@ -39,26 +39,31 @@ app.factory("control.service", ["utility", function (u) {
 	{
 		name:"refresh",
 		selector:"#refreshtoggle",
+		inner:"#refreshinner",
 		tool:"#refreshtool"
 	},
 	{
 		name:"restart",
 		selector:"#restarttoggle",
+		inner:"#restartinner",
 		tool:"#restarttool"
 	},
 	{
 		name:"step",
 		selector:"#steptoggle",
+		inner:"#stepinner",
 		tool:"#steptool"
 	},
 	{
 		name:"play",
 		selector:"#playtoggle",
+		inner:"#playinner",
 		tool:"#playtool"
 	},
 	{
 		name:"stop",
 		selector:"#stoptoggle",
+		inner:"#stopinner",
 		tool:"#stoptool"
 	}
 	]
@@ -71,6 +76,21 @@ app.factory("control.service", ["utility", function (u) {
 
 	var cntrlBuffer = 20;
 	var cntrlWidth;
+
+	var clickControls = function () {
+
+		g.waitForElem({elems:"#controlstoggle"}, function (options) {
+
+			$(options.elems).click(function () {
+
+				controls.forEach(function (value, index) {
+
+					$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg");
+				})
+			})
+
+		});
+	}
 
 
 	var setHover = function () {
@@ -101,6 +121,8 @@ app.factory("control.service", ["utility", function (u) {
 
 		hoverFunction({selector:"#opensettings", tool:"#opentool"});
 		// hoverFunction({selector:"#runtoggle", tool:"#evolvetool"});
+
+		clickControls();
 
 	}
 

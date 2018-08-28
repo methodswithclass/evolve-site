@@ -131,7 +131,7 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
         		// var json = JSON.parse(res);
 
 
-        		console.log("config data is", res.data);
+        		// console.log("config data is", res.data);
 
 
                 resolve(res.data)

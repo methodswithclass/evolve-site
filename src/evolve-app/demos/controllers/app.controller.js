@@ -171,7 +171,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
         duration:6*displayParams.duration,
         phase:function (options) {
 
-            console.log("initializing algorithm", pageBuilt);
+            console.log("initializing algorithm, page built", pageBuilt);
             
 
             if (!pageBuilt) {
@@ -497,7 +497,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
         settings.setHover();
         
 
-        console.log("settings", $scope.settings);
+        // console.log("settings", $scope.settings);
 
     }
 

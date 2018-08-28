@@ -1,10 +1,13 @@
 <div class="absolute width height">
 
+
 	<loading></loading>
 
 	<div class="absolute width height scrollY scroll-vertical-dark-narrow cutoff font-15" id="main-back">
-		
-		<div class="flex flex-column flex-align-center">
+
+		<walkthrough></walkthrough>
+
+		<div class="flex flex-column flex-align-center" id="main-inner">
 
 			<div class="width height-70 margin-bottom-200 opacity0" id="hudtoggle">
 
@@ -17,7 +20,7 @@
 			</div>
 			
 
-			<div class="width60 height-50 padding-v-50 font-30 opacity0" id="titletoggle">
+			<div class="width40 height-50 padding-v-50 font-30 text-center opacity0" id="titletoggle">
 				Teach a Robot to pick up Trash using an Evolutionary Algorithm
 			</div>
 
@@ -33,6 +36,7 @@
 		</div>
 
 	</div>
+
 
 	<evolving run="main.run" break="main.breakRun"></evolving>
 

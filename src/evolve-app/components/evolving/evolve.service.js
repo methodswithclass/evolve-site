@@ -317,7 +317,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         }
         else {
 
-            u.toggle("show", "run", {delay:params.delay, fade:params.fade});
+            // u.toggle("show", "run", {delay:params.delay, fade:params.fade});
 
             if (self.name == "trash")  {
 
@@ -436,7 +436,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     	else {
 
 
-            display.forceEvolveHeight();
+            // display.();
 
             
             u.toggle("hide", "nav", {fade:params.fade});
@@ -470,6 +470,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
     var breakRun = function ($scope) {
 
+
+        console.log("hard stop");
 
         _$scope = $scope;
 

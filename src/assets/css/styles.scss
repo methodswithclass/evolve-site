@@ -5,11 +5,6 @@ html, body {
 	padding:0;
 }
 
-/*.museo {
-
-	font-family: 'museo300'
-}*/
-
 .underline {
 	border-bottom:2px solid;
 	transition: border-bottom 1s;
@@ -81,117 +76,201 @@ html, body {
 }*/
 
 
+$startRot: 0deg;
+$endRot: 360deg;
+
+$startScaleSM: 0.95;
+$endScaleSM: 1.05;
+
+$startScaleMM: 0.9;
+$endScaleMM: 1.1;
+
+$startScaleLG: 0.8;
+$endScaleLG: 1.2;
+
+$leftBounce: 50%;
+$rightBounce: -50%;
+$bouncHeight: -50%;
+
+
+$spinDurr: 1s;
+$bounceDurr: 2s;
+$scaleDurr: 2s;
+
+
+
+@mixin transform($property) {
+  -webkit-transform: $property;
+     -moz-transform: $property;
+      -ms-transform: $property;
+       -o-transform: $property;
+          transform: $property;
+}
 
 
 
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+    @include transform(rotate($startRot))
   }
   to {
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
+    @include transform(rotate($endRot))
   }
 }
 @keyframes rotating {
   from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+    @include transform(rotate($startRot))
   }
   to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
+    @include transform(rotate($endRot))
+  }
+}
+
+
+@-webkit-keyframes scalingSM /* Safari and Chrome */ {
+  0% {
+    @include transform(scale($startScaleSM))
+  }
+  50% {
+    @include transform(scale($endScaleSM))
+  }
+  100% {
+    @include transform(scale($startScaleSM))
+  }
+}
+@keyframes scalingSM {
+  0% {
+    @include transform(scale($startScaleSM))
+  }
+  50% {
+    @include transform(scale($endScaleSM))
+  }
+  100% {
+    @include transform(scale($startScaleSM))
+  }
+}
+
+@-webkit-keyframes scalingMM /* Safari and Chrome */ {
+  0% {
+    @include transform(scale($startScaleMM))
+  }
+  50% {
+    @include transform(scale($endScaleMM))
+  }
+  100% {
+    @include transform(scale($startScaleMM))
+  }
+}
+@keyframes scalingMM {
+  0% {
+    @include transform(scale($startScaleMM))
+  }
+  50% {
+    @include transform(scale($endScaleMM))
+  }
+  100% {
+    @include transform(scale($startScaleMM))
+  }
+}
+
+@-webkit-keyframes scalingLG /* Safari and Chrome */ {
+  0% {
+    @include transform(scale($startScaleLG))
+  }
+  50% {
+    @include transform(scale($endScaleLG))
+  }
+  100% {
+    @include transform(scale($startScaleLG))
+  }
+}
+@keyframes scalingLG {
+  0% {
+    @include transform(scale($startScaleLG))
+  }
+  50% {
+    @include transform(scale($endScaleLG))
+  }
+  100% {
+    @include transform(scale($startScaleLG))
   }
 }
 
 
 @-webkit-keyframes bounce /* Safari and Chrome */ {
-  from {
-    -webkit-transform: translate(-20%,0);
-    -o-transform: translate(-20%,0);
-    transform: translate(-20%,0);
+  0% {
+    @include transform(translate($rightBounce,$bouncHeight));
   }
-  to {
-    -webkit-transform: translate(20%,0);
-    -o-transform: translate(20%,0);
-    transform: translate(20%,0);
+  50% {
+    @include transform(translate($leftBounce,$bouncHeight));
+  }
+  100% {
+    @include transform(translate($rightBounce,$bouncHeight));
   }
 }
 @keyframes bounce {
-  from {
-    -ms-transform: translate(-20%,0);
-    -moz-transform: translate(-20%,0);
-    -webkit-transform: translate(-20%,0);
-    -o-transform: translate(-20%,0);
-    transform: translate(-20%,0);
+  0% {
+    @include transform(translate($rightBounce,$bouncHeight));
   }
-  to {
-    -ms-transform: translate(20%,0);
-    -moz-transform: translate(20%,0);
-    -webkit-transform: translate(20%,0);
-    -o-transform: translate(20%,0);
-    transform: translate(20%,0);
+  50% {
+    @include transform(translate($leftBounce,$bouncHeight));
+  }
+  100% {
+    @include transform(translate($rightBounce,$bouncHeight));
   }
 }
 
-
-/*.spinning {
-  -webkit-animation: rotating 1s ease-in infinite;
-  -moz-animation: rotating 1s ease-in infinite;
-  -ms-animation: rotating 1s ease-in infinite;
-  -o-animation: rotating 1s ease-in infinite;
-  animation: rotating 1s ease-in infinite;
-}
-
-*/
 
 .spinning {
-  -webkit-animation: rotating 1s ease infinite;
-  -moz-animation: rotating 1s ease infinite;
-  -ms-animation: rotating 1s ease infinite;
-  -o-animation: rotating 1s ease infinite;
-  animation: rotating 1s ease infinite;
+  -webkit-animation: rotating $spinDurr ease infinite;
+  -moz-animation: rotating $spinDurr ease infinite;
+  -ms-animation: rotating $spinDurr ease infinite;
+  -o-animation: rotating $spinDurr ease infinite;
+  animation: rotating $spinDurr ease infinite;
 }
-
-
-/*.spinning {
-  -webkit-animation: rotating 1s linear infinite;
-  -moz-animation: rotating 1s linear infinite;
-  -ms-animation: rotating 1s linear infinite;
-  -o-animation: rotating 1s linear infinite;
-  animation: rotating 1s linear infinite;
-}*/
-
-
-
-/*.spinning {
-  -webkit-animation: rotating 4s linear infinite;
-  -moz-animation: rotating 4s linear infinite;
-  -ms-animation: rotating 4s linear infinite;
-  -o-animation: rotating 4s linear infinite;
-  animation: rotating 4s linear infinite;
-}*/
-
 
 
 
 .bouncing {
 
-  -webkit-animation: bouncing 1s ease infinite;
-  -moz-animation: bouncing 1s ease infinite;
-  -ms-animation: bouncing 1s ease infinite;
-  -o-animation: bouncing 1s ease infinite;
-  animation: bouncing 1s ease infinite;
+  -webkit-animation: bounce $bounceDurr ease infinite;
+  -moz-animation: bounce $bounceDurr ease infinite;
+  -ms-animation: bounce $bounceDurr ease infinite;
+  -o-animation: bounce $bounceDurr ease infinite;
+  animation: bounce $bounceDurr ease infinite;
 }
 
 
+.scaling {
+  -webkit-animation: scalingSM $scaleDurr ease infinite;
+  -moz-animation: scalingSM $scaleDurr ease infinite;
+  -ms-animation: scalingSM $scaleDurr ease infinite;
+  -o-animation: scalingSM $scaleDurr ease infinite;
+  animation: scalingSM $scaleDurr ease infinite;
+}
+
+
+.scaling-sm {
+  -webkit-animation: scalingSM $scaleDurr ease infinite;
+  -moz-animation: scalingSM $scaleDurr ease infinite;
+  -ms-animation: scalingSM $scaleDurr ease infinite;
+  -o-animation: scalingSM $scaleDurr ease infinite;
+  animation: scalingSM $scaleDurr ease infinite;
+}
+
+.scaling-mm {
+  -webkit-animation: scalingMM $scaleDurr ease infinite;
+  -moz-animation: scalingMM $scaleDurr ease infinite;
+  -ms-animation: scalingMM $scaleDurr ease infinite;
+  -o-animation: scalingMM $scaleDurr ease infinite;
+  animation: scalingMM $scaleDurr ease infinite;
+}
+
+.scaling-lg {
+  -webkit-animation: scalingLG $scaleDurr ease infinite;
+  -moz-animation: scalingLG $scaleDurr ease infinite;
+  -ms-animation: scalingLG $scaleDurr ease infinite;
+  -o-animation: scalingLG $scaleDurr ease infinite;
+  animation: scalingLG $scaleDurr ease infinite;
+}
 

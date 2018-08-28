@@ -21,7 +21,7 @@ app.directive("trashman", ["$http", function ($http) {
 
 			var makeMan = function () {
 				
-				console.log("create man object");
+				// console.log("create man object");
 
 				$(container).remove();
 
@@ -34,7 +34,7 @@ app.directive("trashman", ["$http", function ($http) {
 				$(element).append(container);
 
 				var inner = document.createElement("div");
-				$(inner).addClass("absolute width70 height70 center black-back rounded5 opacity70 shadow");
+				$(inner).addClass("absolute width70 height70 center black-back border-white rounded5 opacity70 shadow");
 				$(container).append(inner);
 
 				var outer = document.createElement("div");
@@ -59,13 +59,13 @@ app.directive("trashman", ["$http", function ($http) {
 		 		name:"arena.size",
 		 		callback:function (x) {
 
-		 			console.log("assign arena size");
+		 			// console.log("assign arena size");
 
 		 			arena = {width:x.width, height:x.height};
 
 		 			var man = makeMan();
 
-		 			console.log("push man object")
+		 			// console.log("push man object")
 
 					react.push({
 						name:"robot",

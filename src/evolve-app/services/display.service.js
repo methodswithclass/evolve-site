@@ -14,8 +14,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 
 	var winH = 0;
 	var winW = 0;
-	var $winH;
-
+	var $winH = 0;
 
 
     var params = {
@@ -67,7 +66,6 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 
     	hasBeenBuilt[name] = true;
     }
-
 
 
 
@@ -185,55 +183,6 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 
 	}
 
-	// console.log("\nregister event evolve-data display\n\n");
-	// events.on("load-display", "evolve-data-trash", function () {
-
-
-	// 	evolveDataSetup[u.getInterface()]("trash");
-
-	// 	$(window).resize(function () {
-
-	// 		evolveDataSetup[u.getInterface()]("trash");
-	// 	})
-
-	// 	return "success";
-
-	// });
-
-
-	// console.log("\nregister event evolve-data display\n\n");
-	// events.on("load-display", "evolve-data-feedback", function () {
-
-
-	// 	evolveDataSetup[u.getInterface()]("feedback");
-
-	// 	$(window).resize(function () {
-
-			
-	// 		evolveDataSetup[u.getInterface()]("feedback");
-	// 	})
-
-	// 	return "success";
-
-	// });
-
-
-	// console.log("\nregister event evolve-data display\n\n");
-	// events.on("load-display", "evolve-data-recognize", function () {
-
-
-	// 	evolveDataSetup[u.getInterface()]("recognize");
-
-	// 	$(window).resize(function () {
-				
-	// 		evolveDataSetup[u.getInterface()]("recognize");
-	// 	})
-
-	// 	return "success";
-
-	// });
-
-
 
 
 
@@ -278,6 +227,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 			u.toggle("hide", "title");
        	 	u.toggle("hide", "breakfeedback");
 
+       	 	u.toggle("hide", "walkthrough");
 
 
             u.toggle("disable", "refresh");
@@ -296,6 +246,8 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
             u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
             u.toggle("show", "controls");
             u.toggle("show", "title");
+
+            // u.toggle("show", "walkthrough", {fade:params.fade});
 
             u.toggle("enable", "refresh", {fade:params.fade, delay:params.delay});
 
@@ -319,36 +271,51 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
     }
 
 
-	var setEvolveHeight = function () {
-
-		$mainBack = $("#main-back");
-		$evolve = $("#evolvetoggle");
-		$winH = $mainBack.height();
+	var setEvolveHeight = function ($back, $evolve, $walkthrough) {
+		
+		$winH = $back.height();
 
 		winH = winH > $winH ? winH : $winH;
 
+		$walkthrough.css({height:winH + "px"});
 		$evolve.css({height:winH + "px"});
 
 	}
 
 	var setupEvolve = function() {
 
-		setEvolveHeight();
+		forceEvolveHeight();
 
 		$(window).resize(function () {
 
-			setEvolveHeight();
+			forceEvolveHeight();
 		})
 	}
 
 	var forceEvolveHeight = function () {
 
-		$mainBack = $("#main-back");
-		$evolve = $("#evolvetoggle");
+		g.waitForElem({elems:["#main-back", "#evolvetoggle", "#walkthroughtoggle", "#main-inner"]}, function (options) {
+			
+			$mainBack = $(options.elems[0]);
+			$evolve = $(options.elems[1]);
+			$walkthrough = $(options.elems[2]);
+			$inner = $(options.elems[3]);
 
-		while(($evolve[0] ? true : false) && ($mainBack[0] ? true : false) && Math.abs($evolve.height() - $mainBack.height()) > 2) {
-			setEvolveHeight();
-		}
+			var evolveDiff;
+			var walkthroughDiff;
+
+			setInterval(function() {
+
+				evolveDiff = Math.abs($evolve.height() - $inner.height());
+				walkthroughDiff = Math.abs($walkthrough.height() - $inner.height());
+
+				if (evolveDiff > 2 || walkthroughDiff > 2) {
+					setEvolveHeight($inner, $evolve, $walkthrough);
+				}
+			}, 100);
+
+		});
+
 	}
 
 	var setElemScrollTop = function (elem, scrollTop) {
@@ -371,37 +338,44 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 			trash:[
 			{
 				index:0,
-				phase:function () {
+				phase:function (options) {
 
 					// events.dispatch("load-display", "evolve-data-trash");
 				}
 			},
 			{
 				index:1,
-				phase:function () {
+				phase:function (options) {
 
 					// events.dispatch("load-display", "stage-trash");
 				}
 			},
 			{
 				index:2,
-				phase:function () {
+				phase:function (options) {
+
+					console.log("run phase control \n\n\n\n")
 
 					events.dispatch("load-display", "controls-trash");
+
+					events.dispatch("load-display", "walkthrough");
+
+					// phases.run(name + "walkthrough");
+
 				}
 			}
 			],
 			feedback:[
 			{
 				index:0,
-				phase:function () {
+				phase:function (options) {
 
 					events.dispatch("load-display", "controls-feedback");
 				}
 			},
 			{
 				index:1,
-				phase:function () {
+				phase:function (options) {
 
 
 					// events.dispatch("load-display", "stage-feedback");
@@ -409,7 +383,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 			},
 			{
 				index:2,
-				phase:function () {
+				phase:function (options) {
 
 					// events.dispatch("load-display", "evolve-data-feedback");
 				}
@@ -418,38 +392,39 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 			recognize:[
 			{
 				index:0,
-				phase:function () {
+				phase:function (options) {
 
 					// events.dispatch("load-display", "evolve-data-recognize");
 				}
 			},
 			{
 				index:1,
-				phase:function () {
+				phase:function (options) {
 
 					events.dispatch("load-display", "stage-recognize");
 				}
 			},
 			{
 				index:2,
-				phase:function () {
+				phase:function (options) {
 
 					events.dispatch("load-display", "controls-recognize");
 				}
 			},
 			{
 				index:3,
-				phase:function () {
+				phase:function (options) {
 					events.dispatch("setup-digit");
 				}
 			}
 			]
 		}
 
-		phases.loadPhases($phases[name], true);
+		phases.loadPhases({name:name + "display", phases:$phases[name], run:true});
 		
 
-		forceEvolveHeight();
+		// forceEvolveHeight();
+		setupEvolve();
 
 	}	
 

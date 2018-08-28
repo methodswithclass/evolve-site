@@ -44,7 +44,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         name:"programInput" + name,
         callback:function(x) {
 
-            console.log("assign totalActions from programInput in simulator");
+            // console.log("assign totalActions from programInput in simulator");
 
             totalActions = x.totalSteps;
         }
@@ -55,7 +55,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         name:"robot",
         callback:function (x) {
 
-            console.log("assign man object");
+            // console.log("assign man object");
 
             man = x;
         }
@@ -75,7 +75,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         name:"block.functions",
         callback:function (x) {
 
-            console.log("assign clean block function");
+            // console.log("assign clean block function");
 
             cleanBlock = x.cleanBlock;
             makeBlocks = x.makeBlocks;
@@ -216,7 +216,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var setup = function (clear, complete) {
 
-        console.log("sim setup: instruct", evdata, i);
+        // console.log("sim setup: instruct", evdata, i);
 
 
         totalActions = $input.getInput().programInput.totalSteps;
@@ -226,7 +226,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             
             api.instruct(clear, function (res) {
 
-                console.log("post instruct", i);
+                // console.log("post instruct", i);
 
                 if (typeof complete === "function") complete();
             });
@@ -263,7 +263,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 makeBlocks(environment);
 
-                console.log("Reset environment success", res);
+                // console.log("Reset environment success", res);
             });
 
         });
@@ -284,7 +284,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             api.refreshEnvironment(function (res) {
 
 
-                console.log("Refresh environment", res.data.env);
+                // console.log("Refresh environment", res.data.env);
 
                 environment = res.data.env;
 
@@ -325,7 +325,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             }
         });
 
-        console.log("check");
+        // console.log("check");
 
         resetenv();
 
@@ -344,7 +344,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var start = function (session) {
 
-        console.log("start", i);
+        // console.log("start", i);
 
         active = true;
         running = true;
@@ -362,7 +362,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var play = function (session, _colors) {
 
-        console.log("play", i);
+        // console.log("play", i);
 
         colors = _colors;
 
@@ -389,7 +389,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var stop = function () {
 
-        console.log("stop", i);
+        // console.log("stop", i);
 
         active = false;
         running = false;
@@ -410,6 +410,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         u.toggle("enable", "run", {fade:300, delay:500});
         u.toggle("enable", "settings", {fade:300});
+
+        events.dispatch("sim."+name+".end");
     }
 
 

@@ -40,7 +40,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 
 				var container = document.createElement("div");
-				$(container).addClass("absolute " + (u.getInterface() == inter.object.one ? "border " : "border-white ") + (u.getInterface() == inter.object.one ? "white-back" : "black-back"));
+				$(container).addClass("absolute " + (u.getInterface() == inter.object.one ? "border-white " : "border-white ") + (u.getInterface() == inter.object.one ? "black-back opacity90" : "black-back"));
 				container.style.width = $(element).width()/cols + "px";
 				container.style.height = $(element).height()/rows + "px";
 
@@ -50,7 +50,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 				$(element).append(container);
 
 				var outline = document.createElement("div");
-				$(outline).addClass("absolute width50 height50 center rounded5 " + (u.getInterface() == inter.object.one ? "border" : "border-white"));
+				$(outline).addClass("absolute width50 height50 center rounded5 " + (u.getInterface() == inter.object.one ? "border-white" : "border-white"));
 				outline.style.opacity = 0;
 				$(container).append(outline);
 
@@ -101,7 +101,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			var clear  = function () {
 
-				console.log("clear arena");
+				// console.log("clear arena");
 
 				for (var i = 0; i < arena.length; i++) {
 					for (var j = 0; j < arena[i].length; j++) {
@@ -175,7 +175,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			}
 
 
-			console.log("push functions");
+			// console.log("push functions");
 
 			react.push({
 		    	name:"block.functions",
