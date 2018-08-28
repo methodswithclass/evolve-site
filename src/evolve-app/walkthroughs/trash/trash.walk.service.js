@@ -42,6 +42,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		phase:function (options) {
 
 			console.log(self.name, options.index, "phase");
+			// toggleIndicator("run");
+			$("#runinner").addClass("scaling");
+			toggleGrayout(true);
 			u.toggle("show", "walkthrough", {delay:300, fade:600});
 
 		},
@@ -51,9 +54,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 			var element = "#evolvedatatoggle";
 
-			toggleGrayout();
+			toggleGrayout(false);
 			u.toggle("show", "phase1-container");
 			scrollTo(element, options);
+			// toggleIndicator("run");
+			$("#runinner").removeClass("scaling");
 		}
 	},
 	{
@@ -74,8 +79,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 			var element = "#stagetoggle";
 
-			toggleGrayout();
-			indicatePlayButton();
+			toggleGrayout(false);
+			$("#playinner").addClass("scaling-lg");
+			u.toggle("hide", "phase1-container");
 			scrollTo(element, options);
 		}
 	},
@@ -90,10 +96,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 			console.log(self.name, options.index, "phase");
 
+
 		},
 		complete:function (options) {
 
-			toggleGrayout();
+			toggleGrayout(false);
 
 		}
 	},
@@ -107,21 +114,22 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 			console.log(self.name, options.index, "phase");
 
-
+			//phase3() function below called from events callback defined in phase2 linked to simulation dispatch
 
 		},
 		complete:function (options) {
 
-			toggleGrayout();
+			toggleGrayout(false);
+			u.toggle("hide", "phase3-container");
+			$("#runinner").addClass("scaling");
 			
-
 		}
 	},
 	{
 		index:4,
 		meta:{
 			description:"you have completed the wallkthrough",
-			button:"#completed-button"
+			button:"#playtoggle"
 		},
 		phase:function (options) {
 
@@ -131,37 +139,46 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		},
 		complete:function (options) {
 
-			// toggleGrayout(false);
+			toggleGrayout(false);
 			u.toggle("hide", "walkthrough");
 		}
 	}
 	]
 
 
-	var toggleIndicator = function (type) {
+	var toggleIndicator = function (type, force) {
+
+
+		if (force !== undefined) indicator[type] = force;
 
 		if(indicator[type]) {
 
-			u.toggle("hide", "phase-container");
-			indicator[type] = false;
+			if (type == "controls") u.toggle("show", "phase-container");
+			else if (type == "run") u.toggle("show", "phase0-container");
+			
+			indicator[type] = true;
 		}
 		else {
 
-			u.toggle("show", "phase-container");
-			indicator[type] = true;
+			if (type == "controls") u.toggle("hide", "phase-container");
+			else if (type == "run") u.toggle("hide", "phase0-container");
+			
+			indicator[type] = false;
 		}
 	}
 
-	var toggleGrayout = function () {
+	var toggleGrayout = function (force) {
 
+		if (force !== undefined) grayout = force;
+		
 		if (grayout) {
 
-			$("#walkthrough-grayout").css({opacity:0});
-			grayout = false;
-		}
-		else {
 			$("#walkthrough-grayout").css({opacity:0.7});
 			grayout = true;
+		}
+		else {
+			$("#walkthrough-grayout").css({opacity:0});
+			grayout = false;
 		}
 	}
 
@@ -173,27 +190,28 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 			var $ref = $($options.elems[0]);
 			var $elem = $($options.elems[1]);
 
+			console.log("moveElement", $options);
+
+			// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
+
 			$elem.css({top:$ref.offset().top + options.buffer + "px"});
 		})
 
 	}
 
-	var indicatePlayButton = function () {
-
-		// moveElement({element:"#phase-containertoggle", top:"#stagetoggle", buffer:1.5*(50+20) + 400*0.8*0.5 + 150});
-		// toggleIndicator("controls");
-
-		$("#playinner").addClass("scaling-lg");
-	}
 
 	var indicateRefreshButton = function () {
 
-		// u.toggle("show", "phase3-container");
-		// moveElement({element:"#phase3-containertoggle", top:"#arena", buffer:100})
+		moveElement({element:"#phase3-containertoggle", top:"#main-inner", buffer:1400});
+	}
 
-		// moveElement({element:"#phase-containertoggle", top:"#refreshtoggle", buffer:0});
-		// $("#playinner").removeClass("scaling-lg");
+	var phase3 = function () {
+
+		console.log("end simulation");
+
 		$("#refreshinner").addClass("scaling-lg");
+		toggleGrayout(true);
+		u.toggle("show", "phase3-container");
 	}
 
 	var scrollTo = function (elem, options) {
@@ -223,7 +241,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	loadPhases();
 
 
-	// moveIndicator(0);
+	indicateRefreshButton();
+
+	events.on("sim.trash.end", function () {
+
+		phase3();
+	})
 
 
 	return {

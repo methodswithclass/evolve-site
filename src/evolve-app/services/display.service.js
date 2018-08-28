@@ -354,14 +354,11 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 				index:2,
 				phase:function (options) {
 
-					console.log("run phase control \n\n\n\n")
+					// console.log("run phase control \n\n\n\n")
 
 					events.dispatch("load-display", "controls-trash");
 
 					events.dispatch("load-display", "walkthrough");
-
-					// phases.run(name + "walkthrough");
-
 				}
 			}
 			],

@@ -36,12 +36,8 @@ app.factory("phases.service", [function () {
 
 
 	var addNext = function (j, button) {
-
-		// console.log("button", j, "is", button);
-
+		
 		g.waitForElem({elems:button}, function (options) {
-
-			// console.log("load button", j, options.elems, "\n\n\n");
 
 			// console.log("register phase click event for button", options.elems);
 
@@ -49,7 +45,7 @@ app.factory("phases.service", [function () {
 
 				if ($phases[j].complete) $phases[j].complete($phases[j]);
 
-				if (j < $phases.length-1) $phases[j+1].phase($phases[j+1]);
+				// if (j + 1 < $phases.length-1) $phases[j+1].phase($phases[j+1]);
 			})
 
 		});
