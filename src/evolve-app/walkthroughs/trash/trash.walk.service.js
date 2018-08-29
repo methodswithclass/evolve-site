@@ -84,6 +84,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			var element = "#stagetoggle";
 
 			toggleGrayout(false);
+			// if (g.isMobile()) {
+			// 	u.toggle("show", "run");
+			// }
 			$("#playinner").addClass("scaling-lg");
 			u.toggle("hide", "phase1-container");
 			scrollTo(element, options);

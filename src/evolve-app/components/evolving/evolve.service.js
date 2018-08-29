@@ -317,7 +317,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         }
         else {
 
-            // u.toggle("show", "run", {delay:params.delay, fade:params.fade});
+            u.toggle("show", "run", {delay:params.delay, fade:params.fade});
 
             if (self.name == "trash")  {
 
