@@ -105,6 +105,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		complete:function (options) {
 
 			toggleGrayout(false);
+			controlsService.removeScaling();
 
 		}
 	},
