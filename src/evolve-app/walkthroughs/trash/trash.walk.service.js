@@ -229,8 +229,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var indicateRefreshButton = function () {
 
-		moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:1500});
-		moveElement({element:"#phase3-containertoggle", top:"#main-inner", buffer:1400});
+		moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 2000 : 1500)});
+		moveElement({element:"#phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1700 : 1400)});
 	}
 
 	var phase3 = function () {
