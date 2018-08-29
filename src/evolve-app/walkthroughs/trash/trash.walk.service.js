@@ -98,7 +98,10 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		complete:function (options) {
 
 			if (isRunning()) {
-				u.toggle("hide", "run", {delay:1000, fade:300});
+				// u.toggle("hide", "run", {delay:1000, fade:300});
+				setTimeout(function () {
+					removeRunButton();
+				}, 300);
 				toggleGrayout(true);
 			}
 		}
@@ -150,9 +153,10 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (isRunning()) {
 				
 				toggleGrayout(false);
-				setTimeout(function () {
-					controlsService.removeScaling();
-				}, 600);
+				// setTimeout(function () {
+				// 	controlsService.removeScaling();
+				// }, 1000);
+				stopScaling();
 			}
 
 		}
@@ -230,6 +234,28 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	}
 	]
 
+	var removeRunButton = function () {
+
+		g.waitForElem({elems:"#runtoggle"}, function () {
+
+
+			var runtimer = setInterval(function () {
+
+				console.log("opacity", $("#runtoggle").css("opacity"));
+
+				if ($("#runtoggle").css("opacity") <= 0) {
+
+					clearInterval(runtimer);
+					runtimer = null;
+				}
+				else {
+					$("#runtoggle").css({opacity:0, display:"none"});
+				}
+			
+
+			}, 100);
+		});
+	}
 
 	var toggleIndicator = function (type, force) {
 
