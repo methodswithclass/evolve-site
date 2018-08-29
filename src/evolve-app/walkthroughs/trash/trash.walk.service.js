@@ -1,4 +1,4 @@
-app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phases) {
+app.factory("trash.walkthrough", ["utility", "phases.service", "control.service", function (u, phases, controlsService) {
 
 
 	var s = window.shared;
@@ -55,11 +55,14 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 			var element = "#evolvedatatoggle";
 
-			toggleGrayout(false);
-			u.toggle("show", "phase1-container");
-			scrollTo(element, options);
-			// toggleIndicator("run");
 			$("#runinner").removeClass("scaling");
+			
+			setTimeout(function () {
+				toggleGrayout(false);
+				u.toggle("show", "phase1-container");
+				scrollTo(element, options);
+			}, 600);
+			
 		}
 	},
 	{
@@ -123,6 +126,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 			toggleGrayout(false);
 			u.toggle("hide", "phase3-container");
 			setTimeout(function () {
+				moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:1700});
+				u.toggle("show", "complete-button");
 				$("#playinner").addClass("scaling-lg");
 			}, 300);
 			
@@ -131,7 +136,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 	{
 		index:4,
 		meta:{
-			description:"you have completed the wallkthrough",
+			description:"repeat with a new trash config",
 			button:"#playtoggle"
 		},
 		phase:function (options) {
@@ -143,8 +148,26 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		complete:function (options) {
 
 			toggleGrayout(false);
+		}
+	},
+	{
+		index:5,
+		meta:{
+			description:"you have completed the wallkthrough",
+			button:"#complete-buttontoggle"
+		},
+		phase:function (options) {
+
+
+			console.log(self.name, options.index, "phase");
+
+		},
+		complete:function (options) {
+
+			toggleGrayout(false);
+			u.toggle("hide", "complete-button");
+			controlsService.removeScaling();
 			u.toggle("show", "walkthroughbutton");
-			// u.toggle("hide", "walkthrough");
 		}
 	}
 	]

@@ -77,16 +77,22 @@ app.factory("control.service", ["utility", function (u) {
 	var cntrlBuffer = 20;
 	var cntrlWidth;
 
+
+	var removeScaling = function () {
+
+		controls.forEach(function (value, index) {
+
+			$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg");
+		})
+	}
+
 	var clickControls = function () {
 
 		g.waitForElem({elems:"#controlstoggle"}, function (options) {
 
 			$(options.elems).click(function () {
 
-				controls.forEach(function (value, index) {
-
-					$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg");
-				})
+				removeScaling();
 			})
 
 		});
@@ -330,8 +336,7 @@ app.factory("control.service", ["utility", function (u) {
 
 
 	return {
-
-
+		removeScaling:removeScaling
 	}
 
 
