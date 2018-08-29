@@ -82,40 +82,6 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 
 
 
-	// events.on("load-display", "stage-trash", function () {
-
-	// 	$stage = $("#stagetoggle");
-	// 	$hud = $("#hudtoggle");
-	// 	$evolvedata = $("#evolvedatatoggle");
-	// 	$simdata = $("#simdataParent");
-	// 	$arena = $("#arena");
-		
-	// 	// if (g.isMobile()) {
-
-	// 	// 	g.waitForElem({elems:"#simdataParent"}, function () {
-
-	// 	// 		// $simdata.css({top:$arena.offset().top + "px"});
-	// 	// 		// $simdata.css({top:$arena.offset().top + $arena.height() - $("#simParent").offset().top + 200 + "px"});
-	// 	// 	})
-	// 	// }
-	// 	// else {
-
-
-	// 	// }
-	// });
-
-
-	// events.on("load-display", "stage-feedback", function () {
-
-	// 	$stage = $("#stagetoggle");
-	// 	$hud = $("#hudtoggle");
-	// 	$controls = $("#controlstoggle");
-
-	// 	// $stage.css({top:($controls.offset().top - $hud.offset().top) + $controls.height() + 100 + "px", height:(g.isMobile() ? "50%" : "50%")})
-
-	// })
-
-
 	events.on("load-display", "stage-recognize", function () {
 
 		$stage = $("#stagetoggle");

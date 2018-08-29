@@ -68,14 +68,14 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (isRunning()) {
 				console.log("pushed next button");
 
-				var element = "#evolvedatatoggle";
+				
 
 				$("#runinner").removeClass("scaling");
 
 				setTimeout(function () {
 					toggleGrayout(false);
 					u.toggle("show", "phase1-container");
-					scrollTo(element, options);
+					
 				}, 600);
 			}
 			
@@ -98,11 +98,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		complete:function (options) {
 
 			if (isRunning()) {
-				// u.toggle("hide", "run", {delay:1000, fade:300});
+				var element = "#evolvedatatoggle";
 				setTimeout(function () {
-					removeRunButton();
-				}, 300);
-				toggleGrayout(true);
+					scrollTo(element, options);
+				
+					toggleGrayout(true);
+				}, 600);
 			}
 		}
 	},
@@ -127,9 +128,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 				toggleGrayout(false);
 				$("#playinner").addClass("scaling-lg");
-				if (g.isMobile()) {
-					u.toggle("show", "run");
-				}
 				u.toggle("hide", "phase1-container");
 				scrollTo(element, options);
 			}
@@ -239,28 +237,29 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		}, 300);
 	}
 
-	var removeRunButton = function () {
+	// var removeRunButton = function () {
 
-		g.waitForElem({elems:"#runtoggle"}, function () {
+	// 	g.waitForElem({elems:"#runtoggle"}, function () {
 
+	// 		$("#runtoggle").css({opacity:0, display:"none"});
 
-			var runtimer = setInterval(function () {
+	// 		var runtimer = setInterval(function () {
 
-				console.log("opacity", $("#runtoggle").css("opacity"));
+	// 			console.log("opacity", $("#runtoggle").css("opacity"));
 
-				if ($("#runtoggle").css("opacity") <= 0) {
+	// 			if ($("#runtoggle").css("opacity") <= 0) {
 
-					clearInterval(runtimer);
-					runtimer = null;
-				}
-				else {
-					$("#runtoggle").css({opacity:0, display:"none"});
-				}
+	// 				clearInterval(runtimer);
+	// 				runtimer = null;
+	// 			}
+	// 			else {
+	// 				$("#runtoggle").css({opacity:0, display:"none"});
+	// 			}
 			
 
-			}, 100);
-		});
-	}
+	// 		}, 300);
+	// 	});
+	// }
 
 	var toggleIndicator = function (type, force) {
 

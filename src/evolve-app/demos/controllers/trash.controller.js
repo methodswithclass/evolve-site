@@ -217,11 +217,13 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
             self.programInputChange();
 
-            opacityScroll()
-            .then((result) => {
+            var result;
 
-                resolve(result);
-            })
+            // opacityScroll()
+            // .then((result) => {
+
+                resolve(result || true);
+            // })
 
         });
 
