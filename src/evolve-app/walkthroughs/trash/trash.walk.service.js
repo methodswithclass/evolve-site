@@ -132,7 +132,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				u.toggle("show", "complete-button");
 				toggleGrayout(true);
 				$("#playinner").addClass("scaling-lg");
-				controlsService.removeScaling();
+				// controlsService.removeScaling();
 			}, 300);
 			
 		}
