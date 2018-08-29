@@ -126,8 +126,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			toggleGrayout(false);
 			u.toggle("hide", "phase3-container");
 			setTimeout(function () {
-				moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:1700});
 				u.toggle("show", "complete-button");
+				toggleGrayout(true);
 				$("#playinner").addClass("scaling-lg");
 			}, 300);
 			
@@ -146,7 +146,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 		},
 		complete:function (options) {
-
+			u.toggle("hide", "complete-button");
 			toggleGrayout(false);
 		}
 	},
@@ -229,6 +229,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var indicateRefreshButton = function () {
 
+		moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:1500});
 		moveElement({element:"#phase3-containertoggle", top:"#main-inner", buffer:1400});
 	}
 
