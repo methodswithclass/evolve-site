@@ -60,7 +60,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			setTimeout(function () {
 				toggleGrayout(false);
 				u.toggle("show", "phase1-container");
-				u.toggle("hide", "run", {delay:300});
+				u.toggle("hide", "run", {delay:600});
 				scrollTo(element, options);
 			}, 600);
 			
