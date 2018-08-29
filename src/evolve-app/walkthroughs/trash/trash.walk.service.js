@@ -57,10 +57,15 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			$("#runinner").removeClass("scaling");
 			
+
+			if (!g.isMobile()) {
+
+				u.toggle("hide", "run", {delay:600});
+			}
+
 			setTimeout(function () {
 				toggleGrayout(false);
 				u.toggle("show", "phase1-container");
-				u.toggle("hide", "run", {delay:600});
 				scrollTo(element, options);
 			}, 600);
 			
