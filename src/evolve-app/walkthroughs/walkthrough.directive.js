@@ -35,6 +35,12 @@ app.directive("walkthrough", ["utility", "states", "asset.service", function (u,
 			}
 
 
+			$scope.run = function () {
+
+				walkthrough.run();
+			}
+
+
 		}
 
 	}

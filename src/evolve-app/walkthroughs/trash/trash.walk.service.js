@@ -45,6 +45,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 			// toggleIndicator("run");
 			$("#runinner").addClass("scaling");
 			toggleGrayout(true);
+			u.toggle("hide", "walkthroughbutton");
 			u.toggle("show", "walkthrough", {delay:300, fade:600});
 
 		},
@@ -121,7 +122,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 			toggleGrayout(false);
 			u.toggle("hide", "phase3-container");
-			$("#runinner").addClass("scaling");
+			setTimeout(function () {
+				$("#playinner").addClass("scaling-lg");
+			}, 300);
 			
 		}
 	},
@@ -140,7 +143,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 		complete:function (options) {
 
 			toggleGrayout(false);
-			u.toggle("hide", "walkthrough");
+			u.toggle("show", "walkthroughbutton");
+			// u.toggle("hide", "walkthrough");
 		}
 	}
 	]
@@ -211,6 +215,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", function (u, phas
 
 		$("#refreshinner").addClass("scaling-lg");
 		toggleGrayout(true);
+
+		// indicateRefreshButton();
 		u.toggle("show", "phase3-container");
 	}
 
