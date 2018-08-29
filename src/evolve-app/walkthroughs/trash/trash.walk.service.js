@@ -152,11 +152,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			if (isRunning()) {
 				
-				toggleGrayout(false);
-				// setTimeout(function () {
-				// 	controlsService.removeScaling();
-				// }, 1000);
 				stopScaling();
+				toggleGrayout(false);
 			}
 
 		}
@@ -226,13 +223,21 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (isRunning()) {
 				toggleGrayout(false);
 				u.toggle("hide", "complete-button");
-				controlsService.removeScaling();
+				stopScaling();
 				u.toggle("show", "walkthroughbutton");
 				running(false);
 			}
 		}
 	}
 	]
+
+
+	var stopScaling = function () {
+
+		setTimeout(function () {
+			controlsService.removeScaling();
+		}, 300);
+	}
 
 	var removeRunButton = function () {
 
