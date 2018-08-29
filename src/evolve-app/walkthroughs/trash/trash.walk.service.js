@@ -124,6 +124,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 				toggleGrayout(false);
 				$("#playinner").addClass("scaling-lg");
+				if (isMobile()) {
+					u.toggle("show", "run");
+				}
 				u.toggle("hide", "phase1-container");
 				scrollTo(element, options);
 			}
@@ -149,7 +152,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				toggleGrayout(false);
 				setTimeout(function () {
 					controlsService.removeScaling();
-				}, 300);
+				}, 600);
 			}
 
 		}
