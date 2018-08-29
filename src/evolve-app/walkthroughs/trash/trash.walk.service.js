@@ -32,6 +32,18 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		controls:false
 	}
 
+	var $running = false;
+
+	var running = function (toggle) {
+
+		$running = toggle;
+	}
+
+	var isRunning = function () {
+
+		return $running;
+	}
+
 	var phase_data = [
 	{
 		index:0,
@@ -41,38 +53,58 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		phase:function (options) {
 
-			console.log(self.name, options.index, "phase");
-			// toggleIndicator("run");
-			$("#runinner").addClass("scaling");
-			toggleGrayout(true);
-			u.toggle("hide", "walkthroughbutton");
-			u.toggle("show", "walkthrough", {delay:300, fade:600});
+			if (isRunning()) {  
+				console.log(self.name, options.index, "phase");
+				// toggleIndicator("run");
+				$("#runinner").addClass("scaling");
+				toggleGrayout(true);
+				u.toggle("hide", "walkthroughbutton");
+				u.toggle("show", "walkthrough", {delay:300, fade:600});
+			}
 
 		},
 		complete:function (options) {
 
-			console.log("pushed next button");
+			if (isRunning()) {
+				console.log("pushed next button");
 
-			var element = "#evolvedatatoggle";
+				var element = "#evolvedatatoggle";
 
-			$("#runinner").removeClass("scaling");
-			
+				$("#runinner").removeClass("scaling");
 
-			if (!g.isMobile()) {
-
-				u.toggle("hide", "run", {delay:600});
+				setTimeout(function () {
+					toggleGrayout(false);
+					u.toggle("show", "phase1-container");
+					scrollTo(element, options);
+				}, 600);
 			}
-
-			setTimeout(function () {
-				toggleGrayout(false);
-				u.toggle("show", "phase1-container");
-				scrollTo(element, options);
-			}, 600);
 			
 		}
 	},
 	{
 		index:1,
+		meta:{
+			description:"End Evolution",
+			button:"#breakevolve"
+		},
+		phase:function (options) {
+
+
+			console.log(self.name, options.index, "phase");
+
+			// u.toggle("show", "run", {delay:1000});
+
+		},
+		complete:function (options) {
+
+			if (isRunning()) {
+				u.toggle("hide", "run", {delay:1000, fade:300});
+				toggleGrayout(true);
+			}
+		}
+	},
+	{
+		index:2,
 		meta:{
 			description:"Simulate results of 100 generations",
 			button:"#phase1-ok-button"
@@ -87,19 +119,18 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			var element = "#stagetoggle";
+			if (isRunning()) {
+				var element = "#stagetoggle";
 
-			toggleGrayout(false);
-			// if (g.isMobile()) {
-			// 	u.toggle("show", "run");
-			// }
-			$("#playinner").addClass("scaling-lg");
-			u.toggle("hide", "phase1-container");
-			scrollTo(element, options);
+				toggleGrayout(false);
+				$("#playinner").addClass("scaling-lg");
+				u.toggle("hide", "phase1-container");
+				scrollTo(element, options);
+			}
 		}
 	},
 	{
-		index:2,
+		index:3,
 		meta:{
 			description:"Press play",
 			button:"#playtoggle"
@@ -113,15 +144,18 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			toggleGrayout(false);
-			setTimeout(function () {
-				controlsService.removeScaling();
-			}, 300);
+			if (isRunning()) {
+				
+				toggleGrayout(false);
+				setTimeout(function () {
+					controlsService.removeScaling();
+				}, 300);
+			}
 
 		}
 	},
 	{
-		index:3,
+		index:4,
 		meta:{
 			description:"Go to Refresh",
 			button:"#refreshtoggle"
@@ -135,19 +169,21 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			toggleGrayout(false);
-			u.toggle("hide", "phase3-container");
-			setTimeout(function () {
-				u.toggle("show", "complete-button");
-				toggleGrayout(true);
-				$("#playinner").addClass("scaling-lg");
-				// controlsService.removeScaling();
-			}, 300);
-			
+			if (isRunning()) {
+				
+				toggleGrayout(false);
+				u.toggle("hide", "phase3-container");
+				setTimeout(function () {
+					u.toggle("show", "complete-button");
+					toggleGrayout(true);
+					$("#playinner").addClass("scaling-lg");
+					// controlsService.removeScaling();
+				}, 300);
+			}
 		}
 	},
 	{
-		index:4,
+		index:5,
 		meta:{
 			description:"repeat with a new trash config",
 			button:"#playtoggle"
@@ -159,12 +195,15 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 		},
 		complete:function (options) {
-			u.toggle("hide", "complete-button");
-			toggleGrayout(false);
+			
+			if (isRunning()) {
+				u.toggle("hide", "complete-button");
+				toggleGrayout(false);
+			}
 		}
 	},
 	{
-		index:5,
+		index:6,
 		meta:{
 			description:"you have completed the wallkthrough",
 			button:"#complete-buttontoggle"
@@ -177,10 +216,13 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			toggleGrayout(false);
-			u.toggle("hide", "complete-button");
-			controlsService.removeScaling();
-			u.toggle("show", "walkthroughbutton");
+			if (isRunning()) {
+				toggleGrayout(false);
+				u.toggle("hide", "complete-button");
+				controlsService.removeScaling();
+				u.toggle("show", "walkthroughbutton");
+				running(false);
+			}
 		}
 	}
 	]
@@ -248,13 +290,15 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var phase3 = function () {
 
-		console.log("end simulation");
+		if (isRunning()) {
+			console.log("end simulation");
 
-		$("#refreshinner").addClass("scaling-lg");
-		toggleGrayout(true);
+			$("#refreshinner").addClass("scaling-lg");
+			toggleGrayout(true);
 
-		// indicateRefreshButton();
-		u.toggle("show", "phase3-container");
+			// indicateRefreshButton();
+			u.toggle("show", "phase3-container");
+		}
 	}
 
 	var scrollTo = function (elem, options) {
@@ -276,6 +320,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	}
 
 	var run = function () {
+
+		running(true);
 
 		phases.run(self.name + "walkthrough");
 	}

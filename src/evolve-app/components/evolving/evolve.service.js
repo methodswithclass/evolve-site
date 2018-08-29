@@ -317,7 +317,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         }
         else {
 
-            u.toggle("show", "run", {delay:params.delay, fade:params.fade});
+            u.toggle("show", "run", {fade:params.fade});
 
             if (self.name == "trash")  {
 
@@ -423,7 +423,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
 
         u.toggle("hide", "settings", {fade:params.fade});        
-
+        // u.toggle("hide", "run");
 
         if (self.name == "feedback") {
 
