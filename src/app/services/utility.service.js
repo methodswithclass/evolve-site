@@ -52,6 +52,7 @@ app.factory("utility", ["general", function (gen) {
             options = {};
         }
 
+        var $inner = $("#" + id + "inner");
         var $toggle = $("#"+id+"toggle");
         var $cover = $("#"+id+"togglecover");
 
@@ -77,6 +78,7 @@ app.factory("utility", ["general", function (gen) {
         var disable = function () {
 
             //$toggle.prop("disabled", true);
+            $inner.removeClass("scaling scaling-sm scaling-mm scaling-lg");
             $cover.css({display:"block"});
             $cover.animate({opacity:0.9}, options ? (options.fade ? options.fade : 0) : 0, function () {
                 if (options.complete) options.complete();

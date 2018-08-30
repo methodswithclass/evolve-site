@@ -29,14 +29,6 @@ app.directive("controls", ["utility", "states", "control.service", function (u, 
 				return "assets/views/evolve-app/components/controls/views/" + u.getInterface() + "/common/controls.html";
 			}
 
-
-
-			// react.push({
-			// 	name:"scope." + self.name,
-			// 	state:$scope
-			// })
-
-
 		}
 
 	}
