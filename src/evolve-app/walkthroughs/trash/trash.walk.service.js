@@ -234,7 +234,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 		setTimeout(function () {
 			controlsService.removeScaling();
-		}, 300);
+		}, 600);
 	}
 
 
