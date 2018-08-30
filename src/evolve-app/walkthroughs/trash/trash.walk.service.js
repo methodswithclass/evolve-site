@@ -232,9 +232,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var stopScaling = function () {
 
-		setTimeout(function () {
+		// setTimeout(function () {
 			controlsService.removeScaling();
-		}, 600);
+		// }, 300);
 	}
 
 
