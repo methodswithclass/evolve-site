@@ -225,7 +225,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
             }
             else if (name == "trash") {
 
-            	u.toggle("show", "run", {fade:params.fade, delay:params.delay});
+            	// u.toggle("show", "run", {fade:params.fade, delay:params.delay});
             	u.toggle("show", "simdata", {fade:params.fade, delay:params.delay});
             }
             
