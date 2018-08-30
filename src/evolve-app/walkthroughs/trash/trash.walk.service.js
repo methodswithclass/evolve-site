@@ -99,11 +99,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			if (isRunning()) {
 				var element = "#evolvedatatoggle";
+				toggleGrayout(true);
 				setTimeout(function () {
 					scrollTo(element, options);
 				
-					toggleGrayout(true);
-				}, 600);
+					
+				}, 1200);
 			}
 		}
 	},
@@ -179,7 +180,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 					u.toggle("show", "complete-button");
 					toggleGrayout(true);
 					$("#playinner").addClass("scaling-lg");
-					// controlsService.removeScaling();
 				}, 300);
 			}
 		}
@@ -237,29 +237,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		}, 300);
 	}
 
-	// var removeRunButton = function () {
-
-	// 	g.waitForElem({elems:"#runtoggle"}, function () {
-
-	// 		$("#runtoggle").css({opacity:0, display:"none"});
-
-	// 		var runtimer = setInterval(function () {
-
-	// 			console.log("opacity", $("#runtoggle").css("opacity"));
-
-	// 			if ($("#runtoggle").css("opacity") <= 0) {
-
-	// 				clearInterval(runtimer);
-	// 				runtimer = null;
-	// 			}
-	// 			else {
-	// 				$("#runtoggle").css({opacity:0, display:"none"});
-	// 			}
-			
-
-	// 		}, 300);
-	// 	});
-	// }
 
 	var toggleIndicator = function (type, force) {
 
