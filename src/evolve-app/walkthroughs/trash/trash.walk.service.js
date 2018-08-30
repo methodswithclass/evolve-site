@@ -140,8 +140,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				toggleGrayout(false);
 				u.toggle("hide", "phase3-container");
 				setTimeout(function () {
-					u.toggle("show", "complete-button");
+					
 					toggleGrayout(true);
+					u.toggle("show", "complete-button");
 					$("#playinner").addClass("scaling-lg");
 				}, 300);
 			}
@@ -162,10 +163,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		complete:function (options) {
 			
 			if (phases.isRunning()) {
-				setTimeout(function () {
-					u.toggle("hide", "complete-button");
+				// setTimeout(function () {
+
 					toggleGrayout(false);
-				}, 1000);
+					u.toggle("hide", "complete-button");
+				// }, 1000);
 			}
 		}
 	},
