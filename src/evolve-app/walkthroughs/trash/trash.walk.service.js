@@ -151,7 +151,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			if (isRunning()) {
 				
-				stopScaling();
+				// stopScaling();
 				toggleGrayout(false);
 			}
 
@@ -232,9 +232,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var stopScaling = function () {
 
-		// setTimeout(function () {
-		// 	controlsService.removeScaling();
-		// }, 600);
+		setTimeout(function () {
+			controlsService.removeScaling();
+		}, 600);
 	}
 
 
