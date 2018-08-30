@@ -32,18 +32,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		controls:false
 	}
 
-	var $running = false;
-
-	var running = function (toggle) {
-
-		$running = toggle;
-	}
-
-	var isRunning = function () {
-
-		return $running;
-	}
-
 	var phase_data = [
 	{
 		index:0,
@@ -53,7 +41,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		phase:function (options) {
 
-			if (isRunning()) {  
+			if (phases.isRunning()) {  
 				console.log(self.name, options.index, "phase");
 				// toggleIndicator("run");
 				$("#runinner").addClass("scaling");
@@ -65,7 +53,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			if (isRunning()) {
+			if (phases.isRunning()) {
 				console.log("pushed next button");
 
 				
@@ -97,7 +85,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			if (isRunning()) {
+			if (phases.isRunning()) {
 				var element = "#evolvedatatoggle";
 				toggleGrayout(true);
 				setTimeout(function () {
@@ -124,7 +112,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			if (isRunning()) {
+			if (phases.isRunning()) {
 				var element = "#stagetoggle";
 
 				toggleGrayout(false);
@@ -172,7 +160,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			if (isRunning()) {
+			if (phases.isRunning()) {
 				
 				toggleGrayout(false);
 				u.toggle("hide", "phase3-container");
@@ -198,7 +186,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 			
-			if (isRunning()) {
+			if (phases.isRunning()) {
 				u.toggle("hide", "complete-button");
 				toggleGrayout(false);
 			}
@@ -218,12 +206,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		},
 		complete:function (options) {
 
-			if (isRunning()) {
+			if (phases.isRunning()) {
 				toggleGrayout(false);
 				u.toggle("hide", "complete-button");
 				stopScaling();
 				u.toggle("show", "walkthroughbutton");
-				running(false);
+				phases.running(false);
 			}
 		}
 	}
@@ -300,7 +288,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var phase3 = function () {
 
-		if (isRunning()) {
+		if (phases.isRunning()) {
 			console.log("end simulation");
 
 			$("#refreshinner").addClass("scaling-lg");
@@ -330,8 +318,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	}
 
 	var run = function () {
-
-		running(true);
 
 		phases.run(self.name + "walkthrough");
 	}

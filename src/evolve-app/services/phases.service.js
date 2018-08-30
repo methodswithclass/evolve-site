@@ -15,7 +15,21 @@ app.factory("phases.service", [function () {
 	var p = {};
 	var $phases = [];
 
+	var $running = false;
+
+	var running = function (toggle) {
+
+		$running = toggle;
+	}
+
+	var isRunning = function () {
+
+		return $running;
+	}
+
 	var runPhase = function ($i) {
+
+		running(true);
 
 		$phases = p[n];
 		$phases[$i].phase($phases[$i]);
@@ -31,6 +45,7 @@ app.factory("phases.service", [function () {
 	var run = function (name) {
 
 		n = name;
+		running(true);
 		runPhase(0);
 	}
 
@@ -80,7 +95,9 @@ app.factory("phases.service", [function () {
 
 	return {
 		loadPhases:loadPhases,
-		run:run
+		run:run,
+		running:running,
+		isRunning:isRunning
 	}
 
 
