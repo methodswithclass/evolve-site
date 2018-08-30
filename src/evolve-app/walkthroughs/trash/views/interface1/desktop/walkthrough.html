@@ -1,17 +1,19 @@
 <div class="absolute width height white opacity0" id="walkthroughtoggle">
 
-	<div class="absolute width height black-back opacity70 padding-v-100 z-50" id="walkthrough-grayout"></div>
+	<div class="absolute width height black-back opacity70 padding-v-100" id="walkthrough-grayout"></div>
 
 	<div class="absolute width height">
 
 		<div class="relative width height-50"></div>
 
 
-		<div class="absolute width height z-100" id="walkthroughwelcometoggle">
+		<div class="absolute width height opacity0 none z-100" id="walkthroughwelcometoggle">
+
+			
 
 			<div class="absolute width40 font-15 hcenter">
 				
-
+				
 				<div class="relative width hcenter rounded20 border-white white black-back">
 
 					<div class="relative width80 hcenter padding-v-100">
@@ -52,10 +54,23 @@
 						Reading the little bit of information provided will allow for the best experience for later. The demo without the walkthrough functions exactly the same, but is bare<br><br>
 
 						You may start it again at any time by clicking the "W" button located in the upper-right area of the page<br><br>
-
-						<br><br>
+ 
+						<br><br><br>
 
 						Future work:<br>This page is (obvious pun-intended) an ever-evolving project<br>come back soon for the walkthrough for the settings panel (located on the right side of the page) that helps change the intelligence of your robot
+					</div>
+
+				</div>
+
+
+				<div class="absolute width-100 white font-15 right-minus-200 top-100 pointer">
+
+					<div class="relative width padding-h-20 border-white blue2-back rounded10">
+
+						<div class="relative width60 padding-v-50 text-center hcenter">
+							Start by clicking the animating "evolve" button underneath this dialog
+						</div>
+
 					</div>
 
 				</div>
@@ -79,7 +94,7 @@
 			
 		</div>
 
-		<div class="absolute width height-100 margin-v-100 z-100" id="walkthroughbuttontoggle">
+		<div class="absolute width height-100 margin-v-100 opacity0 none z-100" id="walkthroughbuttontoggle">
 
 			<div class="absolute width-50 height-50 font-40 right-50 pointer" ng-click="run()">
 				<div class="absolute center black">
@@ -90,7 +105,7 @@
 		</div>
 
 
-		<div class="absolute width20 height-400 top-400 margin-v-200 right0 opacity0 z-100" id="phase1-containertoggle">
+		<div class="absolute width20 height-400 top-400 margin-v-200 right0 opacity0 none z-100" id="phase1-containertoggle">
 
 			<div class="absolute width-100 height-100 white font-30 center pointer" id="phase1-ok-button">
 
@@ -108,7 +123,7 @@
 		</div>
 
 
-		<div class="absolute width30 height-600 right20 opacity0 z-100" id="phase3-containertoggle">
+		<div class="absolute width30 height-600 right20 opacity0 none z-100" id="phase3-containertoggle">
 
 			<div class="absolute width height rounded20 border-white black-back opacity90"></div>
 			<div class="absolute width80 white font-20 center">
@@ -120,7 +135,7 @@
 		</div>
 		
 
-		<div class="absolute width-300 height-70 hcenter opacity0 z-100" id="complete-buttontoggle">
+		<div class="absolute width-300 height-70 hcenter opacity0 none z-100" id="complete-buttontoggle">
 			<div class="absolute width height green-back rounded10 border-white white pointer">
 				<div class="absolute center">
 					complete walkthrough

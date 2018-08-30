@@ -82,7 +82,7 @@ app.factory("control.service", ["utility", function (u) {
 
 		controls.forEach(function (value, index) {
 
-			$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg z-100");
+			$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg");
 		})
 	}
 
@@ -194,6 +194,7 @@ app.factory("control.service", ["utility", function (u) {
 
 
 			$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px"});
+			// $(value.selector).css({zIndex:200});
 
 			notch = index*controlWidth + cntrlBuffer/2;
 

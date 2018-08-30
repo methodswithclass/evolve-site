@@ -233,7 +233,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	var activateControl = function (control) {
 
 		$("#" +control + "inner").addClass("scaling-lg");
-		$("#" + control + "toggle").addClass("z-100");
+		// $("#" + control + "toggle").addClass("z-100");
 	}
 
 	var stopScaling = function () {

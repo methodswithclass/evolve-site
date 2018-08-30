@@ -28,7 +28,7 @@ app.directive("trashman", ["$http", function ($http) {
 				var block = {width:$(element).width()/arena.width, height:$(element).width()/arena.height};
 
 				container = document.createElement("div");
-				$(container).addClass("absolute");
+				$(container).addClass("absolute z-minus-10");
 				container.style.width = block.width + "px";
 				container.style.height = block.height + "px";
 				$(element).append(container);
