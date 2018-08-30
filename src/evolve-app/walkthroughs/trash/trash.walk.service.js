@@ -90,8 +90,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				toggleGrayout(true);
 				setTimeout(function () {
 					scrollTo(element, options);
-				
-					
 				}, 1200);
 			}
 		}
@@ -122,31 +120,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			}
 		}
 	},
-	// {
-	// 	index:3,
-	// 	meta:{
-	// 		description:"Press play",
-	// 		button:"#playtoggle"
-	// 	},
-	// 	phase:function (options) {
-
-
-	// 		console.log(self.name, options.index, "phase");
-
-
-	// 	},
-	// 	complete:function (options) {
-
-	// 		if (isRunning()) {
-				
-	// 			// stopScaling();
-	// 			toggleGrayout(false);
-	// 		}
-
-	// 	}
-	// },
 	{
-		index:4,
+		index:3,
 		meta:{
 			description:"Go to Refresh",
 			button:"#refreshtoggle"
@@ -173,7 +148,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		}
 	},
 	{
-		index:5,
+		index:4,
 		meta:{
 			description:"repeat with a new trash config",
 			button:"#playtoggle"
@@ -190,12 +165,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				setTimeout(function () {
 					u.toggle("hide", "complete-button");
 					toggleGrayout(false);
-				}, 600);
+				}, 1000);
 			}
 		}
 	},
 	{
-		index:6,
+		index:5,
 		meta:{
 			description:"you have completed the wallkthrough",
 			button:"#complete-buttontoggle"
@@ -295,7 +270,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			$("#refreshinner").addClass("scaling-lg");
 			toggleGrayout(true);
-
+			u.toggle("hide", "complete-button");
 			// indicateRefreshButton();
 			u.toggle("show", "phase3-container");
 		}
