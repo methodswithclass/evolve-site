@@ -349,6 +349,8 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         active = true;
         running = true;
 
+        events.dispatch("sim." + name + ".start");
+
         performStep({i:i, step:false, session:session});
     }
 

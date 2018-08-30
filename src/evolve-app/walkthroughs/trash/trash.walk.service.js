@@ -140,7 +140,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				toggleGrayout(false);
 				u.toggle("hide", "phase3-container");
 				setTimeout(function () {
-					
+
 					toggleGrayout(true);
 					u.toggle("show", "complete-button");
 					$("#playinner").addClass("scaling-lg");
@@ -278,6 +278,19 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		}
 	}
 
+	var phase4 = function () {
+
+		if (phases.isRunning()) {
+			console.log("start simulation");
+
+			// $("#refreshinner").addClass("scaling-lg");
+			toggleGrayout(false);
+			u.toggle("hide", "complete-button");
+			// indicateRefreshButton();
+			// u.toggle("show", "phase3-container");
+		}
+	}
+
 	var scrollTo = function (elem, options) {
 
 		g.waitForElem({elems:["#main-back", elem]}, function ($options) {
@@ -306,6 +319,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 
 	indicateRefreshButton();
+
+
+	events.on("sim.trash.start", function () {
+
+		phase4();
+	})
 
 	events.on("sim.trash.end", function () {
 
