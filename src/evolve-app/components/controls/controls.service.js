@@ -82,7 +82,7 @@ app.factory("control.service", ["utility", function (u) {
 
 		controls.forEach(function (value, index) {
 
-			$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg");
+			$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg z-100");
 		})
 	}
 

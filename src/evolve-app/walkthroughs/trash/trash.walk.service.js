@@ -92,11 +92,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 				$("#runinner").removeClass("scaling");
 
-				setTimeout(function () {
-					toggleGrayout(false);
-					u.toggle("show", "phase1-container");
-					
-				}, 600);
+				// setTimeout(function () {
+				// 	toggleGrayout(false);
+				// }, 600);
 			}
 			
 		}
@@ -121,6 +119,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				var element = "#evolvedatatoggle";
 				toggleGrayout(true);
 				setTimeout(function () {
+					u.toggle("show", "phase1-container");
 					scrollTo(element, options);
 				}, 1200);
 			}
@@ -146,7 +145,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				var element = "#stagetoggle";
 
 				toggleGrayout(false);
-				$("#playinner").addClass("scaling-lg");
+				// $("#playinner").addClass("scaling-lg");
+				activateControl("play");
 				u.toggle("hide", "phase1-container");
 				scrollTo(element, options);
 			}
@@ -175,7 +175,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 					toggleGrayout(true);
 					u.toggle("show", "complete-button");
-					$("#playinner").addClass("scaling-lg");
+					// $("#playinner").addClass("scaling-lg");
+					activateControl("play");
 				}, 300);
 			}
 		}
@@ -228,6 +229,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	}
 	]
 
+
+	var activateControl = function (control) {
+
+		$("#" +control + "inner").addClass("scaling-lg");
+		$("#" + control + "toggle").addClass("z-100");
+	}
 
 	var stopScaling = function () {
 
