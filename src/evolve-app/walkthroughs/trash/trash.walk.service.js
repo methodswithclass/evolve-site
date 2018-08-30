@@ -134,29 +134,29 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			}
 		}
 	},
-	{
-		index:3,
-		meta:{
-			description:"Press play",
-			button:"#playtoggle"
-		},
-		phase:function (options) {
+	// {
+	// 	index:3,
+	// 	meta:{
+	// 		description:"Press play",
+	// 		button:"#playtoggle"
+	// 	},
+	// 	phase:function (options) {
 
 
-			console.log(self.name, options.index, "phase");
+	// 		console.log(self.name, options.index, "phase");
 
 
-		},
-		complete:function (options) {
+	// 	},
+	// 	complete:function (options) {
 
-			if (isRunning()) {
+	// 		if (isRunning()) {
 				
-				// stopScaling();
-				toggleGrayout(false);
-			}
+	// 			// stopScaling();
+	// 			toggleGrayout(false);
+	// 		}
 
-		}
-	},
+	// 	}
+	// },
 	{
 		index:4,
 		meta:{
