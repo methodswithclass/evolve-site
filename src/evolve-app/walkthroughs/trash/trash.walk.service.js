@@ -190,7 +190,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				setTimeout(function () {
 					u.toggle("hide", "complete-button");
 					toggleGrayout(false);
-				}, 300);
+				}, 600);
 			}
 		}
 	},
