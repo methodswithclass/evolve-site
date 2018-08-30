@@ -46,6 +46,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				// toggleIndicator("run");
 				$("#runinner").addClass("scaling");
 				toggleGrayout(true);
+				u.toggle("show", "walkthroughwelcome");
 				u.toggle("hide", "walkthroughbutton");
 				u.toggle("show", "walkthrough", {delay:300, fade:600});
 			}
