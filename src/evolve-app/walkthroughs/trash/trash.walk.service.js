@@ -36,6 +36,36 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	{
 		index:0,
 		meta:{
+			description:"Walklthrough welcome",
+			button:"#walkthroughwelcometoggle"
+		},
+		phase:function (options) {
+
+			if (phases.isRunning()) {  
+				console.log(self.name, options.index, "phase");
+				// toggleIndicator("run");
+				$("#runinner").addClass("scaling");
+				toggleGrayout(true);
+				u.toggle("hide", "walkthroughbutton");
+				u.toggle("show", "walkthrough", {delay:300, fade:600});
+			}
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning()) {
+				console.log("pushed next button");
+
+				
+
+				u.toggle("hide", "walkthroughwelcome");
+			}
+			
+		}
+	},
+	{
+		index:0,
+		meta:{
 			description:"Click here",
 			button:"#runtoggle"
 		},
