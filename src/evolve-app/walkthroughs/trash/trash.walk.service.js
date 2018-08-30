@@ -187,8 +187,10 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		complete:function (options) {
 			
 			if (phases.isRunning()) {
-				u.toggle("hide", "complete-button");
-				toggleGrayout(false);
+				setTimeout(function () {
+					u.toggle("hide", "complete-button");
+					toggleGrayout(false);
+				}, 300);
 			}
 		}
 	},
