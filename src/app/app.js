@@ -31,7 +31,7 @@ var makeMobile = function () {
 
 	var mobile = false;
 
-	// mobile = true;
+	mobile = true;
 
 	return mobile;
 }
