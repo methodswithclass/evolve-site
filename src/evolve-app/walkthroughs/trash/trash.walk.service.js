@@ -46,7 +46,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				// toggleIndicator("run");
 				$("#runinner").addClass("scaling");
 				toggleGrayout(true);
-				u.toggle("hide", "run", {delay:600});
+				u.toggle("hide", "run");
 				u.toggle("show", "walkthroughwelcome");
 				u.toggle("hide", "walkthroughbutton");
 				u.toggle("show", "walkthrough", {delay:300, fade:600});
@@ -315,7 +315,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		moveElement({element:"#phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1800 : 1400)});
 	}
 
-	var phase3 = function () {
+	var endSim = function () {
 
 		if (phases.isRunning()) {
 			console.log("end simulation");
@@ -328,13 +328,14 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		}
 	}
 
-	var phase4 = function () {
+	var startSim = function () {
 
 		if (phases.isRunning()) {
 			console.log("start simulation");
 
 			// $("#refreshinner").addClass("scaling-lg");
 			// toggleGrayout(false);
+			u.toggle("hide", "phase1-container");
 			u.toggle("hide", "complete-button");
 			// indicateRefreshButton();
 			// u.toggle("show", "phase3-container");
@@ -373,12 +374,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	events.on("sim.trash.start", function () {
 
-		phase4();
+		startSim();
 	})
 
 	events.on("sim.trash.end", function () {
 
-		phase3();
+		endSim();
 	})
 
 
