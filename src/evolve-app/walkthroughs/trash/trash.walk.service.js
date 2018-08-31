@@ -173,10 +173,10 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				setTimeout(function () {
 
 					toggleGrayout(true);
-					u.toggle("hide", "phase3-container");
-					u.toggle("show", "complete-button");
+					u.toggle("hide", "phase3-container", {fade:300});
+					u.toggle("show", "complete-button", {delay:300, fade:300});
 					toggleControl("play", true);
-				}, 300);
+				}, 600);
 			}
 		}
 	},
@@ -323,9 +323,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			$("#refreshinner").addClass("scaling-lg");
 			toggleGrayout(true);
-			u.toggle("hide", "complete-button");
+			u.toggle("hide", "complete-button", {fade:300});
 			// indicateRefreshButton();
-			u.toggle("show", "phase3-container");
+			u.toggle("show", "phase3-container", {fade:300});
 		}
 	}
 
@@ -337,7 +337,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			// $("#refreshinner").addClass("scaling-lg");
 			// toggleGrayout(false);
 			u.toggle("hide", "phase1-container");
-			u.toggle("hide", "complete-button");
+			u.toggle("hide", "complete-button", {fade:300});
 			// indicateRefreshButton();
 			// u.toggle("show", "phase3-container");
 		}
