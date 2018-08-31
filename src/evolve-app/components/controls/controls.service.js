@@ -128,8 +128,6 @@ app.factory("control.service", ["utility", function (u) {
 		hoverFunction({selector:"#opensettings", tool:"#opentool"});
 		// hoverFunction({selector:"#runtoggle", tool:"#evolvetool"});
 
-		clickControls();
-
 	}
 
 
@@ -262,10 +260,15 @@ app.factory("control.service", ["utility", function (u) {
 			});
 
 
+			
 			g.waitForElem({elems:"#stoptoggle"}, function () {
-
-				setHover();
-			})
+				
+				if (!g.isMobile()) {
+					setHover();
+				}
+				
+				clickControls();
+			});
 
 		});
 

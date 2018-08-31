@@ -169,10 +169,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (phases.isRunning()) {
 				
 				// toggleGrayout(false);
-				u.toggle("hide", "phase3-container");
+				
 				setTimeout(function () {
 
 					toggleGrayout(true);
+					u.toggle("hide", "phase3-container");
 					u.toggle("show", "complete-button");
 					toggleControl("play", true);
 				}, 300);
