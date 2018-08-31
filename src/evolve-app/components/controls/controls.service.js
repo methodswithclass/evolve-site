@@ -337,6 +337,7 @@ app.factory("control.service", ["utility", function (u) {
 
 
 	return {
+		controlsArray:controls,
 		removeScaling:removeScaling
 	}
 

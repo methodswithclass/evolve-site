@@ -144,9 +144,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (phases.isRunning()) {
 				var element = "#stagetoggle";
 
-				toggleGrayout(false);
-				// $("#playinner").addClass("scaling-lg");
-				activateControl("play");
+				// toggleGrayout(false);
+				toggleControl("play", true);
 				u.toggle("hide", "phase1-container");
 				scrollTo(element, options);
 			}
@@ -169,14 +168,13 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			if (phases.isRunning()) {
 				
-				toggleGrayout(false);
+				// toggleGrayout(false);
 				u.toggle("hide", "phase3-container");
 				setTimeout(function () {
 
 					toggleGrayout(true);
 					u.toggle("show", "complete-button");
-					// $("#playinner").addClass("scaling-lg");
-					activateControl("play");
+					toggleControl("play", true);
 				}, 300);
 			}
 		}
@@ -198,7 +196,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (phases.isRunning()) {
 				// setTimeout(function () {
 
-					toggleGrayout(false);
+					// toggleGrayout(false);
 					u.toggle("hide", "complete-button");
 				// }, 1000);
 			}
@@ -230,17 +228,30 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	]
 
 
-	var activateControl = function (control) {
+	var toggleControl = function (control, toggle) {
 
-		$("#" +control + "inner").addClass("scaling-lg");
-		// $("#" + control + "toggle").addClass("z-100");
+		if (toggle) {
+			u.toggle("enable", control);
+			$("#" +control + "inner").addClass("scaling-lg");
+			// $("#" + control + "toggle").addClass("z-100");
+		}
+		else {
+			// u.toggle("disable", control);
+			$("#"+ control + "inner").removeClass("scaling scaling-sm scaling-mm scaling-lg");
+		}
 	}
 
 	var stopScaling = function () {
 
 		// setTimeout(function () {
-			controlsService.removeScaling();
+			// controlsService.removeScaling();
 		// }, 300);
+
+
+		controlsService.controlsArray.forEach(function (value, index) {
+
+			toggleControl(value.name, false);
+		})
 	}
 
 
@@ -323,7 +334,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			console.log("start simulation");
 
 			// $("#refreshinner").addClass("scaling-lg");
-			toggleGrayout(false);
+			// toggleGrayout(false);
 			u.toggle("hide", "complete-button");
 			// indicateRefreshButton();
 			// u.toggle("show", "phase3-container");
