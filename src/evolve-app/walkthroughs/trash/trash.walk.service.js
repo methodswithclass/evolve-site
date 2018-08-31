@@ -169,12 +169,14 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (phases.isRunning()) {
 				
 				// toggleGrayout(false);
+
+
+				toggleGrayout(true);
+				u.toggle("hide", "phase3-container", {delay:200, fade:400});
+				u.toggle("show", "complete-button", {delay:400, fade:400});
 				
 				setTimeout(function () {
 
-					toggleGrayout(true);
-					u.toggle("hide", "phase3-container", {fade:300});
-					u.toggle("show", "complete-button", {delay:300, fade:300});
 					toggleControl("play", true);
 				}, 600);
 			}
@@ -219,9 +221,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			if (phases.isRunning()) {
 				toggleGrayout(false);
-				u.toggle("hide", "complete-button");
+				u.toggle("hide", "complete-button", {fade:400});
 				stopScaling();
-				u.toggle("show", "walkthroughbutton");
+				u.toggle("show", "walkthroughbutton", {delay:200, fade:300});
 				phases.running(false);
 			}
 		}
@@ -283,11 +285,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		
 		if (grayout) {
 
-			$("#walkthrough-grayout").css({opacity:0.7});
+			$("#walkthrough-grayout").animate({opacity:0.9}, 300);
 			grayout = true;
 		}
 		else {
-			$("#walkthrough-grayout").css({opacity:0});
+			$("#walkthrough-grayout").animate({opacity:0}, 300);
 			grayout = false;
 		}
 	}
