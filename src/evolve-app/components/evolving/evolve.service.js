@@ -300,6 +300,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         console.log("complete evolve");
 
 
+        events.dispatch("evolve.end");
+
 
         u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
         u.toggle("show", "nav", {delay:params.delay, fade:params.fade});
@@ -421,6 +423,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         console.log("run evolve");
 
+        events.dispatch("evolve.start");
 
         u.toggle("hide", "settings", {fade:params.fade});        
         // u.toggle("hide", "run");

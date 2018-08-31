@@ -349,6 +349,8 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 				phase:function (options) {
 
 					// events.dispatch("load-display", "evolve-data-feedback");
+
+					events.dispatch("load-display", "walkthrough");
 				}
 			}
 			],
@@ -378,6 +380,8 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 				index:3,
 				phase:function (options) {
 					events.dispatch("setup-digit");
+
+					events.dispatch("load-display", "walkthrough");
 				}
 			}
 			]

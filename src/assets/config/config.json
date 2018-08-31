@@ -1,7 +1,7 @@
 {
 	"config":{
 		"debug":{
-			"active":false,
+			"active":true,
 			"landingPage":"trash",
 			"loadSpeed":"fast"
 		},
@@ -37,7 +37,7 @@
 					}
 				},
 				"override":{
-					"gens":100,
+					"gens":10,
 					"splicemin":2,
 					"splicemax":12
 				},
@@ -67,6 +67,7 @@
 					}
 				},
 				"override":{
+					"gens":10,
 					"splicemin":2,
 					"splicemax":12
 				},
