@@ -2,7 +2,7 @@
 	"config":{
 		"debug":{
 			"active":true,
-			"landingPage":"trash",
+			"landingPage":"feedback",
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",
@@ -67,7 +67,6 @@
 					}
 				},
 				"override":{
-					"gens":10,
 					"splicemin":2,
 					"splicemax":12
 				},

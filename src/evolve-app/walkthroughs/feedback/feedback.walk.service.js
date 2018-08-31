@@ -1,4 +1,4 @@
-app.factory("feedback.walkthrough", ["utility", "phases.service", function (u, phases) {
+app.factory("feedback.walkthrough", ["utility", "phases.service", "control.service", function (u, phases, controlsService) {
 
 	var s = window.shared;
 	var g = s.utility_service;
@@ -10,181 +10,9 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", function (u, p
 	var self = this;
 
 	self.name = "feedback";
+	self.full = self.name + "walkthrough";
 
 	var grayout = true;
-
-	var phase_data = [
-	{
-		index:0,
-		meta:{
-			description:"Walklthrough welcome",
-			button:"#walkthroughwelcometoggle"
-		},
-		phase:function (options) {
-
-			if (phases.isRunning()) {  
-				console.log(self.name, options.index, "phase");
-				// toggleIndicator("run");
-				$("#runinner").addClass("scaling");
-				$("#arena").hide();
-				toggleGrayout(true);
-				u.toggle("hide", "run");
-				u.toggle("show", "walkthroughwelcome");
-				u.toggle("hide", "walkthroughbutton");
-				u.toggle("show", "walkthrough", {delay:300, fade:600});
-			}
-
-		},
-		complete:function (options) {
-
-			if (phases.isRunning()) {
-				console.log("pushed next button");
-
-				
-				$("#arena").show();
-				u.toggle("hide", "walkthroughwelcome");
-				toggleControl("play", true);
-			}
-			
-		}
-	},
-	{
-		index:0,
-		meta:{
-			description:"Click here",
-			button:"#playtoggle"
-		},
-		phase:function (options) {
-
-			console.log(self.name, options.index, "phase");
-
-		},
-		complete:function (options) {
-
-			if (phases.isRunning()) {
-				console.log("pushed next button");
-
-				
-				$("#runinner").removeClass("scaling");
-			}
-			
-		}
-	},
-	{
-		index:1,
-		meta:{
-			description:"End Evolution",
-			button:"#breakevolve"
-		},
-		phase:function (options) {
-
-
-			console.log(self.name, options.index, "phase");
-
-		},
-		complete:function (options) {
-
-			evolveEnd(true);
-		}
-	},
-	{
-		index:2,
-		meta:{
-			description:"Simulate results of 100 generations",
-			button:"#phase1-ok-button"
-		},
-		phase:function (options) {
-
-
-			console.log(self.name, options.index, "phase");
-
-		},
-		complete:function (options) {
-
-			if (phases.isRunning()) {
-				var element = "#stagetoggle";
-
-				// toggleGrayout(false);
-				toggleControl("play", true);
-				u.toggle("hide", "phase1-container");
-				scrollTo(element, options);
-			}
-		}
-	},
-	{
-		index:3,
-		meta:{
-			description:"Go to Refresh",
-			button:"#refreshtoggle"
-		},
-		phase:function (options) {
-
-			console.log(self.name, options.index, "phase");
-
-		},
-		complete:function (options) {
-
-			if (phases.isRunning()) {
-				
-				u.toggle("hide", "phase3-container", {delay:200, fade:400});
-				u.toggle("show", "complete-button", {delay:400, fade:400});
-				
-				setTimeout(function () {
-
-					toggleControl("play", true);
-				}, 600);
-			}
-		}
-	},
-	{
-		index:4,
-		meta:{
-			description:"repeat with a new trash config",
-			button:"#playtoggle"
-		},
-		phase:function (options) {
-
-
-			console.log(self.name, options.index, "phase");
-
-		},
-		complete:function (options) {
-			
-			// if (phases.isRunning()) {
-
-			// 	u.toggle("hide", "complete-button");
-				
-			// }
-
-			simStart();
-		}
-	},
-	{
-		index:5,
-		meta:{
-			description:"you have completed the wallkthrough",
-			button:"#complete-buttontoggle"
-		},
-		phase:function (options) {
-
-
-			console.log(self.name, options.index, "phase");
-
-		},
-		complete:function (options) {
-
-			if (phases.isRunning()) {
-				toggleGrayout(false);
-				u.toggle("hide", "complete-button", {fade:400});
-				stopScaling();
-				u.toggle("show", "walkthroughbutton", {delay:200, fade:300});
-				phases.running(false);
-			}
-		}
-	}
-	]
-
-
 
 	var toggleControl = function (control, toggle) {
 
@@ -250,6 +78,149 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", function (u, p
 	}
 
 
+	var evolveEnd = function (button) {
+
+		console.log("evolve end", phases.isRunning(self.full));
+
+		if (phases.isRunning(self.full)) {
+
+			// u.toggle("hide", "phase1-container", {delay:200, fade:400});
+			
+			setTimeout(function () {
+
+				toggleControl("refresh", true);
+			}, 600);
+		}
+	}
+
+	var evolveStart = function () {
+
+		if (phases.isRunning(self.full)) {
+			u.toggle("show", "phase1-container", {delay:200, fade:300});
+			u.toggle("hide", "complete-button", {delay:400, fade:400});
+		}
+	}
+
+	var phase_data = [
+	{
+		index:0,
+		meta:{
+			description:"Walklthrough welcome",
+			button:"#walkthroughwelcometoggle"
+		},
+		phase:function (options) {
+
+			if (phases.isRunning(self.full)) {  
+				console.log(self.full, options.index, "phase");
+				$("#arena").hide();
+				toggleGrayout(true);
+				u.toggle("show", "walkthroughwelcome");
+				u.toggle("hide", "walkthroughbutton");
+				u.toggle("show", "walkthrough", {delay:300, fade:600});
+			}
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning(self.full)) {
+				console.log("pushed next button");
+
+				
+				$("#arena").show();
+				u.toggle("hide", "walkthroughwelcome");
+				toggleControl("play", true);
+			}
+			
+		}
+	},
+	{
+		index:1,
+		meta:{
+			description:"repeat with a new trash config",
+			button:"#playtoggle"
+		},
+		phase:function (options) {
+
+
+			console.log(self.full, options.index, "phase");
+
+		},
+		complete:function (options) {
+			
+
+			evolveStart();
+		}
+	},
+	{
+		index:2,
+		meta:{
+			description:"Simulate results of 100 generations",
+			button:"#phase1-ok-button"
+		},
+		phase:function (options) {
+
+
+			console.log(self.full, options.index, "phase");
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning(self.full)) {
+
+				u.toggle("hide", "phase1-container", {delay:200, fade:300});
+			}
+		}
+	},
+	{
+		index:3,
+		meta:{
+			description:"Go to Refresh",
+			button:"#refreshtoggle"
+		},
+		phase:function (options) {
+
+			console.log(self.full, options.index, "phase");
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning(self.full)) {				
+				
+				setTimeout(function () {
+					toggleControl("play", true);
+				}, 600);
+				u.toggle("hide", "phase1-container", {delay:200, fade:400})
+				u.toggle("show", "complete-button", {delay:400, fdae:400});
+
+			}
+		}
+	},
+	{
+		index:4,
+		meta:{
+			description:"you have completed the wallkthrough",
+			button:"#complete-buttontoggle"
+		},
+		phase:function (options) {
+
+
+			console.log(self.full, options.index, "phase");
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning(self.full)) {
+				toggleGrayout(false);
+				u.toggle("hide", "complete-button", {fade:400});
+				stopScaling();
+				u.toggle("show", "walkthroughbutton", {delay:200, fade:300});
+				phases.running(self.full, false);
+			}
+		}
+	}
+	]
+
+
 	var indicateRefreshButton = function () {
 
 		moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 2000 : 1700)});
@@ -257,83 +228,28 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", function (u, p
 	}
 
 
-
-
-	var evolveEnd = function (button) {
-
-		if (phases.isRunning()) {
-
-
-			var element = "#evolvedatatoggle";
-
-			u.toggle("show", "phase1-container");
-
-			setTimeout(function () {
-				scrollTo(element, options);
-			}, button ? 1200 : 0);
-		}
-	}
-
-	var evolveStart = function () {
-
-
-	}
-
-	var simEnd = function () {
-
-		if (phases.isRunning()) {
-			console.log("end simulation");
-
-			$("#refreshinner").addClass("scaling-lg");
-			u.toggle("hide", "complete-button", {fade:300});
-			u.toggle("show", "phase3-container", {fade:300});
-		}
-	}
-
-	var simStart = function () {
-
-		if (phases.isRunning()) {
-			console.log("start simulation");
-
-			u.toggle("hide", "phase1-container");
-			u.toggle("hide", "complete-button", {fade:300});
-		}
-	}
-
-
 	var loadPhases = function () {
 
 		// console.log("load phases \n\n\n\n\n")
 
-		phases.loadPhases({name:self.name + "walkthrough", phases:phase_data, run:false});
+		phases.loadPhases({name:self.full, phases:phase_data, run:false});
 	}
 
 	var run = function () {
 
-		phases.run(self.name + "walkthrough");
+		phases.run(self.full);
 	}
 
 
 	loadPhases();
 
 
-	events.on("sim.trash.start", function () {
-
-		startSim();
-	})
-
-	events.on("sim.trash.end", function () {
-
-		endSim();
-	})
-
-
-	events.on("evolve.start", function () {
+	events.on("evolve.feedback.start", function () {
 
 		evolveStart();
 	});
 
-	events.on("evolve.end", function () {
+	events.on("evolve.feedback.end", function () {
 
 		evolveEnd();
 	})

@@ -13,29 +13,30 @@ app.factory("phases.service", [function () {
 
 	var n = "";
 	var p = {};
-	var $phases = [];
 
-	var $running = false;
+	var $running = {};
 
-	var running = function (toggle) {
+	var running = function (n, toggle) {
 
-		$running = toggle;
+		console.log("running", n, toggle);
+
+		$running[n] = toggle;
+
+		console.log("is running", $running[n]);
 	}
 
-	var isRunning = function () {
+	var isRunning = function (n) {
 
-		return $running;
+		console.log("is running", n, $running[n]);
+		return $running[n];
 	}
 
 	var runPhase = function ($i) {
 
-		running(true);
-
-		$phases = p[n];
-		$phases[$i].phase($phases[$i]);
+		p[n][$i].phase(p[n][$i]);
 
 		// only if there is no complete on button click event does the cycle continue unimpeeded
-		if (!$phases[$i].complete && $i < $phases.length-1) {
+		if (!p[n][$i].complete && $i < p[n].length-1) {
 			runPhase($i + 1);
 		}
 
@@ -44,13 +45,15 @@ app.factory("phases.service", [function () {
 
 	var run = function (name) {
 
+		console.log("run phases", name);
+
 		n = name;
-		running(true);
+		running(n, true);
 		runPhase(0);
 	}
 
 
-	var addNext = function (j, button) {
+	var addNext = function (n, j, button) {
 		
 		g.waitForElem({elems:button}, function (options) {
 
@@ -58,7 +61,8 @@ app.factory("phases.service", [function () {
 
 			$(options.elems).click(function () {
 
-				if ($phases[j].complete) $phases[j].complete($phases[j]);
+				console.log("clicked phase", j);
+				if (p[n][j].complete) p[n][j].complete(p[n][j]);
 
 				// if (j + 1 < $phases.length-1) $phases[j+1].phase($phases[j+1]);
 			})
@@ -76,15 +80,13 @@ app.factory("phases.service", [function () {
 
 		p[n] = [];
 
-		$phases = p[n];
-
 		for (var j in options.phases) {
 
-			$phases[j] = options.phases[j];
+			p[n][j] = options.phases[j];
 
-			var button = $phases[j].meta ? $phases[j].meta.button : null;
+			var button = p[n][j].meta ? p[n][j].meta.button : null;
 
-			addNext(j, button);
+			addNext(n, j, button);
 
 		}
 
