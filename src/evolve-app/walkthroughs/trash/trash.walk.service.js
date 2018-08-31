@@ -285,7 +285,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		
 		if (grayout) {
 
-			$("#walkthrough-grayout").animate({opacity:0.9}, 300);
+			$("#walkthrough-grayout").animate({opacity:0.7}, 300);
 			grayout = true;
 		}
 		else {
