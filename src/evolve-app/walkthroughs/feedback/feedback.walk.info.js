@@ -6,7 +6,9 @@ app.directive("feedbackInfo", function () {
 
 			<div class="relative width80 hcenter padding-v-100">
 
-				What you're seeing is a series of generations pass. With each animation step, the top perofmring individual is displayed in the box<br><br>
+				What you're seeing is a series of generations pass.<br><br> 
+
+				With each animation step, the top perofmring individual is displayed in the box<br><br>
 
 				Each top performing indvidual of the generation is animated seamlessly into the next, you are not seeing a single "individual" evolve<br><br>
 
