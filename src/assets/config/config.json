@@ -1,8 +1,8 @@
 {
 	"config":{
 		"debug":{
-			"active":true,
-			"landingPage":"feedback",
+			"active":false,
+			"landingPage":"trash",
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",
