@@ -126,7 +126,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	{
 		index:0,
 		meta:{
-			description:"Walklthrough welcome",
+			description:"Walkthrough welcome",
 			button:"#walkthroughwelcometoggle"
 		},
 		phase:function (options) {
