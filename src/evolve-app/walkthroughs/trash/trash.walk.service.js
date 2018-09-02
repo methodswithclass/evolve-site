@@ -69,20 +69,20 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		var $ref = $options.elems[0];
 		var $elem = $options.elems[1];
 
-		console.log("moveElement", $options);
+		// console.log("moveElement", $options);
 
 		// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
 
 		var buffer = (typeof options.buffer === "function") ? options.buffer() : options.buffer;
 
-		console.log("elemArray", options.elemArray, "buffer", buffer);
+		// console.log("elemArray", options.elemArray, "buffer", buffer);
 
 
 		var top = (-1)*$($ref).offset().top
 
 		var $top = top + buffer;
 
-		console.log("top", top);
+		// console.log("top", top);
 
 		$($elem).css({top:$top + "px"});
 	}
@@ -104,9 +104,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 		g.waitForElem({elems:options.elemArray}, function ($$options) {
 
-			setTimeout(function () {
+			// setTimeout(function () {
 				moveExistingElement($$options, options);
-			}, 800);
+			// }, 800);
 		})
 
 	}
@@ -135,6 +135,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		}
 		else {
 			console.log("evolveEnd: phases not running");
+
+			u.toggle("show", self.name+"walkthroughbutton");
 		}
 	}
 
@@ -142,11 +144,13 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 		if (phases.isRunning(self.full)) {
 
-
 			
 		}
 		else {
 			console.log("evolveStart: phases not running");
+
+			
+			u.toggle("hide", self.name+"walkthroughbutton")
 		}
 	}
 
@@ -290,7 +294,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		index:4,
 		meta:{
 			description:"Go to Refresh",
-			button:"#refreshtoggle"
+			button:"#refreshinner"
 		},
 		phase:function (options) {
 
@@ -321,7 +325,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 		index:5,
 		meta:{
 			description:"repeat with a new trash config",
-			button:"#playtoggle"
+			button:"#playinner"
 		},
 		phase:function (options) {
 

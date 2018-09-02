@@ -171,13 +171,15 @@ var appSetup = function (display, force) {
 
 var app = angular.module("app", ['stateModule', 'parallaxModule']);
 
-app.config(['$locationProvider', 'runtime.stateProvider', '$provide', function ($locationProvider, runtimeProvider, $provide) {
+app.config(['$locationProvider', 'runtime.stateProvider', '$provide', "$httpProvider", function ($locationProvider, runtimeProvider, $provide, $httpProvider) {
 	
 
 	appConfiguration(makeMobile(), makeInterface());
 
 
 	$locationProvider.html5Mode(true);
+
+	$httpProvider.defaults.headers.common["Cache-Control"] = "no-cache";
 
 	var states = runtimeProvider.states;
 

@@ -142,7 +142,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		index:1,
 		meta:{
 			description:"repeat with a new trash config",
-			button:"#playtoggle"
+			button:"#playinner"
 		},
 		phase:function (options) {
 
@@ -180,7 +180,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		index:3,
 		meta:{
 			description:"Go to Refresh",
-			button:"#refreshtoggle"
+			button:"#refreshinner"
 		},
 		phase:function (options) {
 

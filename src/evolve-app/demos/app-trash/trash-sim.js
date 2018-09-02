@@ -101,7 +101,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
     var feed = 300;
     var loop = 600;
 
-    var fast = false;
+    var fast = true;
 
     var slowfactor = 3;
 
