@@ -10,8 +10,7 @@ const config = require("../config.js");
 
 var refreshPages = [
 	"home",
-	"p",
-	"admin"
+	"p"
 ]
 
 

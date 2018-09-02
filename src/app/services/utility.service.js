@@ -177,7 +177,7 @@ app.factory("utility", ["general", function (gen) {
 
     var setInterface = function ($interface) {
 
-        var found = interfaces.find((p) => {
+        var found = interfaces.find(function (p) {
 
             return p.name == $interface;
         })

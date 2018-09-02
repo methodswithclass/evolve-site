@@ -72,7 +72,7 @@ var setLoadSpeed = function (display, speed) {
 	var params = display.getParams();
 	var currentParams;
 
-    var found = loadSpeeds.find((p) => {
+    var found = loadSpeeds.find(function (p) {
         return p.name == speed;
     })
 
@@ -140,7 +140,7 @@ var appSetup = function (display, force) {
 	setSpeed = function (name) {
 
 
-		var found = loadSpeeds.find((p) => {
+		var found = loadSpeeds.find(function (p) {
 
 			return p.name == name;
 		})
@@ -195,71 +195,83 @@ app.run(['states', "config.service", "display.service", function (states, config
 	// config service is loaded as a dependency and loads data into application automatically
 	// don't remove this dependency 
 
-	var configPromise = new Promise((resolve, reject) => {
+	var shared = window.shared;
+	var g = shared.utility_service;
+
+
+	var configPromise = new Promise(function (resolve, reject) {
 
 		resolve([]);
 
 	})
+	
 
-	try {
+	// if (true) {
+	if (g.whatDevice() == g.devices.ie) {
+		states.go("unsupported");
+	}
+	else {
+
+
 		
-		configPromise = config.get([
-		                            "config.debug",
-			                    	"config.landingPage", 
-			                    	"config.loadSpeed"
-			                    ]);
+		try {
+			
+			configPromise = config.get([
+			                            "config.debug",
+				                    	"config.landingPage", 
+				                    	"config.loadSpeed"
+				                    ]);
 
-	}
-	catch (e) {
-		console.log("Error in landing page switch:", e.message);
-		states.go("home");
-	}
+			
 
-
-	configPromise.then((data) => {
-
-		var debug = data[0];
-		var landingPage 
-		var loadSpeed;
-
-
-		if (debug.active) {
-
-			landingPage = debug.landingPage
-			loadSpeed = debug.loadSpeed;
 		}
-		else {
-			landingPage = data[1];
-			loadSpeed = data[2];
-		}
-
-		switch (landingPage) {
-
-			case page.home:
+		catch (e) {
+			console.log("Error in landing page switch:", e.message);
 			states.go("home");
-			break;
-
-			case page.trash:
-			states.go("trash#demo");
-			break;
-
-			case page.feedback:
-			states.go("feedback#demo");
-			break;
-
-			default:
-			states.go("home");
-			break;
-
 		}
 
 
-		appSetup(display, loadSpeed);
-	})
+		configPromise.then(function (data) {
 
-	// var foo = {};
+			var debug = data[0];
+			var landingPage 
+			var loadSpeed;
 
-	// foo.bar();
+
+			if (debug.active) {
+
+				landingPage = debug.landingPage
+				loadSpeed = debug.loadSpeed;
+			}
+			else {
+				landingPage = data[1];
+				loadSpeed = data[2];
+			}
+
+			switch (landingPage) {
+
+				case page.home:
+				states.go("home");
+				break;
+
+				case page.trash:
+				states.go("trash#demo");
+				break;
+
+				case page.feedback:
+				states.go("feedback#demo");
+				break;
+
+				default:
+				states.go("home");
+				break;
+
+			}
+
+
+			appSetup(display, loadSpeed);
+		})
+	}
 
 
 }]);

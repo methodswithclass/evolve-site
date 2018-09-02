@@ -21,11 +21,11 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 	           "config.activePages",
 	           "global.programs"
 	           ])
-	.then((data) => {
+	.then(function (data) {
 
 		$scope.isActive = data[0];
 		
-		if (state != "home") {
+		if (state != "home" && state != "unsupported") {
 			stateParams = data[1][state].meta;
 			$scope.pageColor = stateParams.colors.page;
 			$scope.demoButton = stateParams.colors.demoButton;

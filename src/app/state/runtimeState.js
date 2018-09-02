@@ -46,6 +46,12 @@ stateModule.provider("runtime.state", function ($stateProvider) {
 
     var stateViewUrls = [
     {
+        name:"unsupported",
+        between:"",
+        url:"/unsupported.html",
+        site:true
+    },
+    {
         name:"home",
         between:"",
         url:"/home.html",
@@ -92,6 +98,12 @@ stateModule.provider("runtime.state", function ($stateProvider) {
     // console.log("runtime provider template html", templateHtml);
 
     var states = [
+    {
+        name:"unsupported",
+        url:"/p/unsupported",
+        controller:"main.controller",
+        controllerAs:"main"
+    },
     {
         name:"home",
         url:"/home",

@@ -43,7 +43,7 @@
     "jquery.scrollto": "^2.1.2",
     "jshint": "^2.9.4",
     "mc-evolve": "^5.1.2",
-    "mc-shared": "4.5.8",
+    "mc-shared": "4.5.9",
     "merge-stream": "^1.0.1",
     "mongoose": "^4.13.14",
     "node-sass": "^4.9.2",
