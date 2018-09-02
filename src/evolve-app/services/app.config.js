@@ -24,7 +24,7 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 
 		var keyArray = $key.split(".");
 
-		var getProp = (obj, $i, array) => {
+		var getProp = function (obj, $i, array) {
 
 			if ($i < array.length-1) {
 
@@ -55,7 +55,7 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 
 	var get = function ($$key) {
 
-		return new Promise((resolve, reject) => {
+		return new Promise(function (resolve, reject) {
 
 
 			var configExists = function ($resolve, $reject) {

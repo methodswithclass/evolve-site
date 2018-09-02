@@ -506,7 +506,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
 
         config.get("global.programs." + self.name)
-        .then((data) => {
+        .then(function (data) {
 
             updateTime = data.updateTime;
         })

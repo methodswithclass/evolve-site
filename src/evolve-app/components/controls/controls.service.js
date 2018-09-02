@@ -119,7 +119,7 @@ app.factory("control.service", ["utility", function (u) {
 		}
 
 
-		controls.forEach((value, index) => {
+		controls.forEach(function (value, index) {
 			
 			hoverFunction(value);
 
@@ -246,7 +246,7 @@ app.factory("control.service", ["utility", function (u) {
 
 
 
-		g.waitForElem({elems:"#arena"}, () => {
+		g.waitForElem({elems:"#arena"}, function () {
 
 			positionControlsItems({
 				controls:controls,

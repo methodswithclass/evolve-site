@@ -186,7 +186,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				var $value;
 
 
-				plot.forEach((value, $index) => {
+				plot.forEach(function (value, $index) {
 
 					$value = $index*width/total;
 
@@ -198,7 +198,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				var value;
 
-				plot.forEach(($value, index) => {
+				plot.forEach(function ($value, index) {
 
 					value = Array.isArray(dna) ? dna[index] : (typeof dna !== "undefined" ? dna : $value.coords.y);
 
@@ -257,19 +257,19 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			setArenaSize();
 
-			$(window).resize(() => {
+			$(window).resize(function () {
 
 				setArenaSize();
 				
 				changeX(100);
 
-				setTimeout(() => {
+				setTimeout(function () {
 					changeY(undefined, 100);
 				}, 200);
 
 			})
 
-			var refreshTimer = setInterval(() => {
+			var refreshTimer = setInterval(function () {
 
 				// console.log("refresh timer");
 

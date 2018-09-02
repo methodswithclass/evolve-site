@@ -13,7 +13,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
     var processTypes
 
     config.get("global.types.processTypes")
-    .then((data) => {
+    .then(function (data) {
 
         processTypes = data;
     })
@@ -99,7 +99,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         }
 
 
-        return new Promise((resolve, reject) => {
+        return new Promise(function (resolve, reject) {
 
 
 
@@ -175,7 +175,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
                     scrollFunc();
                 }
 
-                $(main).scroll(() => {
+                $(main).scroll(function () {
 
                     if (g.isMobile()) {
                         mobileFunc();
@@ -186,7 +186,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
                 });
 
 
-                $(main).resize(() => {
+                $(main).resize(function () {
 
                     if (g.isMobile()) {
                         mobileFunc();
@@ -338,7 +338,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         self.programInput
 
         config.get("global.programs.trash")
-        .then((data) => {
+        .then(function (data) {
 
 
             setupProgramInput(self, data);

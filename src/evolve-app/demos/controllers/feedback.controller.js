@@ -15,7 +15,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
 
     config.get("global.programs.feedback")
-    .then((data) => {
+    .then(function (data) {
 
         programInput = data;
 
@@ -38,7 +38,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
     var finish = function (self, $scope) {
 
-        return new Promise((resolve, reject) => {
+        return new Promise(function (resolve, reject) {
 
             resolve(true);
         });
@@ -51,7 +51,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         $scope.programInput = programInput;
 
         // config.get("global.feedback")
-        // .then((data) => {
+        // .then(function(data) {
 
         //     $scope.programInput = data;
         // })
@@ -113,7 +113,7 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
     var step = function (self, $scope, dna) {
 
-        setTimeout(() => {
+        setTimeout(function () {
 
             simulator.step(dna, programInput.duration);
 

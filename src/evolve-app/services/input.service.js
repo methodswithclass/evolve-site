@@ -33,7 +33,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
                "global.initial",
                "global.initial"
                ])
-    .then((data) => {
+    .then(function (data) {
 
         // console.log("data array", data);
 
@@ -303,7 +303,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         self.name = name;
 
         config.get("global.programs." + self.name + ".override")
-        .then((data) => {
+        .then(function (data) {
 
             // console.log(data);
 

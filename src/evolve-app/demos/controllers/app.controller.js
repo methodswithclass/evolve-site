@@ -32,7 +32,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
 
     config.get("global.types.crossoverMethods")
-    .then((data) => {
+    .then(function (data) {
 
 
         tempcross = data;
@@ -251,7 +251,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
             // controller.createEnvironment(self, $scope);
 
             controller.finish(self, $scope)
-            .then((result) => {
+            .then(function (result) {
 
                 evolve.running(false, $scope);
 
