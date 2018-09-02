@@ -78,24 +78,40 @@ var scripts = function() {
 
 };
 
-var vendor = function () {
-	
+var tempVendor = function () {
 
-	var vendorSrc = gulp.src("./bower.json")
-		.pipe(mainBowerFiles({base:"./bower_components"}))
+	var shim = gulp.src("node_modules/angular-polyfills/dist/all.js")
+		.pipe(concat("shim.js"))
+		.pipe(gulp.dest("temp/vendor"));
+
+	var bowerSrc = gulp.src("bower.json")
+		.pipe(mainBowerFiles({base:"bower_components"}))
 		.pipe(filter("**/*.js"))
-		.pipe(gulp.src([
+		.pipe(concat("bower.js"))
+		.pipe(gulp.dest("temp/vendor"));
+
+	var npmSrc = gulp.src([
 			//npm packages for front end use
-			"node_modules/angular-polyfills/dist/all.js",
 			"node_modules/jquery.scrollto/jquery.scrollTo.js",
 			"node_modules/velocity-animate/velocity.js",
 			"node_modules/mc-shared/shared.js"
-			]), {passthrough:true})
-		.pipe(concat("vendor.js"))
+			])
+		.pipe(concat("npm.js"))
+		.pipe(gulp.dest("temp/vendor"))
 
 
+	return merge(shim, npmSrc, bowerSrc);
+}
 
-	var js = vendorSrc
+var vendor = function () {
+
+
+	var js = gulp.src([
+	                  "temp/vendor/shim.js",
+	                  "temp/vendor/bower.js",
+	                  "temp/vendor/**/*.js"
+	                  ])
+	.pipe(concat("vendor.js"))
 	.pipe(gulp.dest("dist/assets/js"));
 
 	var jsMin;
@@ -259,7 +275,7 @@ var serveFunc = function (done) {
 
 var copy = gulp.parallel(data, misc, index, html, images, fonts)
 
-var compile = gulp.parallel(vendor, scripts);
+var compile = gulp.parallel(gulp.series(tempVendor, vendor), scripts);
 
 var buildTask = gulp.series(gulp.parallel(compile, gulp.series(apiSass, styles), copy), injectJS);
 
