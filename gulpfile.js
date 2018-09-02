@@ -80,7 +80,11 @@ var scripts = function() {
 
 var tempVendor = function () {
 
-	var shim = gulp.src("node_modules/angular-polyfills/dist/all.js")
+	// var shimFile = "node_modules/angular-polyfills/dist/all.js";
+	var shimFile = "node_modules/es6-shim/es6-shim.min.js";
+
+
+	var shim = gulp.src(shimFile)
 		.pipe(concat("shim.js"))
 		.pipe(gulp.dest("temp/vendor"));
 
