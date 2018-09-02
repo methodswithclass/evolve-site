@@ -148,7 +148,8 @@ app.factory("settings.service", [function () {
     {
         name:"open",
         input:"#opensettings",
-        tool:"#opentool"
+        tool:"#opentool",
+        close:"#closetool"
     }
     ]
 
@@ -244,6 +245,13 @@ app.factory("settings.service", [function () {
                 duration:100, 
                 complete:function () {
                     openStatus.opened = $("#settingstoggle").offset().left < $(window).width()/2;
+
+                    if (!openStatus.opened) {
+                        $(controls[0].close).animate({opacity:1}, 100, function () {
+
+                            $(controls[0].close).animate({opacity:0}, 300);
+                        })
+                    }
                 }
 
             });

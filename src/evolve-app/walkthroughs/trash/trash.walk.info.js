@@ -7,7 +7,7 @@ app.directive("trashInfo", function () {
 
 			<div class="relative width80 hcenter padding-v-100">
 				<ol>
-					<li>Tap the animating New button to the left at the top of the controls to regenerate a new trash configuration <br>(a good plan will work just as well on any trash configuration, it's relative to the robot, not the grid)</li>
+					<li>{{action}} the animating New button to the left at the top of the controls to generate a new trash configuration <br>(a good plan will work just as well on any trash configuration, it's relative to the robot, not the grid)</li>
 					<li>Rerun the simulation</li>
 				</ol>
 
@@ -22,6 +22,17 @@ app.directive("trashInfo", function () {
 			</div>
 
 
-		`
+		`,
+		link:function ($scope) {
+
+			var s = window.shared;
+			var g = s.utility_service;
+			var send = s.send_service;
+			var react = s.react_service;
+			var events = s.events_service;
+
+
+			$scope.action = g.isMobile() ? "Tap" : "Click";
+		}
 	}
 })
