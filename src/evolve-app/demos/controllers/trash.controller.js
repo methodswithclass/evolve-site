@@ -213,14 +213,14 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	var finish = function (self, $scope) {
 
-        return new Promise((resolve, reject) => {
+        return new Promise(function (resolve, reject) {
 
             self.programInputChange();
 
             var result;
 
             // opacityScroll()
-            // .then((result) => {
+            // .then(function (result) {
 
                 resolve(result || true);
             // })
