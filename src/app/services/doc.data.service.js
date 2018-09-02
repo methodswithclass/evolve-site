@@ -95,6 +95,15 @@ app.factory("doc.data", function () {
 			]
 			]
 		},
+		{
+			id:"credit",
+			title:"credit",
+			text:[
+			[
+				"This example is credited to Melanie Mitchell from her book 'Complexity: A Guided Tour' (2009, Oxford University Press)"
+			]
+			]
+		},
 		// {
 		// 	id:"school",
 		// 	title:"school",

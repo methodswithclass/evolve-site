@@ -74,7 +74,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
 
-			$elem.css({top:$ref.offset().top + options.buffer + "px"});
+			$elem.css({top:$ref.offset().top + $ref.height() + options.buffer + "px"});
 		})
 
 	}
@@ -272,6 +272,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				u.toggle("hide", self.name + "phase3-container", {delay:200, fade:400});
 				u.toggle("show", self.name + "complete-button", {delay:400, fade:400});
 				
+				moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#evolvedatatoggle", buffer:(g.isMobile() ? 200 : 100)});
+
 				setTimeout(function () {
 
 					toggleControl("play", true);
