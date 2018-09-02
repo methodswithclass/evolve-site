@@ -17,7 +17,7 @@ app.directive("trashInfo", function () {
 					<li>Repeat these steps a few times to get a good sense for how well your plan fares</li>
 
 					<li>Then evolve more generations (usually about a 1000 or more) until you reach the maximum fitness (points) for the grid size to see the most intelligent result</li>
-					<li>The max points for the grid size is: (trash percentage) x (numer of grid squares) x (10 points for a successful trash pickup)</li>
+					<li>The max points for the grid size is: (trash percentage) x (number of grid squares) x (10 points for a successful trash pickup)</li>
 				</ul>
 			</div>
 

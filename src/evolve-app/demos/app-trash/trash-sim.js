@@ -383,7 +383,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             u.toggle("enable", "stop", {fade:300});
 
             // u.toggle("disable", "run", {fade:300, delay:100});
-            u.toggle("disable", "settings", {fade:300});
+            u.toggle("hide", "settings", {fade:300});
         })
 
         
@@ -411,7 +411,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
         u.toggle("disable", "stop", {fade:300});
 
         u.toggle("enable", "run", {fade:300, delay:500});
-        u.toggle("enable", "settings", {fade:300});
+        u.toggle("show", "settings", {fade:300});
 
         events.dispatch("sim."+name+".end");
     }
