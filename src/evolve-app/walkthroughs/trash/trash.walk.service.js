@@ -272,7 +272,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				u.toggle("hide", self.name + "phase3-container", {delay:200, fade:400});
 				u.toggle("show", self.name + "complete-button", {delay:400, fade:400});
 				
-				moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#evolvedatatoggle", buffer:(g.isMobile() ? 200 : 100)});
+				// moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#evolvedatatoggle", buffer:(g.isMobile() ? 200 : 100)});
 
 				setTimeout(function () {
 
