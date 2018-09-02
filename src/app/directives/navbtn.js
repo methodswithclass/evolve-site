@@ -12,6 +12,14 @@ app.directive("navbtn", ['states', 'utility', 'evolve.service', function (states
 		link:function ($scope, element, attr) {
 
 
+
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var send = shared.send_service;
+			var react = shared.react_service;
+			var events = shared.events_service;
+
+
 			// console.log("nav button", $scope.varClass);
 
 			var hideElements = function () {
@@ -28,7 +36,9 @@ app.directive("navbtn", ['states', 'utility', 'evolve.service', function (states
 
 			$(element).on("click", function () {
 
-				console.log("nav to " + $scope.loc);
+				console.log("nav with", $scope.name, "to", $scope.loc);
+
+				events.dispatch($scope.name + "." + $scope.loc);
 				
 				hideElements();
 

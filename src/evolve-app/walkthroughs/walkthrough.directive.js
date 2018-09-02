@@ -15,17 +15,23 @@ app.directive("walkthrough", ["utility", "states", "asset.service", function (u,
 			var events = s.events_service;
 
 
-			self.name = u.stateName(states.current());
-
-			var walkthrough = assets.get(assets.types.WALKTHROUGH, self.name);
+			self.name = states.getName();
 
 			// console.log("run directive \n\n\n\n\n")
 			
+			var runWalkthrough = function () {
+
+				self.name = states.getName();
+
+				assets.get(assets.types.WALKTHROUGH, self.name).run();
+			}
+
 
 			events.on("load-display", "walkthrough", function () {
 
+				self.name = states.getName();
 
-				walkthrough.run();
+				events.dispatch("enter." + self.name +".walkthrough");
 
 			});
 
@@ -37,7 +43,9 @@ app.directive("walkthrough", ["utility", "states", "asset.service", function (u,
 
 			$scope.run = function () {
 
-				walkthrough.run();
+
+
+				runWalkthrough();
 			}
 
 

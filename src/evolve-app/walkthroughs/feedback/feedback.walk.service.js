@@ -41,11 +41,11 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		
 		if (grayout) {
 
-			$("#walkthrough-grayout").animate({opacity:0.7}, 300);
+			$("#"+self.name+"walkthrough-grayout").animate({opacity:0.7}, 300);
 			grayout = true;
 		}
 		else {
-			$("#walkthrough-grayout").animate({opacity:0}, 300);
+			$("#"+self.name+"walkthrough-grayout").animate({opacity:0}, 300);
 			grayout = false;
 		}
 	}
@@ -78,14 +78,19 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	}
 
 
+	var closeWalkthrough = function () {
+
+		u.toggle("hide", self.name + "walkthrough");
+		phases.running(self.full, false);
+	}
+
+
 	var evolveEnd = function (button) {
 
 		console.log("evolve end", phases.isRunning(self.full));
 
 		if (phases.isRunning(self.full)) {
 
-			// u.toggle("hide", "phase1-container", {delay:200, fade:400});
-			
 			setTimeout(function () {
 
 				toggleControl("refresh", true);
@@ -96,8 +101,8 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	var evolveStart = function () {
 
 		if (phases.isRunning(self.full)) {
-			u.toggle("show", "phase1-container", {delay:200, fade:300});
-			u.toggle("hide", "complete-button", {delay:400, fade:400});
+			u.toggle("show", self.name+"phase1-container", {delay:200, fade:300});
+			u.toggle("hide", self.name+"complete-button", {delay:400, fade:400});
 		}
 	}
 
@@ -106,7 +111,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		index:0,
 		meta:{
 			description:"Walklthrough welcome",
-			button:"#walkthroughwelcometoggle"
+			button:"#"+self.name+"walkthroughwelcometoggle"
 		},
 		phase:function (options) {
 
@@ -114,9 +119,9 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 				console.log(self.full, options.index, "phase");
 				$("#arena").hide();
 				toggleGrayout(true);
-				u.toggle("show", "walkthroughwelcome");
-				u.toggle("hide", "walkthroughbutton");
-				u.toggle("show", "walkthrough", {delay:300, fade:600});
+				u.toggle("show", self.name+"walkthroughwelcome");
+				u.toggle("hide", self.name+"walkthroughbutton");
+				u.toggle("show", self.name+"walkthrough", {delay:300, fade:600});
 			}
 
 		},
@@ -127,7 +132,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 
 				
 				$("#arena").show();
-				u.toggle("hide", "walkthroughwelcome");
+				u.toggle("hide", self.name+"walkthroughwelcome");
 				toggleControl("play", true);
 			}
 			
@@ -155,7 +160,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		index:2,
 		meta:{
 			description:"Simulate results of 100 generations",
-			button:"#phase1-ok-button"
+			button:"#"+self.name+"phase1-ok-button"
 		},
 		phase:function (options) {
 
@@ -167,7 +172,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 
 			if (phases.isRunning(self.full)) {
 
-				u.toggle("hide", "phase1-container", {delay:200, fade:300});
+				u.toggle("hide", self.name+"phase1-container", {delay:200, fade:300});
 			}
 		}
 	},
@@ -189,8 +194,8 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 				setTimeout(function () {
 					toggleControl("play", true);
 				}, 600);
-				u.toggle("hide", "phase1-container", {delay:200, fade:400})
-				u.toggle("show", "complete-button", {delay:400, fdae:400});
+				u.toggle("hide", self.name+"phase1-container", {delay:200, fade:400})
+				u.toggle("show", self.name+"complete-button", {delay:400, fdae:400});
 
 			}
 		}
@@ -199,7 +204,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		index:4,
 		meta:{
 			description:"you have completed the wallkthrough",
-			button:"#complete-buttontoggle"
+			button:"#"+self.name+"complete-buttontoggle"
 		},
 		phase:function (options) {
 
@@ -211,9 +216,9 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 
 			if (phases.isRunning(self.full)) {
 				toggleGrayout(false);
-				u.toggle("hide", "complete-button", {fade:400});
+				u.toggle("hide", self.name+"complete-button", {fade:400});
 				stopScaling();
-				u.toggle("show", "walkthroughbutton", {delay:200, fade:300});
+				u.toggle("show", self.name+"walkthroughbutton", {delay:200, fade:300});
 				phases.running(self.full, false);
 			}
 		}
@@ -223,8 +228,8 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 
 	var indicateRefreshButton = function () {
 
-		moveElement({element:"#complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 2000 : 1700)});
-		moveElement({element:"#phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1800 : 1400)});
+		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 2000 : 1700)});
+		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1800 : 1400)});
 	}
 
 
@@ -252,6 +257,19 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	events.on("evolve.feedback.end", function () {
 
 		evolveEnd();
+	})
+
+	events.on("back.feedback", function () {
+
+		closeWalkthrough();
+	})
+
+
+	events.on("enter.feedback.walkthrough", function () {
+
+		loadPhases();
+
+		run();
 	})
 
 

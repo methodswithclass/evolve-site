@@ -1,4 +1,4 @@
-stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', function ($q, runtime, $state, $rootScope) {
+stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', "utility", function ($q, runtime, $state, $rootScope, u) {
 
 
 	var shared = window.shared;
@@ -28,6 +28,11 @@ stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', fu
 
 	var current = function () {
 		return $state.current.name;
+	}
+
+	var getName = function () {
+
+		return u.stateName(current());
 	}
 
 	var go = function (state) {
@@ -68,6 +73,7 @@ stateModule.factory("states", ['$q', 'runtime.state', '$state', '$rootScope', fu
 
 	return {
 		current:current,
+		getName:getName,
 		go:go,
 		split:split,
 		check:check

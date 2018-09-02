@@ -12,7 +12,7 @@ app.factory("phases.service", [function () {
 	var self = this;
 
 	var n = "";
-	var p = {};
+	self.p = {};
 
 	var $running = {};
 
@@ -22,7 +22,7 @@ app.factory("phases.service", [function () {
 
 		$running[n] = toggle;
 
-		console.log("is running", $running[n]);
+		// console.log("is running", $running[n]);
 	}
 
 	var isRunning = function (n) {
@@ -33,10 +33,10 @@ app.factory("phases.service", [function () {
 
 	var runPhase = function ($i) {
 
-		p[n][$i].phase(p[n][$i]);
+		self.p[n][$i].phase(self.p[n][$i]);
 
 		// only if there is no complete on button click event does the cycle continue unimpeeded
-		if (!p[n][$i].complete && $i < p[n].length-1) {
+		if (!self.p[n][$i].complete && $i < self.p[n].length-1) {
 			runPhase($i + 1);
 		}
 
@@ -53,16 +53,21 @@ app.factory("phases.service", [function () {
 	}
 
 
-	var addNext = function (n, j, button) {
+	var addNext = function ($options) {
 		
-		g.waitForElem({elems:button}, function (options) {
+		var $phases = $options.phases;
+		var $name = $options.name;
+		var $index = $options.index;
+		var $button = $options.button;
+
+		g.waitForElem({elems:$button}, function (options) {
 
 			// console.log("register phase click event for button", options.elems);
 
 			$(options.elems).click(function () {
 
-				console.log("clicked phase", j);
-				if (p[n][j].complete) p[n][j].complete(p[n][j]);
+				console.log("clicked phase", $name, $phases[$name][$index].index, $phases[$name][$index].meta.button);
+				if ($phases[$name][$index].complete) $phases[$name][$index].complete($phases[$name][$index]);
 
 				// if (j + 1 < $phases.length-1) $phases[j+1].phase($phases[j+1]);
 			})
@@ -78,15 +83,15 @@ app.factory("phases.service", [function () {
 
 		n = options.name || "none";
 
-		p[n] = [];
+		self.p[n] = [];
 
 		for (var j in options.phases) {
 
-			p[n][j] = options.phases[j];
+			self.p[n][j] = options.phases[j];
 
-			var button = p[n][j].meta ? p[n][j].meta.button : null;
+			var button = self.p[n][j].meta ? self.p[n][j].meta.button : null;
 
-			addNext(n, j, button);
+			addNext({phases:self.p, name:n, index:j, button:button});
 
 		}
 

@@ -1,4 +1,4 @@
-app.factory("display.service", ["utility", "phases.service", function (u, phases) {
+app.factory("display.service", ["utility", "phases.service", "states", function (u, phases, states) {
 
 
 
@@ -260,7 +260,9 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 
 	var forceEvolveHeight = function () {
 
-		g.waitForElem({elems:["#main-back", "#evolvetoggle", "#walkthroughtoggle", "#main-inner"]}, function (options) {
+		var name = u.stateName(states.current());
+
+		g.waitForElem({elems:["#main-back", "#evolvetoggle", "#"+name+"walkthroughtoggle", "#main-inner"]}, function (options) {
 			
 			$mainBack = $(options.elems[0]);
 			$evolve = $(options.elems[1]);
@@ -324,7 +326,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 
 					events.dispatch("load-display", "controls-trash");
 
-					events.dispatch("load-display", "walkthrough");
+					events.dispatch("enter.trash.walkthrough");
 				}
 			}
 			],
@@ -381,7 +383,7 @@ app.factory("display.service", ["utility", "phases.service", function (u, phases
 				phase:function (options) {
 					events.dispatch("setup-digit");
 
-					events.dispatch("load-display", "walkthrough");
+					events.dispatch("enter.feedback.walkthrough");
 				}
 			}
 			]
