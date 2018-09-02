@@ -14,6 +14,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	self.full = self.name + "walkthrough";
 
 	var grayout = true;
+	var evolveCount = 0;
 
 
 	var toggleControl = function (control, toggle) {
@@ -63,18 +64,49 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	}
 
 
+	var moveExistingElement = function ($options, options) {
+
+		var $ref = $options.elems[0];
+		var $elem = $options.elems[1];
+
+		console.log("moveElement", $options);
+
+		// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
+
+		var buffer = (typeof options.buffer === "function") ? options.buffer() : options.buffer;
+
+		console.log("elemArray", options.elemArray, "buffer", buffer);
+
+
+		var top = (-1)*$($ref).offset().top
+
+		var $top = top + buffer;
+
+		console.log("top", top);
+
+		$($elem).css({top:$top + "px"});
+	}
+
+
 	var moveElement = function (options) {
 
-		g.waitForElem({elems:[options.top, options.element]}, function ($options) {
+		var elemArray = [];
+		elemArray[0] = options.top;
+		elemArray[1] = options.element;
 
-			var $ref = $($options.elems[0]);
-			var $elem = $($options.elems[1]);
+		for (var i in options.others) {
+			elemArray[elemArray.length] = options.others[i];
+		}
 
-			console.log("moveElement", $options);
+		// console.log("elem array", elemArray);
 
-			// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
+		options.elemArray = elemArray;
 
-			$elem.css({top:$ref.offset().top + $ref.height() + options.buffer + "px"});
+		g.waitForElem({elems:options.elemArray}, function ($$options) {
+
+			setTimeout(function () {
+				moveExistingElement($$options, options);
+			}, 800);
 		})
 
 	}
@@ -94,6 +126,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			var element = "#evolvedatatoggle";
 
 			u.toggle("show", self.name + "phase1-container");
+
+			indicateRefreshButton();
 
 			setTimeout(function () {
 				scrollTo(element, options);
@@ -272,7 +306,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				u.toggle("hide", self.name + "phase3-container", {delay:200, fade:400});
 				u.toggle("show", self.name + "complete-button", {delay:400, fade:400});
 				
-				// moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#evolvedatatoggle", buffer:(g.isMobile() ? 200 : 100)});
 
 				setTimeout(function () {
 
@@ -332,8 +365,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 	var indicateRefreshButton = function () {
 
-		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 2000 : 1700)});
-		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1800 : 1400)});
+
+		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-back", buffer:(g.isMobile() ? 1700 : 1300) + evolveCount*100});
+		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-back", buffer:(g.isMobile() ? 1900 : 1600) + evolveCount*100});
 	}
 
 	
@@ -375,6 +409,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	});
 
 	events.on("evolve.trash.end", function () {
+
+		evolveCount++;
 
 		evolveEnd(false, {});
 	})
