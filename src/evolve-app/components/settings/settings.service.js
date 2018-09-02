@@ -210,7 +210,7 @@ app.factory("settings.service", [function () {
     var settingsWidth = 800;
     var width = 0.6;
     var openStatus = {opened:true, right:{opened:0, closed:(-1)*settingsWidth}};
-
+    var priorStatus = false;
 
     var animateToggle = function (open_up) {
 
@@ -218,12 +218,12 @@ app.factory("settings.service", [function () {
 
             openStatus.opened = $("#settingstoggle").offset().left < $(window).width()*0.7;
 
+            priorStatus = openStatus.opened;
+
             $(controls[0].tool).animate({opacity:0}, 200);
             $("#settingstoggle").animate({
                 
-                right:
-                
-                (
+                right:(
 
                  open_up ? openStatus.right.closed
 
@@ -244,13 +244,22 @@ app.factory("settings.service", [function () {
                 
                 duration:100, 
                 complete:function () {
+
                     openStatus.opened = $("#settingstoggle").offset().left < $(window).width()/2;
 
-                    if (!openStatus.opened) {
-                        $(controls[0].close).animate({opacity:1}, 100, function () {
+                    if (priorStatus && !openStatus.opened) {
+                        
+                        setTimeout(function () {
+                            $(controls[0].close).animate({opacity:1}, {
+                                duration:300, 
+                                complete:function () {
 
-                            $(controls[0].close).animate({opacity:0}, 300);
-                        })
+                                    setTimeout(function () {
+                                        $(controls[0].close).animate({opacity:0}, {duration:600});
+                                    }, 1000)
+                                }
+                            })
+                        }, 300);
                     }
                 }
 
