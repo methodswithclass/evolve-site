@@ -53,6 +53,7 @@ var scripts = function() {
 
 
     var mainSrc = gulp.src([
+        "node_modules/mc-shared/shared.js",
 	    "src/assets/**/*.js",
 	    "src/app/state/stateModule.js",
 	    "src/app/state/runtimeState.js",
@@ -109,7 +110,6 @@ var tempVendor = function () {
 			//npm packages for front end use
 			"node_modules/jquery.scrollto/jquery.scrollTo.js",
 			"node_modules/velocity-animate/velocity.js",
-			"node_modules/mc-shared/shared.js"
 			])
 		.pipe(concat("npm.js"))
 		.pipe(babel({
