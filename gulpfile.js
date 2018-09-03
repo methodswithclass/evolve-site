@@ -112,6 +112,9 @@ var tempVendor = function () {
 			"node_modules/mc-shared/shared.js"
 			])
 		.pipe(concat("npm.js"))
+		.pipe(babel({
+	        presets: ["@babel/env"]
+	    }))
 		.pipe(gulp.dest("temp/vendor"))
 
 

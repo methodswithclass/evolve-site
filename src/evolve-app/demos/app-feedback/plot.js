@@ -79,7 +79,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				self.stopAnimation = function () {
 
-					$(container).stop();
+					$(container).stop(true, true);
 				}
 
 				self.setCoordX = function (value, duration) {
@@ -139,7 +139,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 					// 	duration:duration
 					// })
 
-					$(container).animate({top:value + "px"}, {
+					$(container).stop().animate({top:value + "px"}, {
 						duration:duration
 					})
 
