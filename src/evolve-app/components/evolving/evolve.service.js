@@ -231,6 +231,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
     var stepprogress = function () {
         
+        var input = $input.getInput(false);
 
         var genT = input.gens;
         var orgT = input.pop;
@@ -419,7 +420,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
     	evolving(true, _$scope);
 
-		input = $input.getInput();
+		// input = $input.getInput();
 
         console.log("run evolve");
 

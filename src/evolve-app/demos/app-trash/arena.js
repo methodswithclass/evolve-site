@@ -35,8 +35,8 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				var self = this;
 
-				$stage = $("#arena");
-				$elem = $("#elem");
+				var $stage = $("#arena");
+				var $elem = $("#elem");
 
 
 				var container = document.createElement("div");

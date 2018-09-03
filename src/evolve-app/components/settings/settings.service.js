@@ -171,7 +171,7 @@ app.factory("settings.service", [function () {
     }
     ]
 
-    $stage = $("#stage");
+    var $stage = $("#stage");
 
 
     var setHover = function (i) {

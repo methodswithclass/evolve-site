@@ -153,6 +153,7 @@ app.factory("control.service", ["utility", function (u) {
 		var controlWidth = cntrlWidth + cntrlBuffer;
 		var controlLength = controlWidth*controls.length
 		var notch;
+		var zeroLeft;
 
 		// console.log("control width", controlWidth);
 
@@ -212,9 +213,9 @@ app.factory("control.service", ["utility", function (u) {
 
 
 
-		$control = $("#controlsParent");
-		$elem = $("#controlstoggle");
-		$arena = $("#arena");
+		var $control = $("#controlsParent");
+		var $elem = $("#controlstoggle");
+		var $arena = $("#arena");
 
 
 		var cntrlWidth;
@@ -225,7 +226,7 @@ app.factory("control.service", ["utility", function (u) {
 
 		// orientation = getOrientation(orient.types.AUTO);
 		// orientation = getOrientation(orient.types.HORIZONTAL);
-		orientation = getOrientation(orient.types.VERTICAL);
+		var orientation = getOrientation(orient.types.VERTICAL);
 		
 
 		// if (name == "trash") {

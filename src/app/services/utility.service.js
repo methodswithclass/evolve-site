@@ -24,7 +24,7 @@ app.factory("utility", ["general", function (gen) {
     }
     ]
 
-    var interface = {
+    var inter = {
         name:types.unset
     };
 
@@ -34,7 +34,7 @@ app.factory("utility", ["general", function (gen) {
         return {
             object:types,
             array:interfaces,
-            current:interface
+            current:inter
         }
     }
 
@@ -167,12 +167,12 @@ app.factory("utility", ["general", function (gen) {
 
     var getInterface = function () {
 
-        return interface.name;
+        return inter.name;
     }
 
     var isInterface = function (thisOne) {
 
-        return interface.name == thisOne;
+        return inter.name == thisOne;
     }
 
     var setInterface = function ($interface) {
@@ -182,7 +182,7 @@ app.factory("utility", ["general", function (gen) {
             return p.name == $interface;
         })
 
-        if (found) interface.name = found.name;
+        if (found) inter.name = found.name;
         else console.log("set value:", $interface, "is not an interface");
 
         hasChanged = true;
@@ -190,7 +190,7 @@ app.factory("utility", ["general", function (gen) {
 
     var changeInterface = function () {
 
-        if (interface.name == interfaces[0].name) {
+        if (inter.name == interfaces[0].name) {
 
             setInterface(interfaces[1].name);
         }

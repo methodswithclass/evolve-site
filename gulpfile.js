@@ -13,7 +13,15 @@ merge = require("merge-stream"),
 mainBowerFiles = require("gulp-main-bower-files"),
 nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
-sass = require("gulp-sass");
+sass = require("gulp-sass"),
+babel = require("gulp-babel"),
+
+
+webpackTask = require("./webpack.config.js").webpackTask,
+
+babelPresets = require("./babel.config.js");
+
+// webpackTask = require("./webpack").webpackTask;
 
 
 // var middleware = require("./middleware/middleware.js");
@@ -56,9 +64,10 @@ var scripts = function() {
 	    "src/evolve-app/**/*.js"
     ])
 	.pipe(concat('main.js'))
-
-    var main = mainSrc
-	.pipe(gulp.dest("dist/assets/js"))
+	.pipe(babel({
+        presets: ["@babel/env"]
+    }))
+	.pipe(gulp.dest("dist/assets/js"));
 
 	var mainMin;
 
@@ -73,7 +82,7 @@ var scripts = function() {
 		return merge(main, mainMin);
 	}
 	else {
-		return main;
+		return mainSrc;
 	}
 
 };
@@ -81,7 +90,9 @@ var scripts = function() {
 var tempVendor = function () {
 
 	// var shimFile = "node_modules/angular-polyfills/dist/all.js";
-	var shimFile = "node_modules/es6-shim/es6-shim.min.js";
+	// var shimFile = "node_modules/es6-shim/es6-shim.min.js";
+
+	var shimFile = "node_modules/@babel/polyfill/dist/polyfill.js";
 
 
 	var shim = gulp.src(shimFile)
@@ -279,9 +290,9 @@ var serveFunc = function (done) {
 
 var copy = gulp.parallel(data, misc, index, html, images, fonts)
 
-var compile = gulp.parallel(gulp.series(tempVendor, vendor), scripts);
+var compile = gulp.parallel(gulp.series(tempVendor, vendor), gulp.series(scripts, webpackTask));
 
-var buildTask = gulp.series(gulp.parallel(compile, gulp.series(apiSass, styles), copy), injectJS);
+var buildTask = gulp.series(compile, gulp.parallel(gulp.series(apiSass, styles), copy), injectJS);
 
 var serveTask = gulp.series(clean, buildTask, serveFunc);
 

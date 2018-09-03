@@ -77,6 +77,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 				$inner.append(container);
 
 
+				self.stopAnimation = function () {
+
+					$(container).stop();
+				}
+
 				self.setCoordX = function (value, duration) {
 
 					// $inner = $("#innerplot");
@@ -130,7 +135,11 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 					// console.log("duration", duration);
 
-					container.velocity({top:value + "px"}, {
+					// container.velocity({top:value + "px"}, {
+					// 	duration:duration
+					// })
+
+					$(container).animate({top:value + "px"}, {
 						duration:duration
 					})
 
@@ -213,8 +222,18 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			}
 
+			var stopPlot = function () {
+
+				plot.forEach(function (value, $index) {
+
+					value.stopAnimation();
+				})
+
+			}
+
 
 			var resetPlot = function () {
+				stopPlot();
 				changeplot(0, 100);
 			}
 

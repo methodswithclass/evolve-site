@@ -1,7 +1,7 @@
 
 
 // var react2 = new reactCustom();
-"use strict";
+// "use strict";
 
 var page = {
 	home:"home",
@@ -137,7 +137,7 @@ var appSetup = function (display, force) {
 	console.log("app setup");
 
 
-	setSpeed = function (name) {
+	var setSpeed = function (name) {
 
 
 		var found = loadSpeeds.find(function (p) {

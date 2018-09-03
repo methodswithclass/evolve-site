@@ -239,12 +239,12 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 
 	var setEvolveHeight = function ($back, $evolve, $walkthrough) {
 		
-		$winH = $back.height();
+		var $winH = $back.height();
 
-		winH = winH > $winH ? winH : $winH;
+		// var winH = winH > $winH ? winH : $winH;
 
-		$walkthrough.css({height:winH + "px"});
-		$evolve.css({height:winH + "px"});
+		$walkthrough.css({height:$winH + "px"});
+		$evolve.css({height:$winH + "px"});
 
 	}
 
@@ -264,10 +264,10 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 
 		g.waitForElem({elems:["#main-back", "#evolvetoggle", "#"+name+"walkthroughtoggle", "#main-inner"]}, function (options) {
 			
-			$mainBack = $(options.elems[0]);
-			$evolve = $(options.elems[1]);
-			$walkthrough = $(options.elems[2]);
-			$inner = $(options.elems[3]);
+			var $mainBack = $(options.elems[0]);
+			var $evolve = $(options.elems[1]);
+			var $walkthrough = $(options.elems[2]);
+			var $inner = $(options.elems[3]);
 
 			var evolveDiff;
 			var walkthroughDiff;

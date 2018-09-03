@@ -236,9 +236,9 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var setStageSize = function () {
 
-        $stage = $("#arena");
+        var $stage = $("#arena");
 
-        ed = u.correctForAspect({
+        var ed = u.correctForAspect({
             id:"arena",
             factor:g.isMobile() ? 0.6 : 0.25, 
             aspect:1, 
@@ -253,13 +253,13 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var resetenv = function () {
 
-        $stage = $("#arena");
+        var $stage = $("#arena");
 
         g.waitForElem({elems:$stage}, function (options) {
 
             api.resetEnvironment(function (res) {
 
-                environment = res.data.env;
+                var environment = res.data.env;
 
                 makeBlocks(environment);
 
@@ -274,7 +274,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var refreshenv = function (complete) {
 
-        $stage = $("#arena");
+        var $stage = $("#arena");
 
         g.waitForElem({elems:$stage}, function (options) {
 
@@ -286,7 +286,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 // console.log("Refresh environment", res.data.env);
 
-                environment = res.data.env;
+                var environment = res.data.env;
 
                 makeBlocks(environment);
 
