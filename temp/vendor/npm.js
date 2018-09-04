@@ -5571,6 +5571,10 @@ var obj = {};
 	var whatDevice = function (forceMobile) {
 
 		if (_mobile || forceMobile) return mobile;
+		else if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.indexOf('Edge') != -1 || navigator.userAgent.match(/rv:11/))) {
+
+			return ie;
+		}
 		else if(navigator.userAgent.match(/Android/i) ||
 	            navigator.userAgent.match(/webOS/i) ||
 	            navigator.userAgent.match(/iPhone/i) ||
@@ -5584,9 +5588,6 @@ var obj = {};
 
 			return desktop;
 		}
-		else
-
-			return ie;
 
 	}
 
