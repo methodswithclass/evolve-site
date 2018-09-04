@@ -207,8 +207,8 @@ app.run(['states', "config.service", "display.service", function (states, config
 	
 
 	// if (true) {
-	// if (g.whatDevice() == g.devices.ie) {
-	if (false) {
+	if (g.whatDevice() == g.devices.ie) {
+	// if (false) {
 		states.go("unsupported");
 	}
 	else {
