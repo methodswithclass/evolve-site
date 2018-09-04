@@ -113,11 +113,11 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
     var step = function (self, $scope, dna) {
 
-        setTimeout(function () {
+        // setTimeout(function () {
 
             simulator.step(dna, programInput.duration);
 
-        }, programInput.evdelay);
+        // }, programInput.duration);
     }
 
 
@@ -127,6 +127,8 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     }
 
     var stop = function (self, $scope) {
+
+        simulator.stop();
 
         evolve.breakRun($scope); 
     }

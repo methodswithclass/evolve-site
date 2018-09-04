@@ -34,6 +34,11 @@ app.factory("feedback-sim", ['data', function (data) {
         console.log("plot not reset");
     }
 
+    var stopPlot = function () {
+
+        console.log("plot not reset");
+    }
+
     react.subscribe({
         name:"importplot",
         callback:function (x) {
@@ -42,6 +47,7 @@ app.factory("feedback-sim", ['data', function (data) {
             changeX = x.changeX;
             createplot = x.createplot;
             resetplot = x.resetplot;
+            stopPlot = x.stopPlot;
 
         }
     })
@@ -58,6 +64,13 @@ app.factory("feedback-sim", ['data', function (data) {
     var setup = function () {
 
 
+    }
+
+    var stop = function () {
+
+        console.log("stop plot");
+
+        stopPlot();
     }
 
     var reset = function () {
@@ -91,7 +104,8 @@ app.factory("feedback-sim", ['data', function (data) {
         setup:setup,
         reset:reset,
         refresh:refresh,
-    	step:step
+    	step:step,
+        stop:stop
     }
 
 

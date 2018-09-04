@@ -139,9 +139,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 					// 	duration:duration
 					// })
 
-					$(container).stop().animate({top:value + "px"}, {
-						duration:duration
-					})
+					$(container).stop(false, true).animate({top:value + "px"}, duration);
 
 					// console.log("coord y", self.coords.y);
 
@@ -244,7 +242,8 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 					changeplot:changeplot,
 					changeX:changeX,
 					createplot:createPlot,
-					resetplot:resetPlot
+					resetplot:resetPlot,
+					stopPlot:stopPlot
 				}
 			});
 
