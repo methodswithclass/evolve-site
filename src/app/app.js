@@ -207,13 +207,7 @@ app.run(['states', "config.service", "display.service", function (states, config
 	
 
 	// if (true) {
-	if (g.whatDevice() == g.devices.ie) {
-	// if (false) {
-		states.go("unsupported");
-	}
-	else {
-
-
+	if (g.whatDevice() == g.devices.desktop || g.isMobile()) {
 		
 		try {
 			
@@ -273,6 +267,11 @@ app.run(['states', "config.service", "display.service", function (states, config
 			appSetup(display, loadSpeed);
 		})
 	}
+	else {
+		// if (false) {
+		states.go("unsupported");
+	}
+
 
 
 }]);
