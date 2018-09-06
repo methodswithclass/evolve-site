@@ -30,16 +30,35 @@ const config = require("./config.js");
 
 
 // var minify = process.env.NODE_ENV == "production";
-var minify = false;
 
-// var injectMin = process.env.NODE_ENV == "production";
-var injectMin = false;
+var minify = {
+	main:{
+		full:{
+			make:false,
+			inject:false
+		},
+		min:{
+			make:true,
+			inject:true
+		}
+	},
+	vendor:{
+		full:{
+			make:true,
+			inject:true
+		},
+		min:{
+			make:false,
+			inject:false
+		}
+	}
+}
 
 
 var injectJS = function () {
 
-	var important = gulp.src('dist/assets/js/vendor' + (minify && injectMin ? ".min" : "") + '.js', {read: false});
-	var standard = gulp.src(["dist/assets/js/main" + (minify && injectMin ? ".min" : "") + ".js", 'dist/assets/**/*.css'], {read:false});
+	var important = gulp.src('dist/assets/js/vendor' + (minify.vendor.min.make && minify.vendor.min.inject ? ".min" : "") + '.js', {read: false});
+	var standard = gulp.src(["dist/assets/js/main" + (minify.main.min.make && minify.main.min.inject ? ".min" : "") + ".js", 'dist/assets/**/*.css'], {read:false});
 
 	return gulp.src('src/index.html')
 	.pipe(inject(important, {ignorePath:"dist", starttag: '<!-- inject:head:{{ext}} -->'}))
@@ -67,23 +86,22 @@ var scripts = function() {
 	.pipe(babel({
         presets: ["@babel/env"]
     }))
-	.pipe(gulp.dest("dist/assets/js"));
 
-	var mainMin;
+    if (minify.main.full.make) {
+    	mainSrc.pipe(gulp.dest("dist/assets/js"))
+	}
 
-	if (minify) {
+    var mainMin;
+
+	if (minify.main.min.make) {
 		mainMin = mainSrc
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
 		.pipe(gulp.dest("dist/assets/js"))
 	}
 
-	if (minify) {
-		return merge(main, mainMin);
-	}
-	else {
-		return mainSrc;
-	}
+	
+	return minify.main.min.make ? mainMin : mainSrc;
 
 };
 
@@ -127,15 +145,18 @@ var vendor = function () {
 	                  "temp/vendor/**/*.js"
 	                  ])
 	.pipe(concat("vendor.js"))
-	.pipe(gulp.dest("dist/assets/js"));
+
+	if (minify.vendor.full.make) {
+		js.pipe(gulp.dest("dist/assets/js"))
+	}
 
 	var jsMin;
 
-	if (minify) {
+	if (minify.vendor.min.make) {
 		jsMin = js
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
-		.pipe(gulp.dest("dist/assets/js"));
+		.pipe(gulp.dest("dist/assets/js"))
 	}
 
 	// var css = gulp.src("./bower.json")
@@ -152,7 +173,7 @@ var vendor = function () {
 	// 	return merge(js, css);
 	// }
 
-	return minify ? jsMin : js;
+	return minify.vendor.min.make ? jsMin : js;
 
 };
 
