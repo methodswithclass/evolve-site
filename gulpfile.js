@@ -14,51 +14,27 @@ mainBowerFiles = require("gulp-main-bower-files"),
 nodemon = require('gulp-nodemon'),
 livereload = require('gulp-livereload');
 sass = require("gulp-sass"),
-babel = require("gulp-babel"),
-
-
-webpackTask = require("./webpack.config.js").webpackTask,
-
-babelPresets = require("./babel.config.js");
-
-// webpackTask = require("./webpack").webpackTask;
-
-
-// var middleware = require("./middleware/middleware.js");
+babel = require("gulp-babel");
 
 const config = require("./config.js");
 
 
-// var minify = process.env.NODE_ENV == "production";
 
-var minify = {
-	main:{
-		full:{
-			make:false,
-			inject:false
-		},
-		min:{
-			make:true,
-			inject:true
-		}
-	},
-	vendor:{
-		full:{
-			make:true,
-			inject:true
-		},
-		min:{
-			make:false,
-			inject:false
-		}
-	}
-}
+var minify = config.gulp.minify;
+var shimFile = config.gulp.shimFile;
+var mainScripts = config.gulp.mainScripts;
+var vendorScripts = config.gulp.vendorScripts;
+var miscSrc = config.gulp.miscSrc;
+var htmlDest = config.gulp.htmlDest;
+var sassStyles = config.gulp.sassStyles;
+var cssStyles = config.gulp.cssStyles;
+
 
 
 var injectJS = function () {
 
-	var important = gulp.src('dist/assets/js/vendor' + (minify.vendor.min.make && minify.vendor.min.inject ? ".min" : "") + '.js', {read: false});
-	var standard = gulp.src(["dist/assets/js/main" + (minify.main.min.make && minify.main.min.inject ? ".min" : "") + ".js", 'dist/assets/**/*.css'], {read:false});
+	var important = gulp.src('dist/assets/js/vendor' + (!minify.vendor.full.make && minify.vendor.min.make && minify.vendor.min.inject ? ".min" : "") + '.js', {read: false});
+	var standard = gulp.src(["dist/assets/js/main" + (!minify.main.full.make && minify.main.min.make && minify.main.min.inject ? ".min" : "") + ".js", 'dist/assets/**/*.css'], {read:false});
 
 	return gulp.src('src/index.html')
 	.pipe(inject(important, {ignorePath:"dist", starttag: '<!-- inject:head:{{ext}} -->'}))
@@ -71,17 +47,7 @@ var injectJS = function () {
 var scripts = function() {
 
 
-    var mainSrc = gulp.src([
-	    "src/assets/**/*.js",
-	    "src/app/state/stateModule.js",
-	    "src/app/state/runtimeState.js",
-	    "src/app/state/states.js",
-        "src/app/app.js",
-        "src/app/main.controller.js",
-        "src/app/services/**/*.js",
-	    "src/app/directives/**/*.js",
-	    "src/evolve-app/**/*.js"
-    ])
+    var mainSrc = gulp.src(mainScripts)
 	.pipe(concat('main.js'))
 	.pipe(babel({
         presets: ["@babel/env"]
@@ -107,11 +73,6 @@ var scripts = function() {
 
 var tempVendor = function () {
 
-	// var shimFile = "node_modules/angular-polyfills/dist/all.js";
-	// var shimFile = "node_modules/es6-shim/es6-shim.min.js";
-
-	var shimFile = "node_modules/@babel/polyfill/dist/polyfill.js";
-
 
 	var shim = gulp.src(shimFile)
 		.pipe(concat("shim.js"))
@@ -123,12 +84,7 @@ var tempVendor = function () {
 		.pipe(concat("bower.js"))
 		.pipe(gulp.dest("temp/vendor"));
 
-	var npmSrc = gulp.src([
-			//npm packages for front end use
-			"node_modules/jquery.scrollto/jquery.scrollTo.js",
-			"node_modules/velocity-animate/velocity.js",
-        	"node_modules/mc-shared/shared.js"
-			])
+	var npmSrc = gulp.src(vendorScripts)
 		.pipe(concat("npm.js"))
 		.pipe(gulp.dest("temp/vendor"))
 
@@ -178,7 +134,7 @@ var vendor = function () {
 };
 
 var apiSass = function () {
-  return gulp.src('src/assets/**/*.scss')
+  return gulp.src(sassStyles)
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('temp/'));
 }
@@ -190,10 +146,7 @@ var styles = function() {
 	// middleware.compileSass();
 
 
-	var cssSrc = gulp.src([
-	                      'temp/**/*.css',
-	                      "node_modules/@fortawesome/fontawesome-free/css/all.css"
-	                      ])
+	var cssSrc = gulp.src(cssStyles)
 	.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'));
 
 	
@@ -205,10 +158,11 @@ var styles = function() {
 };
 
 
+
 var html = function () {
 
 	return gulp.src('src/**/*.html')
-	.pipe(gulp.dest("dist/assets/views/"))
+	.pipe(gulp.dest(htmlDest))
 };
 
 var images = function() {
@@ -217,10 +171,6 @@ var images = function() {
 	.pipe(gulp.dest('dist/assets/img'));
 };
 
-var data = function() {
-	return gulp.src('src/assets/data/kaggle/**/*.csv')
-	.pipe(gulp.dest('dist/assets/data/kaggle'));
-};
 
 var fonts = function () {
 
@@ -241,12 +191,19 @@ var index = function () {
 }
 
 var misc = function() {
-	return gulp.src([
-	                'src/assets/config/**/*.*'
-	                ])
-	.pipe(gulp.dest('dist/assets/config'));
-};
+	// return gulp.src(miscSrc)
+	// .pipe(gulp.dest('dist/assets'));
 
+	// return merge(miscSrc);
+
+	if (typeof miscSrc === "function") {
+		return miscSrc();
+	}
+	else {
+		return gulp.src(miscSrc)
+		.pipe(gulp.dest('dist/assets'));
+	}
+};
 
 var clean = function() {
 	return del(['dist', "temp"]);
@@ -261,7 +218,7 @@ var serveFunc = function (done) {
 	var stream = nodemon({ 
 		script: path.join(__dirname, "server.js"),
 		ext:"js html css scss json",
-		watch:["./src", "./backend"],
+		watch:["./src", "config.js"],
 		tasks:["build"]
 	});
 
@@ -297,21 +254,9 @@ var serveFunc = function (done) {
 	
 }
 
+var copy = gulp.parallel(misc, index, html, images, fonts)
 
-
-// var watcher = gulp.watch('src/assets/**/*.scss', apiSass);
-
-// watcher.on("change", function () {
-
-// 	gulp.task(apiSass);
-
-// 	// done();
-// });
-
-
-var copy = gulp.parallel(data, misc, index, html, images, fonts)
-
-var compile = gulp.parallel(gulp.series(tempVendor, vendor), gulp.series(scripts, webpackTask));
+var compile = gulp.parallel(gulp.series(tempVendor, vendor), scripts);
 
 var buildTask = gulp.series(compile, gulp.parallel(gulp.series(apiSass, styles), copy), injectJS);
 
