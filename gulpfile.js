@@ -199,10 +199,13 @@ var misc = function() {
 	if (typeof miscSrc === "function") {
 		return miscSrc();
 	}
-	else {
+	else if (miscSrc) {
 		return gulp.src(miscSrc)
 		.pipe(gulp.dest('dist/assets'));
 	}
+	else return new Promise(function (resolve) {
+		resolve();
+	})
 };
 
 var clean = function() {
