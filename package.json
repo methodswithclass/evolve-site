@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "node": "node server.js",
     "build": "gulp build",
-    "postinstall":"bower install",
+    "postinstall": "bower install",
     "start": "gulp serve"
   },
   "engines": {
@@ -45,7 +45,9 @@
     "gulp-shell": "^0.6.3",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
+    "jquery": "^3.3.1",
     "jquery.scrollto": "^2.1.2",
+    "jsdom": "^12.0.0",
     "jshint": "^2.9.4",
     "mc-evolve": "^5.1.2",
     "mc-shared": "4.6.1",

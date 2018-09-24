@@ -192,6 +192,7 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
             u.toggle("hide", "settings");
 			u.toggle("hide", "title");
        	 	u.toggle("hide", "breakfeedback");
+       	 	// u.toggle("hide", "evolvefeedback");
 
        	 	u.toggle("hide", "walkthrough");
 
@@ -212,6 +213,8 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
             u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
             u.toggle("show", "controls");
             u.toggle("show", "title");
+
+       	 	// u.toggle("show", "evolvefeedback", {fade:params.fade, delay:params.delay});
 
             // u.toggle("show", "walkthrough", {fade:params.fade});
 

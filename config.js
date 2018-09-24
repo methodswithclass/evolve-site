@@ -67,7 +67,7 @@ var miscSrc = function () {
 var minify = {
 	main:{
 		full:{
-			make:false,
+			make:true,
 			inject:false
 		},
 		min:{

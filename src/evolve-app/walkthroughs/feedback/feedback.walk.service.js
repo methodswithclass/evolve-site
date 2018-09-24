@@ -1,4 +1,4 @@
-app.factory("feedback.walkthrough", ["utility", "phases.service", "control.service", function (u, phases, controlsService) {
+app.factory("feedback.walkthrough", ["utility", "phases.service", "control.service", "feedback-sim", function (u, phases, controlsService, simulator) {
 
 	var s = window.shared;
 	var g = s.utility_service;
@@ -12,6 +12,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	self.name = "feedback";
 	self.full = self.name + "walkthrough";
 
+	var allowgrayout = false;
 	var grayout = true;
 
 	var toggleControl = function (control, toggle) {
@@ -39,7 +40,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 
 		if (force !== undefined) grayout = force;
 		
-		if (grayout) {
+		if (allowgrayout && grayout) {
 
 			$("#"+self.name+"walkthrough-grayout").animate({opacity:0.7}, 300);
 			grayout = true;
@@ -48,6 +49,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 			$("#"+self.name+"walkthrough-grayout").animate({opacity:0}, 300);
 			grayout = false;
 		}
+
 	}
 
 	var scrollTo = function (elem, options) {
@@ -94,6 +96,8 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 			setTimeout(function () {
 
 				toggleControl("refresh", true);
+				simulator.stop();
+				u.toggle("hide", "evolvefeedback", {fade:600, delay:300});
 			}, 600);
 		}
 	}
@@ -103,6 +107,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		if (phases.isRunning(self.full)) {
 			u.toggle("show", self.name+"phase1-container", {delay:200, fade:300});
 			u.toggle("hide", self.name+"complete-button", {delay:400, fade:400});
+			// u.toggle("show", "evolvefeedback", {fade:600, delay:300});
 		}
 	}
 
@@ -133,6 +138,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 				
 				$("#arena").show();
 				u.toggle("hide", self.name+"walkthroughwelcome");
+
 				toggleControl("play", true);
 			}
 			

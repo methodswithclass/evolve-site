@@ -24,28 +24,17 @@
 
 	<div class="absolute width height opacity0 cutoff z-100" id="evolvetoggle">
 
-		<div class="absolute width height black-back opacity99"></div>
+		<div class="absolute width height black-back opacity90"></div>
 		
-		<div class="absolute width80 height-600 margin-v-200 hcenter white">
+		<div class="absolute width80 height-600 margin-v-50 hcenter white">
 			
 
+
+			<div ng-if="feedback">
+				<evolve-feedback position="relative"></evolve-feedback>
+			</div>
+			
 			<div class="relative width-400">
-
-
-				<div class="relative width height-50 font-50 margin-bottom-100">
-					<div class="flex flex-row flex-align-end">
-						<div class="width-200 height-50 margin-right-50">
-							<div class="relative vcenter">
-								evolving
-							</div>
-						</div>
-						<div class="width-50 height-40 white font-30">
-							<div class="relative vcenter text-center">
-								<i class="fas fa-spinner" id="spinner"></i>
-							</div>
-						</div>
-					</div>
-				</div>
 
 
 				<div class="relative width font-30 padding-v-10 margin-bottom-20">
@@ -86,32 +75,12 @@
 					</div>
 				</div>
 
-
-				<!-- <div class="absolute width50 height right0">
-
-					<div class="absolute width height50 hcenter font-20">
-						<div class="absolute center">
-							score
-						</div>
-					</div>
-					<div class="absolute width height50 hcenter bottom0 font-15">
-						<div class="absolute center">
-							{{fitnessRounded}}
-						</div>
-					</div>
-
-				</div> -->
-
 				
 
 			</div>
 
 
 			<div class="relative width height-60">
-
-				<div class="absolute width height-10 border-white">
-					<div class="absolute height white-back" id="rundata"></div>
-				</div>
 
 
 				<div class="absolute width-100 height-50 top100">

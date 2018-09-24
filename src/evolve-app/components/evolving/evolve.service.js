@@ -458,14 +458,24 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     	}
 
 
-        simulator.refresh(function () {
-
+        if (self.name == "feedback") {
+            
             api.run(function (res) {
 
                 runEvolveComplete(_$scope);
             })
+        }
+        else {
 
-        });
+            simulator.refresh(function () {
+
+                api.run(function (res) {
+
+                    runEvolveComplete(_$scope);
+                })
+
+            });
+        }
         
              
 

@@ -4,7 +4,8 @@ app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states
 		restrict:"E",
 		scope:{
 			run:"=",
-			break:"="
+			break:"=",
+			feedback:"="
 		},
 		replace:true,
 		template:"<div ng-include='getContentUrl()'></div>",			
@@ -30,7 +31,10 @@ app.directive("evolving", ['utility', 'input.service', 'evolve.service', "states
 
 			var fitnessTruncateValue = 2;
 
-
+			if ($scope.feedback === undefined) {
+				$scope.feedback = true;
+			}
+			
 			$scope.evdata = {};
 			$scope.stepdata = {};
 			$scope.input = {};

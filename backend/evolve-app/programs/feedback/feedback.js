@@ -4,6 +4,14 @@ var d = require("../../data/programs/feedback.js")
 var g = require("mc-shared").utility_service;
 
 
+var jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { window } = new JSDOM();
+const { document } = (new JSDOM('')).window;
+global.document = document;
+
+var $ = jQuery = require('jquery')(window);
+
 
 var feedback = function () {
 
@@ -51,6 +59,13 @@ var feedback = function () {
 	self.hardStop = function () {
 
 		runs = 0;
+	}
+
+
+	self.animate = function (options) {
+
+		animatePlot[options.direction](options);
+
 	}
 
 

@@ -1,7 +1,7 @@
 {
 	"config":{
 		"debug":{
-			"active":false,
+			"active":true,
 			"landingPage":"feedback",
 			"loadSpeed":"fast"
 		},
@@ -80,9 +80,9 @@
 					"goal":"diverge"
 				}
 				],
-				"evdelay":300,
-				"updateTime":100,
-				"duration":100
+				"evdelay":500,
+				"stepFireCount":5,
+				"duration":600
 			},
 			"recognize":{
 				"meta":{

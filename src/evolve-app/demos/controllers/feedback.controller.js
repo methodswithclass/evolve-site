@@ -12,14 +12,37 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
 
     var programInput;
-
+    var stepCount = 0;
+    var stepFirst = true;
+    var stepFireCount;
 
     config.get("global.programs.feedback")
     .then(function (data) {
 
         programInput = data;
 
+        stepFireCount = programInput.stepFireCount;
+
     })
+
+    var onDataCallStep = function (dna, step) {
+
+        //called during subscribe in build function
+
+        // console.log("stepcount", stepCount, stepFireCount, dna);
+
+        if (stepFirst || stepCount == stepFireCount) {
+
+            stepCount = 0;
+
+            // dna = 
+            step(null, null, dna);
+        }
+
+        stepCount++;
+        stepFirst = false;
+        
+    }
 
 
     var setup = function (self, $scope) {
@@ -50,17 +73,18 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
 
         $scope.programInput = programInput;
 
-        // config.get("global.feedback")
-        // .then(function(data) {
-
-        //     $scope.programInput = data;
-        // })
 
         react.subscribe({
             name:"data" + "feedback",
             callback:function (x) {
 
-                step({}, {}, x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : []);                
+                var dna = (x.evdata ? (x.evdata.best ? x.evdata.best.dna : []) : [])
+
+                if (dna && dna.length > 0) {
+
+                    // console.log("dna", dna);
+                    onDataCallStep(dna, step)
+                }
             }
 
         });
@@ -109,26 +133,28 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         evolve.running(false, $scope);
         simulator.refresh();
         evolve.resetgen();
+        stepCount = 0;
+        stepFirst = true;
+        stepFireCount = programInput.stepFireCount;
     }
 
     var step = function (self, $scope, dna) {
 
-        // setTimeout(function () {
-
-            simulator.step(dna, programInput.duration);
-
-        // }, programInput.duration);
+        simulator.step(dna, programInput.duration);
     }
 
 
     var run = function (self, $scope) {
         
         evolve.run($scope);
+        // stepCount = 0;
+        // stepFireCount = programInput.stepFireCount;
     }
 
     var stop = function (self, $scope) {
 
         simulator.stop();
+        stepCount = 0;
 
         evolve.breakRun($scope); 
     }
