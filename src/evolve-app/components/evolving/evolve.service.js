@@ -73,14 +73,17 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     }
 	
 	var evolving = function (_evolve, $scope) {
-        g.waitForElem({elems:"#spinner"}, function () {
+
+        var spinElem = "#"+self.name+"efspintoggle";
+
+        g.waitForElem({elems:spinElem}, function (options) {
             ev = _evolve;
             if (_evolve) {
-                if (spinning) $("#spinner").addClass("spinning");
+                if (spinning) $(options.elems).addClass("spinning");
                 running(_evolve, _$scope);
             }
             else {
-                if (spinning) $("#spinner").removeClass("spinning");
+                if (spinning) $(options.elems).removeClass("spinning");
             }
 
         });
@@ -229,20 +232,25 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     }
 
 
-    var stepprogress = function () {
+    var stepprogress = function (name) {
         
         var input = $input.getInput(false);
 
-        var genT = input.gens;
-        var orgT = input.pop;
-        var runT = input.runs;
-        var stepT = input.programInput.totalSteps;
+        var genT = input.gens || 1;
+        var orgT = input.pop || 1;
+        var runT = input.runs || 1;
+        var stepT = input.programInput.totalSteps || 1;
 
 
-        var gen = $stepdata.gen - 1;
-        var org = $stepdata.org - 1;
+        // var gen = $stepdata.gen - 1 || 0;
+        // var org = $stepdata.org - 1 || 0;
+        // var step = $stepdata.step || 0;
+        // var run = $stepdata.run - 1 || 0;
+
+        var gen = $stepdata.gen || 0;
+        var org = $stepdata.org || 0;
         var step = $stepdata.step || 0;
-        var run = $stepdata.run - 1;
+        var run = $stepdata.run || 0;
 
 
         var stepP = (step + run*stepT + org*(runT*stepT) + gen*(orgT*runT*stepT))/(stepT*runT*orgT*genT);
@@ -255,7 +263,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
             percent = 1;
         }
 
-        display.updateProgressBar(percent);
+        display.updateProgressBar(name, percent, gen, genT);
     }
 
 
@@ -267,7 +275,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
             if (update) {
                 if (ev) {
-                    stepprogress();
+                    stepprogress(self.name);
                 }
                 _$scope.$apply();
             }
@@ -435,7 +443,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
             u.toggle("enable", "stop", {fade:params.fade});
             u.toggle("disable", "play", {fade:params.fade});
             u.toggle("disable", "refresh", {fade:params.fade});
-
+            u.toggle("hide", "evolve");
     	}
     	else {
 
@@ -559,7 +567,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         isEvolving:isEvolving,
 		run:run,
 		breakRun:breakRun,
-		resetgen:resetgen
+		resetgen:resetgen,
+        stepprogress:stepprogress
 	}
 
 

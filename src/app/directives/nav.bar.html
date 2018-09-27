@@ -1,0 +1,26 @@
+<duv class="relative width" id="navbartoggle">
+
+	<div class="flex flex-row">
+
+		<div class="width" id="navtoggle">
+			<navbtn name="{{navName}}" loc="{{navLoc}}" var-class="width-200 height-50 margin-h-20 black-back white"></navbtn>
+		</div>
+
+		<div class="width50 black-back padding-10 rounded10 margin-right-20 raised">
+
+			<div class="flex flex-row flex-align-center flex-justify-center">
+
+				<div class="width50 white font-15 text-center">
+					demos
+				</div>
+
+				<div class="width50">
+					<select-input ngClass="relative vcenter font-20" items="demos" change="changeDemo" model="demoModel" elemID="demoSelect" key="name"></select-input>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</duv>

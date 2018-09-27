@@ -12,7 +12,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	self.name = "feedback";
 	self.full = self.name + "walkthrough";
 
-	var allowgrayout = false;
+	var allowgrayout = true;
 	var grayout = true;
 
 	var toggleControl = function (control, toggle) {
@@ -80,6 +80,13 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	}
 
 
+	var indicateRefreshButton = function () {
+
+		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 800 : 800)});
+		moveElement({element:"#"+self.name+"phase1-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 400 : 400)});
+	}
+
+
 	var closeWalkthrough = function () {
 
 		u.toggle("hide", self.name + "walkthrough");
@@ -107,7 +114,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 		if (phases.isRunning(self.full)) {
 			u.toggle("show", self.name+"phase1-container", {delay:200, fade:300});
 			u.toggle("hide", self.name+"complete-button", {delay:400, fade:400});
-			// u.toggle("show", "evolvefeedback", {fade:600, delay:300});
+			u.toggle("hide", "evolve");
 		}
 	}
 
@@ -122,7 +129,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 
 			if (phases.isRunning(self.full)) {  
 				console.log(self.full, options.index, "phase");
-				$("#arena").hide();
+				$("#main-inner").css({opacity:0});
 				toggleGrayout(true);
 				u.toggle("show", self.name+"walkthroughwelcome");
 				u.toggle("hide", self.name+"walkthroughbutton");
@@ -136,9 +143,11 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 				console.log("pushed next button");
 
 				
-				$("#arena").show();
+				$("#main-inner").css({opacity:1});
 				u.toggle("hide", self.name+"walkthroughwelcome");
-
+            	u.toggle("show", "hud", {fade:600, delay:300});
+				u.toggle("show", self.name+"ef", {fade:600, delay:300});
+				simulator.updateUI();
 				toggleControl("play", true);
 			}
 			
@@ -232,18 +241,13 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "control.servi
 	]
 
 
-	var indicateRefreshButton = function () {
-
-		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 2000 : 1700)});
-		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1800 : 1400)});
-	}
-
-
 	var loadPhases = function () {
 
 		// console.log("load phases \n\n\n\n\n")
 
 		phases.loadPhases({name:self.full, phases:phase_data, run:false});
+
+		indicateRefreshButton();
 	}
 
 	var run = function () {

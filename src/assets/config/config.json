@@ -1,7 +1,9 @@
 {
 	"config":{
+		"forceMobile":false,
+		"interface":1,
 		"debug":{
-			"active":false,
+			"active":true,
 			"landingPage":"feedback",
 			"loadSpeed":"fast"
 		},
@@ -31,6 +33,7 @@
 		"programs":{
 			"trash":{
 				"meta":{
+					"name":"trash pickup",
 					"colors":{
 						"page":"blue5-back",
 						"demoButton":"purple4-back"
@@ -60,6 +63,7 @@
 			},
 			"feedback":{
 				"meta":{
+					"name":"feedback",
 					"colors":{
 						"page":"green7-back",
 						"demoButton":"purple4-back"
@@ -80,12 +84,13 @@
 					"goal":"diverge"
 				}
 				],
-				"evdelay":500,
-				"stepFireCount":5,
-				"duration":600
+				"evdelay":100,
+				"stepFireCount":10,
+				"duration":800
 			},
 			"recognize":{
 				"meta":{
+					"name":"recognize",
 					"colors":{
 						"page":"orange2-back",
 						"demoButton":"purple4-back"

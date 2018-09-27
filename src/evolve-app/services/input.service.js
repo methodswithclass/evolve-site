@@ -24,13 +24,13 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     var reproductionTypes;
     var $$master_initial;
     var $$reset_initial;
-
+    var $master_input = {};
+    var $reset_input = {};
 
     config.get([
                "global.types.crossoverMethods",
                "global.types.runPopTypes",
                "global.types.reproductionTypes",
-               "global.initial",
                "global.initial"
                ])
     .then(function (data) {
@@ -41,7 +41,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         runPopTypes = data[1];
         reproductionTypes = data[2];
         $$master_initial = data[3];
-        $$reset_initial = data[4];
 
         // console.log("master", $$master_initial);
     })
@@ -194,7 +193,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         	pool: 				$("#poolinput").val(),
         	mutate: 			$("#mutateinput").val(),
         	// method: 			($scope.settings ? ($scope.settings.method || crossoverMethods.default) : crossoverMethods.default)
-            method:             $("methodinput").val()   
+            method:             $("#methodinput").val()   
         }
 
         // console.log("change input", manual);
@@ -220,7 +219,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
  		for (var i in options) {
 
-            if (resolveKeysForInitialInput(i)) $$reset_initial[i] = options[i];
+            if (resolveKeysForInitialInput(i)) $reset_input[name][i] = options[i];
  			self.temp[self.name][i] = options[i];
             self.global[self.name][i] = options[i];
  		}
@@ -274,6 +273,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
 		// console.log("get input", update, self.temp[self.name], self.global[self.name]);
 
+        self.temp[self.name] = self.global[self.name];
+
         setValues(self.global[self.name]);
 
         return self.global[self.name];
@@ -289,12 +290,60 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
     	// sendVars();
 
-		setInput($$reset_initial);	
+		// setInput($$reset_initial);	
+        console.log("reset input does nothing");
 	}
 
-    var masterReset = function () {
+    var masterReset = function (name) {
 
-        setInput($$master_initial);
+        setInput($master_input[name ? name : self.name]);
+    }
+
+
+    var setMaster = function (name) {
+
+        $master_input[name] = {};
+        $reset_input[name] = {};
+
+        console.log("master", $$master_initial);
+
+        for (var i in $$master_initial) {
+
+            $master_input[name][i] = $$master_initial[i];
+            $reset_input[name][i] = $$master_initial[i];
+        }
+    }
+
+    var overrideAsync = function (name, data, complete) {
+
+        console.log("data", name, data, $master_input);
+
+        for (var i in data) {
+
+            var override = data[i];
+
+            if (override) {
+                $master_input[name][i] = override;
+            }
+        }
+
+        $reset_input[name] = $master_input[name];
+
+        masterReset(name);
+
+        if (typeof complete === "function") complete();
+    }
+
+    var setOverride = function (name, complete) {
+
+        setMaster(name);
+
+        config.get("global.programs." + name + ".override")
+        .then(function (data) {
+            
+            overrideAsync(name, data, complete);
+        })
+
     }
 
 
@@ -302,29 +351,13 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 
         self.name = name;
 
-        config.get("global.programs." + self.name + ".override")
-        .then(function (data) {
+        self.global[self.name] = {};
+        self.temp[self.name] = {};
+        
+        setOverride(name, function () {
 
-            // console.log(data);
-
-            for (var i in data) {
-
-                var override = data[i];
-
-                if (override) {
-                    $$master_initial[i] = override;
-                    $$reset_initial[i] = override;
-                }
-            }
-
-            self.global[self.name] = {};
-            self.temp[self.name] = {};
-
-            masterReset();
-
-            complete();
-            
-        })
+            if (typeof complete === "function") complete();
+        });
 
         
     }
@@ -339,7 +372,8 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 		getInput:getInput,
 		resendInput:resendInput,
 		setSettings:setSettings,
-		changeInput:changeInput
+		changeInput:changeInput,
+        setOverride:setOverride
 	}
 
 

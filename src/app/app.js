@@ -26,27 +26,6 @@ var demoLoad = {
 	fast:loadSpeeds[1].name
 }
 
-
-var makeMobile = function () {
-
-	var mobile = false;
-
-	// mobile = true;
-
-	return mobile;
-}
-
-
-var makeInterface = function () {
-
-	var inter = 1;
-
-	// no interface 2
-	// inter = 2;
-
-	return inter;
-}
-
 var setInterface = function (inter) {
 
 	// runtimeProvider.initInterface("interface" + inter);
@@ -54,6 +33,9 @@ var setInterface = function (inter) {
 	var shared = window.shared;
 	var react = shared.react_service;
 
+	console.log("set interface", inter);
+
+	// u.setInterface(inter);
 	
 	react.push({
 		name:"interface",
@@ -109,7 +91,7 @@ var setLoadSpeed = function (display, speed) {
 
 
 
-var appConfiguration = function (mobile, inter) {
+var appConfiguration = function (inter, forceMobile) {
 
 	
 	var shared = window.shared;
@@ -117,13 +99,12 @@ var appConfiguration = function (mobile, inter) {
 	var g = shared.utility_service;
 
 
+	
 	setInterface(inter);
 
-
-	if (mobile) {
+	if (forceMobile) {
 		g.forceMobile();
 	}
-
 
 }
 
@@ -131,7 +112,11 @@ var appConfiguration = function (mobile, inter) {
 
 
 
-var appSetup = function (display, force) {
+var appSetup = function (display, force, mobile, inter) {
+
+
+	var shared = window.shared;
+	var g = shared.utility_service;
 
 
 	console.log("app setup");
@@ -162,6 +147,7 @@ var appSetup = function (display, force) {
 		// setSpeed(demoLoad.fast);
 	}
 
+	
 
 }
 
@@ -171,22 +157,40 @@ var appSetup = function (display, force) {
 
 var app = angular.module("app", ['stateModule', 'parallaxModule']);
 
-app.config(['$locationProvider', 'runtime.stateProvider', '$provide', "$httpProvider", function ($locationProvider, runtimeProvider, $provide, $httpProvider) {
+app.config(['config.serviceProvider', '$locationProvider', '$provide', "$httpProvider", 'runtime.stateProvider', function (configProvider, $locationProvider, $provide, $httpProvider, runtimeProvider) {
 	
-
-	appConfiguration(makeMobile(), makeInterface());
+	var inter;
+	var forceMobile;
 
 
 	$locationProvider.html5Mode(true);
 
+
 	$httpProvider.defaults.headers.common["Cache-Control"] = "no-cache";
 
-	var states = runtimeProvider.states;
+	configProvider.get([
+    	"config.interface",
+    	"config.forceMobile"
+    ])
+	.then(function (data) {
 
-	for (var i = 0; i < states.length; i++) {
-	  runtimeProvider.addState(states[i]);
-	}
+		console.log(data);
 
+		inter = data[0];
+		forceMobile = data[1];
+
+
+		appConfiguration(inter, forceMobile);
+		
+
+		
+		var states = runtimeProvider.states;
+
+		for (var i = 0; i < states.length; i++) {
+			  runtimeProvider.addState(states[i]);
+		}
+
+	});
 
 }])
 
@@ -211,11 +215,7 @@ app.run(['states', "config.service", "display.service", function (states, config
 		
 		try {
 			
-			configPromise = config.get([
-			                            "config.debug",
-				                    	"config.landingPage", 
-				                    	"config.loadSpeed"
-				                    ]);
+			configPromise = config.get("config");
 
 			
 
@@ -228,7 +228,11 @@ app.run(['states', "config.service", "display.service", function (states, config
 
 		configPromise.then(function (data) {
 
-			var debug = data[0];
+
+			console.log(data);
+
+			var config = data;
+			var debug = config.debug;
 			var landingPage 
 			var loadSpeed;
 
@@ -239,26 +243,31 @@ app.run(['states', "config.service", "display.service", function (states, config
 				loadSpeed = debug.loadSpeed;
 			}
 			else {
-				landingPage = data[1];
-				loadSpeed = data[2];
+				landingPage = config.landingPage;
+				loadSpeed = config.loadSpeed;
 			}
+
 
 			switch (landingPage) {
 
 				case page.home:
-				states.go("home");
+					
+					states.go("home");
 				break;
 
 				case page.trash:
-				states.go("trash#demo");
+					
+					states.go("trash#demo");
 				break;
 
 				case page.feedback:
-				states.go("feedback#demo");
+					
+					states.go("feedback#demo");
 				break;
 
 				default:
-				states.go("home");
+					
+					states.go("home");
 				break;
 
 			}

@@ -7,7 +7,7 @@ stateModule.provider("runtime.state", ["$stateProvider", function ($stateProvide
 
 
     var _forceMobile = false;
-    var inter;
+    var inter = "interface1";
 
     var provider = {};
 

@@ -1,4 +1,4 @@
-app.factory("config.service", ["utility", '$http', function (u, $http) {
+app.provider("config.service", [function () {
 
 
 	var shared = window.shared;
@@ -7,11 +7,56 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 	var react = shared.react_service;
 	var send = shared.send_service;
 
+	var p = {};
 
-	var self = this;
+	p.config = null;
+
+	var doesExist = function () {
 
 
-	self.config;
+		var check;
+		var count = 0;
+		var countMax = 500;
+		var duration = 30;
+		var result = false;
+
+		var checkConfig = function () {
+
+			return p.config && Object.keys(p.config).length > 0;
+		}
+
+		// console.log("does exist", p.config);
+
+		if (checkConfig()) result = true;
+		else {
+
+			check = setInterval(function() {
+
+				if (checkConfig() || count >= countMax) {
+
+					clearInterval(check);
+					check = null;
+					check = {};
+
+					if (count < countMax) {
+						result = true;
+					}
+					else {
+						console.log("config check failed: timeout " + count*countMax*duration/1000 + " seconds");
+						result = false;
+					}
+
+				}
+
+				count++;
+
+			}, duration)
+
+		}
+
+		return result;
+
+	}
 
 
 	var getConfig = function ($key) {
@@ -46,117 +91,112 @@ app.factory("config.service", ["utility", '$http', function (u, $http) {
 		}
 
 
-		value = getProp(self.config, i, keyArray);
+		value = getProp(p.config, i, keyArray);
 
 	    return value || '';
 
 	}
 
 
-	var get = function ($$key) {
-
-		return new Promise(function (resolve, reject) {
-
-
-			var configExists = function ($resolve, $reject) {
-
-				var resultArray = [];
-
-				if (Array.isArray($$key)) {
-					
-					for (var i in $$key) {
-
-						resultArray.push(getConfig($$key[i]));
-					}
-
-					$resolve(resultArray);
-				}
-				else {
-
-					$resolve(getConfig($$key));
-				}
-			}
-
-			var check;
-			var count = 0;
-
-			if (self.config) configExists(resolve, reject);
-			else {
-
-				check = setInterval(function() {
-
-					if (self.config || count >= 100) {
-
-						clearInterval(check);
-						check = null;
-						check = {};
-
-
-						if (count < 100) {
-							configExists(resolve, reject);
-						}
-						else {
-							console.log("config check failed: timeout 3 seconds")
-						}
-
-					}
-					else {
-
-						count++;
-					}
-
-				}, 30)
-
-			}
-
-			
-
-		})
-	}
-
-
-
 	var retrieveConfig = function () {
 
+		// console.log("retrieve config");
 
 		return new Promise(function (resolve, reject) {
 
+   			if (!doesExist()) {
+	   			
+	   			$.ajax("/assets/config/config.json", 
+	   			{
+	   				method:"GET"
+	   			})
+	   			.then(function (data) {
+	   				console.log("response data", data);
+	   				resolve(data);
+	   			}, function (err) {
 
-			$http({
-        		method:"GET",
-        		url:"/assets/config/config.json"
-        	})
-        	.then(function (res) {
-
-        		// var json = JSON.parse(res);
-
-
-        		// console.log("config data is", res.data);
-
-
-                resolve(res.data)
-
-            }, function (err) {
-
-                console.log("Server error: 'config'", err.message)
-            })
-
+	   				console.log("Server error: 'config'", err.message)
+	   			})
+   			}
+   			else {
+   				resolve(p.config);
+   			}
 
 
 		})
 	}
 
 
-	retrieveConfig()
-	.then(function (data) {
+	var assignConfig = function () {
 
-		self.config = data;
+		return retrieveConfig()
+		.then(function (data) {
 
-	})
+			p.config = data;
 
-
-	return {
-		get:get
+		})
 	}
+
+
+	var get = function ($$key) {
+
+		var processConfig = function (_key, resolve, reject) {
+
+			var resultArray = [];
+
+			if (Array.isArray(_key)) {
+				
+				for (var i in _key) {
+
+					resultArray.push(getConfig(_key[i]));
+				}
+
+				resolve(resultArray);
+			}
+			else {
+
+				resolve(getConfig(_key));
+			}
+		}
+
+		return assignConfig()
+		.then(function () {
+
+			return new Promise(function ($resolve, $reject) {
+
+				// console.log("get", $$key);
+				if (doesExist()) {
+					return processConfig($$key, $resolve, $reject);
+				}
+				else {
+					return null;
+				}
+			})
+
+		})
+
+	}
+
+
+	p.$get = ["utility", function (u) {
+
+		
+
+		var service = function () {
+
+			return {
+				get:get
+			}
+		}
+
+		return new service();
+
+	}]
+
+	p.get = get;
+	p.assignConfig = assignConfig;
+
+
+	return p;
 
 }]);

@@ -6,6 +6,11 @@ app.directive("feedbackWelcome", function () {
 
 			<div class="relative width80 hcenter padding-v-100">
 
+
+				<div class="relative text-center padding-bottom-50 font-50">
+					Feedback
+				</div>
+
 				Welcome to the Feedback Demonstration Walkthrough<br><br><br><br>
 
 

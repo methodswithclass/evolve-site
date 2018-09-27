@@ -16,7 +16,6 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 	var stateParams;
 	$scope.pageParams = {};
 
-
 	config.get([
 	           "config.activePages",
 	           "global.programs"

@@ -98,30 +98,41 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         });
     }
 
-    var enter = function (self, $scope) {
+    var enter = function (self, $scope, complete) {
 
         console.log("enter controller", self.name);
 
+
+        pageBuilt = display.beenBuilt(self.name);
+
+
+        var createComplete = function (name) {
+
+
+            evolve.setup(name);
+
+            $input.setInput({
+                name:name,
+                programInput:programInput
+            })
+
+            $scope.settings = $input.setSettings($scope, $input.getInput(false));
+
+
+            if (typeof complete === "function") complete(name);
+
+        }
 
         if (!pageBuilt) {
 
             $input.createInput(self.name, function () {
 
-
-                evolve.setup(self.name);
-
-                $input.setInput({
-                    name:self.name,
-                    programInput:programInput
-                })
-
-                $scope.settings = $input.setSettings($scope, $input.getInput(false));
-
+                createComplete(self.name)
             });
         }
         else {
-
-            $input.setName(self.name);
+            // $input.masterReset();
+            createComplete(self.name);
         }
 
         

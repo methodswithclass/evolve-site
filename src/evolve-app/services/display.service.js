@@ -8,6 +8,9 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 	var react = s.react_service;
 	var events = s.events_service;
 
+	var self = this;
+
+	self.name = "";
 
 	var inter = u.getViewTypes();
 
@@ -39,6 +42,7 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 	var $evolve = $("#evolvetoggle");
 	var $evolvedata = $("#evolvedatatoggle");
 	var $mainBack = $("#main-back");
+	var $mainInner = "#main-inner";
 	var $run = $("#runtoggle");
 
 
@@ -82,14 +86,14 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 
 
 
-	events.on("load-display", "stage-recognize", function () {
+	// events.on("load-display", "stage-recognize", function () {
 
-		$stage = $("#stagetoggle");
-		$hud = $("#hudtoggle");
-		$evolvedata = $("#evolvedatatoggle");
+	// 	$stage = $("#stagetoggle");
+	// 	$hud = $("#hudtoggle");
+	// 	$evolvedata = $("#evolvedatatoggle");
 
-		$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px", height:(g.isMobile() ? "50%" : "80%")})
-	})
+	// 	$stage.css({top:($evolvedata.offset().top - $hud.offset().top) + $evolvedata.height() + 150 + "px", height:(g.isMobile() ? "50%" : "80%")})
+	// })
 
 
 
@@ -164,10 +168,22 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 
 
 
-    var updateProgressBar = function (percent) {
+    var updateProgressBar = function (name, percent, generation, total) {
 
+    	// console.log("percent", percent);
 
-        $("#rundata").css({width:percent*100 + "%"});
+    	var value = percent*100;
+    	var percentString = value + "%";
+    	var percentComplete = "process is " + g.truncate(value, 0) + "% finished";
+    	var infoString =  "\
+	    	<span class='margin-right-20 margin-bottom-20 margin-top-20'> total generations: " + total + "</span>\
+	    	<span class='margin-20'>current: " + generation + "</span>\
+	    	<br>\
+	    	<span class='margin-top-20'>"+ percentComplete + "</span>\
+    	";
+
+        $("#"+name+"efrundatatoggle").css({width:percentString});
+        $("#"+name+"efinfotoggle").html(infoString);
     }
 
 
@@ -206,8 +222,7 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
         }
         else if (toggle == "show") {
 
-			u.toggle("show", "nav", {fade:params.fade, delay:params.delay});       
-            u.toggle("show", "hud", {fade:params.fade, delay:params.delay});
+			u.toggle("show", "nav", {fade:params.fade, delay:params.delay}); 
             u.toggle("show", "stage", {fade:params.fade, delay:params.delay});
             u.toggle("show", "evolvedata", {fade:params.fade, delay:params.delay});
             u.toggle("show", "settings", {fade:params.fade, delay:params.delay});
@@ -223,7 +238,8 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 
             if (name == "feedback") {
             	u.toggle("hide", "simdata", {fade:params.fade, delay:params.delay});
-            	// u.toggle("hide", "run", {fade:params.fade, delay:params.delay});
+            	u.toggle("hide", "run", {fade:params.fade, delay:params.delay});
+            	u.toggle("hide", "evolve");
             	u.toggle("enable", "play", {fade:params.fade, delay:params.delay});
             }
             else if (name == "trash") {
@@ -240,52 +256,67 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
     }
 
 
-	var setEvolveHeight = function ($back, $evolve, $walkthrough) {
+	var setHeight = function ($back, $elem) {
 		
-		var $winH = $back.height();
+		var $winH = $($back).height();
 
-		// var winH = winH > $winH ? winH : $winH;
+		// console.log("winh", $winH);
 
-		$walkthrough.css({height:$winH + "px"});
-		$evolve.css({height:$winH + "px"});
+		$($elem).css({height:$winH + "px"});
 
 	}
 
-	var setupEvolve = function() {
+	var setupEvolve = function(name) {
 
-		forceEvolveHeight();
+		forceEvolveHeight(name);
 
 		$(window).resize(function () {
 
-			forceEvolveHeight();
+			forceEvolveHeight(name);
 		})
 	}
 
-	var forceEvolveHeight = function () {
+	var forceEvolveHeight = function (name) {
 
-		var name = u.stateName(states.current());
+		// var name = states.getName();
 
-		g.waitForElem({elems:["#main-back", "#evolvetoggle", "#"+name+"walkthroughtoggle", "#main-inner"]}, function (options) {
-			
-			var $mainBack = $(options.elems[0]);
-			var $evolve = $(options.elems[1]);
-			var $walkthrough = $(options.elems[2]);
-			var $inner = $(options.elems[3]);
+		var walkthroughElem = "#"+name+"walkthroughtoggle";
+		var evolveElem = "#evolvetoggle";
 
-			var evolveDiff;
-			var walkthroughDiff;
+		var setHeightForElement = function (element) {
 
-			setInterval(function() {
 
-				evolveDiff = Math.abs($evolve.height() - $inner.height());
-				walkthroughDiff = Math.abs($walkthrough.height() - $inner.height());
+			g.waitForElem({elems:["#main-inner", element]}, function (options) {
 
-				if (evolveDiff > 2 || walkthroughDiff > 2) {
-					setEvolveHeight($inner, $evolve, $walkthrough);
-				}
-			}, 100);
 
-		});
+				var $inner = options.elems[0];
+				var $elem = options.elems[1];
+
+				var elemDiff;
+
+				var checkHeight = setInterval(function() {
+
+					// console.log("set height", name, $elem);
+
+					elemDiff = Math.abs($($elem).height() - $($inner).height());
+
+					// console.log("elemheight", $elem, elemDiff);
+					if (elemDiff > 2) {
+						setHeight($inner, $elem);
+						
+						clearInterval(checkHeight);
+						checkHeight = null;
+						checkHeight = {};
+					}
+
+				}, 100);
+
+			});
+		}
+
+		
+		// setHeightForElement(walkthroughElem);
+		setHeightForElement(evolveElem);
 
 	}
 
@@ -299,6 +330,13 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 	}
 
 	var load = function (name) {
+
+		self.name = name;
+
+		// g.waitForElem({elems:"#"+self.name+"efinfotoggle"}, function () { 
+			
+		// 	updateProgressBar(self.name, 0, 0, 0);
+		// });
 
 		$mainBack = $("#main-back");
 
@@ -395,8 +433,8 @@ app.factory("display.service", ["utility", "phases.service", "states", function 
 		phases.loadPhases({name:name + "display", phases:$phases[name], run:true});
 		
 
-		// forceEvolveHeight();
-		setupEvolve();
+
+		setupEvolve(name);
 
 	}	
 

@@ -127,6 +127,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			u.toggle("show", self.name + "phase1-container");
 
+
+			// u.toggle("show", "hud", {delay:300, fade:600});
+
 			indicateRefreshButton();
 
 			setTimeout(function () {
@@ -144,13 +147,15 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 		if (phases.isRunning(self.full)) {
 
+			// u.toggle("hide", "hud");
 			
 		}
 		else {
 			console.log("evolveStart: phases not running");
 
 			
-			u.toggle("hide", self.name+"walkthroughbutton")
+			u.toggle("hide", self.name+"walkthroughbutton");
+			
 		}
 	}
 
@@ -195,10 +200,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 				console.log(self.full, options.index, "phase");
 				$("#runinner").addClass("scaling");
 				toggleGrayout(true);
-				u.toggle("hide", "run");
+				u.toggle("hide", "evovle");
+				$("#main-inner").css({opacity:0});
 				u.toggle("show", self.name + "walkthroughwelcome");
 				u.toggle("hide", self.name + "walkthroughbutton");
 				u.toggle("show", self.name + "walkthrough", {delay:300, fade:600});
+				u.toggle("show", self.name+"ef", {fade:600, delay:300});
 			}
 			else {
 				console.log("phase 0 run: not running");
@@ -212,6 +219,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 				
 				u.toggle("show", "run");
+				$("#main-inner").css({opacity:1});
+
+            	u.toggle("show", "hud", {fade:600, delay:300});
 				u.toggle("hide", self.name + "walkthroughwelcome");
 			}
 			else {
@@ -370,8 +380,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 	var indicateRefreshButton = function () {
 
 
-		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-back", buffer:(g.isMobile() ? 1700 : 1300) + evolveCount*100});
-		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-back", buffer:(g.isMobile() ? 1900 : 1600) + evolveCount*100});
+		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-back", buffer:(g.isMobile() ? 1700 : 1600) + evolveCount*100});
+		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-back", buffer:(g.isMobile() ? 1900 : 1900) + evolveCount*100});
 	}
 
 	

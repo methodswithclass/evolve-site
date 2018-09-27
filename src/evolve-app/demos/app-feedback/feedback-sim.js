@@ -39,6 +39,11 @@ app.factory("feedback-sim", ['data', function (data) {
         console.log("plot not reset");
     }
 
+    var refreshUI = function (options) {
+
+        console.log("refresh ui not set");
+    }
+
     react.subscribe({
         name:"importplot",
         callback:function (x) {
@@ -48,6 +53,7 @@ app.factory("feedback-sim", ['data', function (data) {
             createplot = x.createplot;
             resetplot = x.resetplot;
             stopPlot = x.stopPlot;
+            refreshUI = x.refreshUI;
 
         }
     })
@@ -63,7 +69,7 @@ app.factory("feedback-sim", ['data', function (data) {
 
     var setup = function () {
 
-
+        // refreshUI();
     }
 
     var stop = function () {
@@ -91,6 +97,13 @@ app.factory("feedback-sim", ['data', function (data) {
         if (typeof complete === "function") complete();
     }
 
+    var updateUI = function () {
+
+        g.waitForElem({elems:["#innerplot", "#arena"]}, function (options) {
+            refreshUI(options);
+        });
+    }
+
     var step = function (dna, duration) {
 
         // console.log("step simulator", duration);
@@ -105,7 +118,8 @@ app.factory("feedback-sim", ['data', function (data) {
         reset:reset,
         refresh:refresh,
     	step:step,
-        stop:stop
+        stop:stop,
+        updateUI:updateUI
     }
 
 

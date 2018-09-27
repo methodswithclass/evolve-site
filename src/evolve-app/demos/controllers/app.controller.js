@@ -12,7 +12,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
     
 
-    self.name = u.stateName(states.current());
+    self.name = states.getName();
     $scope.name = self.name;
     self.sdata;
 
@@ -30,60 +30,40 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     var loadSpeeds;
     var k = 0;
 
+    $scope.navName = "back";
+    $scope.navLoc = states.getName();
 
-    config.get("global.types.crossoverMethods")
-    .then(function (data) {
+    // $scope.demos = [
+    // {
+    //     name:"trash pickup",
+    //     state:"trash#demo"
+    // },
+    // {
+    //     name:"feedback",
+    //     state:"feedback#demo"
+    // }
+    // ]
 
+    $scope.demos = [];
 
-        tempcross = data;
+    $scope.demoModel;
 
+    $scope.changeDemo = function (model) {
 
-        for (var i in tempcross) {
+        // var value = $("#demoSelect option:selected").text();
+        var value = model;
 
-            if (k > 0) {
+        console.log("value", value);
 
-                crossoverMethods.push({
-                    index:k-1,
-                    name:i,
-                    method:tempcross[i]
-                })
-            }
+        var newDemo = $scope.demos.find(function (p) {
 
-            k++;
-        }
+            // console.log("state", p.state, states.current());
+            return p.name == value;
+        })
 
-        $scope.crossoverMethods = crossoverMethods;
-        $scope.settings.method = crossoverMethods[0].method;
+        states.go(newDemo.state);
 
-        $scope.crossoverData = {
-            crossoverMethods:crossoverMethods,
-            method:crossoverMethods[0].method
-        }
-
-
-    })
-
-
-    react.subscribe({
-        name:"data" + self.name,
-        callback:function (x) {
-
-            $scope.evdata = x.evdata || $scope.evdata;
-            $scope.stepdata = x.stepdata || $scope.stepdata;
-            $scope.input = x.input || $scope.input;
-        }
-    })
-
-
-    react.subscribe({
-        name:"displayParams",
-        callback:function (x) {
-
-            displayParams = x.params;
-            loadSpeeds = x.loadSpeeds;
-            allParams = x.allParams;
-        }
-    })
+    }
 
 
     var initData = function () {
@@ -119,6 +99,27 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     react.push({
         name:"simulator" + self.name,
         state:simulator
+    })
+
+    react.subscribe({
+        name:"data" + self.name,
+        callback:function (x) {
+
+            $scope.evdata = x.evdata || $scope.evdata;
+            $scope.stepdata = x.stepdata || $scope.stepdata;
+            $scope.input = x.input || $scope.input;
+        }
+    })
+
+
+    react.subscribe({
+        name:"displayParams",
+        callback:function (x) {
+
+            displayParams = x.params;
+            loadSpeeds = x.loadSpeeds;
+            allParams = x.allParams;
+        }
     })
 
 
@@ -189,7 +190,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
                         method:tempcross.default
                     })
                     
-                    api.setInput(true, function (res) {
+                    api.setInput(false, function (res) {
 
                         api.initialize(function () {                        
 
@@ -337,11 +338,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
     self.open = function () {
 
-        // console.log("open settings ", openStatus.opened);
-
-        // if (!settings.isFocus() && settings.toggleOpened) {
-            settings.animateToggle();
-        // }
+        settings.animateToggle();
     }
 
 
@@ -482,9 +479,9 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     var enter = function () {
         
        
-        g.waitForElem({elems:"#main-back"}, function () {
+        g.waitForElem({elems:"#main-back"}, function (options) {
             
-            $("#main-back").click(function () {
+            $(options.elems).click(function () {
 
                 settings.animateToggle(false);
             });
@@ -492,20 +489,93 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
         });
 
 
-        controller.enter(self, $scope);
-
         settings.setHover();
-        
 
-        // console.log("settings", $scope.settings);
+        controller.enter(self, $scope, function (name) {
+
+
+            $input.setName(name);
+
+            $input.setOverride(name, function () {
+
+                g.waitForElem({elems:"#"+name+"efinfotoggle"}, function () {
+                    evolve.stepprogress(name);
+                });
+            });
+
+        });
 
     }
 
 
 
-    build();
+    config.get([
+        "global.types.crossoverMethods",
+        "global.programs",
+        "config.activePages"
+    ])
+    .then(function (data) {
 
-    load();
+
+        tempcross = data[0];
+        var programs = data[1];
+        var activePages = data[2];
+
+        console.log("tempcross", tempcross);
+
+        for (var i in tempcross) {
+
+            if (k > 0) {
+
+                crossoverMethods.push({
+                    index:k-1,
+                    name:i,
+                    method:tempcross[i]
+                })
+            }
+
+            k++;
+        }
+
+        $scope.crossoverMethods = crossoverMethods;
+        $scope.settings.method = crossoverMethods[0].method;
+
+        $scope.crossoverData = {
+            crossoverMethods:crossoverMethods,
+            method:crossoverMethods[0].method
+        }
+
+        var j = 0;
+
+        $scope.demos = [];
+
+        for (var i in programs) {
+            if (activePages[i]) {
+                $scope.demos[j++] = {
+                    name:programs[i].meta.name,
+                    state:i+"#demo"
+                }
+            }
+        }
+
+        var initialDemo = $scope.demos.find(function (p) {
+
+            console.log("state", p.state, states.current());
+            return p.state == states.current();
+        })
+
+        $scope.demoModel = initialDemo.name;
+
+
+        build();
+
+        load();
+
+
+    })
+
+
+    
 
 
 

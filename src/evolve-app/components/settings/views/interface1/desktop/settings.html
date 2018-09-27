@@ -178,10 +178,9 @@
 											</div>
 										</div>
 
-
-										<select class="absolute width50 height right0 text-right black-back white font-30 nooutline" id="methodinput" ng-model="model" ng-change="changeMethod(model)">
-											<option ng-repeat="item in methods" value="{{item.method}}">{{item.method}}</option>
-										</select>
+										<div class="absolute width50 height right0">
+											<select-input ngClass="absolute font-30" items="methods" elemID="methodinput" change="changeMethod" model="model" key="method"></select-input>
+										</div>
 
 									</div>
 

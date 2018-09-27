@@ -125,6 +125,9 @@
 .flex-justify-space {
   justify-content: space-around; }
 
+.flex-justify-between {
+  justify-content: space-between; }
+
 .flex-grow {
   flex: flex-grow; }
 

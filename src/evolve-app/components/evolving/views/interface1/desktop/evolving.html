@@ -1,103 +1,57 @@
-<div class="absolute width height" id="evolvepage">
 
+<div class="absolute width height opacity0 none cutoff z-100" id="evolvetoggle">
 
-	<div class="absolute width40 height-100 margin-v-100 hcenter opacity0 z-100" id="runtoggle">
-		<div class="absolute width height rounded10 black-back border-white white pointer font-30 shadow scaling" id="runinner" on-tap="run()">
-			<!-- <div class="absolute width90 height80 center border-white rounded10"> -->
-				<div class="absolute center">
-					evolve
-				</div>
-			<!-- </div> -->
-		</div>
-		<div class="absolute width height rounded10 white-back opacity0 none" id="runtogglecover"></div>
-		<!-- <div class="absolute width80 height-70 top-minus-90 hcenter font-15" id="evolvetool">
-			<div class="absolute width height rounded5 black-back opacity70"></div>
-			<div class="absolute width80 height80 center white">
-				<div class="absolute center text-center">
-					click here to start evolution process, do this first
-				</div>
-			</div>
-		</div> -->
-	</div>
-
-
-
-	<div class="absolute width height opacity0 cutoff z-100" id="evolvetoggle">
-
-		<div class="absolute width height black-back opacity90"></div>
+	<div class="absolute width height black-back opacity99"></div>
+	
+	<div class="absolute width80 height-600 margin-v-50 hcenter white">
 		
-		<div class="absolute width80 height-600 margin-v-50 hcenter white">
+
+		<div ng-if="showFeedback()" class="relative width">
+			<evolve-feedback></evolve-feedback>
+		</div>
+		
+		<div class="relative width80 hcenter">
+
+
+			<div class="relative width-200 font-20">
+				
+				<div class="relative width gray-back padding-50 margin-v-50 rounded20 border-white">
+					<div class="relative width vcenter">
+						<div class="absolute width50">
+							<div class="absolute center">
+								fitness
+							</div>
+						</div>
+						<div class="absolute width50 right0">
+							<div class="absolute center">
+								{{fitnessRounded}}
+							</div>
+						</div>
+					</div>
+				</div>
 			
 
 
-			<div ng-if="feedback">
-				<evolve-feedback position="relative"></evolve-feedback>
-			</div>
-			
-			<div class="relative width-400">
+				<div class="relative width-100 height-60 margin-h-50 hcenter">
 
 
-				<div class="relative width font-30 padding-v-10 margin-bottom-20">
-					<div class="absolute width50">
-						<div class="absolute vcenter">generation</div>
+					<div class="absolute width height-50">
+						<div class="absolute width height white-back rounded5 font-20 black pointer" id="breakevolve" on-tap="break()">
+							<div class="absolute center">
+								<!-- <i class="fas fa-times"></i> -->
+								end
+							</div>
+						</div>
+
+						<div class="absolute width-200 height-30 left-200 margin-h-20 vcenter opacity0" id="breakfeedbacktoggle">
+							<div class="absolute vcenter font-15 white">
+								finishing up....
+							</div>
+						</div>
 					</div>
-					<div class="absolute width50 right0">
-						<div class="absolute vcenter text-right">{{stepdata.gen}}</div>
-					</div>
+
+
 				</div>
-				
-
-
-				<div class="relative width font-15 padding-v-10 margin-bottom-20">
-					<div class="absolute width50">
-						<div class="absolute vcenter">
-							total generations
-						</div>
-					</div>
-					<div class="absolute width50 right0">
-						<div class="absolute vcenter text-right">
-							{{input.gens}}
-						</div>
-					</div>
-				</div>
-
-
-				<div class="relative width font-15 padding-v-10 margin-bottom-20">
-					<div class="absolute width50">
-						<div class="absolute vcenter">
-							fitness
-						</div>
-					</div>
-					<div class="absolute width50 right0">
-						<div class="absolute vcenter text-right">
-							{{fitnessRounded}}
-						</div>
-					</div>
-				</div>
-
-				
-
-			</div>
-
-
-			<div class="relative width height-60">
-
-
-				<div class="absolute width-100 height-50 top100">
-					<div class="absolute width height white-back rounded5 font-20 margin-h-10 black pointer" id="breakevolve" on-tap="break()">
-						<div class="absolute center">
-							<!-- <i class="fas fa-times"></i> -->
-							end
-						</div>
-					</div>
-
-					<div class="absolute width-200 height-30 left-200 margin-h-10 vcenter opacity0" id="breakfeedbacktoggle">
-						<div class="absolute vcenter font-15 white">
-							finishing up....
-						</div>
-					</div>
-				</div>
-
 
 			</div>
 
@@ -105,3 +59,5 @@
 
 	</div>
 </div>
+
+

@@ -347,37 +347,48 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         
 	}
 
-	var enter = function (self, $scope) {
+	var enter = function (self, $scope, complete) {
 
+        pageBuilt = display.beenBuilt(self.name);
+
+
+
+        var createComplete = function (name) {
+
+
+            // $input.masterReset();
+
+            evolve.setup(name);
+            
+
+            $input.setInput({
+                name:name,
+                programInput:self.programInput
+            })
+
+            react.push({
+                name:"data" + name,
+                state:{input:$input.getInput()}
+            })
+
+
+            $scope.settings = $input.setSettings($scope, $input.getInput());
+
+            if (typeof complete === "function") complete(name);
+
+        }
 
         if (!pageBuilt) {
 
             $input.createInput(self.name, function () {
 
 
-                evolve.setup(self.name);
-                
-
-                $input.setInput({
-                    name:self.name,
-                    programInput:self.programInput
-                })
-
-                react.push({
-                    name:"data" + self.name,
-                    state:{input:$input.resendInput()}
-                })
-
-
-                $scope.settings = $input.setSettings($scope, $input.getInput());
-
+                createComplete(self.name);
             })
 
         }
         else {
-
-            $input.setName(self.name);
-
+            createComplete(self.name);
         }
 
 	}

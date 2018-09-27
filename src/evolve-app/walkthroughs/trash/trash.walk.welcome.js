@@ -6,6 +6,11 @@ app.directive("trashWelcome", function () {
 
 			<div class="relative width80 hcenter padding-v-100">
 
+
+				<div class="relative text-center padding-bottom-50 font-50">
+					Trash Pickup
+				</div>
+
 				Welcome to the Trash Pickup Demonstration Walkthrough<br><br><br><br>
 
 
