@@ -28,106 +28,21 @@ var environment = function () {
 		}
 	}
 
-	self.get = function () {
+	var check = function (pos) {
 
-		return env;
-	}
+		var result = 0;
 
-	var clear = function () {
+		// console.log("stage", pos, stage);
 
-		env = {};
-	}
-
-	var block = function (x, y) {
-
-		var self = this;
-
-		self.pos = {x:x, y:y};
-
-		self.trash = false;
-
-		self.dirty = function () {
-			self.trash = true;
+		if (pos.x < stage.min || pos.x > stage.max || pos.y < stage.min || pos.y > stage.max) {
+			result = 2;
 		}
 
-		self.clean = function () {
-			self.trash = false;
-		}
+		if (result == 0) {
+			result = env.arena[pos.x][pos.y].trash ? 1 : 0;
+		} 
 
-		self.isDirty = function () {
-
-			return self.trash;
-		}
-	}
-
-	self.trash = function () {
-
-		var b;
-		var ui;
-		var check;
-
-		for (var i in env.trash) {
-
-			t = env.trash[i];
-
-			b = env.arena[t.x][t.y];
-			b.dirty();
-			
-			if (!b.trash) {
-				console.log("flag **********************************************");
-			}
-			
-		}
-
-	}
-
-	var replace = function () {
-
-		var block;
-
-		// env.arena = [];
-
-		for (var i = 0; i < stage.width; i++) {
-			// env.arena[i] = [];
-			for (var j = 0; j < stage.height; j++) {
-				block = env.arena[i][j];
-				block.clean();
-			}
-		}
-
-		self.trash();
-	}
-
-	self.make = function () {
-
-		var col = [];
-		var _arena = [];
-
-		var ablock;
-		var k = 0;
-
-		// console.log("make stage width", stage.width);
-
-		for (var i = 0; i < stage.width; i++) {
-
-			col = [];
-
-			for (var j = 0; j < stage.height; j++) {
-
-				ablock = new block(i,j);
-
-				col[j] = ablock;
-			}
-
-			_arena[i] = col;
-		}
-
-		env.arena = _arena;
-	}
-
-	self.reset = function () {
-
-		replace();
+		return result;
 	}
 
 
@@ -177,6 +92,110 @@ var environment = function () {
 		return $$pairs;
 	}
 
+	var clear = function () {
+
+		env = {};
+	}
+
+	var block = function (x, y) {
+
+		var self = this;
+
+		self.pos = {x:x, y:y};
+
+		self.trash = false;
+
+		self.dirty = function () {
+			self.trash = true;
+		}
+
+		self.clean = function () {
+			self.trash = false;
+		}
+
+		self.isDirty = function () {
+
+			return self.trash;
+		}
+	}
+
+	var replace = function () {
+
+		var block;
+
+		// env.arena = [];
+
+		for (var i = 0; i < stage.width; i++) {
+			// env.arena[i] = [];
+			for (var j = 0; j < stage.height; j++) {
+				block = env.arena[i][j];
+				block.clean();
+			}
+		}
+
+		return self.trash();
+	}
+
+	self.get = function () {
+
+		return env;
+	}
+
+	self.trash = function () {
+
+		var b;
+		var ui;
+		var check;
+
+		for (var i in env.trash) {
+
+			t = env.trash[i];
+
+			b = env.arena[t.x][t.y];
+			b.dirty();
+			
+			if (!b.trash) {
+				console.log("flag **********************************************");
+			}
+			
+		}
+
+		return env;
+
+	}
+
+	self.make = function () {
+
+		var col = [];
+		var _arena = [];
+
+		var ablock;
+		var k = 0;
+
+		// console.log("make stage width", stage.width);
+
+		for (var i = 0; i < stage.width; i++) {
+
+			col = [];
+
+			for (var j = 0; j < stage.height; j++) {
+
+				ablock = new block(i,j);
+
+				col[j] = ablock;
+			}
+
+			_arena[i] = col;
+		}
+
+		env.arena = _arena;
+	}
+
+	self.reset = function () {
+
+		return replace();
+	}
+
 	self.refresh = function (options) {
 
 		// console.log("options", options.grid.size);
@@ -194,26 +213,7 @@ var environment = function () {
 
 		env.trash = _trash;
 
-		replace();
-
-		return _trash.length;
-	}
-
-	var check = function (pos) {
-
-		var result = 0;
-
-		// console.log("stage", pos, stage);
-
-		if (pos.x < stage.min || pos.x > stage.max || pos.y < stage.min || pos.y > stage.max) {
-			result = 2;
-		}
-
-		if (result == 0) {
-			result = env.arena[pos.x][pos.y].trash ? 1 : 0;
-		} 
-
-		return result;
+		return replace();
 	}
 
 	self.assess = function (pos) {

@@ -4,10 +4,20 @@ var evolveFact = require("mc-evolve");
 // var evolveFact = require("../../@.ga/__.ga.js");
 var g = require("mc-shared").utility_service;
 // var g = require("../../__.ga/shared.js").utility_service;
+const UIDGenerator = require('uid-generator');
+
+
+const uidgen = new UIDGenerator();
+
 
 var SESSION_EXPIRY = 3600*24*1000;
 
 var evolve = {};
+
+var getSessionId = function () {
+
+	return uidgen.generateSync();
+}
 
 var data = function (name) {
 
@@ -26,6 +36,7 @@ var makeProgramString = function ($options) {
 	var programExists = g.doesExist(program);
 	var optionsExists = g.doesExist(options.processType);
 
+	console.log("process type", optionsExists, "\n\n\n");
 
 	var programString;
 	var typeString = "";
@@ -64,6 +75,13 @@ var clearSessions = function () {
 	}
 }
 
+var getSession = function (session) {
+
+	return {
+		evolve:evolve[session]
+	}
+}
+
 
 var makeEvolve = function () {
 
@@ -91,11 +109,13 @@ var makeProgram = function (options) {
 }
 
 
-var createSessionEvolve = function (session) {
+var createSessionEvolve = function () {
 
 	console.log("create session", session);
 
 	clearSessions();
+
+	var session = getSessionId();
 
 	var now = new Date();
 	var nowMilli = now.getTime();
@@ -105,35 +125,41 @@ var createSessionEvolve = function (session) {
 	evolve[session].evolve = makeEvolve();
 	evolve[session].expires = expires.getTime();
 	
-	return evolve[session].evolve;
+	return {
+		evolve:evolve[session].evolve,
+		session:session
+	}
 }
 
 var addProgramToSession = function (input) {
 
 	var name = input.name ? input.name : undefined;
-	var session = input.session ? input.session : undefined;
+	var sessionId = input.session ? input.session : undefined;
 	
 	var programString = makeProgramString(input);
 
-	console.log("add program to session", session, programString);
+	console.log("add program to session", sessionId, programString);
 
 
-	if (g.doesExist(name) && g.doesExist(session)) {
+	if (g.doesExist(name) && g.doesExist(sessionId)) {
 
-		if (evolve[session].programs && evolve[session].programs[name]) {
-			console.log("program exists");
+		var session = getSession(sessionId);
+
+		if (session.programs && session.programs[name]) {
+			console.log("program does not exist, make program");
+			
 			return {
-				program:evolve[session].programs[name],
+				program:session.programs[name],
 				pdata:data(input.name)
 			}
 		}
 
 
-		evolve[session].programs = {};
-		evolve[session].programs[name] = makeProgram(input);
+		session.programs = {};
+		session.programs[name] = makeProgram(input);
 
 		return {
-			program:evolve[session].programs[name],
+			program:session.programs[name],
 			pdata:data(input.name)
 		}
 	}
@@ -148,19 +174,40 @@ var getAllSessions = function () {
 	return evolve;
 }
 
-var getSession = function (session) {
-
-	return evolve[session];
-}
-
 var getSessionEvolve = function (session) {
 
-	return evolve[session].evolve;
+	var session = getSession(session);
+
+	if (!session) {
+
+		session = createSessionEvolve();
+	}
+
+	return {
+		evolve:session.evolve.evolve,
+		session:session.session
+	}
 }
 
 var getSessionProgram = function (session, name) {
 
-	return evolve[session].programs[name];
+	var session = getSession(session);
+
+	if (!session) {
+		
+		session = createSessionEvolve();
+		var program = addProgramToSession(session.session);
+
+		return {
+			program:program.program[name],
+			session:session.session
+		}
+	}
+
+	return {
+		program:session.programs[name],
+		session:session.session
+	}
 }
 
 var sessionHardStop = function (session) {
@@ -175,6 +222,7 @@ var sessionHardStop = function (session) {
 
 module.exports =  {
 	data:data,
+	getSessionId:getSessionId,
 	programs:programs,
 	createSessionEvolve:createSessionEvolve,
 	addProgramToSession:addProgramToSession,

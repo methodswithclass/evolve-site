@@ -64,33 +64,41 @@ var trash = function (options) {
 
 	var createRunEnvironment = function () {
 
-		var env = function () {
+		var env = function ($options) {
 
 			var self = this;
 
 			self.robot = new robotFact();
 			self.environment = new environmentFact();
 			
-			self.setup = function($options) {
 
-				self.robot.setup(self.environment, $options);
+			self.setup = function($$options) {
+
+				self.robot.setup(self.environment, $$options ? $$options : $options);
 			}
 
 			self.reset = function () {
 
-				self.environment.reset();
+				
 				self.robot.reset();
+
+				self.environment.reset();
+
+				return self.get();
 			}
 
 
-			self.refresh = function ($options) {
+			self.refresh = function ($$options) {
 
-				// console.log("refresh environment", $options.grid.size);
+				console.log("refresh environment");
 
-				var target = self.environment.refresh($options);
-				self.setup($options);
 
-				return target;
+				self.environment.refresh($$options ? $$options : $options);
+
+				self.setup($$options ? $$options : $options);
+
+				return self.get();
+				
 			}
 
 			self.get = function () {
@@ -120,20 +128,27 @@ var trash = function (options) {
 			}
 		}
 
-		return new env();
+		return new env(options);
 
 
 	}
 
 
-	var makeEnvironments = function (runs) {
+	var makeEnvironments = function ($runs) {
 
 		var envIndex = 0;
 		env = [];
 
+		if ($runs.hasOwnProperty("runs")) {
+			runs = $runs.runs;
+		}
+		else {
+			runs = $runs;
+		}
+
 		while (envIndex < runs) {
 
-			env.push(createRunEnvironment());
+			env[envIndex] = createRunEnvironment();
 
 			envIndex++;
 		}
@@ -146,6 +161,38 @@ var trash = function (options) {
 
 			p.refresh(input.programInput);
 		});
+	}
+
+	self.instruct = function (index, dna) {
+
+		env[index].instruct(dna);
+	}
+
+	self.refresh = function (index, options) {
+		
+		if (index < env.length) {
+			return env[index].refresh(options);
+		}
+		else {
+			makeEnvironments(index+1);
+			return env[index].refresh(options)
+		}
+	}
+
+	self.reset = function (index) {
+		
+		if (index < env.length) {
+			return env[index].reset();
+		}
+		else {
+			makeEnvironments(index+1);
+			return env[index].reset();
+		}
+	}
+
+	self.get = function (index) {
+
+		return env[index].get();
 	}
 
 

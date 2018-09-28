@@ -337,9 +337,15 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         // events.dispatch("refreshenv");
 
-        refreshenv(complete);
+        refreshenv(function () {
 
-        reset();
+            reset();
+
+            if (typeof complete === "function") complete();
+
+        });
+
+       
     }
 
     var start = function (session) {

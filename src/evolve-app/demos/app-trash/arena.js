@@ -30,6 +30,10 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			var col = [];
 			var arena = [];
 
+			var self = this;
+
+			self.environment;
+
 
 			var block = function (input) {
 
@@ -117,10 +121,31 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			}
 
-			var makeBlocks = function (env) {
+			var makeBlocks = function ($env) {
 
 				clear();
 
+				var env;
+
+				// console.log("environ", $env, self.environment);
+
+				if ($env == undefined) {
+
+					env = {}
+					env.arena = self.environment.arena
+					env.trash = self.environment.trash;
+				}
+				else {
+
+					env = {};
+					env.arena = $env.arena;
+					env.trash = $env.trash;
+					self.environment = {}
+					self.environment.arena = $env.arena;
+					self.environment.trash = $env.trash;
+				}
+
+				 
 
 				rows = env.arena.length;
 				cols = env.arena.length;

@@ -30,43 +30,43 @@ var addProgram = function (input) {
 	return input;
 }
 
-var looseEnds = function (req) {
+// var looseEnds = function (req) {
 
-	var sessions = get.getAllSessions()
-	var dataArray = [];
+// 	var sessions = get.getAllSessions()
+// 	var dataArray = [];
 
-	for (i in sessions) {
-		//get program with this name for each sesssion that is still running
-		dataArray.push({
-			session:sessions[i],
-			program:sessions[i].programs[req.body.input.name]
-		})
-	}
+// 	for (i in sessions) {
+// 		//get program with this name for each sesssion that is still running
+// 		dataArray.push({
+// 			session:sessions[i],
+// 			program:sessions[i].programs[req.body.input.name]
+// 		})
+// 	}
 
-	dataArray.forEach((data) => {
-		//check if it's stepdata function is being called
+// 	dataArray.forEach((data) => {
+// 		//check if it's stepdata function is being called
 
-		check = called++;
+// 		check = called++;
 
-		if (check == 10) {
-			check = 0;
-		}
+// 		if (check == 10) {
+// 			check = 0;
+// 		}
 
-		if (called == 10) {
-			called = 0;
-		}
+// 		if (called == 10) {
+// 			called = 0;
+// 		}
 
 
-		setTimeout(() => {
+// 		setTimeout(() => {
 
-			if (check == called) {
+// 			if (check == called) {
 
-				data.program.hardStop(data.session.evolve.input.session);
-			}
-		}, 300)
+// 				data.program.hardStop(data.session.evolve.input.session);
+// 			}
+// 		}, 300)
 
-	})
-}
+// 	})
+// }
 
 
 evolveRouter.post("/data", function (req, res, next) {
@@ -92,11 +92,11 @@ evolveRouter.get("/instantiate", function (req, res, next) {
 
 		console.log("instantiate");
 
-		var session = uidgen.generateSync();
+		// var session = uidgen.generateSync();
 
-		get.createSessionEvolve(session);
+		var session = get.createSessionEvolve();
 
-		res.status(200).json({session:session, success:"success"});
+		res.status(200).json({session:session.session, success:"success"});
 
 	}
 	catch (err) {
@@ -115,7 +115,7 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 		var input = addProgram(req.body.input);
 
-		var evolution = get.getSessionEvolve(input.session);
+		var evolution = get.getSessionEvolve(input.session).evolve;
 
 		let success = evolution.initialize(input);
 

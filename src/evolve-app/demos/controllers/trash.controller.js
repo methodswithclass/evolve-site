@@ -10,24 +10,9 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
     var react = shared.react_service;
     var events = shared.events_service;
 
-    var processTypes
-
-    config.get("global.types.processTypes")
-    .then(function (data) {
-
-        processTypes = data;
-    })
-
     // console.log("types", processTypes);
 
     var d = data.get("trash");
-
-    var getProcessType = function (input) {
-
-        // console.log("input in function", input);
-        return (typeof input.processIndex !== "undefinded") ? processTypes[input.processIndex] : undefined;
-    }
-
 
 	var setup = function (self, $scope) {
 
@@ -72,145 +57,6 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	}
 
-    var opacityScroll = function () {
-
-        var main = "#main-back";
-        
-        var run = "#runtoggle";
-        var sim = "#simParent";
-        var config = "#programConfig";
-
-        var displays = {
-            block:"block",
-            none:"none"
-        }
-
-        var scrollTop = 0;
-        var opacity =  {
-            run:0,
-            sim:0,
-            config:0
-        };
-
-        var objDisplay = {
-            run:displays.block,
-            sim:displays.block,
-            config:displays.block
-        }
-
-
-        return new Promise(function (resolve, reject) {
-
-
-
-
-            var scrollFunc = function () {
-
-                var params = {
-                    factor:{
-                        run:0.4,
-                        sim:0.2,
-                        config:0.2
-                    },
-                    offset:{
-                        run:0,
-                        sim:$(window).height()*0.1,
-                        config:$(window).height()*0.15
-                    }
-                }
-
-                scrollTop = $(main).scrollTop();
-                        
-                opacity = {
-                    run:1 - (scrollTop*params.factor.run - params.offset.run)/100,
-                    sim:(scrollTop*params.factor.sim - params.offset.sim)/100,
-                    config:(scrollTop*params.factor.config - params.offset.config)/100
-                }
-
-
-                for (var i in opacity) {
-
-                    if (opacity[i] <= 0) {
-                        opacity[i] = 0;
-                        objDisplay[i] = displays.none;
-                    }
-                    else if (opacity[i] >= 1) {
-                        opacity[i] = 1;
-                        objDisplay[i] = displays.block;
-                    }
-                    else {
-                        objDisplay[i] = displays.block;
-                    }
-                }
-
-
-                g.waitForElem({elems:run}, function () {
-
-                    $(run).css({opacity:opacity.run, display:objDisplay.run});
-                    $(sim).css({opacity:opacity.sim});
-                    $(config).css({opacity:opacity.config});
-
-                })
-            }
-
-            var mobileFunc = function () {
-
-                scrollTop = $(main).scrollTop();
-
-                if (scrollTop > 100) {
-                    $(run).css({opacity:0});
-                }
-                else {
-                    $(run).css({opacity:1});
-                }
-            }
-
-
-            var scrollCase = function () {
-
-                if (g.isMobile()) {
-                    mobileFunc();
-                }
-                else {
-                    scrollFunc();
-                }
-
-                $(main).scroll(function () {
-
-                    if (g.isMobile()) {
-                        mobileFunc();
-                    }
-                    else {
-                        scrollFunc();
-                    }
-                });
-
-
-                $(main).resize(function () {
-
-                    if (g.isMobile()) {
-                        mobileFunc();
-                    }
-                    else {
-                        scrollFunc();
-                    }
-                })
-            }
-
-
-            g.waitForElem({elems:config}, function () {
-
-
-                scrollCase();
-
-                resolve(true);
-
-            });
-
-        });
-
-    }
-
 	var finish = function (self, $scope) {
 
         return new Promise(function (resolve, reject) {
@@ -237,28 +83,32 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 	}
 
 
+    var getType = function (input, processTypes) {
 
-    var setupProgramInput = function (self, data) {
-
-
-
-        self.programInput = data;
-
-
-        self.programInput.processType = getProcessType(self.programInput);
+        // console.log("input in function", input);
+        return (typeof input.processIndex !== "undefinded") ? processTypes[input.processIndex] : processTypes[0];
+    }
 
 
-        self.programInput.getTotalSteps = function () {
+
+    var setupProgramInput = function (self, programInput, processTypes) {
+
+
+
+        programInput.processType = getType(self.programInput, processTypes);
+
+
+        programInput.getTotalSteps = function () {
 
             return self.programInput.grid.size*self.programInput.grid.size*2;
         }
 
-        self.programInput.convertTrash = function (percentToRate) {
+        programInput.convertTrash = function (percentToRate) {
 
             return percentToRate ? self.programInput.trashPercent/100 : self.programInput.trashRate*100;
         }
 
-        self.programInput.validate = function () {
+        programInput.validate = function () {
 
 
             self.programInput.trashPercent =   (self.programInput.trashPercent == "" ) ?  ""
@@ -290,7 +140,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
         }
 
 
-        self.programInput.update = function () {
+        programInput.update = function () {
 
 
             self.programInput.trashRate = self.programInput.convertTrash(true);
@@ -299,7 +149,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
             self.programInput.validate();
         }
 
-        self.programInput.checkInput = function (input1, input2) {
+        programInput.checkInput = function (input1, input2) {
 
             var result = true;
 
@@ -323,8 +173,9 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 
 
-        self.programInput.update();
+        programInput.update();
 
+        return programInput;
 
     }
 
@@ -335,22 +186,13 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         $scope.grids = d.grids;
 
-        self.programInput
-
-        config.get("global.programs.trash")
-        .then(function (data) {
-
-
-            setupProgramInput(self, data);
-
-        })
+        self.programInput;
         
 	}
 
 	var enter = function (self, $scope, complete) {
 
         pageBuilt = display.beenBuilt(self.name);
-
 
 
         var createComplete = function (name) {
@@ -378,18 +220,33 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         }
 
-        if (!pageBuilt) {
+
+        config.get([
+                   "global.programs.trash",
+                   "global.types.processTypes"
+                   ])
+        .then(function (data) {
+
+
+            self.programInput = data[0];
+
+            var processTypes = data[1];
+
+            self.programInput = setupProgramInput(self, self.programInput, processTypes);
+
+            console.log("processtype", self.programInput.processType);
 
             $input.createInput(self.name, function () {
-
-
+                
                 createComplete(self.name);
             })
 
-        }
-        else {
-            createComplete(self.name);
-        }
+        })
+
+
+        
+
+       
 
 	}
 

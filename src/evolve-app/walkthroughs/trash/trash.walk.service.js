@@ -1,4 +1,4 @@
-app.factory("trash.walkthrough", ["utility", "phases.service", "control.service", function (u, phases, controlsService) {
+app.factory("trash.walkthrough", ["utility", "phases.service", "control.service", "trash-sim", function (u, phases, controlsService, simulator) {
 
 
 	var s = window.shared;
@@ -198,6 +198,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 
 			if (phases.isRunning(self.full)) {  
 				console.log(self.full, options.index, "phase");
+				
+
+
 				$("#runinner").addClass("scaling");
 				toggleGrayout(true);
 				u.toggle("hide", "evovle");
@@ -217,6 +220,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "control.service"
 			if (phases.isRunning(self.full)) {
 				console.log("pushed next button");
 
+				simulator.refresh();
 				
 				u.toggle("show", "run");
 				$("#main-inner").css({opacity:1});

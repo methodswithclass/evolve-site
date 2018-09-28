@@ -39,18 +39,16 @@ trashRouter.post("/environment/refresh", function (req, res, next) {
 
 		var input = req.body.input;
 
-		console.log("create environment, input", input.programInput);
+		// console.log("create environment, input", input.programInput);
 
 		var trash = get.getSessionProgram(input.session, "trash");
 
-		// console.log("program", trash ? 1 : 0);
+		var env = trash.refresh(0, input.programInput);
 
-		var env = trash.refresh(input.programInput);
-
-		// console.log("env", env);
+		console.log("env", input.programInput, env);
 		
 
-		res.status(200).json({env:env});
+		res.json({env:env});
 
 
 	}
@@ -71,9 +69,11 @@ trashRouter.post("/environment/reset", function (req, res, next) {
 
 		var trash = get.getSessionProgram(req.body.input.session, "trash");
 
-		var env = trash.reset();
+		// trash.reset();
 
-		res.status(200).json({env:env})
+		var env = trash.reset(0);
+
+		res.json({env:env})
 
 	}
 	catch (err) {

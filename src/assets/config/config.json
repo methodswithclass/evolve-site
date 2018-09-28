@@ -4,7 +4,7 @@
 		"interface":1,
 		"debug":{
 			"active":true,
-			"landingPage":"feedback",
+			"landingPage":"trash",
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",

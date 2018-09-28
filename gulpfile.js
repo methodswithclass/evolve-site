@@ -221,7 +221,7 @@ var serveFunc = function (done) {
 	var stream = nodemon({ 
 		script: path.join(__dirname, "server.js"),
 		ext:"js html css scss json",
-		watch:["./src", "config.js"],
+		watch:["./src", "config.js", "./backend"],
 		tasks:["build"]
 	});
 
