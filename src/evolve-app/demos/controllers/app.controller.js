@@ -194,6 +194,15 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
                         api.initialize(function () {                        
 
+
+                            $scope.session = res.data.session;
+
+                            // console.log("instantiate complete");
+
+                            $input.setInput({
+                                session:$scope.session
+                            });
+
                             next(options);
 
                         });
@@ -452,6 +461,11 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
         controller.breakRun(self, $scope);
     }
 
+
+    $scope.refresh = function () {
+
+        self.refresh();
+    }
 
 
     /*________________________________________________________________________________*/

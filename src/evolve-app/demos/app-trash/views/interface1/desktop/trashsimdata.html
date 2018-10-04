@@ -1,53 +1,82 @@
-<div class="absolute width height font-20 opacity0" id="simdatatoggle">
+<div class="relative width height font-20 opacity0" id="simdatatoggle">
 			
-	<div class="relative width height" id="simdatainne">
+	<div class="relative width-300 height-400" id="simdatainner">
 
-		<div class="relative width height25">
-			<div class="absolute width height80 vcenter border-bottom">
-				<div class="absolute width50 height">
-					<div class="absolute center"> step # </div>
-				</div>
-				<div class="absolute width50 height border-left right0">
-					<div class="absolute center"> {{main.sdata.move.num}}/{{main.sdata.move.total}}</div>
+
+		<!-- <div class="flex flex-column flex-align-center"> -->
+
+			<!-- <div clas="relative width-600 height-600"> -->
+
+			<div class="relative width height25">
+				<div class="relative width height80 vcenter">
+
+					<!-- <div class="flex flex-row flex-align-end flex-justify-center"> -->
+						<div class="absolute width50 height border-bottom border-right">
+							<div class="relative width vcenter text-center"> step # </div>
+						</div>
+						<div class="absolute width50 height border-bottom right0">
+							<div class="relative width vcenter text-center"> <strong><i>{{main.sdata.move.num}}</i></strong>/<strong>{{main.sdata.move.total}}</strong></div>
+						</div>
+
+					<!-- </div> -->
+
 				</div>
 			</div>
-		</div>
 
-	
-		<div class="relative width height25">	
-			<div class="absolute width height80 vcenter border-bottom">
-				<div class="absolute width50 height">
-					<div class="absolute center"> action </div>
-				</div>
-				<div class="absolute width50 height border-left right0 font-15">
-					<div class="absolute center text-center"> {{main.sdata.move.action.name}} </div>
+		
+			<div class="relative width height25">	
+				<div class="relative width height80 vcenter">
+
+					<!-- <div class="flex flex-row flex-align-end flex-justify-center"> -->
+
+						<div class="absolute width50 height border-bottom border-right">
+							<div class="relative width vcenter text-center"> action </div>
+						</div>
+						<div class="absolute width50 height border-bottom font-15 right0">
+							<div class="relative width vcenter text-center"> <strong>{{main.sdata.move.action.name}} </strong></div>
+						</div>
+
+					<!-- </div> -->
+
 				</div>
 			</div>
-		</div>
 
-		<div class="relative width height25">
-			<div class="absolute width height80 vcenter border-bottom">
-				<div class="absolute width50 height">
-					<div class="absolute center"> outcome </div>
-				</div>
-				<div class="absolute width50 height border-left right0">
-					<div class="absolute width-20 height-20 margin-bottom-10 center">
-						<img class="absolute width-auto height" src="{{main.outcome(main.sdata.score.result)}}"</>
-					</div>
+			<div class="relative width height25">
+				<div class="relative width height80 vcenter">
+
+					<!-- <div class="flex flex-row flex-align-end flex-justify-center"> -->
+
+						<div class="absolute width50 height border-bottom border-right">
+							<div class="relative width vcenter text-center"> outcome </div>
+						</div>
+						<div class="absolute width50 height border-bottom right0">
+							<div class="relative width-50 height-50 margin-bottom-10 center">
+								<img class="relative width-auto height center" src="{{main.outcome(main.sdata.score.result)}}"/>
+							</div>
+						</div>
+
+					<!-- </div> -->
+
 				</div>
 			</div>
-		</div>
 
 
-		<div class="relative width height25">
-			<div class="absolute width height80 vcenter border-bottom">
-				<div class="absolute width50 height">
-					<div class="absolute center"> score </div>
-				</div>
-				<div class="absolute width50 height border-left right0">
-					<div class="absolute center"> {{main.sdata.score.total}} </div>
+			<div class="relative width height25">
+				<div class="relative width height80 vcenter">
+
+					<!-- <div class="flex flex-row flex-align-end flex-justify-center"> -->
+						
+						<div class="absolute width50 height border-bottom border-right">
+							<div class="relative width vcenter text-center"> score </div>
+						</div>
+						<div class="absolute width50 height border-bottom right0">
+							<div class="relative width vcenter text-center"> <strong>{{main.sdata.score.total}} </strong></div>
+						</div>
+
+					<!-- </div> -->
 				</div>
 			</div>
+
 		</div>
 
 	</div>

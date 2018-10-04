@@ -16,7 +16,7 @@ trashRouter.post("/simulate", function (req, res, next) {
 
 		console.log("simulate step", req.body);
 
-		var trash = get.getSessionProgram(req.body.session, "trash");
+		var trash = get.getSessionProgram(req.body.session, "trash", input).program;
 
 		var result = trash.simulate();
 
@@ -41,7 +41,7 @@ trashRouter.post("/environment/refresh", function (req, res, next) {
 
 		// console.log("create environment, input", input.programInput);
 
-		var trash = get.getSessionProgram(input.session, "trash");
+		var trash = get.getSessionProgram(input.session, "trash", input).program;
 
 		var env = trash.refresh(0, input.programInput);
 

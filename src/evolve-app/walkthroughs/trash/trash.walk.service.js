@@ -1,4 +1,4 @@
-app.factory("trash.walkthrough", ["utility", "phases.service", "control.service", "trash-sim", function (u, phases, controlsService, simulator) {
+app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service", "trash-sim", function (u, phases, controlsService, simulator) {
 
 
 	var s = window.shared;

@@ -1,4 +1,4 @@
-app.directive("controls", ["utility", "states", "control.service", function (u, states, control) {
+app.directive("controls", ["utility", "states", "controls.service", function (u, states, control) {
 
 	return {
 		restrict:"E",

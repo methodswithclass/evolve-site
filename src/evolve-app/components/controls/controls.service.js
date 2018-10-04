@@ -1,4 +1,4 @@
-app.factory("control.service", ["utility", function (u) {
+app.factory("controls.service", ["utility", "display.service", function (u, display) {
 
 
 
@@ -84,6 +84,30 @@ app.factory("control.service", ["utility", function (u) {
 
 			$(value.inner).removeClass("scaling scaling-sm scaling-mm scaling-lg");
 		})
+	}
+
+	var disable = function () {
+
+		removeScaling();
+
+		controls.forEach(function (value, index) {
+
+			u.toggle("disable", value.name, {fade:300});
+		})
+	}
+
+
+	var enable = function (name) {
+
+		if (name == "trash") {
+			u.toggle("enable", "refresh");
+			u.toggle("enable", "play");
+			// u.toggle("enable", "step");
+		}
+		else if (name == "feedback") {
+			u.toggle("enable", "refresh");
+			u.toggle("enable", "play");
+		}
 	}
 
 	var clickControls = function () {
@@ -182,14 +206,6 @@ app.factory("control.service", ["utility", function (u) {
 			var totalLength = cntrlWidth*controls.length;
 			var itemPercent = cntrlWidth/controls.length;
 			var center = 50 - itemPercent/2;
-
-			// var positions = [
-			// center-itemPercent-itemPercent/2,
-			// center-itemPercent,
-			// center,
-			// center+itemPercent,
-			// center+itemPercent + itemPercent/2
-			// ]
 
 
 			$(value.selector).css({width:cntrlWidth + "px", height:cntrlWidth + "px"});
@@ -342,7 +358,9 @@ app.factory("control.service", ["utility", function (u) {
 
 	return {
 		controlsArray:controls,
-		removeScaling:removeScaling
+		removeScaling:removeScaling,
+		disable:disable,
+		enable:enable
 	}
 
 

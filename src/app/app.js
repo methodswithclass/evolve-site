@@ -155,7 +155,7 @@ var appSetup = function (display, force, mobile, inter) {
 
 
 
-var app = angular.module("app", ['stateModule', 'parallaxModule']);
+var app = angular.module("app", ['stateModule', 'parallaxModule', 'ngMaterial']);
 
 app.config(['config.serviceProvider', '$locationProvider', '$provide', "$httpProvider", 'runtime.stateProvider', function (configProvider, $locationProvider, $provide, $httpProvider, runtimeProvider) {
 	

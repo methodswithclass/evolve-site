@@ -32,7 +32,34 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 			var self = this;
 
-			self.environment;
+			
+			var initialArena = [];
+			var initialTrash = [];
+
+
+			var i = 0;
+			var j = 0;
+			while (i < 5) {
+				initialArena[i] = [];
+				j = 0;
+				while (j < 5) {
+
+					initialArena[i][j] = false;
+					j++;
+				}
+				i++;
+			}
+
+			var k = 0;
+			while (k < 25) {
+				initialTrash[k] = false;
+				k++;
+			}
+
+			self.environment = {
+				arena:initialArena,
+				trash:initialTrash
+			}
 
 
 			var block = function (input) {
@@ -127,7 +154,11 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				var env;
 
-				// console.log("environ", $env, self.environment);
+				console.log("environ", $env, self.environment);
+
+
+				
+
 
 				if ($env == undefined) {
 
@@ -145,7 +176,13 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 					self.environment.trash = $env.trash;
 				}
 
-				 
+
+				react.push({
+					name:"checkenvironment" + name,
+					state:{
+						env:$env
+					}
+				})
 
 				rows = env.arena.length;
 				cols = env.arena.length;

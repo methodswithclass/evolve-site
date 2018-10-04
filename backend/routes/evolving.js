@@ -96,7 +96,7 @@ evolveRouter.get("/instantiate", function (req, res, next) {
 
 		var session = get.createSessionEvolve();
 
-		res.status(200).json({session:session.session, success:"success"});
+		res.status(200).json({session:session.id, success:"success"});
 
 	}
 	catch (err) {
@@ -115,11 +115,11 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 		var input = addProgram(req.body.input);
 
-		var evolution = get.getSessionEvolve(input.session).evolve;
+		var session = get.getSessionEvolve(input.session);
 
-		let success = evolution.initialize(input);
+		let success = session.evolve.initialize(input);
 
-		res.status(200).json({success:success});
+		res.status(200).json({session:session.id, success:success});
 
 	}
 	catch (err) {
@@ -137,14 +137,14 @@ evolveRouter.post("/set", function (req, res, next) {
 
 		var input = req.body.input;
 
-		console.log("set input\n\n", input, "\n");
+		console.log("input is, during set input\n", input, "\n");
 		// console.log("set input\n", inputArray);
 
-		var evolution = get.getSessionEvolve(req.body.input.session);
+		var session = get.getSessionEvolve(req.body.input.session);
 
-		evolution.set(req.body.input);
+		session.evolve.set(req.body.input);
 
-		res.status(200).json({success:"success"});
+		res.status(200).json({session:session.id, success:"success"});
 
 	}
 	catch (err) {

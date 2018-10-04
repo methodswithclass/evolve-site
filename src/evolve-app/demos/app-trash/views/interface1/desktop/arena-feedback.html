@@ -1,0 +1,34 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="absolute width80 center white border-white {{color}} rounded10 padding-v-50 {{font}}" id="arena-feedbacktoggle">
+					
+	<div class="relative width80 hcenter text-center">
+		{{errorMessage}}
+	</div>
+
+	<div class="relative width-50 height-50 padding-20 hcenter black-back rounded5 white margin-top-50 pointer" on-tap="refresh()">
+		<div class="relative vcenter text-center">
+			<i class="fas fa-redo font-30"></i>
+		</div>
+		<div class="relative width text-center margin-v-10">
+			retry
+		</div>
+	</div>
+
+	<div class="relative width-100 hcenter text-center black-back rounded5 padding-20 white margin-top-50">
+		{{status}}
+	</div>
+</div>

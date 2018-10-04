@@ -1,4 +1,4 @@
-app.factory("feedback.walkthrough", ["utility", "phases.service", "control.service", "feedback-sim", function (u, phases, controlsService, simulator) {
+app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.service", "feedback-sim", function (u, phases, controlsService, simulator) {
 
 	var s = window.shared;
 	var g = s.utility_service;

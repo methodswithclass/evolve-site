@@ -323,7 +323,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             })
             .then(function (res) {
 
-                // console.log("refresh response", res.data.env);
+                console.log("refresh response", res.data.env);
 
 
 
