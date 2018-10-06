@@ -142,8 +142,8 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
     var refresh = function (self, $scope) {
 
         evolve.running(false, $scope);
-        simulator.refresh();
-        evolve.resetgen();
+        // simulator.refresh();
+        evolve.resetgen(true);
         stepCount = 0;
         stepFirst = true;
         stepFireCount = programInput.stepFireCount;

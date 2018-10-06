@@ -323,9 +323,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
             })
             .then(function (res) {
 
-                console.log("refresh response", res.data.env);
-
-
+                // console.log("refresh response", res.data.env);
 
                 if (typeof callback === "function") callback(res);
 
@@ -385,7 +383,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
     var simulate = {
 
 
-        trash:function ($input, callback) {
+        trash:function (_input, callback) {
 
             var funcName = "simulate";
 
@@ -395,7 +393,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 $http({
                     method:"POST",
                     url:"/trash/simulate",
-                    data:$input
+                    data:{options:_input, input:$input.getInput()}
                 })
                 .then(function (res) {
 

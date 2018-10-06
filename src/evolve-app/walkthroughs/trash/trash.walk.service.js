@@ -15,6 +15,16 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 	var grayout = true;
 	var evolveCount = 0;
+	var stepdata;
+
+
+	react.subscribe({
+		name:"data" + self.name,
+		callback:function(x) {
+
+			if (x.stepdata) stepdata = x.stepdata;
+		}
+	})
 
 
 	var toggleControl = function (control, toggle) {
@@ -109,6 +119,14 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			// }, 800);
 		})
 
+	}
+
+
+	var indicateRefreshButton = function () {
+
+
+		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1400 : 1400) + evolveCount*100});
+		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 1600 : 1600) + evolveCount*100});
 	}
 
 
@@ -322,12 +340,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			if (phases.isRunning(self.full)) {
 				
 				u.toggle("hide", self.name + "phase3-container", {delay:200, fade:400});
-				u.toggle("show", self.name + "complete-button", {delay:400, fade:400});
+				if (stepdata.gen > 1) u.toggle("show", self.name + "complete-button", {delay:400, fade:400});
 				
 
 				setTimeout(function () {
 
-					toggleControl("play", true);
+					if (stepdata.gen > 1) toggleControl("play", true);
 				}, 600);
 			}
 			else {
@@ -380,14 +398,6 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	}
 	]
 
-
-	var indicateRefreshButton = function () {
-
-
-		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-back", buffer:(g.isMobile() ? 1700 : 1600) + evolveCount*100});
-		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-back", buffer:(g.isMobile() ? 1900 : 1900) + evolveCount*100});
-	}
-
 	
 
 
@@ -407,7 +417,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	// loadPhases();
 
 
-	indicateRefreshButton();
+	
 
 
 	events.on("sim.trash.start", function () {
@@ -440,6 +450,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	})
 
 	events.on("enter.trash.walkthrough", function () {
+
+		indicateRefreshButton();
 
 		loadPhases();
 

@@ -174,7 +174,7 @@ app.config(['config.serviceProvider', '$locationProvider', '$provide', "$httpPro
     ])
 	.then(function (data) {
 
-		console.log(data);
+		// console.log(data);
 
 		inter = data[0];
 		forceMobile = data[1];
@@ -229,10 +229,12 @@ app.run(['states', "config.service", "display.service", function (states, config
 		configPromise.then(function (data) {
 
 
-			console.log(data);
+			// console.log(data);
 
 			var config = data;
 			var debug = config.debug;
+			var activePages = config.activePages;
+			var pageIndices = config.pageIndices;
 			var landingPage 
 			var loadSpeed;
 
@@ -250,19 +252,24 @@ app.run(['states', "config.service", "display.service", function (states, config
 
 			switch (landingPage) {
 
-				case page.home:
+				case pageIndices.home:
 					
 					states.go("home");
 				break;
 
-				case page.trash:
+				case pageIndices.trash:
 					
 					states.go("trash#demo");
 				break;
 
-				case page.feedback:
+				case pageIndices.feedback:
 					
 					states.go("feedback#demo");
+				break;
+
+				case pageIndices.recognize:
+					
+					states.go("recognize#demo");
 				break;
 
 				default:

@@ -1,4 +1,4 @@
-app.directive("arenaFeedback", [function () {
+app.directive("arenaFeedback", ["utility", "general", function (u, general) {
 
 
 
@@ -6,7 +6,11 @@ app.directive("arenaFeedback", [function () {
 		restrict:"E",
 		scope:{
 			view:"@",
-			html:"@"
+			html:"@",
+			message:"@",
+			status:"@",
+			color:"@",
+			refresh:"="
 		},
 		template:`
 
@@ -15,7 +19,7 @@ app.directive("arenaFeedback", [function () {
 			</div>
 
 
-			<div ng-if="resolveView()">
+			<div ng-if="!resolveView()">
 
 				<div ng-bind-html="trustHtml(html)"></div>
 			</div>
@@ -25,28 +29,33 @@ app.directive("arenaFeedback", [function () {
 		link:function ($scope, element, attrs) {
 
 
+			var shared = window.shared;
+			var g = shared.utility_service;
+			var react = shared.react_service;
+
 			$scope.getContentUrl = function () {
 
-				return "assets/views/evolve-app/demos/app-trash/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/feedback/"+$scope.view+".html";
+				return "assets/views/evolve-app/demos/app-trash/views/" + u.getInterface() + "/" + (g.isMobile() ? "mobile" : "desktop") + "/"+$scope.view;
 			}
 
-			$scope.resolveHtml = function () {
+			$scope.resolveView = function () {
 
 				if (typeof $scope.view === "undefined") {
 
 					return false;
 				}
-				else {
+				else if ($scope.view && !$scope.html) {
 					return true;
 				}
 
 
-				
+				return $scope.html ? false : true;
+			}
 
-				result = $scope.html ? false : true;
-				
 
-				return result;
+			$scope.trustHtml = function (html) {
+
+				return general.renderHtml(html);
 			}
 
 		}

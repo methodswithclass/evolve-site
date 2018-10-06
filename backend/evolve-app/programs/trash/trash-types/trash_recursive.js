@@ -79,6 +79,7 @@ var trash = function (options) {
 
 			self.reset = function () {
 
+				// console.log("\nreset environment")
 				
 				self.robot.reset();
 
@@ -90,7 +91,7 @@ var trash = function (options) {
 
 			self.refresh = function ($$options) {
 
-				console.log("refresh environment");
+				// console.log("\n\nrefresh environment");
 
 
 				self.environment.refresh($$options ? $$options : $options);
@@ -170,6 +171,9 @@ var trash = function (options) {
 
 	self.refresh = function (index, options) {
 		
+
+		console.log("refresh", index, env.length);
+
 		if (index < env.length) {
 			return env[index].refresh(options);
 		}
@@ -181,6 +185,8 @@ var trash = function (options) {
 
 	self.reset = function (index) {
 		
+		console.log("reset", index, env.length);
+
 		if (index < env.length) {
 			return env[index].reset();
 		}

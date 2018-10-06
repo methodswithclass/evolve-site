@@ -285,15 +285,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
     	return self.global[self.name];
     }
 
-
-    var resetInput = function () {
-
-    	// sendVars();
-
-		// setInput($$reset_initial);	
-        console.log("reset input does nothing");
-	}
-
     var masterReset = function (name) {
 
         setInput($master_input[name ? name : self.name]);
@@ -305,7 +296,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         $master_input[name] = {};
         $reset_input[name] = {};
 
-        console.log("master", $$master_initial);
+        // console.log("master", $$master_initial);
 
         for (var i in $$master_initial) {
 
@@ -314,9 +305,9 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         }
     }
 
-    var overrideAsync = function (name, data, complete) {
+    var overrideAsync = function (name, data) {
 
-        console.log("data", name, data, $master_input);
+        // console.log("data", name, data, $master_input);
 
         for (var i in data) {
 
@@ -330,20 +321,33 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         $reset_input[name] = $master_input[name];
 
         masterReset(name);
-
-        if (typeof complete === "function") complete();
     }
 
     var setOverride = function (name, complete) {
 
         setMaster(name);
 
-        config.get("global.programs." + name + ".override")
+        return config.get("global.programs." + name + ".override")
         .then(function (data) {
             
-            overrideAsync(name, data, complete);
+            overrideAsync(name, data);
+        })
+        .then(function () {
+
+            if (typeof complete === "function") complete();
         })
 
+    }
+
+    var resetInput = function () {
+
+        // sendVars();
+
+        return setOverride(self.name, function () {
+
+            setInput($reset_input);
+        });
+        // console.log("reset input does nothing");
     }
 
 
@@ -354,11 +358,10 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         self.global[self.name] = {};
         self.temp[self.name] = {};
         
-        setOverride(name, function () {
+        return setOverride(name, function () {
 
             if (typeof complete === "function") complete();
-        });
-
+        })
         
     }
 

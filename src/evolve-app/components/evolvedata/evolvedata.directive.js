@@ -48,20 +48,39 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 		        return self.name == "trash" && $scope.evdata.length > 1;
 		    }
 
+		    $scope.getGeneration = function (index) {
+
+		    	return index +1;
+		    }
+
 			react.subscribe({
-				name:"evdata" + self.name,
+				name:"data" + self.name,
 				callback:function (x) {
 
-					if (x.evdata && !isDuplicate(x.evdata)) $scope.evdata.push(x.evdata);
+					if (x.evdata) {
+
+
+						if (!isDuplicate(x.evdata)) $scope.evdata[x.evdata.index] = x.evdata;
+
+						// $scope.evdata = x.evdata;
+					}
 				}
 			})
 
 
 			react.subscribe({
-				name:"setevdata" + self.name,
+				name:"evdata" + self.name,
 				callback:function (x) {
-					
-					$scope.evdata = x.evdata;
+
+					if (x.evdata) {
+
+
+						// if (!isDuplicate(x.evdata)) $scope.evdata.push(x.evdata)
+
+						$scope.evdata = [];
+
+						$scope.evdata[0] = x.evdata;
+					}
 				}
 			})
 

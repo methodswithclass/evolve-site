@@ -165,9 +165,9 @@ evolveRouter.post("/run", function (req, res, next) {
 
 		// var input = addProgram(req);
 
-		var evolution = get.getSessionEvolve(req.body.input.session)
+		var session = get.getSessionEvolve(req.body.input.session);
 
-		let success = evolution.run(req.body.input);
+		let success = session.evolve.run(req.body.input);
 
 		res.status(200).json({success:success, running:true});
 
@@ -188,9 +188,9 @@ evolveRouter.post("/running", function (req, res, next) {
 		// console.log("check running", req.body, evolution.running());
 
 
-		var evolution = get.getSessionEvolve(req.body.input.session);
+		var session = get.getSessionEvolve(req.body.input.session);
 
-		res.status(200).json({running:evolution.running()})
+		res.status(200).json({running:session.evolve.running()})
 
 	}
 	catch (err) {
@@ -207,9 +207,9 @@ evolveRouter.post("/best", function (req, res, next) {
 
 		// console.log("get best");
 
-		var evolution = get.getSessionEvolve(req.body.input.session)
+		var session = get.getSessionEvolve(req.body.input.session);
 
-		res.status(200).json({ext:evolution.getBest()})
+		res.status(200).json({ext:session.evolve.getBest()})
 
 	}
 	catch (err) {
@@ -229,13 +229,13 @@ evolveRouter.post("/instruct", function (req, res, next) {
 
 		var clear = req.body.clear
 
-		var evolution = get.getSessionEvolve(req.body.input.session)
-		var ext = evolution.getBest();
-		var prog = get.getSessionProgram(req.body.input.session, req.body.input.name);
+		var session = get.getSessionEvolve(req.body.input.session);
+		var ext = session.evolve.getBest();
+		var prog = get.getSessionProgram(req.body.input.session, req.body.input.name, req.body.input);
 
 		// console.log("instruct best dna", best, best.dna);
 
-		prog.instruct(clear ? [] : ext.best.dna);
+		prog.program.instruct(clear ? [] : ext.best.dna);
 
 		res.status(200).json({success:"program successfully instructed"});
 
@@ -258,9 +258,9 @@ evolveRouter.post("/stepdata", function (req, res, next) {
 
 		// looseEnds(req);
 
-		var program = get.getSessionProgram(req.body.input.session, req.body.input.name);
+		var program = get.getSessionProgram(req.body.input.session, req.body.input.name, req.body.input);
 
-		var stepdata = program.stepdata();
+		var stepdata = program.program.stepdata();
 
 		// console.log("step data", stepdata);
 
@@ -284,9 +284,9 @@ evolveRouter.post("/hardStop", function (req, res, next) {
 
 		// var input = addProgram(req);
 
-		var evolution = get.getSessionEvolve(req.body.input.session)
+		var session = get.getSessionEvolve(req.body.input.session);
 
-		evolution.hardStop(req.body.input);
+		session.evolve.hardStop(req.body.input);
 
 		res.status(200).json({success:"success"});
 

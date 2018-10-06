@@ -83,7 +83,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 	var indicateRefreshButton = function () {
 
 		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 800 : 800)});
-		moveElement({element:"#"+self.name+"phase1-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 600 : 400)});
+		moveElement({element:"#"+self.name+"phase1-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 600 : 600)});
 	}
 
 
@@ -247,7 +247,6 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 		phases.loadPhases({name:self.full, phases:phase_data, run:false});
 
-		indicateRefreshButton();
 	}
 
 	var run = function () {
@@ -276,6 +275,8 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 
 	events.on("enter.feedback.walkthrough", function () {
+
+		indicateRefreshButton();
 
 		loadPhases();
 

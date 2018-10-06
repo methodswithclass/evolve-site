@@ -13,7 +13,7 @@ feedbackRouter.post("/animate", function (req, res, next) {
 
 	var input = req.body.input;
 
-	var program = get.getSessionProgram[input.session].program[input.name];
+	var program = get.getSessionProgram(input.session, input.name, input).program;
 
 	program.animate(input.plot, input.direction, input.duration);
 

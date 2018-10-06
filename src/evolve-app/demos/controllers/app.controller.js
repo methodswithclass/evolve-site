@@ -96,11 +96,6 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
 
 
-    react.push({
-        name:"simulator" + self.name,
-        state:simulator
-    })
-
     react.subscribe({
         name:"data" + self.name,
         callback:function (x) {
@@ -519,6 +514,11 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
         });
 
+        react.push({
+            name:"simulator" + self.name,
+            state:simulator
+        })
+
     }
 
 
@@ -535,7 +535,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
         var programs = data[1];
         var activePages = data[2];
 
-        console.log("tempcross", tempcross);
+        // console.log("tempcross", tempcross);
 
         for (var i in tempcross) {
 

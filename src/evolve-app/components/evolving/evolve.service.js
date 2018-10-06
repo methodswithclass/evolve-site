@@ -24,6 +24,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     var genA = 0;
     var genB = genA;
     var stepdata;
+    var evolveCompleteCount = 1;
 
     var timeDivisor = {
         stepdata:2,
@@ -105,22 +106,11 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         })
     }
 
-
-    var sendEvdata = function (x) {
+    var resetEvdata = function (data) {
 
         react.push({
             name:"evdata" + self.name,
-            state:x
-        })
-    }
-
-    var resetEvdata = function  () {
-
-        react.push({
-            name:"setevdata" + self.name,
-            state:{
-                evdata:[$evdata]
-            }
+            state:[data]
         })
     }
 
@@ -145,15 +135,15 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
 
         sendData({
-            stepdata:$stepdata,
-            evdata:$evdata
+            stepdata:$stepdata
         });
 
-        sendEvdata({
-            evdata:$evdata
-        })
+
+        resetEvdata($evdata);
 
     }
+
+    
 
 
     var getBest = function (complete) {
@@ -162,7 +152,11 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     	api.getBest(function (res) {
             
             sendData({
-                evdata:res.data.ext
+                evdata:{
+                    index:0,
+                    best:res.data.ext.best,
+                    wost:res.data.ext.worst
+                }
             });
 
 	    	if (typeof complete === "function") complete();
@@ -172,16 +166,16 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
     }
 
 
-    var getEvdata = function () {
+    var getEvdata = function (count) {
 
         api.getBest(function (res) {
             
             sendData({
-                evdata:res.data.ext
-            });
-
-            sendEvdata({
-                evdata:res.data.ext
+                evdata:{
+                    index:count,
+                    best:res.data.ext.best,
+                    worst:res.data.ext.worst
+                }
             });
 
             if (typeof complete === "function") complete();
@@ -293,6 +287,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
     var refreshSimulator = function (clear) {
 
+        console.log("refreshsimulator", clear, simulator);
+
         simulator.setup(clear, function () {
 
             simulator.refresh(); 
@@ -325,6 +321,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
             u.toggle("disable", "stop", {delay:params.delay, fade:params.fade});
             u.toggle("enable", "play", {delay:params.delay, fade:params.fade});
             u.toggle("enable", "refresh", {delay:params.delay, fade:params.fade});
+
+            // refreshSimulator();
         }
         else {
 
@@ -342,7 +340,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         getBest();
 
-        getEvdata();
+        getEvdata(evolveCompleteCount++);
 
     }
 
@@ -411,8 +409,6 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
             api.initialize(function (res) {
 
                 initData();
-
-                resetEvdata();
 
                 if (typeof complete === "function") complete({res:res});
 
@@ -524,13 +520,6 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         // simulator = assets.get(assets.types.SIMULATOR, self.name);
 
 
-        config.get("global.programs." + self.name)
-        .then(function (data) {
-
-            updateTime = data.updateTime;
-        })
-
-
         react.subscribe({
             name:"scope" + self.name,
             callback:function(x) {
@@ -550,11 +539,16 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
 
 
-        resetgen();
+        config.get("global.programs." + self.name)
+        .then(function (data) {
 
-        initData();
+            updateTime = data.updateTime;
 
-        // getEvdata();
+            resetgen();
+
+            initData();
+        })
+
 
     }
 

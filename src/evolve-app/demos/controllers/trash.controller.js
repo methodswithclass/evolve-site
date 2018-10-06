@@ -214,6 +214,9 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
             })
 
 
+            simulator.reset();
+
+
             $scope.settings = $input.setSettings($scope, $input.getInput());
 
             if (typeof complete === "function") complete(name);

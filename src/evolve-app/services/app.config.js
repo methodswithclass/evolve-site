@@ -111,7 +111,7 @@ app.provider("config.service", [function () {
 	   				method:"GET"
 	   			})
 	   			.then(function (data) {
-	   				console.log("response data", data);
+	   				// console.log("response data", data);
 	   				resolve(data);
 	   			}, function (err) {
 

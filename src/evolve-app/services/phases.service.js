@@ -13,12 +13,13 @@ app.factory("phases.service", [function () {
 
 	var n = "";
 	self.p = {};
+	var loadCount = {};
 
 	var $running = {};
 
 	var running = function (n, toggle) {
 
-		console.log("running", n, toggle);
+		// console.log("running", n, toggle);
 
 		$running[n] = toggle;
 
@@ -27,7 +28,7 @@ app.factory("phases.service", [function () {
 
 	var isRunning = function (n) {
 
-		console.log("is running", n, $running[n]);
+		// console.log("is running", n, $running[n]);
 		return $running[n];
 	}
 
@@ -59,6 +60,10 @@ app.factory("phases.service", [function () {
 		var $name = $options.name;
 		var $index = $options.index;
 		var $button = $options.button;
+		var count = $options.count;
+
+		var clickCount = {};
+		clickCount[$name] = 0;
 
 		g.waitForElem({elems:$button}, function (options) {
 
@@ -66,7 +71,9 @@ app.factory("phases.service", [function () {
 
 			$(options.elems).click(function () {
 
-				console.log("clicked phase", $name, $phases[$name][$index].index, $phases[$name][$index].meta.button);
+				clickCount[$name] += 1;
+
+				console.log("clicked", $phases[$name][$index].index, "phase", $name, $phases[$name][$index].meta.button, "loadCount", count, "clickCount", clickCount[$name]);
 				if ($phases[$name][$index].complete) $phases[$name][$index].complete($phases[$name][$index]);
 
 				// if (j + 1 < $phases.length-1) $phases[j+1].phase($phases[j+1]);
@@ -83,6 +90,10 @@ app.factory("phases.service", [function () {
 
 		n = options.name || "none";
 
+		if (!loadCount.hasOwnProperty(n)) {
+			loadCount[n] = 0;
+		}
+
 		self.p[n] = [];
 
 		for (var j in options.phases) {
@@ -91,11 +102,13 @@ app.factory("phases.service", [function () {
 
 			var button = self.p[n][j].meta ? self.p[n][j].meta.button : null;
 
-			addNext({phases:self.p, name:n, index:j, button:button});
+			addNext({phases:self.p, name:n, index:j, button:button, count:loadCount[n]});
 
 		}
 
 		if (options.run) run(n);
+
+		loadCount[n] += 1;
 	}
 
 

@@ -90,7 +90,7 @@ app.factory("feedback-sim", ['data', function (data) {
 
     var refresh = function (complete) {
 
-        changeX(200);
+        // changeX(200);
 
         reset();
 

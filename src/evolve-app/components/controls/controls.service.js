@@ -97,12 +97,11 @@ app.factory("controls.service", ["utility", "display.service", function (u, disp
 	}
 
 
-	var enable = function (name) {
+	var enable = function (name, gens) {
 
 		if (name == "trash") {
 			u.toggle("enable", "refresh");
-			u.toggle("enable", "play");
-			// u.toggle("enable", "step");
+			if (gens > 1) u.toggle("enable", "play");
 		}
 		else if (name == "feedback") {
 			u.toggle("enable", "refresh");

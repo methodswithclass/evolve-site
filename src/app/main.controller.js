@@ -11,6 +11,8 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 	self.name = state.charAt(0).toUpperCase() + state.slice(1);
 
+	self.stateName = states.getName();
+
 	console.log("open " + state);
 
 	var stateParams;
@@ -18,11 +20,13 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 
 	config.get([
 	           "config.activePages",
+	           "config.pageIndices",
 	           "global.programs"
 	           ])
 	.then(function (data) {
 
 		$scope.isActive = data[0];
+		$scope.pageIndices = data[1];
 		
 		if (state != "home" && state != "unsupported") {
 			stateParams = data[1][state].meta;

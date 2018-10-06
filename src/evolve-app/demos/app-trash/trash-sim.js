@@ -261,7 +261,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 var environment = res.data.env;
 
-                makeBlocks(environment);
+                makeBlocks(environment, "reset");
 
                 // console.log("Reset environment success", res);
             });
@@ -288,7 +288,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
                 var environment = res.data.env;
 
-                makeBlocks(environment);
+                makeBlocks(environment, "refresh");
 
                 if (typeof complete == "function") complete();
 

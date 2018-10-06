@@ -4,15 +4,34 @@
 		"interface":1,
 		"debug":{
 			"active":true,
-			"landingPage":"trash",
+			"landingPage":1,
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",
 		"loadSpeed":"fast",
-		"activePages":{
-			"feedback":true,
-			"trash":true,
-			"recognize":false
+		"activePages":[
+		{
+			"name":"home",
+			"active":true
+		},
+		{
+			"name":"feedback",
+			"active":true
+		},
+		{
+			"name":"trash",
+			"active":true
+		},
+		{
+			"name":"recognize",
+			"active":false
+		}
+		],
+		"pageIndices":{
+			"home":0,
+			"feedback":1,
+			"trash":2,
+			"recognize":3
 		}
 	},
 	"global":{
