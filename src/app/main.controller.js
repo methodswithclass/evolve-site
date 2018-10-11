@@ -29,14 +29,14 @@ app.controller("main.controller", ['$scope', 'states', 'doc.data', 'config.servi
 		$scope.pageIndices = data[1];
 		
 		if (state != "home" && state != "unsupported") {
-			stateParams = data[1][state].meta;
+			stateParams = data[2][state].meta;
 			$scope.pageColor = stateParams.colors.page;
 			$scope.demoButton = stateParams.colors.demoButton;
 		}
 
 
-		for (var i in data[1]) {
-			$scope.pageParams[i] = data[1][i].meta;
+		for (var i in data[2]) {
+			$scope.pageParams[i] = data[2][i].meta;
 		}
 
 	})
