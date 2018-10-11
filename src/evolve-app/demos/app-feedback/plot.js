@@ -18,7 +18,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			var total = pdata.genome;
 			var spread = pdata.spread;
 
-			var pointSize = g.isMobile() ? 4 : 2;
+			var pointSize = g.isMobile() ? 4 : 3;
 
 			var $inner = "#innerplot";
 
@@ -399,7 +399,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 			var refreshTotal = 5;
 			// var refreshTimer;
 
-			var refreshUI = function (options) {
+			var refreshUI2 = function (options) {
 
 				var setArenaSize = function  () {
 
@@ -459,6 +459,13 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 			}
 
+			var refreshUI = function () {
+
+				g.waitForElem({elems:["#main-inner", "#arena"]}, function (options) {
+		            refreshUI2(options);
+		        })
+			}
+
 
 			var destroyPlot = function () {
 
@@ -479,9 +486,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 				plotContainers = plot.containers();
 
-				g.waitForElem({elems:[$inner, "#arena"]}, function (options) {
-					refreshUI(options);
-				});
+				refreshUI();
 			}
 
 			var changeplot = function (dna, duration) {

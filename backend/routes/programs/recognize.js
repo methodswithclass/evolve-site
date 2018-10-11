@@ -46,7 +46,7 @@ recognizeRouter.post("/digit", function (req, res, next) {
 
 		// var recognize = get.getSessionProgram(req.body.input.session, "recognize");
 
-		var data = get.data(req.body.input.name);
+		var data = get.getData(req.body.input.name);
 
 		var image;
 

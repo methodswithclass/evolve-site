@@ -17,18 +17,7 @@ const uidgen = new UIDGenerator();
 var called = 0;
 var check = 0;
 
-var addProgram = function (input) {
 
-
-	// console.log("add program input", input);
-
-	var result = get.addProgramToSession(input);
-
-	input.program = result.program;
-	input.pdata = result.pdata;
-
-	return input;
-}
 
 // var looseEnds = function (req) {
 
@@ -113,9 +102,16 @@ evolveRouter.post("/initialize", function (req, res, next) {
 
 		console.log("initialize");
 
-		var input = addProgram(req.body.input);
+
+		var input = req.body.input;
+
+		// var input = addProgram(req.body.input);
 
 		var session = get.getSessionEvolve(input.session);
+
+		var program = get.getSessionProgram(input.session, input.name, input);
+
+		input.pdata = program.pdata;
 
 		let success = session.evolve.initialize(input);
 
@@ -254,7 +250,7 @@ evolveRouter.post("/stepdata", function (req, res, next) {
 
 	try {
 
-		// console.log("get stepdata", req.body);
+		console.log("get stepdata");
 
 		// looseEnds(req);
 

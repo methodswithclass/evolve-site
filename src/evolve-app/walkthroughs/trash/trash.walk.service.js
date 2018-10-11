@@ -14,7 +14,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	self.full = self.name + "walkthrough";
 
 	var grayout = true;
-	var evolveCount = 0;
+	var evolveCount = 1;
 	var stepdata;
 
 
@@ -88,11 +88,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		// console.log("elemArray", options.elemArray, "buffer", buffer);
 
 
-		var top = (-1)*$($ref).offset().top
+		var top = $($ref).offset().top
 
 		var $top = top + buffer;
 
-		// console.log("top", top);
+		console.log("top", $ref, top, $top);
 
 		$($elem).css({top:$top + "px"});
 	}
@@ -112,7 +112,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 		options.elemArray = elemArray;
 
-		g.waitForElem({elems:options.elemArray}, function ($$options) {
+		g.waitForElem({elems:elemArray}, function ($$options) {
 
 			// setTimeout(function () {
 				moveExistingElement($$options, options);
@@ -125,8 +125,23 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	var indicateRefreshButton = function () {
 
 
-		moveElement({element:"#"+self.name+"phase3-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 1400 : 1400) + evolveCount*100});
-		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 1600 : 1600) + evolveCount*100});
+		moveElement({
+			element:"#"+self.name+"phase3-containertoggle", 
+			top:"#simParent", 
+			buffer:function () {
+				// return (g.isMobile() ? 800 : 800) + evolveCount*70;
+				return 500
+			}
+		});
+
+		moveElement({
+			element:"#"+self.name+"complete-buttontoggle", 
+			top:"#simParent", 
+			buffer:function () {
+				// return (g.isMobile() ? 1100 : 1100) + evolveCount*70;
+				return 800;
+			}
+		});
 	}
 
 
@@ -166,7 +181,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		if (phases.isRunning(self.full)) {
 
 			// u.toggle("hide", "hud");
-			
+			u.toggle("hide", self.name + "complete-button", {fade:300});
 		}
 		else {
 			console.log("evolveStart: phases not running");
@@ -440,7 +455,18 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 		evolveCount++;
 
+		setTimeout(function () {
+			indicateRefreshButton();
+		}, 1000);
+
 		evolveEnd(false, {});
+	})
+
+	events.on("evolve.trash.reset", function () {
+
+		evolveCount = 1;
+
+		indicateRefreshButton();
 	})
 
 

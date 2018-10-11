@@ -103,7 +103,6 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 			setTimeout(function () {
 
 				toggleControl("refresh", true);
-				simulator.stop();
 				u.toggle("hide", "evolvefeedback", {fade:600, delay:300});
 			}, 600);
 		}

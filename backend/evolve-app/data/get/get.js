@@ -19,9 +19,9 @@ var getSessionId = function () {
 	return uidgen.generateSync();
 }
 
-var data = function (name) {
+var getData = function (name) {
 
-	console.log("get data", name, __dirname);
+	// console.log("get data", name, __dirname);
 
 	return require("../programs/" + name + ".js");
 }
@@ -176,6 +176,23 @@ var getSessionEvolve = function ($sessionId) {
 }
 
 
+var addProgramToInput = function (input, program, pdata) {
+
+
+	// console.log("add program input", input);
+
+	// var result = get.addProgramToSession(input);
+
+	input.program = program;
+	input.pdata = pdata;
+
+	return {
+		program:program,
+		pdata:pdata,
+		input:input
+	};
+}
+
 
 var addProgramToSession = function (input) {
 
@@ -184,37 +201,43 @@ var addProgramToSession = function (input) {
 	
 	//just for logging actual string retrieved in programs() func
 	var programString = makeProgramString(input);
-	console.log("add program to session", sessionId, programString);
+	// console.log("add program to session", sessionId, programString);
 	//#######################################
 
+	var session;
+	var result;
+
+	var data = getData(input.name);
 
 	if (g.doesExist(name) && g.doesExist(sessionId)) {
 
-		var session = getSession(sessionId);
+		session = getSession(sessionId);
 
 		if (session.session.programs && session.session.programs[name]) {
 			
-			console.log("program exists");
+			result = addProgramToInput(input, session.session.programs[name], data)
+
+			// console.log("program exists");
 			return {
-				program:session.session.programs[name],
-				pdata:data(input.name),
-				input:input
+				program:result.program,
+				pdata:result.pdata,
+				input:result.input
 			}
 		}
 
 
-		console.log("program does not exist, make program");
+		// console.log("program does not exist, make program");
 
-		var result = setProgramForSession(sessionId, name, makeProgram(input));
+		result = addProgramToInput(input, makeProgram(input), data)
 
-		if (result) {
+		var sessionExists = setProgramForSession(sessionId, name, result.program);
 
-			session = getSession(sessionId);
+		if (sessionExists) {
 
 			return {
-				program:session.session.programs[name],
-				pdata:data(input.name),
-				input:input
+				program:result.program,
+				pdata:result.pdata,
+				input:result.input
 			}
 		}
 		else {
@@ -244,37 +267,47 @@ var getSessionProgram = function ($sessionId, name, input) {
 	var session = getSession($sessionId);
 
 
-	console.log("get program for session", $sessionId);
+	// console.log("get program for session", $sessionId);
+
+	var result;
+
+	var data = getData(input.name);
 
 	if (session && session.id && ($sessionId == input.session)) {
 	//session exists
 
-		console.log("session exists, ids match");
+		// console.log("session exists, ids match");
 
 		if (session.session.programs && session.session.programs[name]) {
 		//programs exists with name
 
-			console.log("program exists");
+			// console.log("program exists");
+
+			result = addProgramToInput(input, session.session.programs[name], data)
+
+
 			return {
-				program:session.session.programs[name],
+				program:result.program,
+				pdata:result.pdata,
 				id:session.id,
-				input:input
+				input:result.input
 			}
 		}
 		else {
 
 
-			console.log("program does not exist, add program");
+			// console.log("program does not exist, add program");
 
 			//make new program and add to session
 			var program = addProgramToSession(input);
 
-			session = getSession($sessionId);
+			// session = getSession($sessionId);
 
 			return {
-				program:session.session.programs[name],
+				program:program.program,
+				pdata:program.pdata,
 				id:session.id,
-				input:input
+				input:program.input
 			}
 
 		}
@@ -283,7 +316,7 @@ var getSessionProgram = function ($sessionId, name, input) {
 	}
 	else {
 
-		console.log("session does not exist, create new session");
+		// console.log("session does not exist, create new session");
 
 		//make new session and program
 		session = createSessionEvolve();
@@ -298,8 +331,9 @@ var getSessionProgram = function ($sessionId, name, input) {
 
 		return {
 			program:program.program,
+			pdata:program.pdata,
 			id:session.id,
-			input:input
+			input:program.input
 		}
 	}
 
@@ -317,7 +351,7 @@ var sessionHardStop = function (session) {
 
 
 module.exports =  {
-	data:data,
+	getData:getData,
 	getSessionId:getSessionId,
 	programs:programs,
 	createSessionEvolve:createSessionEvolve,

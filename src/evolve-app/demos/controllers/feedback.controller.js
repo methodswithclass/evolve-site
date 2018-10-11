@@ -170,6 +170,12 @@ app.factory("feedback.controller", ["feedback-sim", "utility", 'config.service',
         evolve.breakRun($scope); 
     }
 
+
+    events.on("evolve.feedback.end", function () {
+        
+        simulator.stop();
+    })
+
     return {
         setup:setup,
         createEnvironment:createEnvironment,

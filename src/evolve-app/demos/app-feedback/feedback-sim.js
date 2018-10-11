@@ -67,9 +67,11 @@ app.factory("feedback-sim", ['data', function (data) {
         createplot();
     }
 
-    var setup = function () {
+    var setup = function (clear, complete) {
 
-        // refreshUI();
+        refreshUI();
+
+        if (typeof complete === "function") complete();
     }
 
     var stop = function () {
@@ -84,6 +86,8 @@ app.factory("feedback-sim", ['data', function (data) {
         console.log("reset plot");
 
         // events.dispatch("resetPlot");
+
+        // stop();
 
         resetplot();
     }

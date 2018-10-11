@@ -110,7 +110,9 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         react.push({
             name:"evdata" + self.name,
-            state:[data]
+            state:{
+                evdata:data
+            }
         })
     }
 
@@ -172,7 +174,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
             
             sendData({
                 evdata:{
-                    index:count,
+                    index:$stepdata.gen,
                     best:res.data.ext.best,
                     worst:res.data.ext.worst
                 }
@@ -291,6 +293,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         simulator.setup(clear, function () {
 
+            console.log("refresh simulator");
             simulator.refresh(); 
         });
     }
@@ -390,6 +393,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         var input = $input.getInput(false);
 
+        events.dispatch("evolve."+self.name+".reset");
 
         if (refresh) refreshSimulator(true);
 
@@ -406,13 +410,19 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         if (input.session) {
 
-            api.initialize(function (res) {
 
-                initData();
+            console.log("reset gen initialize");
+            api.instantiate(function ($res) {
 
-                if (typeof complete === "function") complete({res:res});
+                api.initialize(function (res) {
 
-            });
+                    initData();
+
+                    if (typeof complete === "function") complete({res:res});
+
+                });
+
+            })
         }
 
     }
@@ -497,6 +507,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         
         u.toggle("show", "breakfeedback");
 
+        events.dispatch("evolve."+self.name+".end");
 
         // uncomment this line to force the gens value to change in the settings panel to the current generation when hardstop was called
         // so that to continue evolving, the gens value must be increased to the previous or desired value

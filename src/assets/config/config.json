@@ -4,7 +4,7 @@
 		"interface":1,
 		"debug":{
 			"active":true,
-			"landingPage":1,
+			"landingPage":2,
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",
@@ -12,7 +12,7 @@
 		"activePages":[
 		{
 			"name":"home",
-			"active":true
+			"active":false
 		},
 		{
 			"name":"feedback",
@@ -103,9 +103,9 @@
 					"goal":"diverge"
 				}
 				],
-				"evdelay":100,
-				"stepFireCount":10,
-				"duration":800
+				"evdelay":300,
+				"stepFireCount":5,
+				"duration":100
 			},
 			"recognize":{
 				"meta":{

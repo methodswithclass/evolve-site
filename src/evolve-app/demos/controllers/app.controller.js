@@ -525,7 +525,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
     config.get([
         "global.types.crossoverMethods",
-        "global.programs",
+        "config.pageIndices",
         "config.activePages"
     ])
     .then(function (data) {
@@ -563,12 +563,23 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
         $scope.demos = [];
 
+        console.log("programs", programs);
+
         for (var i in programs) {
-            if (activePages[i]) {
-                $scope.demos[j++] = {
-                    name:programs[i].meta.name,
-                    state:i+"#demo"
+            console.log("index", programs[i]);
+
+            var page =  activePages[programs[i]];
+
+            if (page.active) {
+               
+                var stateName = page.name;
+                
+                $scope.demos[j] = {
+                    name:stateName,
+                    state:stateName+"#demo"
                 }
+
+                j++;
             }
         }
 

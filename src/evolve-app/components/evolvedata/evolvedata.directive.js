@@ -50,7 +50,8 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 
 		    $scope.getGeneration = function (index) {
 
-		    	return index +1;
+		    	// return $scope.evdata[$scope.evdata.length-1].index +1;
+		    	return index + 1;
 		    }
 
 			react.subscribe({
@@ -60,7 +61,7 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 					if (x.evdata) {
 
 
-						if (!isDuplicate(x.evdata)) $scope.evdata[x.evdata.index] = x.evdata;
+						if (!isDuplicate(x.evdata)) $scope.evdata.push(x.evdata);
 
 						// $scope.evdata = x.evdata;
 					}
@@ -76,6 +77,8 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 
 
 						// if (!isDuplicate(x.evdata)) $scope.evdata.push(x.evdata)
+
+						$scope.evdata = null;
 
 						$scope.evdata = [];
 
