@@ -182,6 +182,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 			// u.toggle("hide", "hud");
 			u.toggle("hide", self.name + "complete-button", {fade:300});
+			u.toggle("hide", self.name + "phase3-container", {fade:300});
 		}
 		else {
 			console.log("evolveStart: phases not running");
