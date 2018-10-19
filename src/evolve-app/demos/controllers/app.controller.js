@@ -46,7 +46,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
     $scope.demos = [];
 
-    $scope.demoModel;
+    // $scope.demoModel;
 
     $scope.changeDemo = function (model) {
 

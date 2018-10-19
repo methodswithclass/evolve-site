@@ -56,13 +56,13 @@ app.factory("data", function () {
 
     		for (var j in dnaObj[i]) {
 
-    			for (var k in dnaObj[i][j]["weights"]) {
+    			for (var k in dnaObj[i][j].weights) {
 
-    				dnaArray.push(dnaObj[i][j]["weights"][k]);
+    				dnaArray.push(dnaObj[i][j].weights[k]);
 
     			}
 
-    			dnaArray.push(dnaObj[i][j]["bias"]);
+    			dnaArray.push(dnaObj[i][j].bias);
     		}
     	}
 
@@ -101,9 +101,9 @@ app.factory("data", function () {
 
 					if (k == imageRecognize.network[i-1].nodes - 1) {
 
-						dnaObj[i-1][j]["bias"] = dnaArray[m++];
+						dnaObj[i-1][j].bias = dnaArray[m++];
 
-						dnaObj[i-1][j]["weights"] = weights;
+						dnaObj[i-1][j].weights = weights;
 
 						// console.log("weights", weights);
 					}

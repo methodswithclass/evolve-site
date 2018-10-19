@@ -16,7 +16,7 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
 	self.global = {};
 	self.temp = {};
 
-    self.name;
+    self.name = "";
 
 
 	var crossoverMethods;

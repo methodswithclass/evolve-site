@@ -1,12 +1,5 @@
 app.provider("config.service", [function () {
 
-
-	var shared = window.shared;
-	var g = shared.utility_service;
-	var events = shared.events_service;
-	var react = shared.react_service;
-	var send = shared.send_service;
-
 	var p = {};
 
 	p.config = null;
@@ -62,7 +55,6 @@ app.provider("config.service", [function () {
 	var getConfig = function ($key) {
 
 
-		var key;
 		var value;
 		var prop;
 		var i = 0;
@@ -102,7 +94,7 @@ app.provider("config.service", [function () {
 
 		// console.log("retrieve config");
 
-		return new Promise(function (resolve, reject) {
+		return new Promise(function (resolve) {
 
    			if (!doesExist()) {
 	   			
@@ -140,7 +132,7 @@ app.provider("config.service", [function () {
 
 	var get = function ($$key) {
 
-		var processConfig = function (_key, resolve, reject) {
+		var processConfig = function (_key, resolve) {
 
 			var resultArray = [];
 
@@ -178,7 +170,7 @@ app.provider("config.service", [function () {
 	}
 
 
-	p.$get = ["utility", function (u) {
+	p.$get = [function () {
 
 		
 

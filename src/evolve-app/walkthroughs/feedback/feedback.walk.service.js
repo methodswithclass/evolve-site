@@ -1,4 +1,4 @@
-app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.service", "feedback-sim", function (u, phases, controlsService, simulator) {
+app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.service", "feedback-sim", "toast.service", function (u, phases, controlsService, simulator, $toast) {
 
 	var s = window.shared;
 	var g = s.utility_service;
@@ -62,19 +62,51 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 		});
 	}
 
+	var moveExistingElement = function ($options, options) {
+
+		var $ref = $options.elems[0];
+		var $main = $options.elems[1];
+		var $elem = $options.elems[2];
+
+		// console.log("moveElement", $options);
+
+		// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
+
+		var buffer = (typeof options.buffer === "function") ? options.buffer() : options.buffer;
+
+		// console.log("elemArray", options.elemArray, "buffer", buffer);
+
+
+		var top = $($ref).offset().top - $($main).offset().top;
+
+		var $top = top + buffer;
+
+		// console.log("top", $ref, top, $top);
+
+		$($elem).css({top:$top + "px"});
+	}
+
 
 	var moveElement = function (options) {
 
-		g.waitForElem({elems:[options.top, options.element]}, function ($options) {
+		var elemArray = [];
+		elemArray[0] = options.ref;
+		elemArray[1] = options.main;
+		elemArray[2] = options.element;
 
-			var $ref = $($options.elems[0]);
-			var $elem = $($options.elems[1]);
+		for (var i in options.others) {
+			elemArray[elemArray.length] = options.others[i];
+		}
 
-			console.log("moveElement", $options);
+		// console.log("elem array", elemArray);
 
-			// if ($options.elems[1] == "#phase3-containertoggle") console.log($ref[0]);
+		options.elemArray = elemArray;
 
-			$elem.css({top:$ref.offset().top + options.buffer + "px"});
+		g.waitForElem({elems:elemArray}, function ($$options) {
+
+			// setTimeout(function () {
+				moveExistingElement($$options, options);
+			// }, 800);
 		})
 
 	}
@@ -82,9 +114,47 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 	var indicateRefreshButton = function () {
 
-		moveElement({element:"#"+self.name+"complete-buttontoggle", top:"#main-inner", buffer:(g.isMobile() ? 800 : 800)});
-		moveElement({element:"#"+self.name+"phase1-containertoggle", top:"#main-inner", buffer:(g.isMobile() ? 600 : 600)});
+		moveElement({
+			element:"#"+self.name+"complete-buttontoggle", 
+			top:"#main-inner", 
+			main:"#main-inner",
+			buffer:(g.isMobile() ? 800 : 800)
+		});
+		
+
+		moveElement({
+			element:"#"+self.name+"phase1-containertoggle", 
+			top:"#main-inner",
+			main:"#main-inner", 
+			buffer:(g.isMobile() ? 600 : 600)
+		});
 	}
+
+
+
+
+	var showToast = function (options) {
+
+		$toast.showToast({message:options.meta.description, delay:options.meta.toast.delay, duration:options.meta.toast.duration});
+				
+	}
+
+
+
+
+	/*
+
+
+	##########################################
+
+
+	event functions
+
+
+	#########################################
+
+	*/
+
 
 
 	var closeWalkthrough = function () {
@@ -94,11 +164,13 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 	}
 
 
-	var evolveEnd = function (button) {
+	var evolveEnd = function (button, options) {
 
 		console.log("evolve end", phases.isRunning(self.full));
 
 		if (phases.isRunning(self.full)) {
+
+			showToast(options);
 
 			setTimeout(function () {
 
@@ -108,20 +180,91 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 		}
 	}
 
-	var evolveStart = function () {
+	var evolveStart = function (options) {
 
 		if (phases.isRunning(self.full)) {
+
+			showToast(options);
+
 			u.toggle("show", self.name+"phase1-container", {delay:200, fade:300});
 			u.toggle("hide", self.name+"complete-button", {delay:400, fade:400});
 			u.toggle("hide", "evolve");
 		}
 	}
 
-	var phase_data = [
-	{
+
+	var walkthroughComplete = function (options) {
+
+		toggleGrayout(false);
+		u.toggle("hide", self.name+"complete-button", {fade:400});
+		u.toggle("hide", self.name+"complete-aux-button", {fade:400});
+		stopScaling();
+		u.toggle("show", self.name+"walkthroughbutton", {delay:200, fade:300});
+		phases.running(self.full, false);
+	}
+
+
+
+
+
+	/*
+
+
+	##########################################
+
+
+	event functions
+	
+
+	#########################################
+
+	*/
+
+
+
+
+
+
+	/*
+
+	#########################################
+
+
+	Phases
+
+
+	#########################################
+
+
+	*/
+
+
+
+
+
+	var phase_data = null;
+	var phase = null;
+	phase = {};
+	phase_data = [];
+
+
+
+
+	/*
+
+		welcome to the feedback walkthrough
+	*/
+
+
+
+	phase = {
 		index:0,
 		meta:{
-			description:"Walklthrough welcome",
+			description:"welcome to the feedback walkthrough",
+			toast:{
+				delay:800,
+				duration:1000
+			},
 			button:"#"+self.name+"walkthroughwelcometoggle"
 		},
 		phase:function (options) {
@@ -141,8 +284,11 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 			if (phases.isRunning(self.full)) {
 				console.log("pushed next button");
 
+				showToast(options);
+
 				
 				$("#main-inner").css({opacity:1});
+				u.toggle("show", self.name+"complete-aux-button", {fade:400});
 				u.toggle("hide", self.name+"walkthroughwelcome");
             	u.toggle("show", "hud", {fade:600, delay:300});
 				u.toggle("show", self.name+"ef", {fade:600, delay:300});
@@ -151,11 +297,30 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 			}
 			
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		evolution started
+	*/
+
+
+	phase = {
 		index:1,
 		meta:{
-			description:"repeat with a new trash config",
+			description:"evolution started",
+			toast:{
+				delay:800,
+				duration:800
+			},
 			button:"#playinner"
 		},
 		phase:function (options) {
@@ -169,11 +334,30 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 			evolveStart();
 		}
-	},
-	{
+	}
+
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+	/*
+
+		info hidden
+	*/
+
+
+	phase = {
 		index:2,
 		meta:{
-			description:"Simulate results of 100 generations",
+			description:"info hidden",
+			toast:{
+				delay:100,
+				duration:800
+			},
 			button:"#"+self.name+"phase1-ok-button"
 		},
 		phase:function (options) {
@@ -186,14 +370,34 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 			if (phases.isRunning(self.full)) {
 
+				showToast(options);
+
 				u.toggle("hide", self.name+"phase1-container", {delay:200, fade:300});
 			}
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+	/*
+
+		evolution reset
+	*/
+
+
+	phase = {
 		index:3,
 		meta:{
-			description:"Go to Refresh",
+			description:"evolution reset",
+			toast:{
+				delay:800,
+				duration:800
+			},
 			button:"#refreshinner"
 		},
 		phase:function (options) {
@@ -205,6 +409,9 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 			if (phases.isRunning(self.full)) {				
 				
+
+				showToast(options);
+
 				setTimeout(function () {
 					toggleControl("play", true);
 				}, 600);
@@ -213,11 +420,29 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 			}
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+	/*
+
+		completed the feedback walkthrough
+	*/
+
+
+	phase = {
 		index:4,
 		meta:{
-			description:"you have completed the wallkthrough",
+			description:"completed the feedback walkthrough",
+			toast:{
+				delay:100,
+				duration:1000
+			},
 			button:"#"+self.name+"complete-buttontoggle"
 		},
 		phase:function (options) {
@@ -229,15 +454,72 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 		complete:function (options) {
 
 			if (phases.isRunning(self.full)) {
-				toggleGrayout(false);
-				u.toggle("hide", self.name+"complete-button", {fade:400});
-				stopScaling();
-				u.toggle("show", self.name+"walkthroughbutton", {delay:200, fade:300});
-				phases.running(self.full, false);
+				walkthroughComplete(options)
 			}
 		}
 	}
-	]
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+	/*
+
+		exited the feedback walkthrough
+	*/
+
+
+	phase = {
+		index:5,
+		meta:{
+			description:"exited the feedback walkthrough",
+			toast:{
+				delay:100,
+				duration:1000
+			},
+			button:"#"+self.name+"complete-aux-buttontoggle"
+		},
+		phase:function (options) {
+
+
+			console.log(self.full, options.index, "phase");
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning(self.full)) {
+				walkthroughComplete(options)
+			}
+		}
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+
+
+
+
+	/*
+
+	#########################################
+
+
+	Phases
+
+
+	#########################################
+
+
+	*/
+
 
 
 	var loadPhases = function () {
@@ -254,7 +536,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 	}
 
 
-	loadPhases();
+	// loadPhases();
 
 
 	events.on("evolve.feedback.start", function () {

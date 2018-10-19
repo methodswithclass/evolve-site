@@ -36,7 +36,7 @@ app.directive("plot", ['data', 'utility', 'display.service', function (data, u, 
 
 
 
-			for (i in total) {
+			for (var i in total) {
 				zeros[i] = 0;
 			}
 

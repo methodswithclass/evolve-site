@@ -8,6 +8,8 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 
 
 	var pageBuilt;
+    var processTypes;
+    
 
 
 	var setup = function (self, $scope) {
@@ -35,8 +37,7 @@ app.factory("recognize.controller", ["recognize-sim", "utility", 'config.service
 
 	var build = function (self, $scope) {
 
-		processTypes;
-        $scope.programInput;
+		$scope.programInput = {};
 
         config.get([
                     "global.types.processTypes",

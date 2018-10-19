@@ -1,9 +1,13 @@
 stateModule.provider("runtime.state", ["$stateProvider", function ($stateProvider) {
-  // runtime dependencies for the service can be injected here, at the provider.$get() function.
+  // runtime dependencies for the service can be injected here, at the provider.$get() function
+
+
 
     var shared = window.shared;
     var g = shared.utility_service;
     var react = shared.react_service;
+    var send = shared.send_service;
+    var events = shared,events_service;
 
 
     var _forceMobile = false;

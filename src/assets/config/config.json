@@ -3,8 +3,8 @@
 		"forceMobile":false,
 		"interface":1,
 		"debug":{
-			"active":false,
-			"landingPage":2,
+			"active":true,
+			"landingPage":1,
 			"loadSpeed":"fast"
 		},
 		"landingPage":"home",

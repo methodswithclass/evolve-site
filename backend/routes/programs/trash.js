@@ -43,7 +43,7 @@ trashRouter.post("/environment/refresh", function (req, res, next) {
 
 		var trash = get.getSessionProgram(input.session, "trash", input).program;
 
-		var env = trash.refresh(0, input.programInput);
+		var env = trash.refresh(input.programInput);
 
 		// console.log("env", input.programInput, env);
 		

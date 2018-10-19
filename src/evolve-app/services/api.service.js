@@ -1,11 +1,4 @@
 app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exception', function (u, $input, $http, $q, exception) {
-
-
-    var shared = window.shared;
-    var g = shared.utility_service;
-    var events = shared.events_service;
-    var react = shared.react_service;
-    var send = shared.send_service;
     
 
 	var getBest = function (callback) {
@@ -25,11 +18,11 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
             }, function (err) {
 
-                console.log("before throw Server error:", funcName,  err)
+                console.log("before throw Server error:", funcName,  err);
 
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
         // }
         // catch (err) {
@@ -37,7 +30,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
         
-    }
+    };
 
 
     var stepdata = function (callback) {
@@ -66,7 +59,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -75,7 +68,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-   	}
+   	};
 
 
    	var isRunning = function  (callback) {
@@ -101,7 +94,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
         	})
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -110,7 +103,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-    }
+    };
 
 
     var setInput = function (resend, callback) {
@@ -138,7 +131,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -147,7 +140,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-   	}
+   	};
 
 
     var instantiate = function (callback) {
@@ -172,7 +165,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -182,7 +175,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         // }
 
 
-    }
+    };
 
 
    	var initialize = function (callback) {
@@ -210,7 +203,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -220,7 +213,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         // }
 
 
-    }
+    };
 
 
     var run = function (callback) {
@@ -245,7 +238,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 		
                 		run(function  () {
                 			if (typeof callback === "function") callback(res);
-                		})
+                		});
                 	});
                 }
                 else {
@@ -260,7 +253,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -269,7 +262,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-    }
+    };
 
     var instruct = function (clear, callback) {
 
@@ -294,7 +287,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -303,7 +296,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-    }
+    };
 
     var refreshEnvironment = function (callback) {
 
@@ -334,7 +327,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -343,7 +336,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-    }
+    };
 
     var resetEnvironment = function (callback) {
 
@@ -368,7 +361,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -377,7 +370,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         //     console.log("Server error:", funcName, err)
         // }
 
-    }
+    };
 
 
     var simulate = {
@@ -406,7 +399,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                     // return $q.reject(err);
                     throw err;
                 })
-                .catch(exception.catcher(funcName))
+                .catch(exception.catcher(funcName));
 
 
             // }
@@ -440,7 +433,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                     // return $q.reject(err);
                     throw err;
                 })
-                .catch(exception.catcher(funcName))
+                .catch(exception.catcher(funcName));
 
 
             // }
@@ -472,7 +465,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                     // return $q.reject(err);
                     throw err;
                 })
-                .catch(exception.catcher(funcName))
+                .catch(exception.catcher(funcName));
 
 
             // }
@@ -483,7 +476,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
 
         }
 
-    }
+    };
 
 
     var hardStop = function (callback) {
@@ -512,7 +505,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
                 // return $q.reject(err);
                 throw err;
             })
-            .catch(exception.catcher("Server error:" + funcName))
+            .catch(exception.catcher("Server error:" + funcName));
 
 
         // }
@@ -522,7 +515,7 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         // }
         
 
-    }
+    };
 
 	return {
 		getBest:getBest,
@@ -537,6 +530,6 @@ app.factory("api.service", ["utility", 'input.service', '$http', "$q", 'exceptio
         resetEnvironment:resetEnvironment,
         simulate:simulate,
 		hardStop:hardStop
-	}
+	};
 
 }]);

@@ -6,7 +6,7 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
 
     var showing = function (_toggle) {
 
-        if (_toggle != undefined) {
+        if (_toggle !== undefined) {
             isShown = _toggle;
         }
 
@@ -29,9 +29,9 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
                     
                 <div class='md-toast-content'>
                     
-                    <div class="absolute width height-200 bottom0 black-back opacity70 z-100"></div>
+                    <div class="absolute width height-200 bottom0 black-back opacity70 border-white z-500"></div>
 
-                    <div class='absolute width height-200 bottom0 white font-50 z-100'>
+                    <div class='absolute width height-200 bottom0 white font-50 z-500'>
                         <div class="absolute center">
                             ${$message}
                         </div>
@@ -65,13 +65,18 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
         }
 
 
-        setTimeout(function () {
+        if (!showing()) {
 
-            if (!showing()) {
+            if (delay > 0) {
+                setTimeout(function () {
+                    $showToastFunction();
+                }, delay);
+            }
+            else {
                 $showToastFunction();
             }
 
-        }, delay)
+        }
         
     }
 

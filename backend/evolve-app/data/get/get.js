@@ -36,7 +36,7 @@ var makeProgramString = function ($options) {
 	var programExists = g.doesExist(program);
 	var optionsExists = g.doesExist(options.processType);
 
-	console.log("process type", optionsExists, "\n\n\n");
+	// console.log("process type", optionsExists, "\n\n\n");
 
 	var programString;
 	var typeString = "";
@@ -54,6 +54,7 @@ var makeProgramString = function ($options) {
 	
 	programString += ((program == "trash") ? typeString : "");
 
+	// console.log("programstring", programString);
 
 	return programString;
 
@@ -270,6 +271,7 @@ var getSessionProgram = function ($sessionId, name, input) {
 	// console.log("get program for session", $sessionId);
 
 	var result;
+	var program;
 
 	var data = getData(input.name);
 
@@ -299,7 +301,7 @@ var getSessionProgram = function ($sessionId, name, input) {
 			// console.log("program does not exist, add program");
 
 			//make new program and add to session
-			var program = addProgramToSession(input);
+			program = addProgramToSession(input);
 
 			// session = getSession($sessionId);
 
@@ -325,9 +327,9 @@ var getSessionProgram = function ($sessionId, name, input) {
 
 		input.session = session.id;
 
-		session = getSessionEvolve(session.id);
+		var sessionEvolve = getSessionEvolve(session.id);
 
-		var program = getSessionProgram(session.id, name, input);
+		program = getSessionProgram(sessionEvolve.id, name, input);
 
 		return {
 			program:program.program,
@@ -340,10 +342,10 @@ var getSessionProgram = function ($sessionId, name, input) {
 	
 }
 
-var sessionHardStop = function (session) {
+var sessionHardStop = function (sessionId) {
 
 
-	var session = getSessionEvolve(session);
+	var session = getSessionEvolve(sessionId);
 
 	session.evolve.hardStop();
 }

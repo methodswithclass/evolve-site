@@ -1,5 +1,5 @@
 
-app.factory("phases.service", [function () {
+app.factory("phases.service", ['toast.service', function ($toast) {
 
 
 	var s = window.shared;
@@ -69,12 +69,24 @@ app.factory("phases.service", [function () {
 
 			// console.log("register phase click event for button", options.elems);
 
+			
+
 			$(options.elems).click(function () {
 
-				clickCount[$name] += 1;
+				if ($name == n) {
 
-				console.log("clicked", $phases[$name][$index].index, "phase", $name, $phases[$name][$index].meta.button, "loadCount", count, "clickCount", clickCount[$name]);
-				if ($phases[$name][$index].complete) $phases[$name][$index].complete($phases[$name][$index]);
+					if ($phases[$name][$index].complete) {
+
+						clickCount[$name] += 1;
+
+						console.log("clicked", $phases[$name][$index].index, "phase", $name, $phases[$name][$index].meta.button, "clickCount", clickCount[$name], "loadcount", count);
+
+						// $toast.showToast({message:$phases[$name][$index].meta.description, delay:$phases[$name][$index].meta.toast.delay, duration:$phases[$name][$index].meta.toast.duration});
+
+						$phases[$name][$index].complete($phases[$name][$index]);
+					}
+
+				}
 
 				// if (j + 1 < $phases.length-1) $phases[j+1].phase($phases[j+1]);
 			})

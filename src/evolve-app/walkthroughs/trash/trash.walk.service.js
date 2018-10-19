@@ -1,4 +1,4 @@
-app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service", "trash-sim", function (u, phases, controlsService, simulator) {
+app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service", "trash-sim", "toast.service", function (u, phases, controlsService, simulator, $toast) {
 
 
 	var s = window.shared;
@@ -46,6 +46,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 			toggleControl(value.name, false);
 		})
+
+		$("#runinner").removeClass("scaling");
 	}
 
 	var toggleGrayout = function (force) {
@@ -77,7 +79,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	var moveExistingElement = function ($options, options) {
 
 		var $ref = $options.elems[0];
-		var $elem = $options.elems[1];
+		var $main = $options.elems[1];
+		var $elem = $options.elems[2];
 
 		// console.log("moveElement", $options);
 
@@ -88,11 +91,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		// console.log("elemArray", options.elemArray, "buffer", buffer);
 
 
-		var top = $($ref).offset().top
+		var top = $($ref).offset().top - $($main).offset().top;
 
 		var $top = top + buffer;
 
-		console.log("top", $ref, top, $top);
+		// console.log("top", $ref, top, $top);
 
 		$($elem).css({top:$top + "px"});
 	}
@@ -101,8 +104,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	var moveElement = function (options) {
 
 		var elemArray = [];
-		elemArray[0] = options.top;
-		elemArray[1] = options.element;
+		elemArray[0] = options.ref;
+		elemArray[1] = options.main;
+		elemArray[2] = options.element;
 
 		for (var i in options.others) {
 			elemArray[elemArray.length] = options.others[i];
@@ -127,22 +131,51 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 		moveElement({
 			element:"#"+self.name+"phase3-containertoggle", 
-			top:"#simParent", 
+			ref:"#simParent",
+			main:"#main-inner",
 			buffer:function () {
 				// return (g.isMobile() ? 800 : 800) + evolveCount*70;
-				return 500
+				return -200
 			}
 		});
 
 		moveElement({
 			element:"#"+self.name+"complete-buttontoggle", 
-			top:"#simParent", 
+			ref:"#simParent",
+			main:"#main-inner",
 			buffer:function () {
 				// return (g.isMobile() ? 1100 : 1100) + evolveCount*70;
-				return 800;
+				return 100;
 			}
 		});
 	}
+
+	
+
+
+
+	var showToast = function (options) {
+
+		$toast.showToast({message:options.meta.description, delay:options.meta.toast.delay, duration:options.meta.toast.duration});
+				
+	}
+
+
+
+
+
+	/*
+
+	############################################
+
+
+	event functions
+
+
+	############################################
+
+
+	*/
 
 
 	var closeWalkthrough = function () {
@@ -150,6 +183,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		u.toggle("hide", self.name + "walkthrough");
 		phases.running(self.full, false);
 	}
+
 
 	var evolveEnd = function (button, options) {
 
@@ -161,12 +195,16 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			u.toggle("show", self.name + "phase1-container");
 
 
+			showToast(options);
+
+
 			// u.toggle("show", "hud", {delay:300, fade:600});
 
 			indicateRefreshButton();
 
 			setTimeout(function () {
 				scrollTo(element, options);
+				u.toggle("show", self.name + "complete-aux-button", {fade:300});
 			}, button ? 1200 : 0);
 		}
 		else {
@@ -182,6 +220,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 			// u.toggle("hide", "hud");
 			u.toggle("hide", self.name + "complete-button", {fade:300});
+			u.toggle("hide", self.name + "complete-aux-button", {fade:300});
 			u.toggle("hide", self.name + "phase3-container", {fade:300});
 		}
 		else {
@@ -198,6 +237,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		if (phases.isRunning(self.full)) {
 			console.log("end simulation");
 
+
+
 			$("#refreshinner").addClass("scaling-lg");
 			u.toggle("hide", self.name + "complete-button", {fade:300});
 			u.toggle("show", self.name + "phase3-container", {fade:300});
@@ -207,10 +248,13 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		}
 	}
 
-	var simStart = function () {
+	var simStart = function (options) {
 
 		if (phases.isRunning(self.full)) {
 			console.log("start simulation");
+
+
+			showToast(options);
 
 			u.toggle("hide", self.name + "phase1-container");
 			u.toggle("hide", self.name + "complete-button", {fade:300});
@@ -221,11 +265,75 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	}
 
 
-	var phase_data = [
-	{
+	var walkthroughComplete = function (options) {
+
+		showToast(options);
+
+		toggleGrayout(false);
+		u.toggle("hide", self.name + "complete-button", {fade:400});
+		u.toggle("hide", self.name + "complete-aux-button", {fade:400});
+		stopScaling();
+		u.toggle("show", self.name + "walkthroughbutton", {delay:200, fade:300});
+		phases.running(self.full, false);
+	}
+
+
+
+
+	/*
+
+	############################################
+
+
+	event functions
+
+
+	############################################
+
+
+	*/
+
+
+
+
+
+
+
+
+	/*
+
+	#########################################
+
+
+	Phases
+
+
+	#########################################
+
+
+	*/
+
+
+
+	var phase = {};
+	var phase_data = [];
+
+
+
+	/*
+
+		welcome to the trash pickup walkthrough
+	*/
+
+	
+	phase = {
 		index:0,
 		meta:{
-			description:"Walkthrough welcome",
+			description:"welcome to the trash pickup walkthrough",
+			toast:{
+				delay:800,
+				duration:1000
+			},
 			button:"#"+self.name+"walkthroughwelcometoggle"
 		},
 		phase:function (options) {
@@ -255,10 +363,12 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 				console.log("pushed next button");
 
 				simulator.refresh();
-				
+
+				showToast(options);
+
 				u.toggle("show", "run");
 				$("#main-inner").css({opacity:1});
-
+				u.toggle("show", self.name + "complete-aux-button", {fade:400});
             	u.toggle("show", "hud", {fade:600, delay:300});
 				u.toggle("hide", self.name + "walkthroughwelcome");
 			}
@@ -267,11 +377,31 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			}
 			
 		}
-	},
-	{
+	}
+
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		evolution started
+	*/
+
+
+	phase = {
 		index:1,
 		meta:{
-			description:"Click here",
+			description:"evolution started",
+			toast:{
+				delay:800,
+				duration:800
+			},
 			button:"#runtoggle"
 		},
 		phase:function (options) {
@@ -284,6 +414,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			if (phases.isRunning(self.full)) {
 				console.log("pushed next button");
 
+				showToast(options);
+
 				$("#runinner").removeClass("scaling");
 			}
 			else {
@@ -291,11 +423,30 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			}
 			
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		evolution ended
+	*/
+
+
+	phase = {
 		index:2,
 		meta:{
-			description:"End Evolution",
+			description:"evolution ended",
+			toast:{
+				delay:2000,
+				duration:800
+			},
 			button:"#breakevolve"
 		},
 		phase:function (options) {
@@ -308,11 +459,30 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 			evolveEnd(true, options);
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		now you can simulate the best individual
+	*/
+
+
+	phase = {
 		index:3,
 		meta:{
-			description:"Simulate results of 100 generations",
+			description:"now you can simulate the best individual",
+			toast:{
+				delay:800,
+				duration:2000
+			},
 			button:"#"+self.name+"phase1-ok-button"
 		},
 		phase:function (options) {
@@ -328,6 +498,9 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			if (phases.isRunning(self.full)) {
 				var element = "#stagetoggle";
 
+
+				showToast(options);
+
 				// toggleGrayout(false);
 				toggleControl("play", true);
 				u.toggle("hide", self.name + "phase1-container");
@@ -337,11 +510,31 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 				console.log(options.meta.button, "clicked: phases not running");
 			}
 		}
-	},
-	{
+	}
+
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		trash configuration refreshed
+	*/
+
+
+	phase = {
 		index:4,
 		meta:{
-			description:"Go to Refresh",
+			description:"trash configuration refreshed",
+			toast:{
+				delay:800,
+				duration:1000
+			},
 			button:"#refreshinner"
 		},
 		phase:function (options) {
@@ -359,6 +552,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 				if (stepdata.gen > 1) u.toggle("show", self.name + "complete-button", {delay:400, fade:400});
 				
 
+				showToast(options);
+
 				setTimeout(function () {
 
 					if (stepdata.gen > 1) toggleControl("play", true);
@@ -368,11 +563,30 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 				console.log(options.meta.button, "clicked: phases not running");
 			}
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		running simulation
+	*/
+
+
+	phase = {
 		index:5,
 		meta:{
-			description:"repeat with a new trash config",
+			description:"running simulation",
+			toast:{
+				delay:100,
+				duration:1000
+			},
 			button:"#playinner"
 		},
 		phase:function (options) {
@@ -383,13 +597,32 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		},
 		complete:function (options) {
 
-			simStart();
+			simStart(options);
 		}
-	},
-	{
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+	/*
+
+		completed the trash walkthrough
+	*/
+
+
+	phase = {
 		index:6,
 		meta:{
-			description:"you have completed the wallkthrough",
+			description:"completed the trash walkthrough",
+			toast:{
+				delay:100,
+				duration:1000
+			},
 			button:"#"+self.name+"complete-buttontoggle"
 		},
 		phase:function (options) {
@@ -401,20 +634,84 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		complete:function (options) {
 
 			if (phases.isRunning(self.full)) {
-				toggleGrayout(false);
-				u.toggle("hide", self.name + "complete-button", {fade:400});
-				stopScaling();
-				u.toggle("show", self.name + "walkthroughbutton", {delay:200, fade:300});
-				phases.running(self.full, false);
+				walkthroughComplete(options);
 			}
 			else {
 				console.log(options.meta.button, "clicked: phases not running");
 			}
 		}
 	}
-	]
+
 
 	
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+
+
+
+
+	/*
+
+		exited the trash walkthrough
+	*/
+
+
+	phase = {
+		index:7,
+		meta:{
+			description:"exited the trash walkthrough",
+			toast:{
+				delay:100,
+				duration:1000
+			},
+			button:"#"+self.name+"complete-aux-buttontoggle"
+		},
+		phase:function (options) {
+
+
+			console.log(self.full, options.index, "phase");
+
+		},
+		complete:function (options) {
+
+			if (phases.isRunning(self.full)) {
+
+				walkthroughComplete(options);
+			}
+			else {
+				console.log(options.meta.button, "clicked: phases not running");
+			}
+		}
+	}
+
+
+	phase_data.push(phase);
+	phase = null;
+	phase = {};
+
+	
+
+
+
+	
+	/*
+
+	#########################################
+
+
+	Phases
+
+
+	#########################################
+
+
+	*/
+
+
+
+
 
 
 	var loadPhases = function () {
@@ -460,7 +757,15 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			indicateRefreshButton();
 		}, 1000);
 
-		evolveEnd(false, {});
+		evolveEnd(phases.isRunning(self.full), {
+			meta:{
+				description:"evolution ended",
+				toast:{
+					delay:2000,
+					duration:800
+				}
+			}
+		});
 	})
 
 	events.on("evolve.trash.reset", function () {

@@ -29,7 +29,7 @@ var trash = function (options) {
 
 	var simulation = {};
 
-	var env = [];
+	self.envs = [];
 	var envIndex = 0;
 
 
@@ -64,7 +64,7 @@ var trash = function (options) {
 
 	var createRunEnvironment = function () {
 
-		var env = function ($options) {
+		var $environment = function ($options) {
 
 			var self = this;
 
@@ -129,16 +129,25 @@ var trash = function (options) {
 			}
 		}
 
-		return new env(options);
+		return new $environment(options);
 
 
 	}
 
 
-	var makeEnvironments = function ($runs) {
+	var refreshEnvironments = function (input) {
+
+		self.envs.forEach((p, index) => {
+
+			p.refresh(input.programInput);
+		});
+	}
+
+
+	var makeEnvironments = function ($runs, input) {
 
 		var envIndex = 0;
-		env = [];
+		self.envs = [];
 
 		if ($runs.hasOwnProperty("runs")) {
 			runs = $runs.runs;
@@ -149,56 +158,25 @@ var trash = function (options) {
 
 		while (envIndex < runs) {
 
-			env[envIndex] = createRunEnvironment();
+			self.envs[envIndex] = createRunEnvironment();
 
 			envIndex++;
 		}
 
+		refreshEnvironments(input);
+
 	}
 
-	var refreshEnvironments = function (input) {
+	
 
-		env.forEach((p, index) => {
+	self.getEnv = function (index) {
 
-			p.refresh(input.programInput);
-		});
-	}
-
-	self.instruct = function (index, dna) {
-
-		env[index].instruct(dna);
-	}
-
-	self.refresh = function (index, options) {
-		
-
-		console.log("refresh", index, env.length);
-
-		if (index < env.length) {
-			return env[index].refresh(options);
-		}
-		else {
-			makeEnvironments(index+1);
-			return env[index].refresh(options)
-		}
-	}
-
-	self.reset = function (index) {
-		
-		console.log("reset", index, env.length);
-
-		if (index < env.length) {
-			return env[index].reset();
-		}
-		else {
-			makeEnvironments(index+1);
-			return env[index].reset();
-		}
+		return self.envs[index];
 	}
 
 	self.get = function (index) {
 
-		return env[index].get();
+		return self.envs[index].get();
 	}
 
 
@@ -258,15 +236,15 @@ var trash = function (options) {
 			running = true;
 
 
-			target = env['0'].refresh(params.input.programInput);
+			// self.getEnv($run).setup(params.input.programInput);
 
-			env['0'].instruct(params.dna);
+			self.getEnv($run).instruct(params.dna);
 
 
-			performStep(0, $run, 0, fits, params, env['0'],
+			performStep(0, $run, 0, fits, params, self.getEnv($run),
 				function (fits, x) {
 
-					fits.push({fitness:x, target:target});
+					fits.push({fitness:x});
 
 					performRun($run + 1, fits, params, complete);
 
@@ -300,7 +278,7 @@ var trash = function (options) {
 
 		if (params.gen == 1) {
 			// console.log("make environments");
-			makeEnvironments(runs);
+			makeEnvironments(runs, input);
 		}
 		else {
 			// if (params.index == 1) console.log("refresh environments");
@@ -321,12 +299,12 @@ var trash = function (options) {
 				});
 
 
-				var count = 0;
-				for (i in fits) {
-					if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
-						count++;
-					}
-				}
+				// var count = 0;
+				// for (var i in fits) {
+				// 	if (fits[i].fitness >= fits[i].target*actions.list[5].points.success) {
+				// 		count++;
+				// 	}
+				// }
 
 				// console.log("run complete", avgfit);
 
@@ -344,24 +322,26 @@ var trash = function (options) {
 
 	}
 
-	self.reset = function () {
+	self.reset = function ($options) {
 
-		simulation.reset();
+		simulation.reset($options);
 
 		return simulation.get();
 	}
 
 	self.refresh = function ($options) {
 
+		// console.log("refresh environment");
+
 		simulation.refresh($options);
-		self.reset();
+		self.reset($options);
 
 		return simulation.get();
 	}
 
 	self.instruct = function (genome) {
 		
-		console.log("instruct robot");
+		// console.log("instruct robot");
 
 		simulation.instruct(genome);
 	}

@@ -5,6 +5,18 @@ var merge = require("merge-stream");
 var imagemin = require('gulp-imagemin');
 
 
+var reporters = [
+{
+	index:0,
+	name:"custom"
+},
+{
+	index:1,
+	name:"stylish"
+}
+]
+
+var whichReporter = 1;
 
 var htmlDest = "dist/assets/views/";
 
@@ -19,7 +31,8 @@ var mainScripts = [
     "src/app/directives/**/*.js",
     "src/evolve-app/**/*.js",
     "src/assets/js/parallax-5.0.js",
-    "src/assets/js/**/*.js"
+    "src/assets/js/**/*.js",
+    "!src/**/*.spec.js"
 ]
 
 
@@ -101,7 +114,9 @@ module.exports = {
 		sassStyles:sassStyles,
 		cssStyles:cssStyles,
 		miscSrc:miscSrc,
-		minify:minify
+		minify:minify,
+		reporters:reporters,
+		reporter:whichReporter
 	},
 	livereloadPort:livereloadPort
 }

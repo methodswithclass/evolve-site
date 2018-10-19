@@ -164,6 +164,8 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 
 				var env;
 
+				// console.log("environ", env);
+
 				if ($env == undefined) {
 
 					env = {}

@@ -23,7 +23,7 @@ app.directive("evolvedata", ["utility", "states", function (u, states) {
 
 			
 			$scope.evdata = [];
-			$scope.stepdata;
+			// $scope.stepdata;
 
 
 			var isDuplicate = function (data) {

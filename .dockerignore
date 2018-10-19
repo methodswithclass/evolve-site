@@ -1,0 +1,12 @@
+.git
+git.sh
+Dockerfile
+.gitignore
+README.md
+/node_modules
+/bower_components
+/dist
+
+
+# To prevent storing dev/temporary container data
+/temp/*

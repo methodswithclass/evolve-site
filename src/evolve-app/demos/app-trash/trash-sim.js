@@ -152,6 +152,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
                     num:$i,
                     state:after.state,
                     action:after.action,
+                    name:after.action.name,
                     total:totalActions
                 }
             });
@@ -255,7 +256,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
         var $stage = $("#arena");
 
-        g.waitForElem({elems:$stage}, function (options) {
+        // g.waitForElem({elems:$stage}, function (options) {
 
             api.resetEnvironment(function (res) {
 
@@ -266,7 +267,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
                 // console.log("Reset environment success", res);
             });
 
-        });
+        // });
 
 
         if (man) man.outer.css({left:0, top:0});
@@ -274,10 +275,11 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
     var refreshenv = function (complete) {
 
-        var $stage = $("#arena");
+        var $stage = "#arena";
 
-        g.waitForElem({elems:$stage}, function (options) {
+        // g.waitForElem({elems:$stage}, function (options) {
 
+            console.log("refresh environment");
 
             setStageSize();
 
@@ -300,7 +302,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
             })
 
 
-        })
+        // })
     }
 
     var reset = function () {

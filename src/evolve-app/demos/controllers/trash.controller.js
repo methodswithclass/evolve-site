@@ -30,7 +30,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 		self.outcome = function (outcome) {
 
-	        if ((self.sdata && self.sdata.move.action.id == 4) || outcome !== "success") {
+	        if ((self.sdata && self.sdata.move.action.name == "stay put") || outcome !== "success") {
 
 	            return "/assets/img/ex.png";
 	        }
@@ -47,12 +47,16 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	        self.programInput.update();
 
+            // console.log("program input change after update", self.programInput, "set input");
+
 	        $input.setInput({
 	            programInput:self.programInput
 	        })
 
-            simulator.refresh();
-
+            setTimeout(function () {
+                
+                simulator.refresh();
+            }, 500);
 	    }
 
 	}
@@ -110,6 +114,11 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         programInput.validate = function () {
 
+            var _temp = {
+                grid:self.programInput.grid.size,
+                percent:self.programInput.trashPercent,
+                rate:self.programInput.trashRate
+            }
 
             self.programInput.trashPercent =   (self.programInput.trashPercent == "" ) ?  ""
                                            : (self.programInput.trashPercent > 90 ? 90 : self.programInput.trashPercent)
@@ -121,13 +130,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
                                             : (self.programInput.trashPercent < 1 ? 1 : self.programInput.trashPercent)
             self.programInput.trashRate = (self.programInput.trashRate == "" ) ? "" 
                                            :(self.programInput.trashRate < 0.01 ? 0.01 : self.programInput.trashRate)
-
-
-            var _temp = {
-                grid:self.programInput.grid.size,
-                percent:self.programInput.trashPercent,
-                rate:self.programInput.trashRate
-            }
+            
 
             self.programInput.grid.size = self.programInput.grid.size >= 3 && self.programInput.grid.size <= 15 ? parseInt(self.programInput.grid.size) : 5;
 
