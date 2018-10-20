@@ -64,9 +64,11 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 	var moveExistingElement = function ($options, options) {
 
+		var $main;
 		var $ref = $options.elems[0];
-		var $main = $options.elems[1];
-		var $elem = $options.elems[2];
+		var $elem = $options.elems[1];
+		//$main = $options.elem[2];
+
 
 		// console.log("moveElement", $options);
 
@@ -76,8 +78,9 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 		// console.log("elemArray", options.elemArray, "buffer", buffer);
 
+		var $$top = $main ? $($main).offset().top : 0;
 
-		var top = $($ref).offset().top - $($main).offset().top;
+		var top = $($ref).offset().top - $$top;
 
 		var $top = top + buffer;
 
@@ -91,8 +94,8 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 		var elemArray = [];
 		elemArray[0] = options.ref;
-		elemArray[1] = options.main;
-		elemArray[2] = options.element;
+		elemArray[1] = options.element;
+		// elemArray[2] = options.main;
 
 		for (var i in options.others) {
 			elemArray[elemArray.length] = options.others[i];
@@ -114,20 +117,33 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 	var indicateRefreshButton = function () {
 
-		moveElement({
-			element:"#"+self.name+"complete-buttontoggle", 
-			top:"#main-inner", 
-			main:"#main-inner",
-			buffer:(g.isMobile() ? 800 : 800)
-		});
-		
 
 		moveElement({
 			element:"#"+self.name+"phase1-containertoggle", 
-			top:"#main-inner",
-			main:"#main-inner", 
-			buffer:(g.isMobile() ? 600 : 600)
+			ref:"#main-inner",
+			// main:"#main-inner",
+			// buffer:(g.isMobile() ? 600 : 600)
+			buffer:function () {
+				return 600
+			}
 		});
+
+
+
+
+		moveElement({
+			element:"#"+self.name+"complete-buttontoggle", 
+			ref:"#main-inner",
+			// main:"#main-inner",
+			// buffer:(g.isMobile() ? 800 : 800)
+			buffer:function () {
+
+				return 800;
+			}
+		});
+		
+
+		
 	}
 
 
@@ -195,8 +211,11 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 	var walkthroughComplete = function (options) {
 
+		showToast(options);
+
 		toggleGrayout(false);
 		u.toggle("hide", self.name+"complete-button", {fade:400});
+		u.toggle("hide", self.name+"phase1-container", {fade:300});
 		u.toggle("hide", self.name+"complete-aux-button", {fade:400});
 		stopScaling();
 		u.toggle("show", self.name+"walkthroughbutton", {delay:200, fade:300});
@@ -263,7 +282,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 			description:"welcome to the feedback walkthrough",
 			toast:{
 				delay:800,
-				duration:1000
+				duration:1500
 			},
 			button:"#"+self.name+"walkthroughwelcometoggle"
 		},
@@ -332,7 +351,7 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 		complete:function (options) {
 			
 
-			evolveStart();
+			// evolveStart(options);
 		}
 	}
 
@@ -541,12 +560,28 @@ app.factory("feedback.walkthrough", ["utility", "phases.service", "controls.serv
 
 	events.on("evolve.feedback.start", function () {
 
-		evolveStart();
+		evolveStart({
+			meta:{
+				description:"evolution started",
+				toast:{
+					delay:800,
+					duration:800
+				}
+			}
+		});
 	});
 
 	events.on("evolve.feedback.end", function () {
 
-		evolveEnd();
+		evolveEnd(false, {
+			meta:{
+				description:"evolution ended",
+				toast:{
+					delay:800,
+					duration:800
+				}
+			}
+		});
 	})
 
 	events.on("back.feedback", function () {

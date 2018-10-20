@@ -2,6 +2,7 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
 
 
     var isShown = false;
+    var calledCount = 0;
 
 
     var showing = function (_toggle) {
@@ -13,15 +14,13 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
         return isShown;
     }
 
+    var $showToast = function (options) {
 
-	var showToast = function (options) {
 
         var $message = options.message;
         var duration = options.duration;
         var delay = options.delay;
 
-
-        // console.log("show toast", toast.show, "\n\n\n\n");
 
         var html = `
 
@@ -64,8 +63,11 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
             });
         }
 
+        
+        // console.log("show toast", toast.show, "\n\n\n\n");
 
-        if (!showing()) {
+
+        if (calledCount == 1 && !showing()) {
 
             if (delay > 0) {
                 setTimeout(function () {
@@ -77,6 +79,21 @@ app.factory("toast.service", ["$mdToast", function ($mdToast) {
             }
 
         }
+
+
+        setTimeout(function () {
+
+            calledCount = 0;
+        }, delay+800);
+    }
+
+
+	var showToast = function (options) {
+
+        calledCount++;
+
+        
+        $showToast(options);
         
     }
 

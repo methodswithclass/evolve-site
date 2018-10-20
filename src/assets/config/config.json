@@ -11,18 +11,22 @@
 		"loadSpeed":"fast",
 		"activePages":[
 		{
+			"index":0,
 			"name":"home",
 			"active":false
 		},
 		{
+			"index":1,
 			"name":"feedback",
 			"active":true
 		},
 		{
+			"index":2,
 			"name":"trash",
 			"active":true
 		},
 		{
+			"index":3,
 			"name":"recognize",
 			"active":false
 		}

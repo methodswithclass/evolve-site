@@ -258,7 +258,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
             controller.finish(self, $scope)
             .then(function (result) {
 
-                evolve.running(false, $scope);
+                // evolve.running(false, $scope);
 
                 u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
 
@@ -563,12 +563,14 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
         $scope.demos = [];
 
-        console.log("programs", programs);
+        // console.log("programs", programs);
+
+        var page;
 
         for (var i in programs) {
-            console.log("index", programs[i]);
+            // console.log("index", programs[i]);
 
-            var page =  activePages[programs[i]];
+            page =  activePages[programs[i]];
 
             if (page.active) {
                

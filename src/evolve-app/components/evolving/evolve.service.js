@@ -81,10 +81,12 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
             ev = _evolve;
             if (_evolve) {
                 if (spinning) $(options.elems).addClass("spinning");
+                events.dispatch("evolve."+ self.name +".start");
                 running(_evolve, _$scope);
             }
             else {
                 if (spinning) $(options.elems).removeClass("spinning");
+                events.dispatch("evolve."+ self.name +".end");
             }
 
         });
@@ -303,12 +305,12 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         _$scope = $scope
 
-    	running(false, _$scope);
+    	// running(false, _$scope);
 
         console.log("complete evolve");
 
 
-        events.dispatch("evolve." + self.name + ".end");
+        // events.dispatch("evolve." + self.name + ".end");
 
 
         u.toggle("show", "settings", {delay:params.delay, fade:params.fade});
@@ -438,7 +440,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
         console.log("run evolve");
 
-        events.dispatch("evolve."+ self.name +".start");
+        // events.dispatch("evolve."+ self.name +".start");
 
         u.toggle("hide", "settings", {fade:params.fade});        
         // u.toggle("hide", "run");
@@ -507,7 +509,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         
         u.toggle("show", "breakfeedback");
 
-        events.dispatch("evolve."+self.name+".end");
+        // events.dispatch("evolve."+self.name+".end");
 
         // uncomment this line to force the gens value to change in the settings panel to the current generation when hardstop was called
         // so that to continue evolving, the gens value must be increased to the previous or desired value

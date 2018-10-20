@@ -258,7 +258,7 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
 	var refresh = function (self, $scope) {
 
-        evolve.running(false, $scope);
+        // evolve.running(false, $scope);
         simulator.refresh();
     }
 
@@ -266,27 +266,27 @@ app.factory("trash.controller", ["data", "trash-sim", "utility", 'api.service', 
 
         console.log("restart simulation");
 
-        evolve.running(false, $scope);
+        // evolve.running(false, $scope);
         simulator.reset();
     }
 
     var step = function (self, $scope) {
 
-        evolve.running(true, $scope);
+        // evolve.running(true, $scope);
         var input = $input.getInput();
         simulator.step(input.session);
     }
 
     var play = function (self, $scope) {
         
-        evolve.running(true, $scope);
+        // evolve.running(true, $scope);
         var input = $input.getInput();
         simulator.play(input.session, false);
     }
 
     var stop = function (self, $scope) {
 
-        evolve.running(false, $scope);
+        // evolve.running(false, $scope);
         simulator.stop();  
     }
 

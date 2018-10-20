@@ -79,8 +79,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 	var moveExistingElement = function ($options, options) {
 
 		var $ref = $options.elems[0];
-		var $main = $options.elems[1];
-		var $elem = $options.elems[2];
+		var $elem = $options.elems[1];
+		var $main = $options.elems[2];
 
 		// console.log("moveElement", $options);
 
@@ -105,8 +105,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 		var elemArray = [];
 		elemArray[0] = options.ref;
-		elemArray[1] = options.main;
-		elemArray[2] = options.element;
+		elemArray[1] = options.element;
+		elemArray[2] = options.main;
 
 		for (var i in options.others) {
 			elemArray[elemArray.length] = options.others[i];
@@ -200,7 +200,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 			// u.toggle("show", "hud", {delay:300, fade:600});
 
-			indicateRefreshButton();
+			// indicateRefreshButton();
 
 			setTimeout(function () {
 				scrollTo(element, options);
@@ -214,9 +214,11 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		}
 	}
 
-	var evolveStart = function () {
+	var evolveStart = function (options) {
 
 		if (phases.isRunning(self.full)) {
+
+			showToast(options);
 
 			// u.toggle("hide", "hud");
 			u.toggle("hide", self.name + "complete-button", {fade:300});
@@ -232,12 +234,13 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		}
 	}
 
-	var simEnd = function () {
+	var simEnd = function (options) {
 
 		if (phases.isRunning(self.full)) {
 			console.log("end simulation");
 
 
+			showToast(options);
 
 			$("#refreshinner").addClass("scaling-lg");
 			u.toggle("hide", self.name + "complete-button", {fade:300});
@@ -271,6 +274,8 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 		toggleGrayout(false);
 		u.toggle("hide", self.name + "complete-button", {fade:400});
+		u.toggle("hide", self.name + "phase1-container");
+		u.toggle("hide", self.name + "phase3-container");
 		u.toggle("hide", self.name + "complete-aux-button", {fade:400});
 		stopScaling();
 		u.toggle("show", self.name + "walkthroughbutton", {delay:200, fade:300});
@@ -332,7 +337,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			description:"welcome to the trash pickup walkthrough",
 			toast:{
 				delay:800,
-				duration:1000
+				duration:1500
 			},
 			button:"#"+self.name+"walkthroughwelcometoggle"
 		},
@@ -414,7 +419,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 			if (phases.isRunning(self.full)) {
 				console.log("pushed next button");
 
-				showToast(options);
+				// showToast(options);
 
 				$("#runinner").removeClass("scaling");
 			}
@@ -457,7 +462,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		},
 		complete:function (options) {
 
-			evolveEnd(true, options);
+			// evolveEnd(true, options);
 		}
 	}
 
@@ -597,7 +602,7 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 		},
 		complete:function (options) {
 
-			simStart(options);
+			// simStart(options);
 		}
 	}
 
@@ -735,18 +740,42 @@ app.factory("trash.walkthrough", ["utility", "phases.service", "controls.service
 
 	events.on("sim.trash.start", function () {
 
-		simStart();
+		simStart({
+			meta:{
+				description:"simulation running",
+				toast:{
+					delay:100,
+					duration:1000
+				}
+			}
+		});
 	})
 
 	events.on("sim.trash.end", function () {
 
-		simEnd();
+		simEnd({
+			meta:{
+				description:"simulation ended",
+				toast:{
+					delay:100,
+					duration:1000
+				}
+			}
+		});
 	})
 
 
 	events.on("evolve.trash.start", function () {
 
-		evolveStart();
+		evolveStart({
+			meta:{
+				description:"evolution started",
+				toast:{
+					delay:800,
+					duration:800
+				}
+			}
+		});
 	});
 
 	events.on("evolve.trash.end", function () {
