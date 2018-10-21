@@ -51,7 +51,7 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			}
 
 			var k = 0;
-			while (k < 25) {
+			while (k < 12) {
 				initialTrash[k] = false;
 				k++;
 			}
