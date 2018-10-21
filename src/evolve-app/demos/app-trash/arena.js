@@ -33,33 +33,33 @@ app.directive("arena", ['$http', 'utility', 'api.service', 'input.service', 'dis
 			var self = this;
 
 			
-			// var initialArena = [];
-			// var initialTrash = [];
+			var initialArena = [];
+			var initialTrash = [];
 
 
-			// var i = 0;
-			// var j = 0;
-			// while (i < 5) {
-			// 	initialArena[i] = [];
-			// 	j = 0;
-			// 	while (j < 5) {
+			var i = 0;
+			var j = 0;
+			while (i < 5) {
+				initialArena[i] = [];
+				j = 0;
+				while (j < 5) {
 
-			// 		initialArena[i][j] = false;
-			// 		j++;
-			// 	}
-			// 	i++;
-			// }
+					initialArena[i][j] = false;
+					j++;
+				}
+				i++;
+			}
 
-			// var k = 0;
-			// while (k < 25) {
-			// 	initialTrash[k] = false;
-			// 	k++;
-			// }
+			var k = 0;
+			while (k < 25) {
+				initialTrash[k] = false;
+				k++;
+			}
 
-			// self.environment = {
-			// 	arena:initialArena,
-			// 	trash:initialTrash
-			// }
+			self.environment = {
+				arena:initialArena,
+				trash:initialTrash
+			}
 
 
 			var block = function (input) {
