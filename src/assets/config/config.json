@@ -3,7 +3,7 @@
 		"forceMobile":false,
 		"interface":1,
 		"debug":{
-			"active":true,
+			"active":false,
 			"landingPage":1,
 			"loadSpeed":"fast"
 		},
