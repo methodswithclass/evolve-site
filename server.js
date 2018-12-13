@@ -50,6 +50,17 @@ if  (process.env.NODE_ENV != "production") {
 
 // app.use(express.static(path.join(__dirname, "dist", "assets")));
 
+app.use("/url", function (req, res, next) {
+
+	var port = app.address().port == 3000 ? ":3000" : "";
+
+	var host = req.get("host") + port;
+
+	console.log("host is:", host);
+
+	res.send({host:host});
+})
+
 app.use("/", express.static(path.join(__dirname, "dist")));
 
 app.use(middleware.errorHandler());

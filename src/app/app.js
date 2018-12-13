@@ -51,6 +51,12 @@ var setLoadSpeed = function (display, speed) {
 	var shared = window.shared;
 	var react = shared.react_service;
 
+	var defaultParams = {
+		delay:100,
+    	fade:800,
+    	duration:100
+	}
+
 	var params = display.getParams();
 	var currentParams;
 
@@ -58,22 +64,22 @@ var setLoadSpeed = function (display, speed) {
         return p.name == speed;
     })
 
-    if (found) {
-        currentParams = params[speed];
+	if (params && found) {
+        currentParams = params[found.name];
     }
     else {
         console.log("load speed not found default to normal");
-        currentParams = params[loadSpeeds[0].name];
+        currentParams = defaultParams;
     }
 
 
     var allParams = {};
 
     allParams[loadSpeeds[0].name] = params[loadSpeeds[0].name];
-    allParams[loadSpeeds[1].name] = params[loadSpeeds[1].name]
+    allParams[loadSpeeds[1].name] = params[loadSpeeds[1].name];
 
 
-    // console.log("push displayParams");
+    console.log("push displayParams", currentParams);
 
     react.push({
         name:"displayParams",
@@ -112,17 +118,17 @@ var appConfiguration = function (inter, forceMobile) {
 
 
 
-var appSetup = function (display, force, mobile, inter) {
+var appSetup = function (display, force, name) {
 
 
 	var shared = window.shared;
 	var g = shared.utility_service;
 
 
-	console.log("app setup");
+	console.log("app setup", display, force, name);
 
 
-	var setSpeed = function (name) {
+	var setSpeed = function (force, name) {
 
 
 		var found = loadSpeeds.find(function (p) {
@@ -131,7 +137,7 @@ var appSetup = function (display, force, mobile, inter) {
 		})
 
 		if (found) {
-			setLoadSpeed(display, name);
+			setLoadSpeed(display, found.name);
 		}
 		else {
 			setLoadSpeed(display, loadSpeeds[0].name);
@@ -140,7 +146,7 @@ var appSetup = function (display, force, mobile, inter) {
 
 
 	if (force) {
-		setSpeed(force);
+		setSpeed(name);
 	}
 	else {
 		setSpeed(demoLoad.normal);
@@ -249,6 +255,8 @@ app.run(['states', "config.service", "display.service", function (states, config
 				loadSpeed = config.loadSpeed;
 			}
 
+			appSetup(display, false, loadSpeed);
+
 
 			switch (landingPage) {
 
@@ -280,7 +288,7 @@ app.run(['states', "config.service", "display.service", function (states, config
 			}
 
 
-			appSetup(display, loadSpeed);
+			
 		})
 	}
 	else {

@@ -24,11 +24,10 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     $scope.stepdata = {};
     $scope.input = {};
     var tempcross;
-    var crossoverMethods = [];
     var displayParams;
     var allParams;
     var loadSpeeds;
-    var k = 0;
+    var params;
 
     $scope.navName = "back";
     $scope.navLoc = states.getName();
@@ -95,7 +94,6 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     var pageBuilt = display.beenBuilt(self.name);
 
 
-
     react.subscribe({
         name:"data" + self.name,
         callback:function (x) {
@@ -114,8 +112,93 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
             displayParams = x.params;
             loadSpeeds = x.loadSpeeds;
             allParams = x.allParams;
+
+            params = displayParams || allParams.fast || loadSpeeds[0];
+
+            console.log("params", displayParams, allParams, loadSpeeds, params);
         }
     })
+
+
+    config.get([
+        "global.types.crossoverMethods",
+        "config.pageIndices",
+        "config.activePages"
+    ])
+    .then(function (data) {
+
+        console.log("subscribe to displayParams");
+
+
+        tempcross = data[0];
+        var programs = data[1];
+        var activePages = data[2];
+
+        var crossoverMethods = [];
+        var k = 0;
+
+        // console.log("tempcross", tempcross);
+
+        for (var i in tempcross) {
+
+            if (k > 0) {
+
+                crossoverMethods.push({
+                    index:k-1,
+                    name:i,
+                    method:tempcross[i]
+                })
+            }
+
+            k++;
+        }
+
+        $scope.crossoverMethods = crossoverMethods;
+        $scope.settings.method = crossoverMethods[0].method;
+
+        $scope.crossoverData = {
+            crossoverMethods:crossoverMethods,
+            method:crossoverMethods[0].method
+        }
+
+        var j = 0;
+
+        $scope.demos = [];
+
+        // console.log("programs", programs);
+
+        var page;
+
+        for (var m in programs) {
+            // console.log("index", programs[i]);
+
+            page =  activePages[programs[m]];
+
+            if (page.active) {
+               
+                var stateName = page.name;
+                
+                $scope.demos[j] = {
+                    name:stateName,
+                    state:stateName+"#demo"
+                }
+
+                j++;
+            }
+        }
+
+
+        var initialDemo = $scope.demos.find(function (p) {
+
+            console.log("state", p.state, states.current());
+            return p.state == states.current();
+        })
+
+        $scope.demoModel = initialDemo.name;
+
+
+    });
+    
 
 
     var next = function (options) {
@@ -144,8 +227,8 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     var phases = [
     {
         message:"begin loading environment for demo", 
-        delay:displayParams.delay,
-        duration:2*displayParams.duration,
+        delay:params.delay,
+        duration:2*params.duration,
         phase:function (options) {
 
             console.log("initial processing phase");
@@ -163,8 +246,8 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     },
     {
         message:"initializing algoirthm", 
-        delay:displayParams.delay,
-        duration:6*displayParams.duration,
+        delay:params.delay,
+        duration:6*params.duration,
         phase:function (options) {
 
             console.log("initializing algorithm, page built", pageBuilt);
@@ -219,8 +302,8 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     },
     {
         message:"loading environment", 
-        delay:displayParams.delay,
-        duration:6*displayParams.duration, 
+        delay:params.delay,
+        duration:6*params.duration, 
         phase:function (options) {
 
             console.log("loading environment");
@@ -234,8 +317,8 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     },
     {
         message:"loading display", 
-        delay:displayParams.delay,
-        duration:2*displayParams.duration,
+        delay:params.delay,
+        duration:2*params.duration,
         phase:function (options) {
 
             console.log("loading display");
@@ -247,8 +330,8 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     },
     {
         message:"finishing up", 
-        delay:displayParams.delay,
-        duration:2*displayParams.duration, 
+        delay:params.delay,
+        duration:2*params.duration, 
         phase:function (options) {
 
             console.log("finishing up");
@@ -260,7 +343,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
 
                 // evolve.running(false, $scope);
 
-                u.toggle("hide", "loading", {fade:displayParams.fade, delay:displayParams.delay});
+                u.toggle("hide", "loading", {fade:params.fade, delay:params.delay});
 
                 display.elementsToggle(self.name, "show");
 
@@ -284,7 +367,7 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
             console.log("begin loading environment for demo")
 
             u.toggle("show", "loading", {
-                fade:displayParams.fade,
+                fade:params.fade,
                 complete:function () {
 
                     loading.runPhase(0);
@@ -481,6 +564,8 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     var build = function () {
 
         controller.build(self, $scope);
+
+
     }
 
 
@@ -522,84 +607,10 @@ app.controller("app.controller", ['$scope', "asset.service", 'states', 'utility'
     }
 
 
+    build();
 
-    config.get([
-        "global.types.crossoverMethods",
-        "config.pageIndices",
-        "config.activePages"
-    ])
-    .then(function (data) {
+    load();
 
-
-        tempcross = data[0];
-        var programs = data[1];
-        var activePages = data[2];
-
-        // console.log("tempcross", tempcross);
-
-        for (var i in tempcross) {
-
-            if (k > 0) {
-
-                crossoverMethods.push({
-                    index:k-1,
-                    name:i,
-                    method:tempcross[i]
-                })
-            }
-
-            k++;
-        }
-
-        $scope.crossoverMethods = crossoverMethods;
-        $scope.settings.method = crossoverMethods[0].method;
-
-        $scope.crossoverData = {
-            crossoverMethods:crossoverMethods,
-            method:crossoverMethods[0].method
-        }
-
-        var j = 0;
-
-        $scope.demos = [];
-
-        // console.log("programs", programs);
-
-        var page;
-
-        for (var i in programs) {
-            // console.log("index", programs[i]);
-
-            page =  activePages[programs[i]];
-
-            if (page.active) {
-               
-                var stateName = page.name;
-                
-                $scope.demos[j] = {
-                    name:stateName,
-                    state:stateName+"#demo"
-                }
-
-                j++;
-            }
-        }
-
-        var initialDemo = $scope.demos.find(function (p) {
-
-            console.log("state", p.state, states.current());
-            return p.state == states.current();
-        })
-
-        $scope.demoModel = initialDemo.name;
-
-
-        build();
-
-        load();
-
-
-    })
 
 
     

@@ -1,8 +1,8 @@
 
 
 var d = require("../../data/programs/feedback.js")
-var g = require("mc-shared").utility_service;
-
+var g = require("@methodswithclass/shared").utility_service;
+// var g = require("../../../../src/assets/js/shared.js");
 
 var jsdom = require("jsdom");
 const { JSDOM } = jsdom;

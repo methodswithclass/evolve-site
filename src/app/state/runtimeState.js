@@ -16,13 +16,13 @@ stateModule.provider("runtime.state", ["$stateProvider", function ($stateProvide
     var provider = {};
 
 
-    react.subscribe({
-        name:"interface",
-        callback:function(x) {
+    // react.subscribe({
+    //     name:"interface",
+    //     callback:function(x) {
 
-            inter = x;
-        }
-    })
+    //         inter = x;
+    //     }
+    // })
 
 
     // var initInterface = function ($interface) {

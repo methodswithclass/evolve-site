@@ -5054,19 +5054,18 @@
 ***********************************************************************************/
 
 
+// var $ = require("jquery");
 
+// var $ = require("jquery");
 
 var obj = {};
 
 (function(obj) {
 
-
-	var self = this;
-
-	self.events = {};
-	self.defers = {};
-	self.promises = {};
-	self.index = {};
+	var events = {};
+	var defers = {};
+	var promises = {};
+	var index = {};
 
 	var numEvents = 0;
 
@@ -5075,7 +5074,7 @@ var obj = {};
 
 		try {
 
-			self.promises[name].resolve();
+			promises[name].resolve();
 
 			return true;
 		}
@@ -5088,15 +5087,15 @@ var obj = {};
 	// saves and returns a promise that will be run later, optional config callback will be run before promise is resolved
 	var defer = function (name, _config) {
 
-		self.promises[name] = $q.defer();
+		promises[name] = $q.defer();
 
-		self.promises[name].promise.then(function () {
+		promises[name].promise.then(function () {
 			
 			if (_config) return _config();
 			return false;
 		});
 
-		return self.promises[name];
+		return promises[name];
 	}
 
 	// called to trigger the events registered by the "on" method below, all events registered to the same name will be triggered, any values returned by those events can be assigned to an object by this call, with the sub identifiers defined in the "on" method as the keys
@@ -5111,13 +5110,13 @@ var obj = {};
 
 			try {
 				
-				if (index < Object.keys(self.events[name]).length) {
+				if (index < Object.keys(events[name]).length) {
 
-					for (var i in self.events[name]) {
+					for (var i in events[name]) {
 
-						if (self.events[name][i]["index"] == index) {
+						if (events[name][i]["index"] == index) {
 							
-							sub = self.events[name][i];
+							sub = events[name][i];
 						}
 					}
 
@@ -5127,19 +5126,19 @@ var obj = {};
 
 						// console.log("dispatch event in series with id:", sub.id, "from event bundle named:", name);
 
-						if (self.events[name] && self.events[name][sub.id] && self.events[name][sub.id].event) {
+						if (events[name] && events[name][sub.id] && events[name][sub.id].event) {
 
-							result[sub.id] = self.events[name][sub.id].event();
+							result[sub.id] = events[name][sub.id].event();
 						}
 						else {
 							
-							if (!self.events[name]) {
+							if (!events[name]) {
 								console.log("no event bundle with name:", name, " --no action taken, returning null")
 							}
-							else if (!self.events[name][sub.id]) {
+							else if (!events[name][sub.id]) {
 								console.log("event bundle with name:", name, "has no event with id:", sub.id, " --no action taken, returning null")
 							}
-							else if (!self.events[name][sub.id].event) {
+							else if (!events[name][sub.id].event) {
 								console.log("event id", sub.id, "in event bundle with name:", name, "has no event to fire, --no action taken, returning null");
 							}
 
@@ -5169,19 +5168,19 @@ var obj = {};
 
 			// console.log("dispatch single event with id:", id, "from event bundle with name:", name);
 
-			if (self.events[name] && self.events[name][id] && self.events[name][id].event) {
+			if (events[name] && events[name][id] && events[name][id].event) {
 
-				result[id] = self.events[name][id].event();
+				result[id] = events[name][id].event();
 			}
 			else {
 				
-				if (!self.events[name]) {
+				if (!events[name]) {
 					console.log("no event bundle with name:", name, " --no action taken, returning null")
 				}
-				else if (!self.events[name][id]) {
+				else if (!events[name][id]) {
 					console.log("event bundle with name:", name, "has no event with id:", id, " --no action taken, returning null")
 				}
-				else if (!self.events[name][id].event) {
+				else if (!events[name][id].event) {
 					console.log("event id", id, "in event bundle with name:", name, "has no event to fire, --no action taken, returning null");
 				}
 
@@ -5190,7 +5189,7 @@ var obj = {};
 
 
 		}
-		else if (self.events[name]) {
+		else if (events[name]) {
 
 			// console.log("dispatch event bundle named:", name);
 			result = runEvent(0);
@@ -5228,23 +5227,23 @@ var obj = {};
 		}
 
 
-		if (!self.events[name]) {
-			self.events[name] = {};
-			self.index[name] = 0;
+		if (!events[name]) {
+			events[name] = {};
+			index[name] = 0;
 		}
 
 
-		if (!self.events[name][(isFunc(id) ? "single" : id)]) {
+		if (!events[name][(isFunc(id) ? "single" : id)]) {
 
 			// console.log("is not duplicate, register event", name, (isFunc(id) ? "single" : id));
 
-			self.events[name][(isFunc(id) ? "single" : id)] = {
-				index:self.index[name],
+			events[name][(isFunc(id) ? "single" : id)] = {
+				index:index[name],
 				id:(isFunc(id) ? "single" : id),
 				event:(isFunc(id) ? id : _event)
 			}
 
-			self.index[name] += 1;
+			index[name] += 1;
 		}
 		else {
 			// console.log("\nis duplicate, DO NOT register event", name, (isFunc(id) ? "single" : id));
@@ -5268,9 +5267,9 @@ var obj = {};
 
 
 (function (obj) {
-	
-	saves = {};
-	names = [];
+
+	var saves = {};
+	var names = [];
 
 	var r = function (name) {
 
@@ -5290,14 +5289,14 @@ var obj = {};
 	var obs = function (input) {
 
 		var self = this;
-		self.name = input.name || "";
+		self.n = input.name || "";
 		self.state = input.state || undefined;
 		var subs = [];
 
 
 		var notify = function () {
 
-			for (i in subs) {
+			for (var i in subs) {
 				subs[i](self.state);
 			}
 		}
@@ -5312,10 +5311,10 @@ var obj = {};
 			subs.push(callback);
 		}
 
-		self.setState = function (state) {
+		self.setState = function ($state) {
 
-			// console.log("push notify", self.name);
-			self.state = state;
+			// console.log("push notify", n);
+			self.state = $state;
 			notify();
 		}
 
@@ -5463,7 +5462,7 @@ var obj = {};
 		var self = this;
 
 		// add data to an array to be retrieved later
-		this.add = function (params) {
+		self.add = function (params) {
 
 			var name = params.name;
 
@@ -5489,7 +5488,7 @@ var obj = {};
 		
 
 		// retrieve the array of data
-		this.get = function (params) {
+		self.get = function (params) {
 
 			var name = params.name;
 
@@ -5789,7 +5788,7 @@ var obj = {};
 		var digits = Math.floor(log(number*10, 10));
 		var total = Math.floor(log(zeros, 10)) - digits;
 		var leading = "";
-		var i = 0;
+		// var i = 0;
 		for (var i = 0; i <= total; i++) {
 			leading += "0";
 		}
@@ -5824,11 +5823,24 @@ var obj = {};
 
         var temp;
 
-        var check = which == "asc" ? ((key ? array[j][key] : array[j]) > (key ? array[i][key] : array[i])) : ((key ? array[j][key] : array[j]) < (key ? array[i][key] : array[i]))
+        var check;
 
         for (var i in array) {
 
             for (var j in array) {
+
+            	check = (
+            	         
+            	         (which == "asc") ? 
+
+            	          (key ? array[j][key] : (array[j] > (key ? array[i][key] : array[i])))
+            	           
+            	           : 
+            	          
+            	          (key ? array[j][key] : (array[j] < (key ? array[i][key] : array[i])))
+
+            	         );
+
                 if (check) {
                     temp = array[i];
                     array[i] = array[j];

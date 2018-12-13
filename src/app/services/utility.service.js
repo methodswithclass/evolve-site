@@ -28,6 +28,13 @@ app.factory("utility", ["general", function (gen) {
         name:types.unset
     };
 
+    var absUrl;
+
+    var getUrl = function () {
+
+        return absUrl;
+    }
+
 
     var getViewTypes = function () {
 
@@ -132,6 +139,22 @@ app.factory("utility", ["general", function (gen) {
         
     }
 
+    var getAbsUrl = function () {
+
+        $.get("/url", 
+        {
+            method:"GET"
+        })
+        .then(function (res) {
+
+            console.log("abs url is:", res);
+
+            absUrl = res;
+        })
+    }
+
+    getAbsUrl();
+
 
     var makeAspect = function (input) {
 
@@ -228,7 +251,8 @@ app.factory("utility", ["general", function (gen) {
         toggle:toggle,
         correctForAspect:makeAspect,
         stateName:stateName,
-        renderHtml:gen.renderHtml
+        renderHtml:gen.renderHtml,
+        getUrl:getUrl
     }
 
 }]);

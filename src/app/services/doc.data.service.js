@@ -161,7 +161,7 @@ app.factory("doc.data", function () {
 
 	var get = function (name) {
 
-		for (i in docs) {
+		for (var i in docs) {
 			if (name == docs[i].name) {
 				return docs[i];
 			}

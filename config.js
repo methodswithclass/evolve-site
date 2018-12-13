@@ -54,7 +54,7 @@ var vendorScripts = [
 	//npm packages for front end use
 	"node_modules/jquery.scrollto/jquery.scrollTo.js",
 	"node_modules/velocity-animate/velocity.js",
-	"node_modules/mc-shared/shared.js"
+	"node_modules/@methodswithclass/shared/dist/shared.js"
 ]
 
 

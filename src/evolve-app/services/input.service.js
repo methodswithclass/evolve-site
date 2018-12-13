@@ -161,7 +161,6 @@ app.factory("input.service", ["utility", 'config.service', function (u, config) 
         	runs: 				input.runs,
         	pop:  				input.pop,
     		parents: 			input.parents,
-    		pool: 				input.pool,
     		splicemin: 			input.splicemin,
     		splicemax: 			input.splicemax,
     		pool: 				values.pool,
