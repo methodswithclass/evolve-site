@@ -1,23 +1,15 @@
-
-
-var evolveExpress = require("express");
+var evolveExpress = require('express');
 var evolveRouter = evolveExpress.Router();
 
-var db = require("./db.js");
+var db = require('./db.js');
 const UIDGenerator = require('uid-generator');
 
-
-
-var get = require("../evolve-app/data/get/get.js");
+var get = require('../evolve-app/data/get/get.js');
 
 const uidgen = new UIDGenerator();
 
-
-
 var called = 0;
 var check = 0;
-
-
 
 // var looseEnds = function (req) {
 
@@ -45,7 +37,6 @@ var check = 0;
 // 			called = 0;
 // 		}
 
-
 // 		setTimeout(() => {
 
 // 			if (check == called) {
@@ -57,248 +48,170 @@ var check = 0;
 // 	})
 // }
 
+evolveRouter.post('/data', function (req, res, next) {
+  try {
+    console.log('get data req', req.body.input.name);
 
-evolveRouter.post("/data", function (req, res, next) {
-
-	try {
-
-		console.log("get data req", req.body.input.name);
-
-		res.status(200).json({data:get.data(req.body.input.name)})
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-})
-
-
-evolveRouter.get("/instantiate", function (req, res, next) {
-
-	try {
-
-
-		console.log("instantiate");
-
-		// var session = uidgen.generateSync();
-
-		var session = get.createSessionEvolve();
-
-		res.status(200).json({session:session.id, success:"success"});
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-
+    res.status(200).json({ data: get.data(req.body.input.name) });
+  } catch (err) {
+    next(err);
+  }
 });
 
+evolveRouter.get('/instantiate', function (req, res, next) {
+  try {
+    console.log('instantiate');
 
-evolveRouter.post("/initialize", function (req, res, next) {
+    // var session = uidgen.generateSync();
 
-	try {
+    var session = get.createSessionEvolve();
 
-		console.log("initialize");
-
-
-		var input = req.body.input;
-
-		// var input = addProgram(req.body.input);
-
-		var session = get.getSessionEvolve(input.session);
-
-		var program = get.getSessionProgram(input.session, input.name, input);
-
-		input.pdata = program.pdata;
-
-		let success = session.evolve.initialize(input);
-
-		res.status(200).json({session:session.id, success:success});
-
-	}
-	catch (err) {
-
-		next(err);
-	}
+    res.status(200).json({ session: session.id, success: 'success' });
+  } catch (err) {
+    next(err);
+  }
 });
 
+evolveRouter.post('/initialize', function (req, res, next) {
+  try {
+    console.log('initialize');
 
+    var input = req.body.input;
 
-evolveRouter.post("/set", function (req, res, next) {
+    // var input = addProgram(req.body.input);
 
+    var session = get.getSessionEvolve(input.session);
 
-	try {
+    var program = get.getSessionProgram(input.session, input.name, input);
 
-		var input = req.body.input;
+    input.pdata = program.pdata;
 
-		console.log("input is, during set input\n", input, "\n");
-		// console.log("set input\n", inputArray);
+    let success = session.evolve.initialize(input);
 
-		var session = get.getSessionEvolve(req.body.input.session);
-
-		session.evolve.set(req.body.input);
-
-		res.status(200).json({session:session.id, success:"success"});
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-
+    res.status(200).json({ session: session.id, success: success });
+  } catch (err) {
+    next(err);
+  }
 });
 
+evolveRouter.post('/set', function (req, res, next) {
+  try {
+    var input = req.body.input;
 
+    console.log('input is, during set input\n', input, '\n');
+    // console.log("set input\n", inputArray);
 
-evolveRouter.post("/run", function (req, res, next) {
+    var session = get.getSessionEvolve(req.body.input.session);
 
+    session.evolve.set(req.body.input);
 
-	try {
-
-		console.log("run evolve", req.body.input);
-
-		// var input = addProgram(req);
-
-		var session = get.getSessionEvolve(req.body.input.session);
-
-		let success = session.evolve.run(req.body.input);
-
-		res.status(200).json({success:success, running:true});
-
-
-	}
-	catch (err) {
-
-		next(err);
-	}
+    res.status(200).json({ session: session.id, success: 'success' });
+  } catch (err) {
+    next(err);
+  }
 });
 
+evolveRouter.post('/run', function (req, res, next) {
+  try {
+    console.log('run evolve', req.body.input);
 
-evolveRouter.post("/running", function (req, res, next) {
+    // var input = addProgram(req);
 
+    var session = get.getSessionEvolve(req.body.input.session);
 
-	try {
+    let success = session.evolve.run(req.body.input);
 
-		// console.log("check running", req.body, evolution.running());
-
-
-		var session = get.getSessionEvolve(req.body.input.session);
-
-		res.status(200).json({running:session.evolve.running()})
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-})
-
-
-evolveRouter.post("/best", function (req, res, next) {
-
-
-	try {
-
-		// console.log("get best");
-
-		var session = get.getSessionEvolve(req.body.input.session);
-
-		res.status(200).json({ext:session.evolve.getBest()})
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-})
-
-
-
-evolveRouter.post("/instruct", function (req, res, next) {
-
-
-	try {
-
-		console.log("instruct");
-
-		var clear = req.body.clear
-
-		var session = get.getSessionEvolve(req.body.input.session);
-		var ext = session.evolve.getBest();
-		var prog = get.getSessionProgram(req.body.input.session, req.body.input.name, req.body.input);
-
-		// console.log("instruct best dna", best, best.dna);
-
-		prog.program.instruct(clear ? [] : ext.best.dna);
-
-		res.status(200).json({success:"program successfully instructed"});
-
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-})
-
-
-
-evolveRouter.post("/stepdata", function (req, res, next) {
-
-
-	try {
-
-		console.log("get stepdata");
-
-		// looseEnds(req);
-
-		var program = get.getSessionProgram(req.body.input.session, req.body.input.name, req.body.input);
-
-		var stepdata = program.program.stepdata();
-
-		// console.log("step data", stepdata);
-
-		res.status(200).json({stepdata:stepdata})
-
-	}
-	catch (err) {
-
-		next(err);
-	}
-})
-
-
-
-evolveRouter.post("/hardStop", function (req, res, next) {
-
-
-	try {
-
-		console.log("hard stop");
-
-		// var input = addProgram(req);
-
-		var session = get.getSessionEvolve(req.body.input.session);
-
-		session.evolve.hardStop(req.body.input);
-
-		res.status(200).json({success:"success"});
-
-	}
-	catch (err) {
-
-		next(err);
-	}
+    res.status(200).json({ success: success, running: true });
+  } catch (err) {
+    next(err);
+  }
 });
 
+evolveRouter.post('/running', function (req, res, next) {
+  try {
+    // console.log("check running", req.body, evolution.running());
 
+    var session = get.getSessionEvolve(req.body.input.session);
 
+    res.status(200).json({ running: session.evolve.running() });
+  } catch (err) {
+    next(err);
+  }
+});
+
+evolveRouter.post('/best', function (req, res, next) {
+  try {
+    // console.log("get best");
+
+    var session = get.getSessionEvolve(req.body.input.session);
+
+    res.status(200).json({ ext: session.evolve.getBest() });
+  } catch (err) {
+    next(err);
+  }
+});
+
+evolveRouter.post('/instruct', function (req, res, next) {
+  try {
+    console.log('instruct');
+
+    var clear = req.body.clear;
+
+    var session = get.getSessionEvolve(req.body.input.session);
+    var ext = session.evolve.getBest();
+    var prog = get.getSessionProgram(
+      req.body.input.session,
+      req.body.input.name,
+      req.body.input
+    );
+
+    // console.log('instruct best dna', ext);
+
+    prog.program.instruct(clear ? [] : ext.best.dna);
+
+    res.status(200).json({ success: 'program successfully instructed' });
+  } catch (err) {
+    console.log('debug err', err);
+    next(err);
+  }
+});
+
+evolveRouter.post('/stepdata', function (req, res, next) {
+  try {
+    console.log('get stepdata');
+
+    // looseEnds(req);
+
+    var program = get.getSessionProgram(
+      req.body.input.session,
+      req.body.input.name,
+      req.body.input
+    );
+
+    var stepdata = program.program.stepdata();
+
+    // console.log("step data", stepdata);
+
+    res.status(200).json({ stepdata: stepdata });
+  } catch (err) {
+    next(err);
+  }
+});
+
+evolveRouter.post('/hardStop', function (req, res, next) {
+  try {
+    console.log('hard stop');
+
+    // var input = addProgram(req);
+
+    var session = get.getSessionEvolve(req.body.input.session);
+
+    session.evolve.hardStop(req.body.input);
+
+    res.status(200).json({ success: 'success' });
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = evolveRouter;
-
-
-
-
-
