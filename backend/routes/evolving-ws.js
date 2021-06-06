@@ -23,13 +23,17 @@ evolveRouter.ws("/data", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			console.log("get data req", req.body.input.name);
+			var msg = JSON.parse($msg);
 
-			// res.status(200).json({data:get.data(req.body.input.name)})
+			// console.log("get data req", msg.data.input.name);
 
-			ws.send({data:get.data(msg.data.input.name)});
+			// res.status(200).json({data:get.data(msg.data.input.name)})
+
+			var result = {data:get.data(msg.data.input.name)};
+
+			ws.send(JSON.stringify(result));
 
 
 		});
@@ -47,17 +51,23 @@ evolveRouter.ws("/instantiate", function (ws, req, next) {
 	try {
 
 
-		console.log("instantiate");
+		
 
 		// var session = uidgen.generateSync();
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
+
+			// console.log("instantiate", msg);
 
 			var session = get.createSessionEvolve();
 
 			// res.status(200).json({session:session.id, success:"success"});
 
-			ws.send({session:session.id, success:"success"})
+			var result = {session:session.id, success:"success"};
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -74,15 +84,17 @@ evolveRouter.ws("/initialize", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			console.log("initialize");
+			var msg = JSON.parse($msg);
+
+			console.log("initialize", msg);
 
 
 
-			var input = req.body.input;
+			var input = msg.data.input;
 
-			// var input = addProgram(req.body.input);
+			// var input = addProgram(msg.data.input);
 
 			var session = get.getSessionEvolve(input.session);
 
@@ -94,7 +106,9 @@ evolveRouter.ws("/initialize", function (ws, req, next) {
 
 			// res.status(200).json({session:session.id, success:success});
 
-			ws.send({session:session.id, success:success})
+			var result = {session:session.id, success:success};
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -112,20 +126,24 @@ evolveRouter.ws("/set", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			var input = req.body.input;
+			var msg = JSON.parse($msg);
 
-			console.log("input is, during set input\n", input, "\n");
+			var input = msg.data.input;
+
+			// console.log("input is, during set input\n", input, "\n");
 			// console.log("set input\n", inputArray);
 
-			var session = get.getSessionEvolve(req.body.input.session);
+			var session = get.getSessionEvolve(msg.data.input.session);
 
-			session.evolve.set(req.body.input);
+			session.evolve.set(msg.data.input);
 
 			// res.status(200).json({session:session.id, success:"success"});
 
-			ws.send({session:session.id, success:"success"})
+			var result = {session:session.id, success:"success"}
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -145,20 +163,25 @@ evolveRouter.ws("/run", function (ws, req, next) {
 	try {
 
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			console.log("run evolve", req.body.input);
+			var msg = JSON.parse($msg);
+
+			console.log("run evolve", msg.data.input);
 
 			// var input = addProgram(req);
 
-			var session = get.getSessionEvolve(req.body.input.session);
+			var session = get.getSessionEvolve(msg.data.input.session);
 
-			let success = session.evolve.run(req.body.input);
+			let success = session.evolve.run(msg.data.input);
 
 			// res.status(200).json({success:success, running:true});
 
 
-			ws.send({success:success, running:true})
+			var result = {success:success, running:true};
+
+
+			ws.send(JSON.stringify(result));
 		});
 
 
@@ -175,16 +198,20 @@ evolveRouter.ws("/running", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			// console.log("check running", req.body, evolution.running());
+			var msg = JSON.parse($msg);
+
+			// console.log("check running", msg.data, evolution.running());
 
 
-			var session = get.getSessionEvolve(req.body.input.session);
+			var session = get.getSessionEvolve(msg.data.input.session);
 
 			// res.status(200).json({running:session.evolve.running()});
 
-			ws.send({running:session.evolve.running()})
+			var result = {running:session.evolve.running()}
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -201,16 +228,20 @@ evolveRouter.ws("/best", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
 
 			// console.log("get best");
 
-			var session = get.getSessionEvolve(req.body.input.session);
+			var session = get.getSessionEvolve(msg.data.input.session);
 
 			// res.status(200).json({ext:session.evolve.getBest()});
 
 
-			ws.send({ext:session.evolve.getBest()})
+			var result = {ext:session.evolve.getBest()};
+
+			ws.send(JSON.stringify(result));
 		});
 
 	}
@@ -227,15 +258,17 @@ evolveRouter.ws("/instruct", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			console.log("instruct");
+			var msg = JSON.parse($msg);
 
-			var clear = req.body.clear
+			// console.log("instruct");
 
-			var session = get.getSessionEvolve(req.body.input.session);
+			var clear = msg.data.clear
+
+			var session = get.getSessionEvolve(msg.data.input.session);
 			var ext = session.evolve.getBest();
-			var prog = get.getSessionProgram(req.body.input.session, req.body.input.name, req.body.input);
+			var prog = get.getSessionProgram(msg.data.input.session, msg.data.input.name, msg.data.input);
 
 			// console.log("instruct best dna", best, best.dna);
 
@@ -243,7 +276,9 @@ evolveRouter.ws("/instruct", function (ws, req, next) {
 
 			// res.status(200).json({success:"program successfully instructed"});
 
-			ws.send({success:"program successfully instructed"})
+			var result = {success:"program successfully instructed"};
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -262,13 +297,15 @@ evolveRouter.ws("/stepdata", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			console.log("get stepdata");
+			var msg = JSON.parse($msg);
+
+			// console.log("get stepdata");
 
 			// looseEnds(req);
 
-			var program = get.getSessionProgram(req.body.input.session, req.body.input.name, req.body.input);
+			var program = get.getSessionProgram(msg.data.input.session, msg.data.input.name, msg.data.input);
 
 			var stepdata = program.program.stepdata();
 
@@ -277,7 +314,9 @@ evolveRouter.ws("/stepdata", function (ws, req, next) {
 			// res.status(200).json({stepdata:stepdata});
 
 
-			ws.send({stepdata:stepdata})
+			var result = {stepdata:stepdata}
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -295,20 +334,25 @@ evolveRouter.ws("/hardStop", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
 
 			console.log("hard stop");
 
 			// var input = addProgram(req);
 
-			var session = get.getSessionEvolve(req.body.input.session);
+			var session = get.getSessionEvolve(msg.data.input.session);
 
-			session.evolve.hardStop(req.body.input);
+			session.evolve.hardStop(msg.data.input);
 
 			// res.status(200).json({success:"success"});
 
 
-			ws.send({success:"success"})
+			var result = {success:"success"};
+
+
+			ws.send(JSON.stringify(result));
 
 		});
 

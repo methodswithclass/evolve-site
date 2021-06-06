@@ -1,4 +1,4 @@
-app.factory("api.service", ["api.http.service", function (api) {
+app.factory("api.service", ["api.ws.service", function (api) {
     
 
 	var getBest = function (callback) {
@@ -22,11 +22,13 @@ app.factory("api.service", ["api.http.service", function (api) {
 
 
     var instantiate = function (callback) {
+        console.log("api instantiate")
         api.instantiate(callback);
     };
 
 
    	var initialize = function (callback) {
+        console.log("api initialize");
         api.initialize(callback);
     };
 

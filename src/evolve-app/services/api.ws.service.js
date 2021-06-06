@@ -2,129 +2,255 @@ app.factory("api.ws.service", ["utility", 'input.service', '$http', "$q", 'excep
     
 
     var socket = {};
+    var delay = {};
+
+    var prints = {
+        evolve:false,
+        singles:true
+    }
+
+    var names = [
+    {
+        name:"getBest",
+        print:prints.evolve && true
+    },
+    {
+        name:"stepdata",
+        print:prints.evovle && true
+    },
+    {
+        name:"running",
+        print:prints.evolve && true
+    },
+    {
+        name:"instantiate",
+        print:prints.singles && true
+    },
+    {
+        name:"initialize",
+        print:prints.singles && true
+    },
+    {
+        name:"input",
+        print:prints.evolve && true
+    },
+    {
+        name:"instruct",
+        print:prints.singles && true
+    },
+    {
+        name:"refresh",
+        print:prints.singles && false
+    },
+    {
+        name:"reset",
+        print:prints.singles && false
+    },
+    {
+        name:"simulateTrash",
+        print:prints.singles && true
+    },
+    {
+        name:"simulateRecognize",
+        print:prints.singles && true
+    },
+    {
+        name:"simulateDigit",
+        print:prints.singles && true
+    },
+    {
+        name:"hardStop",
+        print:prints.singles && true
+    }
+    ]
+    
+
+    var stopInterval = function (name) {
+
+        clearInterval(delay[name]);
+        delay[name] = null;
+    }
 
     var ready = function (name, complete) {
 
-		var delay = setInterval(function () {
+        // console.log("call ready", name);
 
-			if (socket[name].readyState === 1) {
-				if (typeof complete === "function") complete();
-				clearInterval(delay);
-				delay = null;
-			}
-		}, 100)
-	}
+        delay[name] = setInterval(function () {
+
+            // console.log("readyState", name, socket[name].readyState)
+
+            if (socket[name].readyState === 1) {
+                // console.log(name, "is ready");
+                if (typeof complete === "function") complete(name);
+                stopInterval(name);
+            }
+            else if (socket[name].readyState === 3) {
+                console.log(name, "is closed");
+                stopInterval(name);
+            }
+
+        }, 100)
+    }
 
     var openWS = function (name, url) {
 
-    	socket[name] = new WebSocket("ws://"+ u.getUrl() +url, ["protocolOne", "protocolTwo"]);
-		console.log("socket state", socket[name].readyState);
-		// socket.open();
-		// console.log("socket state", socket.readyState);
-		socket[name].onopen = function (open) {
+        var wsUrl = "ws://"+ u.getUrl() +url;
 
-			console.log("socket opened:", name, open);		
-		}
+        // console.log("url is", wsUrl);
 
-		socket[name].onerror = function (error) {
+        socket[name] = new WebSocket(wsUrl, ["protocolOne", "protocolTwo"]);
+        // console.log("socket state", socket[name].readyState);
+        socket[name].onopen = function (open) {
 
-			console.log("Server error:", name, error);
-		}
+            console.log("socket opened:", name);        
+        }
+
+        socket[name].onclose = function (close) {
+
+            console.log("socket closed:", name);        
+        }
+
+        socket[name].onerror = function (error) {
+
+            console.log("Server error:", name, error);
+        }
+
+        socket[name].onmessage = function ($message) {
+
+            var message = JSON.parse($message);
+
+            // console.log("this is the message", message);
+            return false;
+        }
+    }
+
+    var onMessageFunc = function (funcName, callback) {
+
+        return function ($message) {
+
+            // console.log("the string message is", $message.data);
+
+            var message = JSON.parse($message.data);
+
+            // console.log("the message is:", funcName, message);
+
+            if (typeof callback === "function") callback({data:message});
+            return false;
+        }
+
+    }
+
+    var resolveName = function (name) {
+
+        var found = names.find((p) => {
+
+            return p.name == name;
+        })        
+
+        var result = (found && (found.print === false || found.print === undefined)) ? false : true;
+
+        console.log("found", found, result);
+
+        if (!found){
+            console.log("print not found for name:", name, "returning: true");
+        }
+
+        return result;
+    }
+
+    var onSendFunc = function (name, data) {
+
+        if (resolveName(name)) console.log("send", name);
+        socket[name].send(JSON.stringify(data));
     }
 
     var open = {
-    	best:function () {
+        opened:false,
+        delay:1000,
+        best:function () {
 
-	    	openWS("getBest", "/evolve/best");
-	    },
-	    step:function () {
-	    	openWS("stepdata", "/evolve/stepdata");
-	    },
-	    running:function () {
-	    	openWS("running", "/evolve/running");
-	    },
-	    instantiate:function () {
-	    	openWS("instantiate", "/evolve/instantiate");
-	    },
-	    initialize:function () {
-	    	openWS("initialize", "/evolve/initialize");
-	    },
-	    run:function () {
+            openWS("getBest", "/evolve/best");
+        },
+        step:function () {
+            openWS("stepdata", "/evolve/stepdata");
+        },
+        running:function () {
+            openWS("running", "/evolve/running");
+        },
+        instantiate:function () {
+            openWS("instantiate", "/evolve/instantiate");
+        },
+        initialize:function () {
+            openWS("initialize", "/evolve/initialize");
+        },
+        run:function () {
 
-	    	openWS("run", "/evolve/run");
-	    },
-	    input:function () {
-	    	openWS("input", "/evolve/set");
-	    },
-	    refresh:function () {
-	    	openWS("refresh", "/trash/environment/refresh");
-	    },
-	    reset:function () {
-	    	openWS("reset", "/trash/environment/reset");
-	    },
-	    simulate:function () {
-	    	openWS("simulateTrash", "/trash/simulate");
-	    	openWS("simulateRecognize", "/recognize/simulate");
-	    	openWS("simulateDigit", "/recognize/digit");
-	    },
-	    stop:function () {
-	    	openWS("hardStop", "/evolve/hardStop");
+            openWS("run", "/evolve/run");
+        },
+        input:function () {
+            openWS("input", "/evolve/set");
+        },
+        instruct:function () {
+            openWS("instruct", "/evolve/instruct");
+        },
+        refresh:function () {
+            openWS("refresh", "/trash/environment/refresh");
+        },
+        reset:function () {
+            openWS("reset", "/trash/environment/reset");
+        },
+        simulate:function () {
+            openWS("simulateTrash", "/trash/simulate");
+            openWS("simulateRecognize", "/recognize/simulate");
+            openWS("simulateDigit", "/recognize/digit");
+        },
+        stop:function () {
+            openWS("hardStop", "/evolve/hardStop");
 
-	    }
-	};
+        }
+    };
 
 
 
-	var getBest = function (callback) {
-       	
-		var funcName = "getBest";
+    var getBest = function (callback) {
+        
+        var funcName = "getBest";
 
-		socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
+        ready(funcName, function (name) {
 
-			if (typeof callback === "function") callback(message.data);
-		}
-
-		ready(funcName, function () {
-    		socket.send(JSON.stringify({data:{input:$input.getInput()}}));
-		});
+            onSendFunc(name);
+            socket[name].send(JSON.stringify({data:{input:$input.getInput()}}));
+        });
     };
 
 
     var stepdata = function (callback) {
 
         // console.log("call setpdata");
-      	
-      	var funcName = "stepdata";
+        
+        var funcName = "stepdata";
 
-      	socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
+        ready(funcName, function (name) {
 
-			if (typeof callback === "function") callback(message.data);
-		}
-
-      	ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput()}}));
-    	});
-   	};
+            onSendFunc(name, {data:{input:$input.getInput()}});
+        });
+        };
 
 
-   	var isRunning = function  (callback) {
+    var isRunning = function  (callback) {
 
-   		var funcName = "running";
+            var funcName = "running";
 
-   		socket[funcName].onmessage = function (message) {
+            socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
+            ready(funcName, function (name) {
 
-			if (typeof callback === "function") callback(message.data);
-		}
-
-   		ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput(true)}}));
-    	});
+                onSendFunc(name, {data:{input:$input.getInput(true)}});
+            });
     };
 
 
@@ -136,54 +262,40 @@ app.factory("api.ws.service", ["utility", 'input.service', '$http', "$q", 'excep
         var funcName = "input";
 
 
-        socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
-
-			if (typeof callback === "function") callback(message.data);
-		}
-
-        ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:resend ? $input.resendInput() : $input.getInput()}}));
-    	});
-   	};
+        ready(funcName, function (name) {
+            onSendFunc(name, {data:{input:resend ? $input.resendInput() : $input.getInput()}});
+        });
+        };
 
 
     var instantiate = function (callback) {
 
-    	var funcName = "instantiate";
+        var funcName = "instantiate";
 
+        console.log("instantiate ws call");
 
-    	socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
-
-			if (typeof callback === "function") callback(message.data);
-		}
-
-    	ready(funcName, function () {
-        	socket.send("instantiate");
-    	});
+        ready(funcName, function (name) {
+            onSendFunc(name, {message:"instantiate"});
+        });
     };
 
 
-   	var initialize = function (callback) {
+    var initialize = function (callback) {
 
-    
-        console.log("initialize http call get input");
+
+        console.log("initialize ws call");
 
         var funcName = "initialize";
 
-        socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
-
-			if (typeof callback === "function") callback(message.data);
-		}
-
-        ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput()}}));
-    	});
+        ready(funcName, function (name) {
+            onSendFunc(name, {data:{input:$input.getInput()}});
+        });
 
     };
 
@@ -195,65 +307,40 @@ app.factory("api.ws.service", ["utility", 'input.service', '$http', "$q", 'excep
 
         var funcName = "run";
 
-        // // try {
+        socket[funcName].onmessage = onMessageFunc(funcName, function (message) {
 
-        // 	$http({
-        // 		method:"POST",
-        // 		url:"/evolve/run", 
-        // 		data:{input:$input.getInput(true)}
-        // 	})
-        // 	.then(function (res) {
+            console.log("the message is:", funcName, message);
 
-        //         if (!res.data.success) {
+            if (!message.success) {
 
-        //         	initialize(function () {
-                		
-        //         		run(function  () {
-        //         			if (typeof callback === "function") callback(res);
-        //         		});
-        //         	});
-        //         }
-        //         else {
+                initialize(function () {
+                    
+                    run(function  () {
+                        if (typeof callback === "function") callback(message);
+                    });
+                });
+            }
+            else {
 
-        //         	 if (typeof callback === "function") callback(res);
-        //         }
+                 if (typeof callback === "function") callback(message);
+            }
 
-        //     }, function (err) {
+        });
 
-        //         // console.log("Server error: 'run'", err)
-
-        //         // return $q.reject(err);
-        //         throw err;
-        //     })
-        //     .catch(exception.catcher("Server error:" + funcName));
-
-
-        // // }
-        // // catch (err) {
-            
-        // //     console.log("Server error:", funcName, err)
-        // // }
-
-
-        socket[funcName].onmessage = function (message) {
-
-			console.log("the message is:", funcName, message.data);
-
-			if (typeof callback === "function") callback(message.data);
-		}
-
-        ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput(true)}}));
-    	});
+        ready(funcName, function (name) {
+            onSendFunc(name, {data:{input:$input.getInput(true)}});
+        });
     };
 
     var instruct = function (clear, callback) {
 
-    	var funcName = "instruct";
+        var funcName = "instruct";
 
-    	ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput(), clear:clear}}));
-    	});
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
+
+        ready(funcName, function () {
+            onSendFunc(name, {data:{input:$input.getInput(), clear:clear}});
+        });
     };
 
     var refreshEnvironment = function (callback) {
@@ -263,25 +350,23 @@ app.factory("api.ws.service", ["utility", 'input.service', '$http', "$q", 'excep
 
         var funcName = "refresh";
 
-        socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
-
-			if (typeof callback === "function") callback(message.data);
-		}
-
-        ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput()}}));
-    	});
+        ready(funcName, function (name) {
+            onSendFunc(name, {data:{input:$input.getInput()}});
+        });
     };
 
     var resetEnvironment = function (callback) {
 
-    	var funcName = "reset";
+        var funcName = "reset";
 
-    	ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput()}}));
-    	});
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
+
+        ready(funcName, function (name) {
+            console.log("send", funcName);
+            socket[funcName].send(JSON.stringify({data:{input:$input.getInput()}}));
+        });
     };
 
 
@@ -290,51 +375,37 @@ app.factory("api.ws.service", ["utility", 'input.service', '$http', "$q", 'excep
 
         trash:function (_input, callback) {
 
-        	var funcName = "simulateTrash";
+            var funcName = "simulateTrash";
 
-        	socket[funcName].onmessage = function (message) {
+            socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-				console.log("the message is:", funcName, message.data);
-
-				if (typeof callback === "function") callback(message.data);
-			}
-
-        	ready(funcName, function () {
-            	socket.send(JSON.stringify({data:{options:_input, input:$input.getInput()}}));
-        	});
+            ready(funcName, function (name) {
+                onSendFunc(name, {data:{options:_input, input:$input.getInput()}});
+            });
 
         },
         recognize:function (index, callback) {
 
-        	var funcName = "simulateRecognize";
+            var funcName = "simulateRecognize";
 
 
-        	socket[funcName].onmessage = function (message) {
 
-				console.log("the message is:", funcName, message.data);
+            socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-				if (typeof callback === "function") callback(message.data);
-			}
-
-        	ready(funcName, function () {
-            	socket.send(JSON.stringify({data:{index:index, input:$input.getInput()}}));
-        	});
+            ready(funcName, function () {
+                onSendFunc(name, {data:{index:index, input:$input.getInput()}});
+            });
         },
         digit:function (index, callback) {
 
-        	var funcName = "simulateDigit";
+            var funcName = "simulateDigit";
 
 
-        	socket[funcName].onmessage = function (message) {
+            socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-				console.log("the message is:", funcName, message.data);
-
-				if (typeof callback === "function") callback(message.data);
-			}
-
-        	ready(funcName, function () {
-            	socket.send(JSON.stringify({data:{index:index, input:$input.getInput()}}));
-        	});
+            ready(funcName, function (name) {
+                onSendFunc(name, {data:{index:index, input:$input.getInput()}})
+            });
 
         }
 
@@ -349,23 +420,37 @@ app.factory("api.ws.service", ["utility", 'input.service', '$http', "$q", 'excep
         var funcName = "hardStop";
 
 
-        socket[funcName].onmessage = function (message) {
+        socket[funcName].onmessage = onMessageFunc(funcName, callback);
 
-			console.log("the message is:", funcName, message.data);
-
-			if (typeof callback === "function") callback(message.data);
-		}
-
-        ready(funcName, function () {
-        	socket.send(JSON.stringify({data:{input:$input.getInput()}}));
-    	});
+        ready(funcName, function (name) {
+            onSendFunc(name, {data:{input:$input.getInput()}});
+        });
     };
 
+    var openSockets = function () {
 
-    for (var i in open) {
+        console.log("call open sockets", "\n\n\n\n\n\n\n\n")
 
-    	open[i]();
+        if (!open.opened) {
+
+            setTimeout(function () {
+                
+                console.log("open sockets")
+
+                for (var i in open) {
+
+                    if (typeof open[i] === "function") open[i]();
+                }
+
+                open.opened = true;
+
+            }, open.delay);
+        }
     }
+
+
+    openSockets();
+    
 
 	return {
 		getBest:getBest,

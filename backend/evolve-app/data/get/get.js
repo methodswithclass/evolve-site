@@ -2,8 +2,8 @@
 
 var evolveFact = require("@methodswithclass/evolve");
 // var evolveFact = require("../../@.ga/__.ga.js");
-// var g = require("@methodswithclass/shared").utility_service;
-var g = require("../../../../src/assets/js/shared.js").utility_service;
+var g = require("@methodswithclass/shared").utility_service;
+// var g = require("../../../../src/assets/js/shared.js").utility_service;
 const UIDGenerator = require('uid-generator');
 
 

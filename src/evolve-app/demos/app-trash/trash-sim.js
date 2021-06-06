@@ -185,7 +185,7 @@ app.factory("trash-sim", ['$http', 'utility', 'api.service', 'input.service', fu
 
             api.simulate.trash({name:name, i:_input.i, session:_input.session}, function (res) {
 
-                // console.log("run simulation", res.data);
+                // console.log("run simulation", res);
 
                 var result = res.data.result;
 

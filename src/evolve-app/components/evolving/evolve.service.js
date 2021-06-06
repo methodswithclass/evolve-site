@@ -108,7 +108,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         })
     }
 
-    var resetEvdata = function (data) {
+    var sendEvdata = function (data) {
 
         react.push({
             name:"evdata" + self.name,
@@ -143,7 +143,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
         });
 
 
-        resetEvdata($evdata);
+        sendEvdata($evdata);
 
     }
 
@@ -152,6 +152,7 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
     var getBest = function (complete) {
 
+        // console.log("get best");
 
     	api.getBest(function (res) {
             
@@ -172,15 +173,23 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
     var getEvdata = function (count) {
 
+        console.log("get evdata");
+
         api.getBest(function (res) {
             
-            sendData({
-                evdata:{
-                    index:$stepdata.gen,
-                    best:res.data.ext.best,
-                    worst:res.data.ext.worst
-                }
-            });
+            var $evdata = {
+                index:$stepdata.gen,
+                best:res.data.ext.best,
+                worst:res.data.ext.worst
+            }
+
+            var data = {
+                evdata:$evdata
+            }
+
+            sendData(data);
+
+            sendEvdata($evdata);
 
             if (typeof complete === "function") complete();
 
@@ -344,6 +353,8 @@ app.factory("evolve.service", ["utility", 'display.service', 'api.service', 'inp
 
 
         getBest();
+
+
 
         getEvdata(evolveCompleteCount++);
 

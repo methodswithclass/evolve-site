@@ -14,7 +14,9 @@ trashRouter.ws("/simulate", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
 
 			console.log("simulate step", msg.data);
 
@@ -25,7 +27,9 @@ trashRouter.ws("/simulate", function (ws, req, next) {
 			// res.json({result:result})
 
 
-			ws.send({result:result});
+			var $result = {result:result};
+
+			ws.send(JSON.stringify($result));
 
 		});
 
@@ -44,7 +48,9 @@ trashRouter.ws("/environment/refresh", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
 
 			var input = msg.data.input;
 
@@ -59,7 +65,9 @@ trashRouter.ws("/environment/refresh", function (ws, req, next) {
 
 			// res.json({env:env});
 
-			ws.send({env:env});
+			var result = {env:env};
+
+			ws.send(JSON.stringify(result));
 
 		});
 
@@ -78,9 +86,11 @@ trashRouter.ws("/environment/reset", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
 
-			// console.log("reset environment");
+			var msg = JSON.parse($msg);
+
+			console.log("reset environment", msg);
 
 			var trash = get.getSessionProgram(msg.data.input.session, "trash", msg.data.input).program;
 
@@ -90,7 +100,9 @@ trashRouter.ws("/environment/reset", function (ws, req, next) {
 
 			// res.json({env:env})
 
-			ws.send({env:env});
+			var result = {env:env}
+
+			ws.send(JSON.stringify(result));
 
 		});
 

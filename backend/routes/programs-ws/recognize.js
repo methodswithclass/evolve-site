@@ -17,7 +17,9 @@ recognizeRouter.ws("/simulate", function (ws, req, next) {
 
 	try {
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
 
 			console.log("run best");
 
@@ -27,7 +29,9 @@ recognizeRouter.ws("/simulate", function (ws, req, next) {
 
 				// res.status(200).json({output:output});
 			
-				ws.send({output:output});
+				var result = {output:output};
+
+				ws.send(JSON.stringify(result));
 			});
 
 		});
@@ -48,7 +52,9 @@ recognizeRouter.ws("/digit", function (ws, req, next) {
 	try {
 
 
-		ws.on("message", function (msg) {
+		ws.on("message", function ($msg) {
+
+			var msg = JSON.parse($msg);
 
 
 			console.log("get digit");
@@ -69,7 +75,9 @@ recognizeRouter.ws("/digit", function (ws, req, next) {
 
 				// res.status(200).json({image:image.pixels, index:image.index, label:image.label});
 
-				ws.send({image:image.pixels, index:image.index, label:image.label})
+				var result = {image:image.pixels, index:image.index, label:image.label};
+
+				ws.send(JSON.stringify(result));
 
 			})
 

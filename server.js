@@ -7,15 +7,19 @@ const middleware = require("./middleware/middleware.js");
 
 const app = express();
 
-const evolveRoutes = require("./backend/routes/evolving.js");
+var expressWs = require('express-ws')(app);
+
+const evolveRoutes = require("./backend/routes/evolving-ws.js");
 const writingRoutes = require("./backend/routes/write-image.js");
 
-const trashRoutes = require("./backend/routes/programs/trash.js");
-const recognizeRoutes = require("./backend/routes/programs/recognize.js");
+const trashRoutes = require("./backend/routes/programs-ws/trash.js");
+const recognizeRoutes = require("./backend/routes/programs-ws/recognize.js");
 
 const get = require("./backend/evolve-app/data/get/get.js");
 
 // console.log("livereload", config.livereloadPort);
+
+var currentPort;
 
 var PORTS = {
 	heroku:8080,
@@ -52,13 +56,13 @@ if  (process.env.NODE_ENV != "production") {
 
 app.use("/url", function (req, res, next) {
 
-	var port = app.address().port == 3000 ? ":3000" : "";
+	// var port = currentPort == 3000 ? ":3000" : "";
 
-	var host = req.get("host") + port;
+	var host = req.get("host");
 
 	console.log("host is:", host);
 
-	res.send({host:host});
+	res.send({data:{host:host}});
 })
 
 app.use("/", express.static(path.join(__dirname, "dist")));
@@ -91,7 +95,9 @@ else {
 
 var listener = app.listen(port, function () {
 
-	console.log("listening on port", listener.address().port);
+	currentPort = listener.address().port;
+
+	console.log("listening on port", currentPort);
 });
 
 

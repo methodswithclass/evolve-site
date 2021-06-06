@@ -147,9 +147,9 @@ app.factory("utility", ["general", function (gen) {
         })
         .then(function (res) {
 
-            console.log("abs url is:", res);
+            console.log("abs url is:", res.data.host);
 
-            absUrl = res;
+            absUrl = res.data.host;
         })
     }
 
