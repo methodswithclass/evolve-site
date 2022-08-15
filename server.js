@@ -13,10 +13,6 @@ const writingRoutes = require('./backend/routes/write-image.js');
 const trashRoutes = require('./backend/routes/programs/trash.js');
 const recognizeRoutes = require('./backend/routes/programs/recognize.js');
 
-const get = require('./backend/evolve-app/data/get/get.js');
-
-// console.log("livereload", config.livereloadPort);
-
 var PORTS = {
   heroku: 8080,
   http: 80,
