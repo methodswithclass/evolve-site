@@ -54,7 +54,7 @@
     "jshint": "^2.9.6",
     "jshint-stylish": "^2.2.1",
     "jslint": "^0.12.0",
-    "karma": "^3.0.0",
+    "karma": "^6.4.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.2",
     "map-stream": "0.0.7",
